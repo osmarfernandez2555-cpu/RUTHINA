@@ -2,411 +2,329 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Ruthina · Tutu Automotores</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A1A1A'/><path d='M16 6L26 11V21L16 26L6 21V11Z' fill='%23C8102E'/></svg>">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/app.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C8102E'/><text x='16' y='22' text-anchor='middle' font-family='Arial' font-weight='bold' font-size='16' fill='white'>R</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+:root{
+  --rojo:#C8102E;--rojo-dark:#A00D24;
+  --bg:#E5DDD5;
+  --bubble-in:#FFFFFF;--bubble-out:#DCF8C6;
+  --header:#1A1A1A;
+  --text:#111;--text2:#667781;
+  --border:#E0E0E0;
+}
+html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
+#screen-chat{display:flex;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:var(--bg)}
+.chat-header{background:var(--header);padding:8px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:3px solid var(--rojo)}
+.hdr-avatar{width:40px;height:40px;border-radius:50%;background:var(--rojo);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:white;flex-shrink:0}
+.hdr-info{flex:1;min-width:0}
+.hdr-name{font-size:15px;font-weight:600;color:white}
+.hdr-status{font-size:11.5px;color:#4ade80;display:flex;align-items:center;gap:4px}
+.sdot{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.hdr-btns{display:flex;gap:6px}
+.hbtn{background:rgba(255,255,255,0.1);border:none;border-radius:8px;padding:7px 11px;color:white;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.hbtn:hover{background:rgba(255,255,255,0.2)}
+#drive-banner{background:#FEF3C7;border-bottom:1px solid #F59E0B;padding:7px 14px;font-size:12px;color:#92400E;display:none;align-items:center;gap:8px;flex-shrink:0}
+.spin{width:11px;height:11px;border:2px solid #F59E0B;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+.messages{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:2px;scroll-behavior:smooth}
+.messages::-webkit-scrollbar{width:3px}
+.messages::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.2);border-radius:3px}
+.dsep{text-align:center;margin:10px 0}
+.dsep span{background:rgba(255,255,255,0.75);border-radius:7px;padding:3px 12px;font-size:11.5px;color:var(--text2);box-shadow:0 1px 1px rgba(0,0,0,.06)}
+.mrow{display:flex;margin-bottom:1px;padding:0 4px}
+.mrow.out{justify-content:flex-end}
+.mrow.in{justify-content:flex-start}
+.mrow.gap{margin-top:8px}
+.bubble{max-width:72%;padding:7px 9px 5px;border-radius:8px;font-size:14px;line-height:1.55;position:relative;word-wrap:break-word;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+.mrow.in .bubble{background:var(--bubble-in);color:var(--text);border-top-left-radius:0}
+.mrow.out .bubble{background:var(--bubble-out);color:#111;border-top-right-radius:0}
+.bsender{font-size:12px;font-weight:600;color:var(--rojo);margin-bottom:3px}
+.bubble strong{font-weight:600}
+.mrow.in .bubble strong{color:var(--rojo)}
+.bubble code{background:rgba(0,0,0,.07);border-radius:3px;padding:1px 5px;font-size:12px;font-family:monospace}
+.bubble em{font-style:italic;opacity:.85}
+.btime{font-size:10.5px;opacity:.6;text-align:right;margin-top:2px}
+.mrow.out .btime::after{content:' ✓✓';font-size:10px}
+.typing-bbl{background:white;padding:10px 13px;border-radius:8px;border-top-left-radius:0;display:flex;gap:4px;align-items:center;box-shadow:0 1px 1px rgba(0,0,0,.1)}
+.td{width:7px;height:7px;background:#B0B0B0;border-radius:50%;animation:td 1.2s infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.quick{padding:8px 10px;display:flex;gap:6px;flex-wrap:wrap;background:rgba(229,221,213,.9);border-top:1px solid rgba(0,0,0,.08);flex-shrink:0}
+.qbtn{padding:6px 12px;border-radius:18px;border:1px solid rgba(0,0,0,.15);background:white;font-family:'Inter',sans-serif;font-size:12px;color:var(--text);cursor:pointer;transition:all .15s;white-space:nowrap}
+.qbtn:hover{border-color:var(--rojo);color:var(--rojo);background:#FEF0F2}
+.input-bar{background:var(--bg);padding:7px 10px 10px;display:flex;align-items:flex-end;gap:8px;flex-shrink:0}
+.input-box{flex:1;background:white;border-radius:22px;padding:9px 14px;box-shadow:0 1px 2px rgba(0,0,0,.08);display:flex;align-items:center}
+#chatInput{flex:1;border:none;background:none;font-family:'Inter',sans-serif;font-size:15px;color:var(--text);outline:none;resize:none;max-height:110px;line-height:1.4}
+#chatInput::placeholder{color:#AAA}
+.send-btn{width:44px;height:44px;border-radius:50%;background:var(--rojo);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;flex-shrink:0}
+.send-btn:hover{background:var(--rojo-dark)}
+.send-btn:active{transform:scale(.94)}
+#screen-budget{display:none;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:#F5F5F5}
+.back-hdr{background:var(--header);padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid var(--rojo)}
+.back-btn{background:none;border:none;color:white;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:14px;padding:4px 0}
+.back-ttl{font-size:15px;font-weight:600;color:white;font-family:'Inter',sans-serif}
+.bscroll{flex:1;overflow-y:auto;padding:14px}
+.bscroll::-webkit-scrollbar{width:3px}
+.bscroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
+.bcard{background:white;border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.bcard-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+.fg{margin-bottom:10px}
+.fg label{display:block;font-size:11.5px;color:var(--text2);margin-bottom:4px;font-weight:500}
+.fg input,.fg select,.fg textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:white;outline:none;transition:border-color .2s}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--rojo)}
+.fg textarea{resize:vertical;min-height:60px}
+.fgrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.trow{display:flex;align-items:center;justify-content:space-between;background:white;border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer}
+.trow-text .trow-label{font-size:14px;font-weight:500;color:var(--text)}
+.trow-text .trow-sub{font-size:11.5px;color:var(--text2);margin-top:2px}
+.tog{position:relative;width:40px;height:22px;flex-shrink:0}
+.tog input{opacity:0;width:0;height:0}
+.togsl{position:absolute;cursor:pointer;inset:0;background:#CCC;border-radius:22px;transition:.25s}
+.togsl::before{position:absolute;content:'';height:16px;width:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+input:checked+.togsl{background:var(--rojo)}
+input:checked+.togsl::before{transform:translateX(18px)}
+.preview{background:#1A1A1A;border-radius:14px;padding:15px;margin-bottom:12px}
+.prev-lbl{font-size:10px;font-weight:600;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.prow{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #2A2A2A;font-size:13.5px;color:#CCC}
+.prow:last-child{border:none}
+.prow.ptot{font-size:18px;font-weight:700;color:var(--rojo);margin-top:4px;padding-top:8px;border-top:1px solid #333}
+.btn-gen{width:100%;padding:14px;background:var(--rojo);color:white;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background .15s;margin-bottom:24px}
+.btn-gen:hover{background:var(--rojo-dark)}
+.btn-gen:disabled{background:#CCC;cursor:default}
+.snack{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#1A1A1A;color:white;padding:10px 20px;border-radius:22px;font-size:13px;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.snack.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:600px){
+  .bubble{max-width:86%}
+  .hbtn span{display:none}
+  .fgrow{grid-template-columns:1fr}
+}
+</style>
 </head>
 <body>
 
-<!-- ══ HEADER ══════════════════════════════════════════════ -->
-<header class="header">
-  <div class="logo-area">
-    <div class="logo-mark">
-      <svg viewBox="0 0 20 20" fill="none" width="20" height="20">
-        <path d="M10 2L18 6.5V13.5L10 18L2 13.5V6.5Z" fill="white"/>
+<div id="screen-chat">
+  <div class="chat-header">
+    <div class="hdr-avatar">Ru</div>
+    <div class="hdr-info">
+      <div class="hdr-name">Ruthina</div>
+      <div class="hdr-status"><div class="sdot"></div><span id="status-txt">En línea</span></div>
+    </div>
+    <div class="hdr-btns">
+      <button class="hbtn" onclick="openBudget()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span>Presupuesto</span>
+      </button>
+    </div>
+  </div>
+  <div id="drive-banner"><div class="spin"></div>Cargando datos de Drive...</div>
+  <div class="messages" id="messages">
+    <div class="dsep"><span>Hoy</span></div>
+  </div>
+  <div class="quick" id="quick">
+    <button class="qbtn" onclick="sendQ('¿Cuáles son los autos nuevos disponibles con precios?')">🆕 Nuevos</button>
+    <button class="qbtn" onclick="sendQ('Contame todo sobre el JMC Vigus Pro')">🚙 JMC Vigus</button>
+    <button class="qbtn" onclick="sendQ('¿Cuáles son los usados más económicos?')">💰 Usados</button>
+    <button class="qbtn" onclick="sendQ('¿Cómo funciona la financiación en cuotas?')">💳 Crédito</button>
+    <button class="qbtn" onclick="sendQ('¿Qué modelos Shineray tienen disponibles?')">⚡ Shineray</button>
+  </div>
+  <div class="input-bar">
+    <div class="input-box">
+      <textarea id="chatInput" placeholder="Escribí tu consulta..." rows="1"
+        onkeydown="hKey(event)" oninput="aResize(this)"></textarea>
+    </div>
+    <button class="send-btn" onclick="sendMsg()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
       </svg>
-    </div>
-    <div>
-      <div class="brand-name">RUTHINA <span class="brand-sep">·</span> Tutu Automotores</div>
-      <div class="brand-sub">Asistente Interno de Ventas</div>
-    </div>
+    </button>
   </div>
-  <div class="header-right">
-    <div id="drive-status" class="drive-status" style="display:none">
-      <span class="spinner"></span> Cargando Drive...
-    </div>
-    <div class="status-pill">
-      <div class="status-dot"></div>
-      <span>En línea</span>
-    </div>
+</div>
+
+<div id="screen-budget">
+  <div class="back-hdr">
+    <button class="back-btn" onclick="closeBudget()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver
+    </button>
+    <div class="back-ttl">Armar Presupuesto</div>
   </div>
-</header>
-
-<!-- ══ LAYOUT ═══════════════════════════════════════════════ -->
-<div class="app-layout">
-
-  <!-- ── SIDEBAR ──────────────────────────────────────────── -->
-  <nav class="sidebar">
-    <div class="sidebar-label">Navegación</div>
-    <button class="sidebar-btn active" data-view="chat" onclick="UI.showView('chat')">
-      <div class="sb-icon ic-chat">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-      </div>
-      <span>Chat con Ruthina</span>
-    </button>
-    <button class="sidebar-btn" data-view="budget" onclick="UI.showView('budget')">
-      <div class="sb-icon ic-budget">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      </div>
-      <span>Armar Presupuesto</span>
-    </button>
-    <button class="sidebar-btn" data-view="stock" onclick="UI.showView('stock')">
-      <div class="sb-icon ic-stock">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
-      </div>
-      <span>Ver Stock</span>
-    </button>
-
-    <div class="sidebar-divider"></div>
-    <div class="sidebar-label">Archivos</div>
-
-    <button class="sidebar-btn" data-view="drive" onclick="UI.showView('drive')">
-      <div class="sb-icon ic-drive">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-      </div>
-      <span>Google Drive</span>
-    </button>
-
-    <div class="sidebar-footer">
-      <div class="sidebar-info">
-        <strong>Ruthina v1.0</strong><br>
-        Lee automáticamente tus Sheets y PDFs de Drive para responder con datos reales.
+  <div class="bscroll">
+    <div class="bcard">
+      <div class="bcard-title">Cliente</div>
+      <div class="fgrow">
+        <div class="fg"><label>Nombre *</label><input id="b-client" type="text" placeholder="Juan Pérez" oninput="upP()"></div>
+        <div class="fg"><label>Teléfono</label><input id="b-phone" type="text" placeholder="+54 351..."></div>
+        <div class="fg"><label>DNI</label><input id="b-dni" type="text" placeholder="XX.XXX.XXX"></div>
+        <div class="fg"><label>Asesor</label><input id="b-vendedor" type="text" placeholder="Tu nombre"></div>
       </div>
     </div>
-  </nav>
-
-  <!-- ── PANEL ─────────────────────────────────────────────── -->
-  <main class="panel">
-
-    <!-- ════ VIEW: CHAT ════════════════════════════════════ -->
-    <div id="view-chat" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
-      <div class="chat-topbar">
-        <div class="ruthina-avatar">Ru</div>
-        <div>
-          <div class="chat-title">Ruthina</div>
-          <div class="chat-meta">Preguntá sobre stock, precios, características o armá un presupuesto</div>
-        </div>
-        <button class="topbar-btn" onclick="UI.showView('drive')">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-          Archivos Drive
-        </button>
-        <button class="topbar-btn topbar-btn-reload" onclick="UI.reloadDrive()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-          Actualizar
-        </button>
+    <div class="bcard">
+      <div class="bcard-title">Vehículo</div>
+      <div class="fg"><label>Marca y Modelo *</label><input id="b-model" type="text" placeholder="JMC Vigus Pro 4x4" oninput="upP()"></div>
+      <div class="fgrow">
+        <div class="fg"><label>Año</label><input id="b-year" type="text" placeholder="2024"></div>
+        <div class="fg"><label>Color</label><input id="b-color" type="text" placeholder="Blanco"></div>
+        <div class="fg"><label>Km</label><input id="b-km" type="number" placeholder="0"></div>
+        <div class="fg"><label>Patente</label><input id="b-patente" type="text" placeholder="AA000BB"></div>
+        <div class="fg"><label>Precio Lista (ARS) *</label><input id="b-price" type="number" placeholder="12500000" oninput="upP()"></div>
+        <div class="fg"><label>Precio Contado (ARS)</label><input id="b-cash" type="number" placeholder="11800000" oninput="upP()"></div>
       </div>
-
-      <div class="messages" id="messages">
-        <div class="msg">
-          <div class="msg-avatar av-ruthina">Ru</div>
-          <div>
-            <div class="bubble bubble-ruthina">
-              ¡Hola! Soy <strong>Ruthina</strong>, tu asistente de ventas de Tutu 🚗<br><br>
-              Leo automáticamente los archivos de Drive configurados para darte información precisa sobre <strong>stock, precios y características</strong> de los vehículos.<br><br>
-              También puedo ayudarte a <strong>armar un presupuesto</strong> completo con opciones de crédito y permuta. ¿En qué te ayudo?
-            </div>
-            <div class="msg-time">Ruthina · ahora</div>
-          </div>
-        </div>
+      <div class="fg"><label>Observaciones</label><textarea id="b-notes" placeholder="Equipamiento, garantía..."></textarea></div>
+    </div>
+    <div class="bcard-title" style="padding:0 4px 8px;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px">Permuta</div>
+    <div class="trow" onclick="toggleChk('chk-p','sec-p')">
+      <div class="trow-text">
+        <div class="trow-label">Entrega vehículo en permuta</div>
+        <div class="trow-sub">Activá si el cliente permuta su auto</div>
       </div>
-
-      <div class="quick-actions">
-        <button class="qa-btn" onclick="UI.sendQuick('¿Cuáles son los autos nuevos disponibles con sus precios?')">🆕 Nuevos disponibles</button>
-        <button class="qa-btn" onclick="UI.sendQuick('Dame info completa del JMC Vigus Pro: características y precio')">🚙 JMC Vigus Pro</button>
-        <button class="qa-btn" onclick="UI.sendQuick('¿Cuáles son los usados más económicos del stock?')">💰 Usados económicos</button>
-        <button class="qa-btn" onclick="UI.sendQuick('Explicame cómo funciona la financiación y las cuotas')">💳 Financiación</button>
-        <button class="qa-btn" onclick="UI.sendQuick('¿Cuáles son los modelos Shineray disponibles?')">⚡ Shineray</button>
+      <label class="tog" onclick="event.stopPropagation()">
+        <input type="checkbox" id="chk-p" onchange="showSec('sec-p',this.checked);upP()">
+        <span class="togsl"></span>
+      </label>
+    </div>
+    <div id="sec-p" style="display:none" class="bcard">
+      <div class="fg"><label>Vehículo a permutar</label><input id="b-perm-model" type="text" placeholder="Chevrolet Cruze 2019" oninput="upP()"></div>
+      <div class="fgrow">
+        <div class="fg"><label>Año</label><input id="b-perm-year" type="text" placeholder="2019"></div>
+        <div class="fg"><label>Km</label><input id="b-perm-km" type="number" placeholder="80000"></div>
       </div>
-
-      <div class="input-area">
-        <div class="input-wrap">
-          <textarea
-            id="chatInput"
-            placeholder="Preguntale a Ruthina..."
-            rows="1"
-            onkeydown="UI.handleKey(event)"
-          ></textarea>
+      <div class="fg"><label>Valor tasación (ARS)</label><input id="b-perm-val" type="number" placeholder="5000000" oninput="upP()"></div>
+    </div>
+    <div class="bcard-title" style="padding:0 4px 8px;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px">Financiación</div>
+    <div class="trow" onclick="toggleChk('chk-c','sec-c')">
+      <div class="trow-text">
+        <div class="trow-label">Financia en cuotas</div>
+        <div class="trow-sub">Activá si el cliente toma crédito</div>
+      </div>
+      <label class="tog" onclick="event.stopPropagation()">
+        <input type="checkbox" id="chk-c" onchange="showSec('sec-c',this.checked);upP()">
+        <span class="togsl"></span>
+      </label>
+    </div>
+    <div id="sec-c" style="display:none" class="bcard">
+      <div class="fg"><label>Entidad Financiera</label><input id="b-banco" type="text" placeholder="Banco Galicia, Santander..."></div>
+      <div class="fgrow">
+        <div class="fg"><label>Monto a financiar</label><input id="b-fin" type="number" placeholder="8000000" oninput="upP()"></div>
+        <div class="fg"><label>Anticipo</label><input id="b-ant" type="number" placeholder="3000000"></div>
+        <div class="fg"><label>TNA %</label><input id="b-tna" type="number" placeholder="60" oninput="upP()"></div>
+        <div class="fg"><label>Cuotas</label>
+          <select id="b-cuotas" onchange="upP()">
+            <option value="12">12 cuotas</option><option value="18">18 cuotas</option>
+            <option value="24">24 cuotas</option><option value="36">36 cuotas</option>
+            <option value="48">48 cuotas</option><option value="60">60 cuotas</option>
+          </select>
         </div>
-        <button class="send-btn" onclick="UI.sendMessage()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" width="18" height="18">
-            <line x1="22" y1="2" x2="11" y2="13"/>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-          </svg>
-        </button>
       </div>
     </div>
-
-    <!-- ════ VIEW: BUDGET ══════════════════════════════════ -->
-    <div id="view-budget" style="display:none;overflow-y:auto;flex:1;background:#F7F6F2">
-    <div class="view-content">
-
-      <h2 class="view-title">Armar <span>Presupuesto</span></h2>
-
-      <!-- Cliente -->
-      <div class="form-section-title red">
-        <span class="dot-red"></span> Datos del Cliente
-      </div>
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Nombre del cliente *</label>
-          <input type="text" id="b-client" placeholder="Ej: Juan Pérez" oninput="BudgetPDF.updatePreview()">
-        </div>
-        <div class="form-group">
-          <label>Teléfono / WhatsApp</label>
-          <input type="text" id="b-phone" placeholder="+54 351 000-0000">
-        </div>
-        <div class="form-group">
-          <label>DNI</label>
-          <input type="text" id="b-dni" placeholder="XX.XXX.XXX">
-        </div>
-        <div class="form-group">
-          <label>Asesor de ventas</label>
-          <input type="text" id="b-vendedor" placeholder="Tu nombre">
-        </div>
-      </div>
-
-      <!-- Vehículo -->
-      <div class="form-section-title red">
-        <span class="dot-red"></span> Vehículo a Vender
-      </div>
-      <div class="form-grid">
-        <div class="form-group form-span2">
-          <label>Marca y Modelo *</label>
-          <input type="text" id="b-model" placeholder="Ej: JMC Vigus Pro 4x4" oninput="BudgetPDF.updatePreview()">
-        </div>
-        <div class="form-group">
-          <label>Año</label>
-          <input type="text" id="b-year" placeholder="2024" oninput="BudgetPDF.updatePreview()">
-        </div>
-        <div class="form-group">
-          <label>Color</label>
-          <input type="text" id="b-color" placeholder="Blanco, Negro...">
-        </div>
-        <div class="form-group">
-          <label>Kilometraje</label>
-          <input type="number" id="b-km" placeholder="0">
-        </div>
-        <div class="form-group">
-          <label>Patente</label>
-          <input type="text" id="b-patente" placeholder="AA000BB">
-        </div>
-        <div class="form-group">
-          <label>Precio de Lista (ARS) *</label>
-          <input type="number" id="b-price" placeholder="12500000" oninput="BudgetPDF.updatePreview()">
-        </div>
-        <div class="form-group">
-          <label>Precio Contado (ARS)</label>
-          <input type="number" id="b-cash" placeholder="11800000" oninput="BudgetPDF.updatePreview()">
-        </div>
-        <div class="form-group form-span2">
-          <label>Observaciones</label>
-          <textarea id="b-notes" placeholder="Equipamiento especial, estado, garantía..."></textarea>
-        </div>
-      </div>
-
-      <!-- Permuta -->
-      <div class="form-section-title green">
-        <span class="dot-green"></span> Permuta
-        <label class="toggle-label-inline">
-          <div class="toggle"><input type="checkbox" id="toggle-permuta" onchange="UI.toggleSection('permuta-fields'); BudgetPDF.updatePreview()"><span class="slider-t"></span></div>
-          <span>El cliente entrega un vehículo</span>
-        </label>
-      </div>
-      <div id="permuta-fields" style="display:none">
-        <div class="form-grid">
-          <div class="form-group form-span2">
-            <label>Vehículo a permutar</label>
-            <input type="text" id="b-perm-model" placeholder="Ej: Chevrolet Cruze 2019" oninput="BudgetPDF.updatePreview()">
-          </div>
-          <div class="form-group">
-            <label>Año</label>
-            <input type="text" id="b-perm-year" placeholder="2019">
-          </div>
-          <div class="form-group">
-            <label>Kilometraje</label>
-            <input type="number" id="b-perm-km" placeholder="80000">
-          </div>
-          <div class="form-group">
-            <label>Valor tasación (ARS)</label>
-            <input type="number" id="b-perm-value" placeholder="5000000" oninput="BudgetPDF.updatePreview()">
-          </div>
-        </div>
-      </div>
-
-      <!-- Crédito -->
-      <div class="form-section-title blue">
-        <span class="dot-blue"></span> Financiación
-        <label class="toggle-label-inline">
-          <div class="toggle"><input type="checkbox" id="toggle-credito" onchange="UI.toggleSection('credito-fields'); BudgetPDF.updatePreview()"><span class="slider-t"></span></div>
-          <span>El cliente financia en cuotas</span>
-        </label>
-      </div>
-      <div id="credito-fields" style="display:none">
-        <div class="form-grid">
-          <div class="form-group form-span2">
-            <label>Entidad Financiera</label>
-            <input type="text" id="b-banco" placeholder="Banco Galicia, Santander, BBVA...">
-          </div>
-          <div class="form-group">
-            <label>Monto a financiar (ARS)</label>
-            <input type="number" id="b-financia" placeholder="8000000" oninput="BudgetPDF.updatePreview()">
-          </div>
-          <div class="form-group">
-            <label>Anticipo (ARS)</label>
-            <input type="number" id="b-anticipo" placeholder="3000000" oninput="BudgetPDF.updatePreview()">
-          </div>
-          <div class="form-group">
-            <label>TNA (%)</label>
-            <input type="number" id="b-tna" placeholder="60" oninput="BudgetPDF.updatePreview()">
-          </div>
-          <div class="form-group">
-            <label>Cuotas</label>
-            <select id="b-cuotas" onchange="BudgetPDF.updatePreview()">
-              <option value="12">12 cuotas</option>
-              <option value="18">18 cuotas</option>
-              <option value="24">24 cuotas</option>
-              <option value="36">36 cuotas</option>
-              <option value="48">48 cuotas</option>
-              <option value="60">60 cuotas</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <!-- Preview -->
-      <div class="preview-box">
-        <div class="preview-title">RESUMEN DEL PRESUPUESTO</div>
-        <div class="preview-row"><span>Vehículo</span><span id="pv-model" style="color:#ccc">—</span></div>
-        <div class="preview-row"><span>Precio lista</span><span id="pv-price">—</span></div>
-        <div class="preview-row"><span>Precio contado</span><span id="pv-cash" style="color:#4ade80">—</span></div>
-        <div id="pv-permuta-row" class="preview-row" style="display:none"><span>Permuta</span><span id="pv-perm" style="color:#f59e0b">—</span></div>
-        <div id="pv-credito-row" class="preview-row" style="display:none"><span>Cuota estimada</span><span id="pv-cuota" style="color:#60a5fa">—</span></div>
-        <div class="preview-row total"><span>A pagar</span><span id="pv-total">—</span></div>
-      </div>
-
-      <div class="form-group" style="margin-bottom:20px">
-        <label>Vigencia del presupuesto</label>
-        <select id="b-vigencia">
+    <div class="preview">
+      <div class="prev-lbl">RESUMEN</div>
+      <div class="prow"><span>Vehículo</span><span id="pv-m" style="color:#ccc;text-align:right;max-width:55%">—</span></div>
+      <div class="prow"><span>Precio lista</span><span id="pv-p">—</span></div>
+      <div class="prow"><span>Precio contado</span><span id="pv-c" style="color:#4ade80">—</span></div>
+      <div class="prow" id="pv-pr" style="display:none"><span>Permuta</span><span id="pv-pv" style="color:#fb923c">—</span></div>
+      <div class="prow" id="pv-cr" style="display:none"><span>Cuota est.</span><span id="pv-cu" style="color:#60a5fa">—</span></div>
+      <div class="prow ptot"><span>A pagar</span><span id="pv-t">—</span></div>
+    </div>
+    <div class="bcard">
+      <div class="fg"><label>Vigencia del presupuesto</label>
+        <select id="b-vig">
           <option value="24 horas">24 horas</option>
           <option value="48 horas">48 horas</option>
           <option value="72 horas" selected>72 horas</option>
           <option value="7 días">7 días</option>
         </select>
       </div>
-
-      <button class="btn-generate" id="btn-generate" onclick="UI.generateBudget()">
-        ⬇ Generar Presupuesto PDF
-      </button>
-
     </div>
-    </div>
-
-    <!-- ════ VIEW: STOCK ═══════════════════════════════════ -->
-    <div id="view-stock" style="display:none;flex-direction:column;flex:1;overflow:hidden">
-      <div class="stock-topbar">
-        <input class="search-input" placeholder="Buscar marca o modelo..." id="searchInput"
-          oninput="UI.renderStock(this.value, document.getElementById('filterType').value)">
-        <select class="filter-select" id="filterType"
-          onchange="UI.renderStock(document.getElementById('searchInput').value, this.value)">
-          <option value="">Todos</option>
-          <option value="nuevo">Nuevos</option>
-          <option value="usado">Usados</option>
-        </select>
-        <div class="stock-note">* Stock de ejemplo. Conectá tu Sheet para datos reales.</div>
-      </div>
-      <div class="stock-grid" id="stockList"></div>
-    </div>
-
-    <!-- ════ VIEW: DRIVE ═══════════════════════════════════ -->
-    <div id="view-drive" style="display:none;overflow-y:auto;flex:1;background:#F7F6F2">
-    <div class="view-content">
-
-      <h2 class="view-title">Archivos de <span>Google Drive</span></h2>
-      <p class="view-desc">
-        Ruthina lee automáticamente estos archivos al arrancar y cada 10 minutos.
-        Los datos se usan como contexto para responder preguntas del equipo de ventas.
-      </p>
-
-      <div class="drive-actions">
-        <button class="btn-drive-add" onclick="UI.openDriveModal()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Agregar archivo
-        </button>
-        <button class="btn-drive-reload" id="btn-reload-drive" onclick="UI.reloadDrive()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-          Actualizar datos
-        </button>
-      </div>
-
-      <div class="drive-file-list" id="driveFileList">
-        <div class="drive-file">
-          <div class="file-icon fi-excel">📊</div>
-          <div class="file-info">
-            <div class="file-name">Stock de vehículos</div>
-            <div class="file-meta">Google Sheet · Configurado en config.js</div>
-          </div>
-          <span class="file-status">Configurado</span>
-        </div>
-        <div class="drive-file">
-          <div class="file-icon fi-pdf">📄</div>
-          <div class="file-info">
-            <div class="file-name">Precios JMC y Shineray</div>
-            <div class="file-meta">PDF · Configurado en config.js</div>
-          </div>
-          <span class="file-status">Configurado</span>
-        </div>
-      </div>
-
-      <div class="config-tip">
-        <strong>📋 Cómo configurar los archivos:</strong><br><br>
-        1. Abrí el archivo <code>config.js</code> en tu editor<br>
-        2. En <code>SHEETS</code>, pegá el ID de tu Google Sheet (la parte larga de la URL)<br>
-        3. En <code>PDFS</code>, pegá el ID del PDF en Drive<br>
-        4. Asegurate de compartir los archivos como <em>"Cualquiera con el link puede ver"</em><br>
-        5. Guardá y subí a GitHub Pages
-      </div>
-
-    </div>
-    </div>
-
-  </main>
-</div>
-
-<!-- ══ DRIVE MODAL ══════════════════════════════════════════ -->
-<div class="modal-overlay" id="driveModal">
-  <div class="modal">
-    <h3>Agregar archivo de Drive</h3>
-    <p>Pegá el link del archivo compartido de Google Drive (Sheet o PDF).</p>
-    <div class="form-group" style="margin-bottom:10px">
-      <label>URL del archivo</label>
-      <input type="text" id="driveUrl" placeholder="https://drive.google.com/file/d/...">
-    </div>
-    <div class="form-group">
-      <label>Nombre descriptivo</label>
-      <input type="text" id="driveName" placeholder="Ej: stock_abril.xlsx">
-    </div>
-    <div class="modal-btns">
-      <button class="btn-modal-cancel" onclick="UI.closeDriveModal()">Cancelar</button>
-      <button class="btn-modal-save" onclick="UI.saveDriveFile()">Guardar</button>
-    </div>
+    <button class="btn-gen" id="btn-gen" onclick="genPDF()">⬇ Generar PDF del Presupuesto</button>
   </div>
 </div>
 
-<!-- ══ SNACKBAR ══════════════════════════════════════════════ -->
 <div class="snack" id="snack"></div>
 
-<!-- ══ SCRIPTS ═══════════════════════════════════════════════ -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="config.js"></script>
 <script src="js/dataloader.js"></script>
 <script src="js/chat.js"></script>
 <script src="js/budget.js"></script>
-<script src="js/ui.js"></script>
 <script>
-  document.addEventListener('DOMContentLoaded', () => UI.init());
-</script>
-
-</body>
-</html>
+function openBudget(){document.getElementById('screen-chat').style.display='none';document.getElementById('screen-budget').style.display='flex'}
+function closeBudget(){document.getElementById('screen-budget').style.display='none';document.getElementById('screen-chat').style.display='flex'}
+let typing=false,lastFrom=null,firstMsg=true;
+function hKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}}
+function aResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px'}
+function sendQ(t){document.getElementById('chatInput').value=t;sendMsg()}
+function addBubble(html,from){
+  const msgs=document.getElementById('messages');
+  const now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  const isOut=from==='user',isGap=lastFrom!==from;
+  lastFrom=from;
+  const row=document.createElement('div');
+  row.className='mrow '+(isOut?'out':'in')+(isGap?' gap':'');
+  const txt=isOut?html:html.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/`(.*?)`/g,'<code>$1</code>').replace(/\n/g,'<br>');
+  const sender=(!isOut&&isGap)?'<div class="bsender">Ruthina</div>':'';
+  row.innerHTML=`<div class="bubble">${sender}${txt}<div class="btime">${now}</div></div>`;
+  msgs.appendChild(row);
+  if(isOut&&firstMsg){document.getElementById('quick').style.display='none';firstMsg=false}
+  msgs.scrollTop=msgs.scrollHeight;
+}
+function showTyping(){
+  const m=document.getElementById('messages'),d=document.createElement('div');
+  d.className='mrow in gap';d.id='typ';
+  d.innerHTML='<div class="typing-bbl"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  m.appendChild(d);m.scrollTop=m.scrollHeight;
+}
+function hideTyping(){const t=document.getElementById('typ');if(t)t.remove()}
+async function sendMsg(){
+  if(typing)return;
+  const inp=document.getElementById('chatInput');
+  const txt=inp.value.trim();if(!txt)return;
+  inp.value='';inp.style.height='auto';
+  typing=true;
+  addBubble(txt,'user');
+  document.getElementById('status-txt').textContent='escribiendo...';
+  showTyping();
+  try{
+    const r=await ChatEngine.sendMessage(txt);
+    hideTyping();addBubble(r,'ruthina');
+  }catch(e){
+    hideTyping();
+    addBubble(e.message?.includes('401')?'⚠️ API Key incorrecta.':'⚠️ Error: '+e.message,'ruthina');
+  }
+  typing=false;
+  document.getElementById('status-txt').textContent='En línea';
+}
+function toggleChk(cid,sid){const c=document.getElementById(cid);c.checked=!c.checked;showSec(sid,c.checked);upP()}
+function showSec(id,v){document.getElementById(id).style.display=v?'block':'none'}
+const gv=id=>document.getElementById(id)?.value?.trim()||'';
+const gn=id=>parseFloat(document.getElementById(id)?.value)||0;
+const gc=id=>document.getElementById(id)?.checked||false;
+const fmt=n=>n?'$ '+Math.round(n).toLocaleString('es-AR'):'—';
+function upP(){
+  const price=gn('b-price'),cash=gn('b-cash');
+  const perm=gc('chk-p'),pv=gn('b-perm-val');
+  const cred=gc('chk-c'),tna=gn('b-tna'),cuotas=parseInt(gv('b-cuotas'))||12,fin=gn('b-fin');
+  const base=cash||price,diff=base-(perm?pv:0);
+  document.getElementById('pv-m').textContent=gv('b-model')||'—';
+  document.getElementById('pv-p').textContent=fmt(price);
+  document.getElementById('pv-c').textContent=fmt(cash);
+  const pr=document.getElementById('pv-pr');pr.style.display=perm&&pv?'flex':'none';
+  document.getElementById('pv-pv').textContent='- '+fmt(pv);
+  const cr=document.getElementById('pv-cr');
+  if(cred&&fin&&tna){const tm=Math.pow(1+tna/100,1/12)-1;const c=fin*tm/(1-Math.pow(1+tm,-cuotas));document.getElementById('pv-cu').textContent=fmt(Math.round(c))+' x '+cuotas;cr.style.display='flex'}else cr.style.display='none';
+  document.getElementById('pv-t').textContent=diff>0?fmt(diff):'—';
+}
+function genPDF(){
+  const btn=document.getElementById('btn-gen');
+  if(!gv('b-model')&&!gn('b-price')){snk('⚠️ Ingresá modelo y precio');return}
+  btn.disabled=true;btn.textContent='Generando...';
+  try{BudgetPDF.generate();snk('✅ PDF descargado')}
+  catch(e){snk('❌ Error: '+e.message);console.error(e)}
+  btn.disabled=false;btn.textContent='⬇ Generar PDF del Presupuesto';
+}
+function snk(msg){const s=document.getElementById('snack');s.textContent=msg;s.classList.add('show');clearTimeout(window._st);window._st=setTimeout(()=>s.classList.remove('show'),3000)}
+window.addEventListener('DOMContentLoa
