@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ruthina · Tutu Automotores</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%231A1A1A'/><path d='M16 6L26 11V21L16 26L6 21V11Z' fill='%23C8102E'/></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════ -->
+<header class="header">
+  <div class="logo-area">
+    <div class="logo-mark">
+      <svg viewBox="0 0 20 20" fill="none" width="20" height="20">
+        <path d="M10 2L18 6.5V13.5L10 18L2 13.5V6.5Z" fill="white"/>
+      </svg>
+    </div>
+    <div>
+      <div class="brand-name">RUTHINA <span class="brand-sep">·</span> Tutu Automotores</div>
+      <div class="brand-sub">Asistente Interno de Ventas</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div id="drive-status" class="drive-status" style="display:none">
+      <span class="spinner"></span> Cargando Drive...
+    </div>
+    <div class="status-pill">
+      <div class="status-dot"></div>
+      <span>En línea</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══ LAYOUT ═══════════════════════════════════════════════ -->
+<div class="app-layout">
+
+  <!-- ── SIDEBAR ──────────────────────────────────────────── -->
+  <nav class="sidebar">
+    <div class="sidebar-label">Navegación</div>
+    <button class="sidebar-btn active" data-view="chat" onclick="UI.showView('chat')">
+      <div class="sb-icon ic-chat">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <span>Chat con Ruthina</span>
+    </button>
+    <button class="sidebar-btn" data-view="budget" onclick="UI.showView('budget')">
+      <div class="sb-icon ic-budget">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <span>Armar Presupuesto</span>
+    </button>
+    <button class="sidebar-btn" data-view="stock" onclick="UI.showView('stock')">
+      <div class="sb-icon ic-stock">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="1" y="3" width="15" height="13" rx="2"/><path d="M16 8h4l3 5v3h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <span>Ver Stock</span>
+    </button>
+
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Archivos</div>
+
+    <button class="sidebar-btn" data-view="drive" onclick="UI.showView('drive')">
+      <div class="sb-icon ic-drive">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <span>Google Drive</span>
+    </button>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-info">
+        <strong>Ruthina v1.0</strong><br>
+        Lee automáticamente tus Sheets y PDFs de Drive para responder con datos reales.
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── PANEL ─────────────────────────────────────────────── -->
+  <main class="panel">
+
+    <!-- ════ VIEW: CHAT ════════════════════════════════════ -->
+    <div id="view-chat" style="display:flex;flex-direction:column;flex:1;overflow:hidden">
+      <div class="chat-topbar">
+        <div class="ruthina-avatar">Ru</div>
+        <div>
+          <div class="chat-title">Ruthina</div>
+          <div class="chat-meta">Preguntá sobre stock, precios, características o armá un presupuesto</div>
+        </div>
+        <button class="topbar-btn" onclick="UI.showView('drive')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          Archivos Drive
+        </button>
+        <button class="topbar-btn topbar-btn-reload" onclick="UI.reloadDrive()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Actualizar
+        </button>
+      </div>
+
+      <div class="messages" id="messages">
+        <div class="msg">
+          <div class="msg-avatar av-ruthina">Ru</div>
+          <div>
+            <div class="bubble bubble-ruthina">
+              ¡Hola! Soy <strong>Ruthina</strong>, tu asistente de ventas de Tutu 🚗<br><br>
+              Leo automáticamente los archivos de Drive configurados para darte información precisa sobre <strong>stock, precios y características</strong> de los vehículos.<br><br>
+              También puedo ayudarte a <strong>armar un presupuesto</strong> completo con opciones de crédito y permuta. ¿En qué te ayudo?
+            </div>
+            <div class="msg-time">Ruthina · ahora</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="quick-actions">
+        <button class="qa-btn" onclick="UI.sendQuick('¿Cuáles son los autos nuevos disponibles con sus precios?')">🆕 Nuevos disponibles</button>
+        <button class="qa-btn" onclick="UI.sendQuick('Dame info completa del JMC Vigus Pro: características y precio')">🚙 JMC Vigus Pro</button>
+        <button class="qa-btn" onclick="UI.sendQuick('¿Cuáles son los usados más económicos del stock?')">💰 Usados económicos</button>
+        <button class="qa-btn" onclick="UI.sendQuick('Explicame cómo funciona la financiación y las cuotas')">💳 Financiación</button>
+        <button class="qa-btn" onclick="UI.sendQuick('¿Cuáles son los modelos Shineray disponibles?')">⚡ Shineray</button>
+      </div>
+
+      <div class="input-area">
+        <div class="input-wrap">
+          <textarea
+            id="chatInput"
+            placeholder="Preguntale a Ruthina..."
+            rows="1"
+            onkeydown="UI.handleKey(event)"
+          ></textarea>
+        </div>
+        <button class="send-btn" onclick="UI.sendMessage()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" width="18" height="18">
+            <line x1="22" y1="2" x2="11" y2="13"/>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- ════ VIEW: BUDGET ══════════════════════════════════ -->
+    <div id="view-budget" style="display:none;overflow-y:auto;flex:1;background:#F7F6F2">
+    <div class="view-content">
+
+      <h2 class="view-title">Armar <span>Presupuesto</span></h2>
+
+      <!-- Cliente -->
+      <div class="form-section-title red">
+        <span class="dot-red"></span> Datos del Cliente
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Nombre del cliente *</label>
+          <input type="text" id="b-client" placeholder="Ej: Juan Pérez" oninput="BudgetPDF.updatePreview()">
+        </div>
+        <div class="form-group">
+          <label>Teléfono / WhatsApp</label>
+          <input type="text" id="b-phone" placeholder="+54 351 000-0000">
+        </div>
+        <div class="form-group">
+          <label>DNI</label>
+          <input type="text" id="b-dni" placeholder="XX.XXX.XXX">
+        </div>
+        <div class="form-group">
+          <label>Asesor de ventas</label>
+          <input type="text" id="b-vendedor" placeholder="Tu nombre">
+        </div>
+      </div>
+
+      <!-- Vehículo -->
+      <div class="form-section-title red">
+        <span class="dot-red"></span> Vehículo a Vender
+      </div>
+      <div class="form-grid">
+        <div class="form-group form-span2">
+          <label>Marca y Modelo *</label>
+          <input type="text" id="b-model" placeholder="Ej: JMC Vigus Pro 4x4" oninput="BudgetPDF.updatePreview()">
+        </div>
+        <div class="form-group">
+          <label>Año</label>
+          <input type="text" id="b-year" placeholder="2024" oninput="BudgetPDF.updatePreview()">
+        </div>
+        <div class="form-group">
+          <label>Color</label>
+          <input type="text" id="b-color" placeholder="Blanco, Negro...">
+        </div>
+        <div class="form-group">
+          <label>Kilometraje</label>
+          <input type="number" id="b-km" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label>Patente</label>
+          <input type="text" id="b-patente" placeholder="AA000BB">
+        </div>
+        <div class="form-group">
+          <label>Precio de Lista (ARS) *</label>
+          <input type="number" id="b-price" placeholder="12500000" oninput="BudgetPDF.updatePreview()">
+        </div>
+        <div class="form-group">
+          <label>Precio Contado (ARS)</label>
+          <input type="number" id="b-cash" placeholder="11800000" oninput="BudgetPDF.updatePreview()">
+        </div>
+        <div class="form-group form-span2">
+          <label>Observaciones</label>
+          <textarea id="b-notes" placeholder="Equipamiento especial, estado, garantía..."></textarea>
+        </div>
+      </div>
+
+      <!-- Permuta -->
+      <div class="form-section-title green">
+        <span class="dot-green"></span> Permuta
+        <label class="toggle-label-inline">
+          <div class="toggle"><input type="checkbox" id="toggle-permuta" onchange="UI.toggleSection('permuta-fields'); BudgetPDF.updatePreview()"><span class="slider-t"></span></div>
+          <span>El cliente entrega un vehículo</span>
+        </label>
+      </div>
+      <div id="permuta-fields" style="display:none">
+        <div class="form-grid">
+          <div class="form-group form-span2">
+            <label>Vehículo a permutar</label>
+            <input type="text" id="b-perm-model" placeholder="Ej: Chevrolet Cruze 2019" oninput="BudgetPDF.updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>Año</label>
+            <input type="text" id="b-perm-year" placeholder="2019">
+          </div>
+          <div class="form-group">
+            <label>Kilometraje</label>
+            <input type="number" id="b-perm-km" placeholder="80000">
+          </div>
+          <div class="form-group">
+            <label>Valor tasación (ARS)</label>
+            <input type="number" id="b-perm-value" placeholder="5000000" oninput="BudgetPDF.updatePreview()">
+          </div>
+        </div>
+      </div>
+
+      <!-- Crédito -->
+      <div class="form-section-title blue">
+        <span class="dot-blue"></span> Financiación
+        <label class="toggle-label-inline">
+          <div class="toggle"><input type="checkbox" id="toggle-credito" onchange="UI.toggleSection('credito-fields'); BudgetPDF.updatePreview()"><span class="slider-t"></span></div>
+          <span>El cliente financia en cuotas</span>
+        </label>
+      </div>
+      <div id="credito-fields" style="display:none">
+        <div class="form-grid">
+          <div class="form-group form-span2">
+            <label>Entidad Financiera</label>
+            <input type="text" id="b-banco" placeholder="Banco Galicia, Santander, BBVA...">
+          </div>
+          <div class="form-group">
+            <label>Monto a financiar (ARS)</label>
+            <input type="number" id="b-financia" placeholder="8000000" oninput="BudgetPDF.updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>Anticipo (ARS)</label>
+            <input type="number" id="b-anticipo" placeholder="3000000" oninput="BudgetPDF.updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>TNA (%)</label>
+            <input type="number" id="b-tna" placeholder="60" oninput="BudgetPDF.updatePreview()">
+          </div>
+          <div class="form-group">
+            <label>Cuotas</label>
+            <select id="b-cuotas" onchange="BudgetPDF.updatePreview()">
+              <option value="12">12 cuotas</option>
+              <option value="18">18 cuotas</option>
+              <option value="24">24 cuotas</option>
+              <option value="36">36 cuotas</option>
+              <option value="48">48 cuotas</option>
+              <option value="60">60 cuotas</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="preview-box">
+        <div class="preview-title">RESUMEN DEL PRESUPUESTO</div>
+        <div class="preview-row"><span>Vehículo</span><span id="pv-model" style="color:#ccc">—</span></div>
+        <div class="preview-row"><span>Precio lista</span><span id="pv-price">—</span></div>
+        <div class="preview-row"><span>Precio contado</span><span id="pv-cash" style="color:#4ade80">—</span></div>
+        <div id="pv-permuta-row" class="preview-row" style="display:none"><span>Permuta</span><span id="pv-perm" style="color:#f59e0b">—</span></div>
+        <div id="pv-credito-row" class="preview-row" style="display:none"><span>Cuota estimada</span><span id="pv-cuota" style="color:#60a5fa">—</span></div>
+        <div class="preview-row total"><span>A pagar</span><span id="pv-total">—</span></div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:20px">
+        <label>Vigencia del presupuesto</label>
+        <select id="b-vigencia">
+          <option value="24 horas">24 horas</option>
+          <option value="48 horas">48 horas</option>
+          <option value="72 horas" selected>72 horas</option>
+          <option value="7 días">7 días</option>
+        </select>
+      </div>
+
+      <button class="btn-generate" id="btn-generate" onclick="UI.generateBudget()">
+        ⬇ Generar Presupuesto PDF
+      </button>
+
+    </div>
+    </div>
+
+    <!-- ════ VIEW: STOCK ═══════════════════════════════════ -->
+    <div id="view-stock" style="display:none;flex-direction:column;flex:1;overflow:hidden">
+      <div class="stock-topbar">
+        <input class="search-input" placeholder="Buscar marca o modelo..." id="searchInput"
+          oninput="UI.renderStock(this.value, document.getElementById('filterType').value)">
+        <select class="filter-select" id="filterType"
+          onchange="UI.renderStock(document.getElementById('searchInput').value, this.value)">
+          <option value="">Todos</option>
+          <option value="nuevo">Nuevos</option>
+          <option value="usado">Usados</option>
+        </select>
+        <div class="stock-note">* Stock de ejemplo. Conectá tu Sheet para datos reales.</div>
+      </div>
+      <div class="stock-grid" id="stockList"></div>
+    </div>
+
+    <!-- ════ VIEW: DRIVE ═══════════════════════════════════ -->
+    <div id="view-drive" style="display:none;overflow-y:auto;flex:1;background:#F7F6F2">
+    <div class="view-content">
+
+      <h2 class="view-title">Archivos de <span>Google Drive</span></h2>
+      <p class="view-desc">
+        Ruthina lee automáticamente estos archivos al arrancar y cada 10 minutos.
+        Los datos se usan como contexto para responder preguntas del equipo de ventas.
+      </p>
+
+      <div class="drive-actions">
+        <button class="btn-drive-add" onclick="UI.openDriveModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Agregar archivo
+        </button>
+        <button class="btn-drive-reload" id="btn-reload-drive" onclick="UI.reloadDrive()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Actualizar datos
+        </button>
+      </div>
+
+      <div class="drive-file-list" id="driveFileList">
+        <div class="drive-file">
+          <div class="file-icon fi-excel">📊</div>
+          <div class="file-info">
+            <div class="file-name">Stock de vehículos</div>
+            <div class="file-meta">Google Sheet · Configurado en config.js</div>
+          </div>
+          <span class="file-status">Configurado</span>
+        </div>
+        <div class="drive-file">
+          <div class="file-icon fi-pdf">📄</div>
+          <div class="file-info">
+            <div class="file-name">Precios JMC y Shineray</div>
+            <div class="file-meta">PDF · Configurado en config.js</div>
+          </div>
+          <span class="file-status">Configurado</span>
+        </div>
+      </div>
+
+      <div class="config-tip">
+        <strong>📋 Cómo configurar los archivos:</strong><br><br>
+        1. Abrí el archivo <code>config.js</code> en tu editor<br>
+        2. En <code>SHEETS</code>, pegá el ID de tu Google Sheet (la parte larga de la URL)<br>
+        3. En <code>PDFS</code>, pegá el ID del PDF en Drive<br>
+        4. Asegurate de compartir los archivos como <em>"Cualquiera con el link puede ver"</em><br>
+        5. Guardá y subí a GitHub Pages
+      </div>
+
+    </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ══ DRIVE MODAL ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="driveModal">
+  <div class="modal">
+    <h3>Agregar archivo de Drive</h3>
+    <p>Pegá el link del archivo compartido de Google Drive (Sheet o PDF).</p>
+    <div class="form-group" style="margin-bottom:10px">
+      <label>URL del archivo</label>
+      <input type="text" id="driveUrl" placeholder="https://drive.google.com/file/d/...">
+    </div>
+    <div class="form-group">
+      <label>Nombre descriptivo</label>
+      <input type="text" id="driveName" placeholder="Ej: stock_abril.xlsx">
+    </div>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="UI.closeDriveModal()">Cancelar</button>
+      <button class="btn-modal-save" onclick="UI.saveDriveFile()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ SNACKBAR ══════════════════════════════════════════════ -->
+<div class="snack" id="snack"></div>
+
+<!-- ══ SCRIPTS ═══════════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="config.js"></script>
+<script src="js/dataloader.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/budget.js"></script>
+<script src="js/ui.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => UI.init());
+</script>
+
+</body>
+</html>
