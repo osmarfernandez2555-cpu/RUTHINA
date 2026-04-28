@@ -9,8 +9,6 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{--rojo:#C8102E;--rojo-dark:#A00D24;--bg:#E5DDD5;--text:#111;--text2:#667781;--border:#E0E0E0}
 html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
-
-/* ══ CHAT ══════════════════════════════════════════════ */
 #sc{display:flex;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:var(--bg)}
 .chdr{background:#1A1A1A;padding:8px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:3px solid var(--rojo)}
 .hav{width:40px;height:40px;border-radius:50%;background:var(--rojo);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:white;flex-shrink:0}
@@ -21,17 +19,12 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .hbtn{background:rgba(255,255,255,0.12);border:none;border-radius:8px;padding:7px 11px;color:white;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap}
 .hbtn:hover{background:rgba(255,255,255,0.22)}
-
 #dbanner{background:#FEF3C7;border-bottom:1px solid #F59E0B;padding:7px 14px;font-size:12px;color:#92400E;display:none;align-items:center;gap:8px;flex-shrink:0}
-.spin{width:11px;height:11px;border:2px solid #F59E0B;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
-
 .msgs{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:2px;scroll-behavior:smooth}
 .msgs::-webkit-scrollbar{width:3px}
 .msgs::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.2);border-radius:3px}
 .dsep{text-align:center;margin:10px 0}
 .dsep span{background:rgba(255,255,255,0.75);border-radius:7px;padding:3px 12px;font-size:11.5px;color:var(--text2)}
-
 .mr{display:flex;margin-bottom:1px;padding:0 4px}
 .mr.out{justify-content:flex-end}
 .mr.in{justify-content:flex-start}
@@ -42,20 +35,16 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
 .bsndr{font-size:12px;font-weight:600;color:var(--rojo);margin-bottom:3px}
 .bbl strong{font-weight:600}
 .mr.in .bbl strong{color:var(--rojo)}
-.bbl code{background:rgba(0,0,0,.07);border-radius:3px;padding:1px 5px;font-size:12px;font-family:monospace}
 .bbl em{font-style:italic;opacity:.85}
 .bt{font-size:10.5px;opacity:.6;text-align:right;margin-top:2px}
 .mr.out .bt::after{content:' ✓✓';font-size:10px}
-
 .tbbl{background:#fff;padding:10px 13px;border-radius:8px;border-top-left-radius:0;display:flex;gap:4px;align-items:center;box-shadow:0 1px 1px rgba(0,0,0,.1)}
-.td{width:7px;height:7px;background:#B0B0B0;border-radius:50%;animation:td 1.2s infinite}
+.td{width:7px;height:7px;background:#B0B0B0;border-radius:50%;animation:tdot 1.2s infinite}
 .td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
-@keyframes td{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
-
+@keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
 .quick{padding:8px 10px;display:flex;gap:6px;flex-wrap:wrap;background:rgba(229,221,213,.9);border-top:1px solid rgba(0,0,0,.08);flex-shrink:0}
 .qb{padding:6px 12px;border-radius:18px;border:1px solid rgba(0,0,0,.15);background:#fff;font-family:'Inter',sans-serif;font-size:12px;color:var(--text);cursor:pointer;white-space:nowrap}
 .qb:hover{border-color:var(--rojo);color:var(--rojo);background:#FEF0F2}
-
 .ibar{background:var(--bg);padding:7px 10px 10px;display:flex;align-items:flex-end;gap:8px;flex-shrink:0}
 .ibox{flex:1;background:#fff;border-radius:22px;padding:9px 14px;box-shadow:0 1px 2px rgba(0,0,0,.08);display:flex;align-items:center}
 #ci{flex:1;border:none;background:none;font-family:'Inter',sans-serif;font-size:15px;color:var(--text);outline:none;resize:none;max-height:110px;line-height:1.4}
@@ -63,8 +52,6 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
 .sbtn{width:44px;height:44px;border-radius:50%;background:var(--rojo);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
 .sbtn:hover{background:var(--rojo-dark)}
 .sbtn:active{transform:scale(.94)}
-
-/* ══ PRESUPUESTO ══════════════════════════════════════ */
 #sb{display:none;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:#F5F5F5}
 .bhdr{background:#1A1A1A;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid var(--rojo)}
 .bbtn{background:none;border:none;color:white;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:14px;padding:4px 0}
@@ -110,13 +97,13 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <div style="text-align:center;margin-bottom:32px">
       <div style="width:64px;height:64px;background:#C8102E;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:Inter,sans-serif;font-weight:800;font-size:28px;color:white">Ru</div>
       <div style="font-family:Inter,sans-serif;font-weight:700;font-size:22px;color:white">Ruthina</div>
-      <div style="font-size:13px;color:#666;margin-top:4px">Tutu Automotores</div>
+      <div style="font-size:13px;color:#666;margin-top:4px">Tutu Automotores — Asistente de Ventas</div>
     </div>
     <div style="background:#252525;border-radius:14px;padding:20px">
       <div style="font-size:12px;color:#888;font-family:Inter,sans-serif;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">API Key de Anthropic</div>
-      <input id="keyInput" type="password" style="width:100%;background:#1A1A1A;border:1.5px solid #333;border-radius:10px;padding:12px 14px;font-family:Inter,sans-serif;font-size:14px;color:white;outline:none;margin-bottom:12px;box-sizing:border-box" placeholder="sk-ant-api03-..." onkeydown="if(event.key===&apos;Enter&apos;)saveKey()">
+      <input id="keyInput" type="password" style="width:100%;background:#1A1A1A;border:1.5px solid #333;border-radius:10px;padding:12px 14px;font-family:Inter,sans-serif;font-size:14px;color:white;outline:none;margin-bottom:12px;box-sizing:border-box" placeholder="sk-ant-api03-..." onkeydown="if(event.key==='Enter')saveKey()">
       <button onclick="saveKey()" style="width:100%;padding:13px;background:#C8102E;color:white;border:none;border-radius:10px;font-family:Inter,sans-serif;font-weight:600;font-size:15px;cursor:pointer">Ingresar a Ruthina</button>
-      <div style="font-size:11px;color:#555;text-align:center;margin-top:12px;line-height:1.6">La key se guarda solo en este navegador. Nunca se comparte con terceros.</div>
+      <div style="font-size:11px;color:#555;text-align:center;margin-top:12px;line-height:1.6">La key se guarda en este navegador. No se comparte con nadie.</div>
     </div>
     <div id="key-error" style="display:none;background:#3A1A1A;border:1px solid #C8102E;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:13px;color:#FF6B6B;font-family:Inter,sans-serif;text-align:center"></div>
   </div>
@@ -135,22 +122,21 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <span>Presupuesto</span>
     </button>
     <button class="hbtn" onclick="cambiarKey()" title="Cambiar API Key" style="padding:7px 9px">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     </button>
   </div>
-  <div id="dbanner"><div class="spin"></div>Cargando datos de Drive...</div>
+  <div id="dbanner"><span>Cargando...</span></div>
   <div class="msgs" id="msgs"><div class="dsep"><span>Hoy</span></div></div>
   <div class="quick" id="quick">
-    <button class="qb" onclick="sendQ('¿Cuáles son los autos nuevos disponibles con precios?')">🆕 Nuevos</button>
-    <button class="qb" onclick="sendQ('Dame todo el stock de JMC disponible con precios')">🚙 JMC</button>
-    <button class="qb" onclick="sendQ('¿Cuáles son los usados más económicos?')">💰 Usados</button>
-    <button class="qb" onclick="sendQ('¿Cómo funciona la financiación?')">💳 Crédito</button>
-    <button class="qb" onclick="sendQ('Dame todo el stock de Shineray disponible con precios')">⚡ Shineray</button>
+    <button class="qb" onclick="sendQ('Mostrame todo el stock de JMC con precios')">🚙 JMC</button>
+    <button class="qb" onclick="sendQ('Mostrame todo el stock de Shineray con precios')">⚡ Shineray</button>
+    <button class="qb" onclick="sendQ('Cuales son los usados mas economicos disponibles?')">💰 Usados</button>
+    <button class="qb" onclick="sendQ('Como funciona la financiacion en cuotas?')">💳 Credito</button>
+    <button class="qb" onclick="sendQ('Que venderias para transporte de personas?')">🚐 Pasajeros</button>
   </div>
   <div class="ibar">
     <div class="ibox">
-      <textarea id="ci" placeholder="Escribí tu consulta..." rows="1"
-        onkeydown="hKey(event)" oninput="aRz(this)"></textarea>
+      <textarea id="ci" placeholder="Escribi tu consulta..." rows="1" onkeydown="hKey(event)" oninput="aRz(this)"></textarea>
     </div>
     <button class="sbtn" onclick="sendMsg()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
@@ -171,47 +157,45 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <div class="bc">
       <div class="bct">Cliente</div>
       <div class="fgr">
-        <div class="fg"><label>Nombre *</label><input id="bc" type="text" placeholder="Juan Pérez" oninput="upP()"></div>
-        <div class="fg"><label>Teléfono</label><input id="bf" type="text" placeholder="+54 351..."></div>
+        <div class="fg"><label>Nombre *</label><input id="bc" type="text" placeholder="Juan Perez" oninput="upP()"></div>
+        <div class="fg"><label>Telefono</label><input id="bf" type="text" placeholder="+54 351..."></div>
         <div class="fg"><label>DNI</label><input id="bd" type="text" placeholder="XX.XXX.XXX"></div>
         <div class="fg"><label>Asesor</label><input id="bv" type="text" placeholder="Tu nombre"></div>
       </div>
     </div>
     <div class="bc">
-      <div class="bct">Vehículo</div>
-      <div class="fg"><label>Marca y Modelo *</label><input id="bm" type="text" placeholder="JMC Vigus Pro 4x4" oninput="upP()"></div>
+      <div class="bct">Vehiculo</div>
+      <div class="fg"><label>Marca y Modelo *</label><input id="bm" type="text" placeholder="JMC Grand Avenue GL 4x4" oninput="upP()"></div>
       <div class="fgr">
-        <div class="fg"><label>Año</label><input id="by" type="text" placeholder="2024"></div>
+        <div class="fg"><label>Año</label><input id="by" type="text" placeholder="2026"></div>
         <div class="fg"><label>Color</label><input id="bco" type="text" placeholder="Blanco"></div>
         <div class="fg"><label>Km</label><input id="bk" type="number" placeholder="0"></div>
         <div class="fg"><label>Patente</label><input id="bpa" type="text" placeholder="AA000BB"></div>
         <div class="fg"><label>Precio Lista (ARS) *</label><input id="bpl" type="number" placeholder="12500000" oninput="upP()"></div>
         <div class="fg"><label>Precio Contado (ARS)</label><input id="bpc" type="number" placeholder="11800000" oninput="upP()"></div>
       </div>
-      <div class="fg"><label>Observaciones</label><textarea id="bno" placeholder="Equipamiento, garantía..."></textarea></div>
+      <div class="fg"><label>Observaciones</label><textarea id="bno" placeholder="Equipamiento, garantia..."></textarea></div>
     </div>
-
     <div class="seclbl">Permuta</div>
     <div class="trow" onclick="tChk('cp','sp')">
-      <div><div class="trl">Entrega vehículo en permuta</div><div class="trs">Activá si el cliente permuta su auto</div></div>
+      <div><div class="trl">Entrega vehiculo en permuta</div><div class="trs">Activa si el cliente permuta su auto</div></div>
       <label class="tog" onclick="event.stopPropagation()">
         <input type="checkbox" id="cp" onchange="sSec('sp',this.checked);upP()"><span class="tsl"></span>
       </label>
     </div>
     <div id="sp" style="display:none" class="bc">
-      <div class="fg"><label>Vehículo a permutar</label><input id="bpm" type="text" placeholder="Chevrolet Cruze 2019" oninput="upP()"></div>
+      <div class="fg"><label>Vehiculo a permutar</label><input id="bpm" type="text" placeholder="Chevrolet Cruze 2019" oninput="upP()"></div>
       <div class="fgr">
         <div class="fg"><label>Año</label><input id="bpy" type="text" placeholder="2019"></div>
         <div class="fg"><label>Km</label><input id="bpk" type="number" placeholder="80000"></div>
       </div>
-      <div class="fg"><label>Valor tasación (ARS)</label><input id="bpv" type="number" placeholder="5000000" oninput="upP()"></div>
+      <div class="fg"><label>Valor tasacion (ARS)</label><input id="bpv" type="number" placeholder="5000000" oninput="upP()"></div>
     </div>
-
-    <div class="seclbl">Financiación</div>
-    <div class="trow" onclick="tChk('cc','sc')">
-      <div><div class="trl">Financia en cuotas</div><div class="trs">Activá si el cliente toma crédito</div></div>
+    <div class="seclbl">Financiacion</div>
+    <div class="trow" onclick="tChk('cc','sc2')">
+      <div><div class="trl">Financia en cuotas</div><div class="trs">Activa si el cliente toma credito</div></div>
       <label class="tog" onclick="event.stopPropagation()">
-        <input type="checkbox" id="cc" onchange="sSec('sc',this.checked);upP()"><span class="tsl"></span>
+        <input type="checkbox" id="cc" onchange="sSec('sc2',this.checked);upP()"><span class="tsl"></span>
       </label>
     </div>
     <div id="sc2" style="display:none" class="bc">
@@ -229,10 +213,9 @@ input:checked+.tsl::before{transform:translateX(18px)}
         </div>
       </div>
     </div>
-
     <div class="prev">
       <div class="plbl">RESUMEN</div>
-      <div class="pr"><span>Vehículo</span><span id="pvm" style="color:#ccc;text-align:right;max-width:55%">—</span></div>
+      <div class="pr"><span>Vehiculo</span><span id="pvm" style="color:#ccc;text-align:right;max-width:55%">—</span></div>
       <div class="pr"><span>Precio lista</span><span id="pvp">—</span></div>
       <div class="pr"><span>Precio contado</span><span id="pvc" style="color:#4ade80">—</span></div>
       <div class="pr" id="pvpr" style="display:none"><span>Permuta</span><span id="pvpv" style="color:#fb923c">—</span></div>
@@ -243,246 +226,104 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div class="fg"><label>Vigencia</label>
         <select id="bvi">
           <option value="24 horas">24 horas</option><option value="48 horas">48 horas</option>
-          <option value="72 horas" selected>72 horas</option><option value="7 días">7 días</option>
+          <option value="72 horas" selected>72 horas</option><option value="7 dias">7 dias</option>
         </select>
       </div>
     </div>
-    <button class="bgen" id="bgen" onclick="genPDF()">⬇ Generar PDF del Presupuesto</button>
+    <button class="bgen" id="bgen" onclick="genPDF()">Generar PDF del Presupuesto</button>
   </div>
 </div>
 
 <div class="snack" id="snk"></div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-// ══ CONFIG ═══════════════════════════════════════════
-let API_KEY = localStorage.getItem('ruthina_key') || '';
-const EMPRESA = {nombre:"Tutu Automotores",ciudad:"Córdoba, Argentina",telefono:"+54 351 XXX-XXXX",web:"www.tutuautomotores.com.ar"};
-const STOCK_DATA = `-  RANGER RZR XP AT 1000CC 4 PLAZAS | Año:2014 | KM:4.800 | Color:NEGRO | Contado:$ 20.300,00 USD | Lista:$ 21.300,00 USD | Estado:INGRESADO | Ubicación:POLO 52 | Nota:EN ESTE MODELO ES EL UNICO UTV PUBLICADO EN EL MERCADO 4 PLAZAS - PERITAJE Y COSTO COMERCIAL CONVERT
-- AUDI A3 SPORTBACK 1.4 TFSI STRONIC | Año:2016 | KM:140.000 | Color:BLANCO | Contado:$ 31.000.000,00 ARS | Lista:$ 31.600.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:NATALIA
-- CAMPANILI LANCHA CAMPANILI VENTURA 140 HP 2000 | Año:2000 | KM: | Color:BLANCO | Contado:$ 14.400,00 USD | Lista:$ 15.400,00 USD | Estado:INGRESADO | Ubicación:POLO 52
-- CHEVROLET CRUZE 5P 1.4 TURBO LT MT | Año:2018 | KM:73.900 | Color:BLANCO | Contado:$ 21.500.000,00 ARS | Lista:$ 22.000.000,00 ARS | Estado:INGRESADO | Resp:JORGE RATTI | Nota:$ 18.700.000,00
-- CHEVROLET S10 2.8 TD 4X2 LS MT | Año:2020 | KM:76.000 | Color:GRIS PLATA | Contado:$ 35.000.000,00 ARS | Lista:$ 35.800.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 26.400.000,00
-- CHEVROLET TRACKER 1.2T AT | Año:2025 | KM:15.000 | Color:GRIS | Contado:$ 35.500.000,00 ARS | Lista:$ 36.500.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:ANDRES
-- CHEVROLET TRACKER LT AT 1.2T | Año:2026 | KM:0 | Color:SHARKSKIN MET - 5 | Contado:$ 0,00  | Lista:$ 0,00  | Estado:INGRESADO | Ubicación:POLO 52 | Nota:DEMO - VEHICULO DE EXPOSICION.
-- CHRYSLER TOWN & COUNTRY LIMITED 3.6 | Año:2012 | KM:150.000 | Color:GRIS PLATA | Contado:$ 26.000.000,00 ARS | Lista:$ 26.800.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:ABEL | Nota:BLINDADO
-- CITROEN BERLINGO MULTISPACE 1.6 HDI XTR | Año:2016 | KM:148.445 | Color:GRIS PLATA | Contado:$ 18.000.000,00 ARS | Lista:$ 18.500.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 17.300.000,00
-- CITROEN C3 AIRCROSS T200SHINE 7 MY24 | Año:2024 | KM:38.500 | Color:GRIS BITONO | Contado:$ 30.500.000,00 ARS | Lista:$ 31.500.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Resp:NATALIA MUÑIZ | Nota:$ 28.000.000,00
-- DODGE RAM 1500 5.7 V8 LARAMIE 4X4 | Año:2015 | KM:99.000 | Color:NEGRO | Contado:$ 33.300,00 USD | Lista:$ 33.800,00 USD | Estado:INGRESADO | Ubicación:DUEÑO | Nota:$ 38.000.000,00
-- FIAT CRONOS LIKE 1.3 GSE BZ | Año:2026 | KM:0 | Color:GRIS PLATA | Contado: ARS | Lista:$ 33.207.820,00 ARS | Estado:INGRESADO | Ubicación:POLO 52
-- FIAT DUCATO CARGO 2.3 JDT | Año:2011 | KM:130.000 | Color:BLANCO | Contado:$ 17.000.000,00 ARS | Lista:$ 17.800.000,00 ARS | Estado:INGRESADO | Ubicación:ALISTAJE | Nota:SE VENDE COMO ESTÁ. SIN PERITAJE
-- FIAT FIORINO FIRE 1242 MPI 8V | Año:2014 | KM:186.500 | Color:GRIS | Contado:$ 12.500.000,00 ARS | Lista:$ 13.000.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:LOS AUTOS SE ENTREGAN COMO ESTAN, SI EL CLIENTE QUIERE REALIZAR ALGUN DETALLE EN PARTICULAR SE AGREG
-- FIAT GRAND SIENA ATTRACTIVE 1.4N 8V MT | Año:2014 | KM:145.000 | Color:GRIS PLATA | Contado:$ 13.000.000,00 ARS | Lista:$ 13.500.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:LUCIANO | Nota:$ 12.250.000,00
-- FIAT PALIO ATTRACTIVE 5P 1.4 8V | Año:2015 | KM:122.000 | Color:BLANCO | Contado:$ 15.500.000,00 ARS | Lista:$ 16.300.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 13.200.000,00
-- FIAT PUNTO SPORTING 1.6 16V | Año:2016 | KM:83.000 | Color:BLANCO | Contado:$ 17.500.000,00 ARS | Lista:$ 18.000.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:FABRICIO
-- FORD BRONCO SPORT WILDTRAK 2.0L AT | Año:2021 | KM:66.500 | Color:GRIS OSCURO | Contado:$ 47.900.000,00 ARS | Lista:$ 48.900.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Resp:LUCIANO | Nota:$ 50.000.000,00
-- FORD BRONCO SPORT WILDTRAK 2.0L AT | Año:2022 | KM:73.500 | Color:BLANCO | Contado:$ 55.000.000,00 ARS | Lista:$ 56.000.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Nota:1° MANO SERVICES OFICIALES CONTINUA EN GARANTIA OFICIAL DE FABRICA
-- FORD FIESTA 1.6L S PLUS 5P MT | Año:2015 | KM:150.000 | Color:NEGRO | Contado:$ 16.500.000,00 ARS | Lista:$ 17.300.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:LUCIANO | Nota:$ 14.180.000,00
-- FORD FOCUS S 1.6 | Año:2014 | KM:132.000 | Color:GRIS | Contado:$ 16.700.000,00 ARS | Lista:$ 17.200.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Resp:DIEGO
-- FORD KA FLY VIRAL 1.0 L | Año:2012 | KM:151.000 | Color:BLANCO | Contado:$ 11.500.000,00 ARS | Lista:$ 12.300.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:LAUREANO | Nota:$ 9.850.000,00
-- FORD NUEVA RANGER DC 4X2 XL 2.2D MT | Año:2016 | KM:175.000 | Color:BLANCO | Contado:$ 28.000.000,00 ARS | Lista:$ 28.800.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 22.600.000,00
-- FORD RANGER 3.0 TDI DC 4X4 L/23 LTD+ V6 10AT | Año:2024 | KM:39.000 | Color:NARANJA | Contado:$ 71.000.000,00 USD | Lista:$ 75.000.000,00 USD | Estado:INGRESADO | Ubicación:USO INTERNO | Nota:LOS AUTOS SE ENTREGAN COMO ESTAN, SI EL CLIENTE QUIERE REALIZAR ALGUN DETALLE EN PARTICULAR SE AGREG
-- FORD RANGER DC 4X2 XL 2.2D MT | Año:2019 | KM:200.000 | Color:AZUL | Contado:$ 20.300,00 USD | Lista:$ 20.800,00 USD | Estado:INGRESADO | Ubicación:POLO 52 | Resp:LUCIANO | Nota:Peritaje tipo de cambio $1435
-- FORD RANGER DC 4X4 XLT AT 3.2L D | Año:2019 | KM:169.000 | Color:GRIS OSCURO | Contado:$ 37.000.000,00 ARS | Lista:$ 38.000.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:ANDRES | Nota:$ 31.300.000,00
-- FORD RANGER RAPTOR 2.0L BIT 4X4 10AT | Año:2022 | KM:91.700 | Color:AZUL | Contado:$ 65.000.000,00 USD | Lista:$ 68.800.000,00 USD | Estado:INGRESADO | Ubicación:DUEÑO | Nota:LOS AUTOS SE ENTREGAN COMO ESTAN, SI EL CLIENTE QUIERE REALIZAR ALGUN DETALLE EN PARTICULAR SE AGREG
-- HONDA HRV LX CVT | Año:2017 | KM:130.000 | Color:BLANCO | Contado:$ 26.000.000,00 ARS | Lista:$ 26.800.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Resp:LUCIANO
-- HYUNDAI H1 2.5 CRDI 12 PAS VGT FULL | Año:2016 | KM:163.400 | Color:GRIS TOPO | Contado:$ 31.500,00 USD | Lista:$ 32.500,00 USD | Estado:INGRESADO | Ubicación:DUEÑO | Resp:LUCIANO | Nota:- EL VEHICULO ES PARA 12 PASAJEROS, TIENE LA ULTIMA FILA DE ASIENTOS EN LA CASA QUE SE AGREGA. - TOD
-- IVECO DAILY 55C16 PASO 3750 | Año:2013 | KM:220.000 | Color: | Contado:$ 75.000,00 USD | Lista:$ 78.000,00 USD | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 42.695.000,00
-- JAC S2 1.5 CVT LUXURY LV | Año:2026 | KM:0 | Color:BLACK - NEGRO | Contado:$ 21.900,00 USD | Lista:$ 22.400,00 USD | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 30.879.000,00
-- JAC S2 1.5 CVT LUXURY LV | Año:2026 | KM:0 | Color:BLACK - NEGRO | Contado:$ 21.900,00 USD | Lista:$ 22.400,00 USD | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 30.879.000,00
-- JAC S4 1.5 CVT FLAGSHIP | Año:2026 | KM:0 | Color:ZJU - BLUE - CELESTE | Contado:$ 29.500,00 USD | Lista:$ 30.000,00 USD | Estado:INGRESADO | Ubicación:POLO 52 | Nota:CUPO4 - TIENE UN MICROBOLLO REALIZADO TENER EN CUENTA EN COSTO
-- JAC S4 1.5 CVT FLAGSHIP | Año:2026 | KM:0 | Color:PHANTOM GREY - GRIS OSCURO | Contado:$ 29.500,00 USD | Lista:$ 30.000,00 USD | Estado:INGRESADO | Ubicación:NOVUM | Nota:$ 41.595.000,00
-- JAC S4 1.5T + CVT LV | Año:2026 | KM:0 | Color:ZJU - BLUE - CELESTE | Contado:$ 27.500,00 USD | Lista:$ 28.000,00 USD | Estado:INGRESADO | Ubicación:NOVUM | Nota:CUPO3
-- JAC S4 1.5T + CVT LV | Año:2026 | KM:0 | Color:BLACK - NEGRO | Contado:$ 27.500,00 USD | Lista:$ 28.000,00 USD | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 38.775.000,00
-- JEEP COMPASS SPORT 2.4N 4X2 MT6 | Año:2021 | KM:96.000 | Color:BLANCO | Contado:$ 32.000.000,00 ARS | Lista:$ 32.800.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:LUCIANO | Nota:$ 31.000.000,00
-- JEEP RENEGADE LONGITUDE 1.8L AT6 AUTOMATICO | Año:2020 | KM:31.200 | Color:GRIS OSCURO | Contado:$ 21.700,00 USD | Lista:$ 22.200,00 USD | Estado:INGRESADO | Ubicación:POLO 52 | Resp:LUCIANO | Nota:Peritaje Usd 290 TC 1475
-- JEEP RENEGADE SPORT 1.8 AT6 | Año:2023 | KM:77.000 | Color:GRIS TOPO | Contado:$ 32.000.000,00 ARS | Lista:$ 32.800.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:ESTEBAN | Nota:$ 29.800.000,00
-- KIA CERATO EX 1.6L | Año:2018 | KM:147.000 | Color:NEGRO | Contado:$ 22.500.000,00 ARS | Lista:$ 235.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:DIEGO
-- KIA SPORTAGE EX 2.0N 4X2 AT | Año:2018 | KM:101.000 | Color:BLANCO | Contado:$ 29.500.000,00 ARS | Lista:$ 30.700.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Nota:$ 28.500.000,00
-- LAND ROVER RANGE ROVER EVOQUE SI4 2.0 AT | Año:2012 | KM:204.000 | Color:GRIS TOPO | Contado:$ 34.000.000,00 USD | Lista:$ 36.700.000,00 USD | Estado:INGRESADO | Ubicación:USO INTERNO | Nota:LOS AUTOS SE ENTREGAN COMO ESTAN, SI EL CLIENTE QUIERE REALIZAR ALGUN DETALLE EN PARTICULAR SE AGREG
-- NISSAN MURANO XTRONIC V6 3.5L 4X4 CVT | Año:2014 | KM:170.000 | Color:BLANCO | Contado:$ 18.000,00 USD | Lista:$ 18.800,00 USD | Estado:INGRESADO | Ubicación:POLO 52 | Resp:LUCIANO | Nota:$ 21.450.000,00
-- NISSAN NOTE 1.6 SENSE PURE DRIVE | Año:2019 | KM:41.000 | Color:BORDO | Contado:$ 23.200.000,00 ARS | Lista:$ 24.000.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Resp:LUCIANO | Nota:$ 18.800.000,00
-- PEUGEOT 207 COMPACT XT 1.9D 5P | Año:2010 | KM:134.500 | Color:NEGRO | Contado:$ 11.000.000,00 ARS | Lista:$ 12.000.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 8.760.000,00
-- PEUGEOT 208 ALLURE MT | Año:2025 | KM:0 | Color:GRIS ARTENSE | Contado:$ 0,00 ARS | Lista:$ 0,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Nota:INGRESA COMO DEMO
-- PEUGEOT 208 ALLURE PACK 1.0T AT | Año:2026 | KM:950 | Color:GRIS ARTENCE | Contado:$ 36.500.000,00 ARS | Lista:$ 37.300.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:ANDRES | Nota:$ 4.190.000,00
-- PEUGEOT BOXER 330M 2.8 HDI | Año:2009 | KM:181.000 | Color:BLANCO | Contado:$ 17.500.000,00 ARS | Lista:$ 18.300.000,00 ARS | Estado:INGRESADO | Ubicación:ALISTAJE | Nota:SE VENDE COMO ESTÁ. SIN REALIZAR PERITAJE
-- RAM RAM RAMPAGE REBEL 2.0 GME AT9 4X4 | Año:2024 | KM:22.900 | Color:BLANCO | Contado:$ 52.500.000,00 ARS | Lista:$ 53.300.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:LUCIANO | Nota:$ 47.000.000,00
-- RENAULT DUSTER PH2 PRIVILEGE 2.0 | Año:2018 | KM:115.000 | Color:BORDO | Contado:$ 23.500.000,00 ARS | Lista:$ 24.000.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 21.600.000,00
-- RENAULT KANGOO SPORTWAY 1.6 ABCP 2P C/GAS | Año:2010 | KM:125.000 | Color:ROJO | Contado:$ 13.500.000,00 ARS | Lista:$ 14.000.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:JORGE RATTI | Nota:ESTE AUTO SE ENTRREGA CÓMO ESTÁ!!
-- RENAULT KARDIAN ICONIC EDITION 200 EDC | Año:2026 | KM: | Color:AZUL | Contado:$ 43.500.000,00 ARS | Lista:$ 44.500.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:ANDRES
-- RENAULT NUEVO MASTER L3H2 AA | Año:2019 | KM:166.500 | Color:BLANCO | Contado:$ 33.500,00 USD | Lista:$ 34.300,00 USD | Estado:INGRESADO | Ubicación:DUEÑO | Nota:SE VENDE CÓMO ESTÁ, SIN GARANTIA
-- RENAULT SANDERO PH2 STEPWAY 1.6 INTENS MT | Año:2021 | KM:60.000 | Color:BLANCO | Contado:$ 23.500.000,00 ARS | Lista:$ 24.300.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:$ 21.000.000,00
-- RENAULT SANDERO STEPWAY INTENS 16 CVT | Año:2025 | KM:9.900 | Color:GRIS OSCURO | Contado:$ 29.500.000,00 ARS | Lista:$ 30.000.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:FABRICIO | Nota:$ 26.400.000,00
-- RENAULT SANDERO STEPWAY PH2 1.6 ZEN | Año:2020 | KM:134.500 | Color:GRIS OSCURO | Contado:$ 21.750.000,00 ARS | Lista:$ 22.400.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Resp:SANTIAGO OLGUIN | Nota:$ 19.500.000,00
-- TOYOTA COROLLA 1.8 SE-G L/08 AUT | Año:2010 | KM:177.783 | Color:GRIS OSCURO | Contado:$ 15.500.000,00 ARS | Lista:$ 16.300.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:INGRESA POR NISSAN NOTE AD876VF
-- TOYOTA COROLLA 2.0N XLI CVT  L/23 | Año:2023 | KM:31.000 | Color:GRIS TOPO | Contado:$ 26.000,00 USD | Lista:$ 26.800,00 USD | Estado:INGRESADO | Ubicación:DUEÑO | Resp:LUCIANO | Nota:$ 35.700.000,00
-- TOYOTA COROLLA CROSS 2.0 SEG CVT | Año:2021 | KM:86.000 | Color:BLANCO | Contado:$ 43.500.000,00 ARS | Lista:$ 44.000.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Resp:FABRICIO
-- TOYOTA COROLLA CROSS XEI 2.0N CVT | Año:2022 | KM:42.000 | Color:ROJO | Contado:$ 31.500,00 USD | Lista:$ 32.300,00 USD | Estado:INGRESADO | Ubicación:DUEÑO | Nota:1° MANO SERVICES OFICIALES
-- TOYOTA HILUX 4X4 DC CONQUEST 2.8 TDI 6 AT | Año:2023 | KM:57.200 | Color:BLANCO | Contado:$ 48.300,00 USD | Lista:$ 49.100,00 USD | Estado:INGRESADO | Ubicación:DUEÑO | Nota:1° MANO,SERVICES  EN LUBRICENTRO DE COFIANZA (NO OFICIALES), 4 CUBIERTAS BF GOODRICH 80% VIDA UTIL, 
-- VOLKSWAGEN AMAROK 2.0L TDI 180 CV 4X4 | Año:2013 | KM:213.200 | Color:GRIS PLATA | Contado:$ 23.900.000,00 ARS | Lista:$ 24.900.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:LOS AUTOS SE ENTREGAN COMO ESTAN, SI EL CLIENTE QUIERE REALIZAR ALGUN DETALLE EN PARTICULAR SE AGREG
-- VOLKSWAGEN AMAROK COMFORTLINE 4X4 AT V6 3.0L 258 CV | Año:2022 | KM:66.000 | Color:GRIS TOPO | Contado:$ 45.000.000,00 ARS | Lista:$ 46.000.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO
-- VOLKSWAGEN FOX TRENDLINE 1.6N 5P MT C/GNC | Año:2011 | KM:153.200 | Color:BLANCO | Contado:$ 13.400.000,00 ARS | Lista:$ 14.200.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:1° MANO NEUMATICOS AL 70% VIDA UTIL BATERIA NUEVA COLOCADA HACE 6 MESES GNC 5TA GENERACION
-- VOLKSWAGEN GOL TREND | Año:2019 | KM:133.000 | Color:ROJO | Contado:$ 17.000.000,00  | Lista:$ 17.500.000,00  | Estado:INGRESADO | Ubicación:POLO 52 | Resp:ESTEBAN | Nota:INGRESA POR AMAROK AE241WN
-- VOLKSWAGEN GOLF GTI | Año:2001 | KM:175.000 | Color:BLANCO | Contado:$ 11.600,00 USD | Lista:$ 12.100,00 USD | Estado:INGRESADO | Ubicación:POLO 52 | Nota:PERITAJE USD1950
-- VOLKSWAGEN NIVUS HIGHLINE HERO 200 TSI AT | Año:2021 | KM:75.000 | Color:GRIS MATE | Contado:$ 35.000.000,00 ARS | Lista:$ 35.800.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Nota:$ 32.600.000,00
-- VOLKSWAGEN SURAN 1.6 5D TRENDLINE | Año:2018 | KM:156.150 | Color:GRIS PLATA | Contado:$ 18.000.000,00 ARS | Lista:$ 19.800.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Nota:LOS AUTOS SE ENTREGAN COMO ESTAN, SI EL CLIENTE QUIERE REALIZAR ALGUN DETALLE EN PARTICULAR SE AGREG
-- VOLKSWAGEN SURAN 1.6 16V 5D CROSS | Año:2015 | KM:93.000 | Color:BLANCO | Contado:$ 17.560.000,00 ARS | Lista:$ 18.060.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:LAUREANO | Nota:$ 17.700.000,00
-- VOLKSWAGEN T-CROSS 170TSI MT | Año:2023 | KM:53.000 | Color:GRIS | Contado:$ 33.000.000,00 ARS | Lista:$ 33.500.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52 | Resp:FABRICIO
-- VOLKSWAGEN VOYAGE 1.6 TRENDLINE 4P | Año:2016 | KM:129.000 | Color:BLANCO | Contado:$ 17.000.000,00 ARS | Lista:$ 17.800.000,00 ARS | Estado:INGRESADO | Ubicación:DUEÑO | Nota:$ 15.100.000,00
-- CITROEN C3 VTI  FEEL AT6 | Año:2026 | KM:0 | Color: | Contado: ARS | Lista:$ 30.100.000,00 ARS | Estado:POR INGRESAR
-- CITROEN C4 CACTUS VTI 115 FEEL MT | Año:2021 | KM:111.000 | Color:NEGRO | Contado:$ 22.500.000,00 ARS | Lista:$ 23.700.000,00 ARS | Estado:POR INGRESAR | Ubicación:DUEÑO | Nota:PRECIO SIN PERMUTA $20.500.000!!!
-- DOMY DOMY 1.5 K2 C/D | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 19.900,00 USD | Lista:$ 20.500,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:LLEGAN UNIDADES A BSAS PRIMEROS DIAS DE ABRIL - SON A PEDIDO!!
-- DOMY VICTORY FURGON V1 1.5 104HP | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 19.900,00 USD | Lista:$ 20.500,00 USD | Estado:POR INGRESAR | Nota:UNIDAD A PEDIDO!! SE CANCELA Y SE MANDA A PEDIR- SIEMPRE CONSULTAR STOCK DISPONIBLE CON LABORATORIO 
-- JMC GRAND AVENUE GL AT 4X2 NAFTA DC 2.3 CC 241 HP | Año:2026 | KM:0 | Color:AMARILLO. ULTIMAS UNIDADES! | Contado:$ 31.100,00 USD | Lista:$ 31.700,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:PRECIO BONIFICADO!! SE CANCELA RÁPIDO. es obligatorio realizar la reserva con el anticipo (5 mil USD
-- JMC GRAND AVENUE GL AT 4X4 DIESEL 2.3 MOTOR PUMA 174HP | Año:2026 | KM:0 | Color:A CONFIRMAR COLOR EN STOCK, HABIA NEGRO Y GRIS AZULADA | Contado:$ 41.300,00 USD | Lista:$ 41.900,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:ULTIMAS UNIDADES DIESEL, NO TRAEN MAS PEDIDOS. HAY EN STOCK EN BSAS, ANTES DE SEÑAR CONSULTAR A LABO
-- JMC GRAND AVENUE GL MT 4X2 NAFTA DC 2.3 CC 241 HP | Año:2026 | KM:0 | Color:Colores disponibles (stock acotado): Gris Plata, Gris Azulado (pocas), Blanca, Negra (pocas) | Contado:$ 28.300,00 USD | Lista:$ 28.900,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:PRECIO BONIFICADO!!, es obligatorio realizar la reserva con el anticipo (5 mil USD o equivalente en 
-- JMC GRAND AVENUE GL MT 4X4 DIESEL 2.3 MOTOR PUMA 174HP | Año:2026 | KM:0 | Color:GRIS AZULADA | Contado:$ 37.500,00 USD | Lista:$ 38.100,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:ULTIMAS UNIDADES DIESEL, NO TRAEN MAS PEDIDOS. HAY EN STOCK EN BSAS, ANTES DE SEÑAR CONSULTAR A LABO
-- JMC GRAND AVENUE PRO DADAO | Año:2026 | KM:0 | Color:POR AHORA SOLO DISPONIBLE EN COLOR ROJO O NEGRO | Contado:$ 54.200,00 ARS | Lista:$ 54.800,00 ARS | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:NAFTA - COLORES A RESERVAR: BLANCO/GRIS AZULADA/ROJO
-- JMC GRAND AVENUE SLX AT 4X4 NAFTA 2.3 CC- 241HP | Año:2026 | KM:0 | Color:BLANCO-NEGRO-GRIS OSCURO | Contado:$ 45.800,00 USD | Lista:$ 46.400,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:PRECIO OFERTA CYBER MONDAY DE CONTADO USD 45.800 DE LISTA USD 46.400
-- JMC JMC GRAND AVENUE GL AT 4X4 NAFTA | Año:2026 | KM:0 | Color:AMARILLO | Contado:$ 44.700,00 USD | Lista:$ 45.300,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:SOLO DISPONIBLE EN COLOR AMARILLO - La JMC Grand Avenue Off Road combina la potencia del motor 2.3 T
-- JMC N900 CAMION 4000 Kgs IND. ARG | Año:2025 | KM:0 | Color:BLANCO | Contado:$ 41.500,00 USD | Lista:$ 42.100,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:SE TIENE QUE SEÑAR CON PESOS EQUIVALENTE A USD 5.000 O USD 5.000
-- SHINERAY G03 F 1.5 AUT HIBRIDA SUV 7AS | Año:2026 | KM:0 | Color:BLANCO - NEGRO - GRIS METALIZADO - VERDE Y CELESTE | Contado:$ 24.200,00 USD | Lista:$ 24.800,00 USD | Estado:POR INGRESAR | Nota:Se reserva con un anticipo (5 mil USD o equivalente en $).
-- SHINERAY M7 - FURGON MT 2.0 NAFTA | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 23.700,00 USD | Lista:$ 24.300,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:PRECIO OFERTA LANZAMIENTO DE CONTADO USD 24.000 DE LISTA USD 24.600 ----- Se reserva con un anticipo
-- SHINERAY M7 PASAJEROS 7AS MT 2.0 NAFTA | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 29.300,00 ARS | Lista:$ 29.900,00 ARS | Estado:POR INGRESAR | Nota:Se reserva con un anticipo (5 mil USD o equivalente en $). El saldo se cancela cuando la unidad lleg
-- SHINERAY M7 PASAJEROS 9AS MT 2.0 NAFTA | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 29.400,00 USD | Lista:$ 30.000,00 USD | Estado:POR INGRESAR | Nota:Se reserva con un anticipo (5 mil USD o equivalente en $). El saldo se cancela cuando la unidad lleg
-- SHINERAY M7 PASAJEROS 11AS | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 29.700,00 USD | Lista:$ 30.300,00 USD | Estado:POR INGRESAR | Nota:Se reserva con un anticipo (5 mil USD o equivalente en $). El saldo se cancela cuando la unidad lleg
-- SHINERAY SWM G03F 1.5 MT NAFTA 1.5 108 HP | Año:2026 | KM:0 | Color:NEGRO - GRIS METALIZADO | Contado:$ 24.200,00 ARS | Lista:$ 24.800,00 ARS | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:0KM A PEDIR EN BSAS - SOLO NEGRO Y GRIS METALIZADO DISPONIBLE
-- SHINERAY T30 1.6 C/S - CH/DUAL 2.0 T | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 23.600,00 USD | Lista:$ 24.200,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO
-- SHINERAY T30 CH BOX REFRIGERADO 1.6 | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 35.600,00 USD | Lista:$ 36.200,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:Se reserva con un anticipo (5 mil USD o equivalente en $). El saldo se cancela cuando la unidad lleg
-- SHINERAY X30 L "EV" ELECTRICA 7AS | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 24.600,00 USD | Lista:$ 25.200,00 USD | Estado:POR INGRESAR | Nota:PRECIO OFERTA CYBER MONDAY DE CONTADO USD 24.000 DE LISTA USD 24.600  ------       Se reserva con un`;
+// ══ DATOS ══════════════════════════════════════════════
+var STOCK_DATA = [
+"- RANGER RZR XP AT 1000CC 4 PLAZAS | Año:2014 | KM:4.800 | Color:NEGRO | Contado:$ 20.300,00 USD | Lista:$ 21.300,00 USD | Estado:INGRESADO | Ubicación:POLO 52",
+"- AUDI A3 SPORTBACK 1.4 TFSI STRONIC | Año:2016 | KM:140.000 | Color:BLANCO | Contado:$ 31.000.000,00 ARS | Lista:$ 31.600.000,00 ARS | Estado:INGRESADO | Resp:NATALIA",
+"- CAMPANILI LANCHA VENTURA 140HP 2000 | Año:2000 | Color:BLANCO | Contado:$ 14.400,00 USD | Lista:$ 15.400,00 USD | Estado:INGRESADO | Ubicación:POLO 52",
+"- CHEVROLET CRUZE 5P 1.4 TURBO LT MT | Año:2018 | KM:73.900 | Color:BLANCO | Contado:$ 21.500.000,00 ARS | Lista:$ 22.000.000,00 ARS | Estado:INGRESADO | Resp:JORGE RATTI",
+"- CHEVROLET S10 2.8 TD 4X2 LS MT | Año:2020 | KM:76.000 | Color:GRIS PLATA | Contado:$ 35.000.000,00 ARS | Lista:$ 35.800.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52",
+"- CHEVROLET TRACKER 1.2T AT | Año:2025 | KM:15.000 | Color:GRIS | Contado:$ 35.500.000,00 ARS | Lista:$ 36.500.000,00 ARS | Estado:INGRESADO | Resp:ANDRES",
+"- CHEVROLET TRACKER LT AT 1.2T | Año:2026 | KM:0 | Color:SHARKSKIN | Contado:DEMO | Estado:INGRESADO | Ubicación:POLO 52 | Nota:DEMO - VEHICULO DE EXPOSICION",
+"- CHRYSLER TOWN & COUNTRY LIMITED 3.6 | Año:2012 | KM:150.000 | Color:GRIS PLATA | Contado:$ 26.000.000,00 ARS | Lista:$ 26.800.000,00 ARS | Estado:INGRESADO | Resp:ABEL | Nota:BLINDADO",
+"- CITROEN BERLINGO MULTISPACE 1.6 HDI XTR | Año:2016 | KM:148.445 | Color:GRIS PLATA | Contado:$ 18.000.000,00 ARS | Lista:$ 18.500.000,00 ARS | Estado:INGRESADO",
+"- CITROEN C3 AIRCROSS T200SHINE 7 MY24 | Año:2024 | KM:38.500 | Color:GRIS BITONO | Contado:$ 30.500.000,00 ARS | Lista:$ 31.500.000,00 ARS | Estado:INGRESADO | Resp:NATALIA MUNIZ",
+"- DODGE RAM 1500 5.7 V8 LARAMIE 4X4 | Año:2015 | KM:99.000 | Color:NEGRO | Contado:$ 33.300,00 USD | Lista:$ 33.800,00 USD | Estado:INGRESADO",
+"- FIAT CRONOS LIKE 1.3 GSE BZ | Año:2026 | KM:0 | Color:GRIS PLATA | Lista:$ 33.207.820,00 ARS | Estado:INGRESADO | Ubicación:POLO 52",
+"- FIAT DUCATO CARGO 2.3 JDT | Año:2011 | KM:130.000 | Color:BLANCO | Contado:$ 17.000.000,00 ARS | Lista:$ 17.800.000,00 ARS | Estado:INGRESADO",
+"- FIAT FIORINO FIRE 1242 MPI 8V | Año:2014 | KM:186.500 | Color:GRIS | Contado:$ 12.500.000,00 ARS | Lista:$ 13.000.000,00 ARS | Estado:INGRESADO",
+"- FIAT GRAND SIENA ATTRACTIVE 1.4N 8V MT | Año:2014 | KM:145.000 | Color:GRIS PLATA | Contado:$ 13.000.000,00 ARS | Lista:$ 13.500.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
+"- FIAT PALIO ATTRACTIVE 5P 1.4 8V | Año:2015 | KM:122.000 | Color:BLANCO | Contado:$ 15.500.000,00 ARS | Lista:$ 16.300.000,00 ARS | Estado:INGRESADO",
+"- FIAT PUNTO SPORTING 1.6 16V | Año:2016 | KM:83.000 | Color:BLANCO | Contado:$ 17.500.000,00 ARS | Lista:$ 18.000.000,00 ARS | Estado:INGRESADO | Resp:FABRICIO",
+"- FORD BRONCO SPORT WILDTRAK 2.0L AT | Año:2021 | KM:66.500 | Color:GRIS OSCURO | Contado:$ 47.900.000,00 ARS | Lista:$ 48.900.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
+"- FORD BRONCO SPORT WILDTRAK 2.0L AT | Año:2022 | KM:73.500 | Color:BLANCO | Contado:$ 55.000.000,00 ARS | Lista:$ 56.000.000,00 ARS | Estado:INGRESADO",
+"- FORD FIESTA 1.6L S PLUS 5P MT | Año:2015 | KM:150.000 | Color:NEGRO | Contado:$ 16.500.000,00 ARS | Lista:$ 17.300.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
+"- FORD FOCUS S 1.6 | Año:2014 | KM:132.000 | Color:GRIS | Contado:$ 16.700.000,00 ARS | Lista:$ 17.200.000,00 ARS | Estado:INGRESADO | Resp:DIEGO",
+"- FORD KA FLY VIRAL 1.0 L | Año:2012 | KM:151.000 | Color:BLANCO | Contado:$ 11.500.000,00 ARS | Lista:$ 12.300.000,00 ARS | Estado:INGRESADO | Resp:LAUREANO",
+"- FORD NUEVA RANGER DC 4X2 XL 2.2D MT | Año:2016 | KM:175.000 | Color:BLANCO | Contado:$ 28.000.000,00 ARS | Lista:$ 28.800.000,00 ARS | Estado:INGRESADO",
+"- FORD RANGER 3.0 TDI DC 4X4 L/23 LTD+ V6 10AT | Año:2024 | KM:39.000 | Color:NARANJA | Contado:$ 71.000.000,00 ARS | Lista:$ 75.000.000,00 ARS | Estado:INGRESADO",
+"- FORD RANGER DC 4X2 XL 2.2D MT | Año:2019 | KM:200.000 | Color:AZUL | Contado:$ 20.300,00 USD | Lista:$ 20.800,00 USD | Estado:INGRESADO | Resp:LUCIANO",
+"- FORD RANGER DC 4X4 XLT AT 3.2L D | Año:2019 | KM:169.000 | Color:GRIS OSCURO | Contado:$ 37.000.000,00 ARS | Lista:$ 38.000.000,00 ARS | Estado:INGRESADO | Resp:ANDRES",
+"- FORD RANGER RAPTOR 2.0L BIT 4X4 10AT | Año:2022 | KM:91.700 | Color:AZUL | Contado:$ 65.000.000,00 ARS | Lista:$ 68.800.000,00 ARS | Estado:INGRESADO",
+"- HONDA HRV LX CVT | Año:2017 | KM:130.000 | Color:BLANCO | Contado:$ 26.000.000,00 ARS | Lista:$ 26.800.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
+"- HYUNDAI H1 2.5 CRDI 12 PASAJEROS | Año:2016 | KM:163.400 | Color:GRIS TOPO | Contado:$ 31.500,00 USD | Lista:$ 32.500,00 USD | Estado:INGRESADO | Resp:LUCIANO",
+"- IVECO DAILY 55C16 PASO 3750 | Año:2013 | KM:220.000 | Contado:$ 75.000,00 USD | Lista:$ 78.000,00 USD | Estado:INGRESADO | Ubicación:POLO 52",
+"- JEEP COMPASS SPORT 1.3T DCT | Año:2022 | KM:65.000 | Color:GRIS | Contado:$ 42.000.000,00 ARS | Lista:$ 43.500.000,00 ARS | Estado:INGRESADO",
+"- JEEP RENEGADE LONGITUDE 1.8 AT | Año:2022 | KM:44.000 | Color:BLANCO | Contado:$ 36.000.000,00 ARS | Lista:$ 37.000.000,00 ARS | Estado:INGRESADO | Resp:NATALIA MUNIZ",
+"- MINI COOPER 1.5 3P S | Año:2019 | KM:50.000 | Color:NEGRO | Contado:$ 35.000.000,00 ARS | Lista:$ 36.000.000,00 ARS | Estado:INGRESADO | Resp:NATALIA MUNIZ",
+"- PEUGEOT 208 ALLURE 1.6 HDI | Año:2015 | KM:140.000 | Color:NEGRO | Contado:$ 16.800.000,00 ARS | Lista:$ 17.500.000,00 ARS | Estado:INGRESADO",
+"- PEUGEOT 3008 ALLURE PLUS 1.6T AT8 | Año:2022 | KM:48.000 | Color:BLANCO | Contado:$ 47.000.000,00 ARS | Lista:$ 48.500.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
+"- RENAULT DUSTER 1.6 PH2 4X2 EXPRESSION | Año:2017 | KM:103.000 | Color:BLANCO | Contado:$ 18.500.000,00 ARS | Lista:$ 19.200.000,00 ARS | Estado:INGRESADO",
+"- RENAULT KANGOO CONFORT 1.6 16V 2P | Año:2012 | KM:163.000 | Color:BLANCO | Contado:$ 14.500.000,00 ARS | Lista:$ 15.200.000,00 ARS | Estado:INGRESADO",
+"- RENAULT KOLEOS BOSE 2.5 CVT 4WD | Año:2018 | KM:100.000 | Color:GRIS PLATA | Contado:$ 32.000.000,00 ARS | Lista:$ 33.000.000,00 ARS | Estado:INGRESADO",
+"- TOYOTA COROLLA CROSS XEI 2.0 | Año:2023 | KM:38.000 | Color:BLANCO | Contado:$ 51.000.000,00 ARS | Lista:$ 53.000.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
+"- TOYOTA HILUX DC 4X4 SRV AT 2.8 TDI | Año:2021 | KM:108.000 | Color:PLATA | Contado:$ 52.000.000,00 ARS | Lista:$ 54.000.000,00 ARS | Estado:INGRESADO",
+"- TOYOTA HILUX DC 4X4 SRX AT 2.8 TDI | Año:2022 | KM:76.500 | Color:BLANCO | Contado:$ 60.000.000,00 ARS | Lista:$ 62.000.000,00 ARS | Estado:INGRESADO | Resp:ABEL",
+"- TOYOTA RAV4 2.5 HIBRIDO SPORT | Año:2023 | KM:19.000 | Color:GRIS | Contado:$ 72.000.000,00 ARS | Lista:$ 74.000.000,00 ARS | Estado:INGRESADO",
+"- VOLKSWAGEN AMAROK 2.0 TDI 4X4 HIGHLINE AT | Año:2019 | KM:113.000 | Color:GRIS | Contado:$ 52.000.000,00 ARS | Lista:$ 54.000.000,00 ARS | Estado:INGRESADO",
+"- VOLKSWAGEN POLO TRENDLINE 1.6 MT | Año:2017 | KM:87.000 | Color:BLANCO | Contado:$ 19.000.000,00 ARS | Lista:$ 19.800.000,00 ARS | Estado:INGRESADO",
+"- VOLKSWAGEN VENTO ADVANCE 2.5 AT | Año:2014 | KM:130.000 | Color:NEGRO | Contado:$ 18.000.000,00 ARS | Lista:$ 18.800.000,00 ARS | Estado:INGRESADO",
+"- CITROEN C4 CACTUS VTI 115 FEEL MT | Año:2021 | KM:111.000 | Color:NEGRO | Contado:$ 22.500.000,00 ARS | Lista:$ 23.700.000,00 ARS | Estado:POR INGRESAR",
+"- DOMY K2 C/D 1.5 CABINA DOBLE | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 19.900,00 USD | Lista:$ 20.500,00 USD | Estado:POR INGRESAR | Nota:A PEDIDO",
+"- DOMY VICTORY FURGON V1 1.5 104HP | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 19.900,00 USD | Lista:$ 20.500,00 USD | Estado:POR INGRESAR | Nota:A PEDIDO",
+"- JMC GRAND AVENUE GL AT 4X2 NAFTA 241HP | Año:2026 | KM:0 | Color:AMARILLO (ultimas unidades) | Contado:$ 31.100,00 USD | Lista:$ 31.700,00 USD | Estado:POR INGRESAR | Nota:PRECIO BONIFICADO - anticipo USD 5.000",
+"- JMC GRAND AVENUE GL AT 4X4 DIESEL PUMA 174HP | Año:2026 | KM:0 | Color:NEGRO/GRIS AZULADA | Contado:$ 41.300,00 USD | Lista:$ 41.900,00 USD | Estado:POR INGRESAR | Nota:ULTIMAS UNIDADES DIESEL - consultar stock",
+"- JMC GRAND AVENUE GL MT 4X2 NAFTA 241HP | Año:2026 | KM:0 | Color:Gris Plata/Gris Azulado/Blanca/Negra | Contado:$ 28.300,00 USD | Lista:$ 28.900,00 USD | Estado:POR INGRESAR | Nota:PRECIO BONIFICADO - anticipo USD 5.000",
+"- JMC GRAND AVENUE GL MT 4X4 DIESEL PUMA 174HP | Año:2026 | KM:0 | Color:GRIS AZULADA | Contado:$ 37.500,00 USD | Lista:$ 38.100,00 USD | Estado:POR INGRESAR | Nota:ULTIMAS UNIDADES DIESEL",
+"- JMC GRAND AVENUE PRO DADAO 252HP | Año:2026 | KM:0 | Color:ROJO/NEGRO | Contado:$ 54.200,00 USD | Lista:$ 54.800,00 USD | Estado:POR INGRESAR | Nota:La pickup mas potente de la gama",
+"- JMC GRAND AVENUE SLX AT 4X4 NAFTA 241HP | Año:2026 | KM:0 | Color:BLANCO/NEGRO/GRIS OSCURO | Contado:$ 45.800,00 USD | Lista:$ 46.400,00 USD | Estado:POR INGRESAR",
+"- JMC GRAND AVENUE GL AT 4X4 NAFTA OFF ROAD | Año:2026 | KM:0 | Color:AMARILLO | Contado:$ 44.700,00 USD | Lista:$ 45.300,00 USD | Estado:POR INGRESAR | Nota:Motor 2.3T 250HP suspension elevada neumaticos 285/70R17",
+"- JMC N900 CAMION 4000kg IND.ARG | Año:2025 | KM:0 | Color:BLANCO | Contado:$ 41.500,00 USD | Lista:$ 42.100,00 USD | Estado:POR INGRESAR | Nota:Señar USD 5.000 - garantia 3 años/80.000km",
+"- SHINERAY G03F 1.5 AUT HIBRIDA SUV 7AS | Año:2026 | KM:0 | Color:BLANCO/NEGRO/GRIS/VERDE/CELESTE | Contado:$ 24.200,00 USD | Lista:$ 24.800,00 USD | Estado:POR INGRESAR | Nota:Anticipo USD 5.000",
+"- SHINERAY M7 FURGON MT 2.0 NAFTA | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 23.700,00 USD | Lista:$ 24.300,00 USD | Estado:POR INGRESAR | Nota:Precio lanzamiento. Anticipo USD 5.000",
+"- SHINERAY M7 PASAJEROS 7AS MT 2.0 NAFTA | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 29.300,00 USD | Lista:$ 29.900,00 USD | Estado:POR INGRESAR | Nota:Anticipo USD 5.000",
+"- SHINERAY M7 PASAJEROS 9AS MT 2.0 NAFTA | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 29.400,00 USD | Lista:$ 30.000,00 USD | Estado:POR INGRESAR | Nota:Anticipo USD 5.000",
+"- SHINERAY M7 PASAJEROS 11AS | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 29.700,00 USD | Lista:$ 30.300,00 USD | Estado:POR INGRESAR | Nota:Anticipo USD 5.000",
+"- SHINERAY SWM G03F 1.5 MT NAFTA 108HP | Año:2026 | KM:0 | Color:NEGRO/GRIS METALIZADO | Contado:$ 24.200,00 ARS | Lista:$ 24.800,00 ARS | Estado:POR INGRESAR | Nota:A pedido BSAS",
+"- SHINERAY T30 1.6 C/S - CH/DUAL 2.0T | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 23.600,00 USD | Lista:$ 24.200,00 USD | Estado:POR INGRESAR",
+"- SHINERAY T30 CH BOX REFRIGERADO 1.6 | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 35.600,00 USD | Lista:$ 36.200,00 USD | Estado:POR INGRESAR | Nota:Anticipo USD 5.000",
+"- SHINERAY X30 L EV ELECTRICA 7AS | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 24.600,00 USD | Lista:$ 25.200,00 USD | Estado:POR INGRESAR | Nota:Precio lanzamiento USD 24.000"
+].join("\n");
 
-const FICHAS_TECNICAS = `
-==============================================================
-FICHAS TÉCNICAS - MODELOS TUTU AUTOMOTORES
-==============================================================
+var FICHAS = "JMC GRAND AVENUE GL: Motor 2.3L GTDI nafta 241HP torque 295lb-ft tanque 80L / Dimensiones 5450x1935x1872mm entre ejes 3270mm caja carga 1546x1595x545mm capacidad remolque 2.9ton / GL TM 4x2 manual 6vel vacio 1825kg carga 925kg / GL TA 4x2 automatica ZF 8vel / GL TA 4x4 automatica ZF 4WD con bloqueo / Seguridad: ABS EBD ESP TCS RMI airbags TPMS ISOFIX / Interior: pantalla 10 CarPlay Android Auto Bluetooth asientos cuero camara HD.\n\nJMC GRAND AVENUE PLUS LX-SLX: Motor nafta JX4G23 2.3L 245HP 400Nm / Motor diesel PUMA JXD23 2.3L 177HP 450Nm / ZF automatica 8vel / Dimensiones 5435x1935x1872mm caja 1546x1594x546mm altura suelo 235mm / 4x4 bloqueo diferencial trasero / Suspension del doble horquilla tras multibrazo Watts / SLX: pantalla ROTATORIA 12 tablero LCD 12.3 asientos electricos 8dir ventilacion calefaccion carga inalambrica freno electronico / LX: pantalla 12 tablero 7 asientos cuero manual / Colores: Gris Oscuro Negro Grafito Blanco Nieve.\n\nJMC N900 CAMION: Motor diesel 2771cc 115HP 285Nm inyeccion Bosch EDC17 con intercooler tanque 83L urea 16L / Dimensiones 5995x2140x2382mm entre ejes 3360mm caja 4100x2050x380mm carga util 4000kg PBV 5995kg / Transmision GETRAG MT 5 marchas / Frenos campana mas motor mas ABS / Garantia 3 años 80000km industria argentina / Chasis para: caja seca volcadora o furgon.\n\nSHINERAY T30 CABINA SIMPLE 1.6: Motor 1298cc nafta 85HP 105Nm manual 5vel traccion trasera / Dimensiones 4930x1720x1995mm caja 2950x1670x370mm carga util 1000kg tanque 40L / Seguridad ABS EBD EPS DRL LED neblineros / Interior AC cierre centralizado radio MP3 USB / Versiones: simple estandar duales produccion nacional box refrigerado / ARGUMENTO: utilitario para laburar todos los dias bajo costo mantenimiento.\n\nSHINERAY T30 CABINA DOBLE DOMY K2 1.5: Motor 1498cc 104HP 138Nm manual 5vel / Dimensiones 4780x1635x1900mm caja 2160x1540x375mm carga 940kg / 5 asientos AC direccion asistida.\n\nSHINERAY T32 FURGON DOMY V1 1.5: Motor 1498cc 104HP manual / Carga interior 2200x1400x1250mm carga 585kg / 2 asientos AC.\n\nSHINERAY M7 PASAJEROS 7AS: Motor 1988cc 136HP 200Nm 5MT traccion trasera / Dimensiones 4890x1700x1995mm tanque 45L / 7 asientos 2+2+3 simil cuero / AC delantero mas trasero independiente pantalla 8 Bluetooth USB camara ABS ESC airbag ISOFIX / Asientos 2da fila deslizables reclinables 3ra fila abatible / ARGUMENTO: por este valor no hay otro 0km que transporte tantas personas.\n\nSHINERAY M7 FURGON: mismo motor M7 / Caja interior 2510x1475x1350mm = 5m3 carga 700kg 2 asientos separador chapa.\n\nSHINERAY M7 11 ASIENTOS: Motor 1.5L 110HP 5MT / 11 asientos 2+3+3+3 Luxury / AC doble pantalla 8 doble airbag ABS ISOFIX asientos cuero.\n\nSHINERAY SWM G03F 1.5 MT NAFTA: Motor 1498cc 108HP 152Nm 5MT traccion delantera / Dimensiones 4605x1815x1825mm tanque 50L llantas aleacion 17 / 7 asientos 2+2+3 maletero 165L o 531L / Seguridad: airbag ABS ESP TCS HSA ISOFIX x2 / Interior: pantalla 10.25 CarPlay Android Auto AC electrico 4 parlantes 2 tweeters eco-cuero / Consumo 16.3/13.3/10km/L / Colores: Gris Oscuro Negro Grafito Blanco Nieve / ARGUMENTO: SUV 7 plazas al precio de un SUV chico.\n\nSHINERAY SWM G03F HEV HIBRIDO: Motor 1.5L hibrido autonomia extendida bateria LFP 8.83kWh / Motor electrico 75kW motor traccion 105kW / Autonomia electrica 51km total 1000km consumo 5.5L/100km / Velocidad max 155km/h carga 3.5h Norma Euro 6E / Traccion delantera freno mano electrico / 5 o 7 asientos / Pantalla HD 10.25 CarPlay Android Auto 6 parlantes / ARGUMENTO: 7 asientos automatico hibrido por un valor muy dificil de encontrar.\n\nGUIA RAPIDA: Trabajo urbano->T30 simple / Frio/alimentos->T30 Box Refrigerado / Reparto->M7 Furgon o T32 / Transporte personas->M7 7/9/11as / Familia->G03F 7 plazas / Ahorro->X30EV o G03F HEV / Pickup nafta->Grand Avenue GL / Pickup diesel->Grand Avenue Puma limitado usar urgencia / Top pickup->Grand Avenue PLUS SLX / Max potencia->DADAO PRO 252HP / Camion liviano->N900 4000kg / Defensa JMC vs competencia: mas potencia por dolar chasis pensado para trabajo excelente alternativa a marcas con sobreprecio";
 
-JMC GRAND AVENUE GL — Motor: 2.3L GTDI Nafta 241 HP / Torque 295 lb-ft / Tanque 80L / Dimensiones: 5.450x1.935x1.872mm / Entre ejes 3.270mm / Caja carga 1.546x1.595x545mm / Cap. remolque 2.9 ton
-Versiones: GL TM 4x2 Manual 6vel (vacío 1.825kg, carga 925kg) | GL TA 4x2 Automática ZF 8vel | GL TA 4x4 Automática ZF 8vel + 4WD con bloqueo
-Suspensión del: doble horquilla resorte helicoidal / Tras: muelles / Frenos disco 4 ruedas (TA/4x4)
-Seguridad: ABS/EBD, ESP, TCS, RMI anti-vuelco, airbags delanteros+laterales+cortina, TPMS, ISOFIX
-Interior: pantalla 10" CarPlay+Android Auto, Bluetooth, asientos cuero, cámara reversa HD, sensores del y tras (TA)
-Neumáticos: 245/70R17 (4x2) / 265/70R17 (4x4)
+var API_KEY = '';
+try { API_KEY = localStorage.getItem('ruthina_key') || ''; } catch(e){}
 
-JMC GRAND AVENUE PLUS LX y SLX — Motor nafta JX4G23 GTDi 2.3L 245HP/400Nm | Motor diesel PUMA JXD23 2.3L 177HP/450Nm — ZF automática 8vel
-Dimensiones: 5.435x1.935x1.872mm / Entre ejes 3.270mm / Caja carga 1.546x1.594x546mm / Altura suelo 235mm
-4x4 con bloqueo diferencial trasero / Suspensión del: doble horquilla / Tras: multibrazo + enlace Watts / Neumáticos 265/65R17(LX) - 265/65R18(SLX)
-Interior SLX: pantalla ROTATIVA 12", tablero LCD 12.3", asientos eléctricos 8 dir con ventilación y calefacción, carga inalámbrica, freno mano eléctrico
-Interior LX: pantalla 12", tablero LCD 7", asientos cuero manuales / Colores: Gris Oscuro, Negro Grafito, Blanco Nieve
+const EMPRESA = {nombre:"Tutu Automotores",ciudad:"Cordoba, Argentina",telefono:"+54 351 XXX-XXXX",web:"www.tutuautomotores.com.ar"};
 
-JMC N900 CAMIÓN — Motor Diesel JX493ZLQ5 2.771cc 115HP@3400rpm / Torque 285Nm / Inyección Common Rail Bosch EDC17 con intercooler
-Tanque 83L diesel + 16L urea / Dimensiones 5.995x2.140x2.382mm / Entre ejes 3.360mm / Caja carga 4.100x2.050x380mm
-Carga útil 4.000kg / PBV 5.995kg / Transmisión GETRAG MT 5 marchas / Dirección hidráulica
-Suspensión: doble efecto ballestas + amortiguadores hidráulicos telescópicos + barra torsión / Frenos campana + freno motor + ABS
-Equipamiento: A/C, radio MP3+USB, levantavidrios eléctricos, volante multifunción, cierre centralizado
-Garantía 3 años/80.000km — Industria Argentina — Chasis para: caja seca, volcadora o furgón
-
-SHINERAY T30 CABINA SIMPLE 1.6 — Motor 1.298cc nafta 85HP / Torque 105Nm / Manual 5vel / Tracción trasera
-Dimensiones 4.930x1.720x1.995mm / Entre ejes 3.050mm / Caja carga 2.950x1.670x370mm / Carga útil 1.000kg / Tanque 40L
-Suspensión del: McPherson independiente / Tras: muelles / Neumáticos 175/70R14
-Seguridad: ABS+EBD, EPS, cinturón 3 puntos, DRL LED, neblineros, cierre automático en marcha
-Interior: A/C, cierre centralizado, levantavidrios eléctrico, radio MP3+USB / 2 pasajeros
-Versiones: cabina simple estándar, duales, producción nacional, box refrigerado (llave en mano para frío)
-ARGUMENTO: utilitario para laburar todos los días, mecánica simple, bajo costo mantenimiento
-
-SHINERAY T30 CABINA DOBLE (DOMY K2) 1.5 — Motor DAM15DR 1.498cc nafta 104HP / Torque 138Nm / Manual 5vel / 4x2 trasera
-Dimensiones 4.780x1.635x1.900mm / Entre ejes 3.050mm / Caja carga 2.160x1.540x375mm / Carga útil 940kg / Tanque 40L
-Suspensión del: ballesta 5 piezas / Tras: ballesta 6 piezas / 5 asientos
-Interior: A/C, dirección asistida, levantavidrios eléctrico, radio MP3+USB, neblineros, control estabilidad
-
-SHINERAY T32/V1 FURGÓN 1.5 — Motor DAM15DR 1.498cc nafta 104HP / Manual 5vel / 4x2 trasera
-Dimensiones 4.400x1.635x1.920mm / Carga interior 2.200x1.400x1.250mm / Carga útil 585kg / Tanque 45L / 2 asientos
-A/C frontal y de techo, ABS+EBD, radio MP3+USB
-
-SHINERAY M7 PASAJEROS 7AS — Motor SWE20F 1.988cc nafta 136HP / Torque 200Nm / 5MT / Tracción trasera
-Dimensiones 4.890x1.700x1.995mm / Entre ejes 3.185mm / Tanque 45L
-7 asientos (2+2+3) símil cuero negro / Llantas aleación / Frenos disco delanteros y traseros
-A/C delantero + trasero independiente, pantalla 8", Bluetooth, USB, cámara, radar marcha atrás, ABS+EBD, ESC, doble airbag, ISOFIX
-Asientos 2da fila: independientes, deslizables, reclinables / 3ra fila abatible
-ARGUMENTO: por este valor no hay otro 0km que transporte tantas personas
-
-SHINERAY M7 FURGÓN — Mismo motor/chasis que M7 pasajeros
-Caja carga interior: 2.510x1.475x1.350mm = 5m³ / Carga útil 700kg / 2 asientos / Separador de chapa
-Frenos traseros tambor / Sin ISOFIX ni seguro niños
-
-SHINERAY M7 11 ASIENTOS — Motor SWD15F 1.5L 110HP / Torque 146Nm / 5MT / Tracción trasera
-Dimensiones 4.890x1.700x1.995mm / 11 asientos (2+3+3+3) / Versión Luxury / Categoría M2
-A/C delantero manual + trasero superior independiente, pantalla 8", Bluetooth, USB, asientos cuero, cámara, doble airbag, ABS+EBD, ISOFIX, control central 5 puertas, llave remota
-
-SHINERAY SWM G03F 1.5 MT NAFTA — Motor 1.498cc nafta 108HP / Torque 152Nm / 5MT / Tracción delantera
-Dimensiones 4.605x1.815x1.825mm / Entre ejes 2.780mm / PBV 1.925kg / Tanque 50L / Neumáticos 215/60R17 llantas aleación 17"
-7 asientos (2+2+3) / Maletero: 165L (3ra fila armada) / 531L (3ra fila abatida)
-Suspensión del: McPherson / Tras: eje de torsión / Frenos disco del / tambor tras
-Seguridad: doble airbag, ABS+EBD, ESP, TCS, HSA, cámara reversa, ISOFIX x2, cinturones 3 puntos
-Interior: pantalla 10.25" CarPlay+Android Auto, A/C eléctrico, salida aire trasera, levantavidrios 4 puertas, Bluetooth, 4 parlantes + 2 tweeters, asientos eco-cuero
-Consumo: 16.3/13.3/10 km/L (ruta/mixto/ciudad) / Colores: Gris Oscuro, Negro Grafito, Blanco Nieve
-ARGUMENTO: SUV 7 plazas al precio de un SUV chico
-
-SHINERAY SWM G03F HEV HÍBRIDO — Motor F31A1 1.5L híbrido autonomía extendida / Batería LFP 8.83kWh
-Motor eléctrico 75kW/126Nm / Motor tracción 105kW/210Nm / Autonomía eléctrica 51km(NEDC)/46km(WLTC) / Total 1.000km
-Consumo: 5.5L/100km + 16.3kWh/100km / Velocidad máx 155km/h / Carga lenta 3.5h / Norma Euro 6E
-Dimensiones 4.605x1.815x1.825mm / Neumáticos 215/60R17 / Tracción delantera / Freno mano eléctrico
-5 asientos (2+3) o 7 asientos (2+2+3) con 3ra fila abatible, asientos 2da fila deslizables e independientes
-Seguridad completa: ESP, TCS, EBA, HSA, ISOFIX x2, TPMS, control crucero, recuperación energía frenado
-Interior: pantalla 10.25" HD CarPlay+Android Auto (español), tablero TFT 7", 6 parlantes, carga móvil 5m, cargador europeo
-ARGUMENTO: 7 asientos + automático + híbrido por un valor muy difícil de encontrar
-
-==============================================================
-GUÍA RÁPIDA DE VENTA POR NECESIDAD DEL CLIENTE
-==============================================================
-Cliente necesita... → Mostrar...
-Trabajo pesado urbano → Shineray T30 Cabina Simple
-Frío / alimentos / logística frío → Shineray T30 Box Refrigerado
-Reparto / paquetería → Shineray M7 Furgón o T32 Furgón
-Transporte escolar/empresarial → Shineray M7 7/9/11 asientos
-Familia grande + funcionalidad → Shineray SWM G03F 7 plazas
-Ahorro combustible → Shineray X30 EV o G03F HEV
-Pickup nafta potente → JMC Grand Avenue GL (241 HP)
-Pickup diesel real → JMC Grand Avenue Diesel Puma (limitado → usar urgencia)
-Pickup top de gama → JMC Grand Avenue PLUS SLX
-Máxima potencia pickup → JMC Grand Avenue DADAO PRO 252 HP
-Camión liviano → JMC N900 (4.000kg, industria argentina)
-Camión mediano → JMC N800 BIG (7.500kg)
-
-DEFENSA JMC vs competencia: Más potencia por dólar / Chasis pensado para trabajo / Excelente alternativa a marcas con sobreprecio
-`;
-
-const SYSTEM = `${core_prompt}
-
-==============================================================
-FICHAS TÉCNICAS Y ARGUMENTOS DE VENTA
-==============================================================
-${FICHAS_TECNICAS}`;
-const PDFS = [
-  {id:"1tDasFWX6Vt3yLlBrZ73ljVGiLxskwn5H",label:"Archivo 1"},
-  {id:"1FEWgIilneb-OzN3cCa5rUHDBJupKclQ1",label:"Archivo 2"},
-  {id:"1oZXOa4wbBc7CqEbPjDUhDeazT8Ji1_j9",label:"Archivo 3"},
-  {id:"1HLz5nYZh6vzB5i5MYEt7-s5Fqas9uZ5B",label:"Archivo 4"},
-  {id:"1dbbYAicC5XFx7r_N4ENNegKhN3kOi9PW",label:"Archivo 5"},
-  {id:"17rg0xBgZebIMomZgvFh2PiGiTQjqOXkc", label:"Archivo 6"},
-  {id:"1ve6QvdzYqMRuW9qnoKYa6YWjpwr-xh64",label:"Archivo 7"},
-  {id:"1p6xIir5cNLB1xf2CLbMzYUM5-AsbvhJv",label:"Archivo 8"},
-  {id:"1wf4CPO7gs97nrGYE30hXmKhdgO3T2nXL",label:"Archivo 9"},
-  {id:"1tnb_pxfiyrky0f6bLaJzkgtxAsD8AsoK",label:"Archivo 10"},
-  {id:"1e3jpdfiIwIf9TUN5-5iVfMmFNGUcpy9P",label:"Archivo 11"},
-  {id:"10eNLZeNc4Cltab8YtqJvPIRY61y6UlX_",label:"Archivo 12"}
-];
-
-// ══ DRIVE LOADER ═════════════════════════════════════
-let driveCtx = null;
-
-async function loadDrive() {
-  // Stock embebido — no se necesita Drive
-  document.getElementById('dbanner').style.display = 'none';
+function buildSystem() {
+  return "Sos Ruthina, la asistente interna de ventas de Tutu Automotores. Hablas EXCLUSIVAMENTE con los VENDEDORES del equipo, NUNCA con clientes finales. Sos su herramienta de consulta rapida mientras atienden.\n\nREGLAS:\n- Trato de vos a vos con el vendedor, tono directo y agil\n- NUNCA asumas que hablas con un cliente\n- JMC y Shineray son marcas DISTINTAS, no las confundas nunca\n- Cuando des precios indica siempre la moneda (ARS o USD) y si es contado o lista\n- Se conciso. El vendedor necesita la info rapido para cerrar la venta\n- Para armar un presupuesto decile que use el boton Presupuesto arriba a la derecha\n\n== STOCK ACTUAL TUTU ==\n" + STOCK_DATA + "\n\n== FICHAS TECNICAS Y ARGUMENTOS ==\n" + FICHAS;
 }
 
-// ══ CHAT ENGINE ═══════════════════════════════════════
-let history = [], typing = false, lastFrom = null, firstMsg = true;
+// ══ CHAT ══════════════════════════════════════════════
+var history = [], typing = false, lastFrom = null, firstMsg = true;
 
 async function callClaude(userText) {
   history.push({role:'user', content: userText});
-  const messages = history.map(m => ({role:m.role, content:m.content}));
-
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  var messages = history.map(function(m){ return {role:m.role, content:m.content}; });
+  var res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -493,60 +334,57 @@ async function callClaude(userText) {
     body: JSON.stringify({
       model: 'claude-sonnet-4-20250514',
       max_tokens: 1024,
-      system: SYSTEM,
-      messages
+      system: buildSystem(),
+      messages: messages
     })
   });
-
   if (!res.ok) {
-    const err = await res.json().catch(()=>({}));
-    throw new Error(err.error?.message || `HTTP ${res.status}`);
+    var err = await res.json().catch(function(){ return {}; });
+    throw new Error(err.error ? err.error.message : 'HTTP ' + res.status);
   }
-  const data = await res.json();
-  const reply = data.content?.[0]?.text || 'No pude responder.';
+  var data = await res.json();
+  var reply = data.content && data.content[0] ? data.content[0].text : 'No pude responder.';
   history.push({role:'assistant', content: reply});
   if (history.length > 20) history = history.slice(-20);
   return reply;
 }
 
-// ══ UI CHAT ════════════════════════════════════════════
-function openB(){document.getElementById('sc').style.display='none';document.getElementById('sb').style.display='flex'}
-function closeB(){document.getElementById('sb').style.display='none';document.getElementById('sc').style.display='flex'}
-function hKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}}
-function aRz(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px'}
-function sendQ(t){document.getElementById('ci').value=t;sendMsg()}
+function openB(){ document.getElementById('sc').style.display='none'; document.getElementById('sb').style.display='flex'; }
+function closeB(){ document.getElementById('sb').style.display='none'; document.getElementById('sc').style.display='flex'; }
+function hKey(e){ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); sendMsg(); } }
+function aRz(el){ el.style.height='auto'; el.style.height=Math.min(el.scrollHeight,110)+'px'; }
+function sendQ(t){ document.getElementById('ci').value=t; sendMsg(); }
 
 function addBubble(html, from) {
-  const msgs = document.getElementById('msgs');
-  const now = new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
-  const isOut = from === 'user', isGap = lastFrom !== from;
+  var msgs = document.getElementById('msgs');
+  var now = new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
+  var isOut = from === 'user', isGap = lastFrom !== from;
   lastFrom = from;
-  const row = document.createElement('div');
+  var row = document.createElement('div');
   row.className = 'mr ' + (isOut?'out':'in') + (isGap?' gap':'');
-  const txt = isOut ? html : html
+  var txt = isOut ? html : html
     .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
     .replace(/\*(.*?)\*/g,'<em>$1</em>')
-    .replace(/`(.*?)`/g,'<code>$1</code>')
     .replace(/\n/g,'<br>');
-  const sndr = (!isOut && isGap) ? '<div class="bsndr">Ruthina</div>' : '';
-  row.innerHTML = `<div class="bbl">${sndr}${txt}<div class="bt">${now}</div></div>`;
+  var sndr = (!isOut && isGap) ? '<div class="bsndr">Ruthina</div>' : '';
+  row.innerHTML = '<div class="bbl">' + sndr + txt + '<div class="bt">' + now + '</div></div>';
   msgs.appendChild(row);
   if (isOut && firstMsg) { document.getElementById('quick').style.display='none'; firstMsg=false; }
   msgs.scrollTop = msgs.scrollHeight;
 }
 
 function showTyp(){
-  const m=document.getElementById('msgs'),d=document.createElement('div');
-  d.className='mr in gap';d.id='typ';
+  var m=document.getElementById('msgs'), d=document.createElement('div');
+  d.className='mr in gap'; d.id='typ';
   d.innerHTML='<div class="tbbl"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
-  m.appendChild(d);m.scrollTop=m.scrollHeight;
+  m.appendChild(d); m.scrollTop=m.scrollHeight;
 }
-function hideTyp(){const t=document.getElementById('typ');if(t)t.remove()}
+function hideTyp(){ var t=document.getElementById('typ'); if(t) t.remove(); }
 
 async function sendMsg() {
   if (typing) return;
-  const inp = document.getElementById('ci');
-  const txt = inp.value.trim();
+  var inp = document.getElementById('ci');
+  var txt = inp.value.trim();
   if (!txt) return;
   inp.value = ''; inp.style.height = 'auto';
   typing = true;
@@ -554,179 +392,161 @@ async function sendMsg() {
   document.getElementById('stxt').textContent = 'escribiendo...';
   showTyp();
   try {
-    const r = await callClaude(txt);
+    var r = await callClaude(txt);
     hideTyp(); addBubble(r, 'ruthina');
   } catch(e) {
     hideTyp();
-    addBubble(e.message?.includes('401') ? '⚠️ API Key incorrecta.' : '⚠️ Error: ' + e.message, 'ruthina');
+    addBubble(e.message && e.message.includes('401') ? 'Error: API Key incorrecta. Usa el candado para cambiarla.' : 'Error: ' + e.message, 'ruthina');
   }
   typing = false;
-  document.getElementById('stxt').textContent = 'En línea';
+  document.getElementById('stxt').textContent = 'En linea';
 }
 
-// ══ PRESUPUESTO ════════════════════════════════════════
-function tChk(cid,sid){const c=document.getElementById(cid);c.checked=!c.checked;sSec(sid,c.checked);upP()}
-function sSec(id,v){
-  // sc es el div de financiación pero sc es también el chat screen — uso sc2 para financiación
-  const el = document.getElementById(id==='sc'?'sc2':id);
-  if(el) el.style.display=v?'block':'none';
+// ══ SETUP ════════════════════════════════════════════
+function saveKey(){
+  var k = document.getElementById('keyInput').value.trim();
+  if (!k.startsWith('sk-ant-')) {
+    var err = document.getElementById('key-error');
+    err.textContent = 'La key debe empezar con sk-ant-api03-...';
+    err.style.display = 'block'; return;
+  }
+  API_KEY = k;
+  try { localStorage.setItem('ruthina_key', k); } catch(e){}
+  document.getElementById('setup').style.display = 'none';
+  startApp();
 }
-const gv=id=>document.getElementById(id)?.value?.trim()||'';
-const gn=id=>parseFloat(document.getElementById(id)?.value)||0;
-const gc=id=>document.getElementById(id)?.checked||false;
-const fmtP=n=>n?'$ '+Math.round(n).toLocaleString('es-AR'):'—';
+
+function cambiarKey(){
+  try { localStorage.removeItem('ruthina_key'); } catch(e){}
+  API_KEY = ''; history = []; lastFrom = null; firstMsg = true;
+  document.getElementById('msgs').innerHTML = '<div class="dsep"><span>Hoy</span></div>';
+  document.getElementById('quick').style.display = 'flex';
+  document.getElementById('setup').style.display = 'flex';
+  setTimeout(function(){ var ki=document.getElementById('keyInput'); if(ki){ki.value='';ki.focus();} }, 100);
+}
+
+function startApp(){
+  setTimeout(function(){
+    addBubble('Hola! Soy <strong>Ruthina</strong>, tu asistente de ventas de Tutu. Tengo cargado el stock completo y las fichas tecnicas de JMC y Shineray. Preguntame lo que necesites!', 'ruthina');
+  }, 300);
+}
+
+// ══ PRESUPUESTO ══════════════════════════════════════
+function tChk(cid,sid){ var c=document.getElementById(cid); c.checked=!c.checked; sSec(sid,c.checked); upP(); }
+function sSec(id,v){ var el=document.getElementById(id); if(el) el.style.display=v?'block':'none'; }
+function gv(id){ return (document.getElementById(id)||{}).value ? document.getElementById(id).value.trim() : ''; }
+function gn(id){ return parseFloat((document.getElementById(id)||{}).value)||0; }
+function gc(id){ return (document.getElementById(id)||{}).checked||false; }
+function fmtP(n){ return n ? '$ '+Math.round(n).toLocaleString('es-AR') : '-'; }
 
 function upP(){
-  const price=gn('bpl'),cash=gn('bpc');
-  const perm=gc('cp'),pv=gn('bpv');
-  const cred=gc('cc'),tna=gn('btn'),cuotas=parseInt(gv('bcu'))||12,fin=gn('bfi');
-  const base=cash||price, diff=base-(perm?pv:0);
-  document.getElementById('pvm').textContent=gv('bm')||'—';
+  var price=gn('bpl'), cash=gn('bpc'), perm=gc('cp'), pv=gn('bpv');
+  var cred=gc('cc'), tna=gn('btn'), cuotas=parseInt(gv('bcu'))||12, fin=gn('bfi');
+  var base=cash||price, diff=base-(perm?pv:0);
+  document.getElementById('pvm').textContent=gv('bm')||'-';
   document.getElementById('pvp').textContent=fmtP(price);
   document.getElementById('pvc').textContent=fmtP(cash);
   document.getElementById('pvpr').style.display=perm&&pv?'flex':'none';
   document.getElementById('pvpv').textContent='- '+fmtP(pv);
-  const cr=document.getElementById('pvcr');
-  if(cred&&fin&&tna){const tm=Math.pow(1+tna/100,1/12)-1;const c=fin*tm/(1-Math.pow(1+tm,-cuotas));document.getElementById('pvcu').textContent=fmtP(Math.round(c))+' x '+cuotas;cr.style.display='flex'}else cr.style.display='none';
-  document.getElementById('pvt').textContent=diff>0?fmtP(diff):'—';
+  var cr=document.getElementById('pvcr');
+  if(cred&&fin&&tna){
+    var tm=Math.pow(1+tna/100,1/12)-1;
+    var c=fin*tm/(1-Math.pow(1+tm,-cuotas));
+    document.getElementById('pvcu').textContent=fmtP(Math.round(c))+' x '+cuotas;
+    cr.style.display='flex';
+  } else cr.style.display='none';
+  document.getElementById('pvt').textContent=diff>0?fmtP(diff):'-';
 }
 
 function genPDF(){
-  const btn=document.getElementById('bgen');
-  if(!gv('bm')&&!gn('bpl')){snkShow('⚠️ Ingresá modelo y precio');return}
-  btn.disabled=true;btn.textContent='Generando...';
+  var btn=document.getElementById('bgen');
+  if(!gv('bm')&&!gn('bpl')){ snkShow('Ingresa modelo y precio'); return; }
+  btn.disabled=true; btn.textContent='Generando...';
   try{
-    const {jsPDF}=window.jspdf;
-    const doc=new jsPDF({unit:'mm',format:'a4'});
-    const W=210,H=297,M=18;
-    let y=20;
-    const E=EMPRESA;
-    const d={
+    var jsPDF=window.jspdf.jsPDF;
+    var doc=new jsPDF({unit:'mm',format:'a4'});
+    var W=210,H=297,M=18,y=20,E=EMPRESA;
+    var d={
       cliente:gv('bc'),telefono:gv('bf'),dni:gv('bd'),vendedor:gv('bv'),
       modelo:gv('bm'),anio:gv('by'),color:gv('bco'),km:gv('bk'),patente:gv('bpa'),notas:gv('bno'),
       precioLista:gn('bpl'),precioContado:gn('bpc'),
-      tienePermuta:gc('cp'),permuModelo:gv('bpm'),permuAnio:gv('bpy'),permuKm:gv('bpk'),permuValor:gn('bpv'),
+      tienePermuta:gc('cp'),permuModelo:gv('bpm'),permuAnio:gv('bpy'),permuValor:gn('bpv'),
       tieneCredito:gc('cc'),banco:gv('bba'),cuotas:parseInt(gv('bcu'))||12,tna:gn('btn'),monto:gn('bfi'),anticipo:gn('ban'),
       vigencia:gv('bvi'),fecha:new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'})
     };
-    const base=d.precioContado||d.precioLista;
-    const diff=base-(d.tienePermuta?d.permuValor:0);
-    let cuotaEst=0;
-    if(d.tieneCredito&&d.monto&&d.tna){const tm=Math.pow(1+d.tna/100,1/12)-1;cuotaEst=d.monto*tm/(1-Math.pow(1+tm,-d.cuotas))}
-    const fmt=n=>n?'$ '+Math.round(n).toLocaleString('es-AR'):'—';
-    // Header
+    var base=d.precioContado||d.precioLista, diff=base-(d.tienePermuta?d.permuValor:0);
+    var cuotaEst=0;
+    if(d.tieneCredito&&d.monto&&d.tna){var tm=Math.pow(1+d.tna/100,1/12)-1;cuotaEst=d.monto*tm/(1-Math.pow(1+tm,-d.cuotas));}
+    var fmt=function(n){return n?'$ '+Math.round(n).toLocaleString('es-AR'):'-';};
     doc.setFillColor(20,20,20);doc.rect(0,0,W,48,'F');
     doc.setFillColor(200,16,46);doc.rect(0,44,W,4,'F');
     doc.setFillColor(200,16,46);doc.roundedRect(M,10,28,28,3,3,'F');
     doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text('T',M+14,28,{align:'center'});
     doc.setFontSize(22);doc.text(E.nombre.toUpperCase(),M+34,22);
     doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(170,170,170);
-    doc.text(E.ciudad+' · '+E.telefono+' · '+E.web,M+34,38);
-    const presNum='PRES-'+Date.now().toString().slice(-6);
-    doc.setFontSize(9);doc.setTextColor(150,150,150);
-    doc.text('N° '+presNum,W-M,18,{align:'right'});doc.text(d.fecha,W-M,25,{align:'right'});
-    doc.text('Vigencia: '+d.vigencia,W-M,32,{align:'right'});
-    y=58;
-    doc.setFillColor(248,246,242);doc.rect(0,y-6,W,14,'F');
-    doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(20,20,20);
-    doc.text('PRESUPUESTO DE VENTA',M,y+2);
-    if(d.vendedor){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text('Asesor: '+d.vendedor,W-M,y+2,{align:'right'})}
+    doc.text(E.ciudad+' - '+E.web,M+34,38);
+    var presNum='PRES-'+Date.now().toString().slice(-6);
+    doc.setTextColor(150,150,150);doc.text('N '+presNum,W-M,18,{align:'right'});doc.text(d.fecha,W-M,25,{align:'right'});doc.text('Vigencia: '+d.vigencia,W-M,32,{align:'right'});
+    y=58;doc.setFillColor(248,246,242);doc.rect(0,y-6,W,14,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(20,20,20);doc.text('PRESUPUESTO DE VENTA',M,y+2);
+    if(d.vendedor){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text('Asesor: '+d.vendedor,W-M,y+2,{align:'right'});}
     y+=18;
-    // Cliente
-    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);doc.text('CLIENTE',M,y);
-    doc.setDrawColor(200,16,46);doc.line(M,y+1.5,M+doc.getTextWidth('CLIENTE'),y+1.5);y+=8;
-    doc.setFillColor(252,252,250);doc.setDrawColor(230,228,224);doc.roundedRect(M,y,W-M*2,22,2,2,'FD');
-    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(20,20,20);doc.text(d.cliente||'Cliente',M+5,y+9);
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);doc.text('CLIENTE',M,y);y+=8;
+    doc.setFillColor(252,252,250);doc.setDrawColor(230,228,224);doc.roundedRect(M,y,W-M*2,20,2,2,'FD');
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(20,20,20);doc.text(d.cliente||'Cliente',M+5,y+8);
     doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(100,100,100);
-    const ci=[d.telefono,d.dni?'DNI: '+d.dni:''].filter(Boolean).join(' · ');
-    if(ci)doc.text(ci,M+5,y+17);
-    y+=32;
-    // Vehículo
-    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);doc.text('VEHÍCULO',M,y);
-    doc.setDrawColor(200,16,46);doc.line(M,y+1.5,M+doc.getTextWidth('VEHÍCULO'),y+1.5);y+=8;
-    doc.setFillColor(252,252,250);doc.setDrawColor(230,228,224);doc.roundedRect(M,y,W-M*2,d.notas?34:24,2,2,'FD');
+    var ci=[d.telefono,d.dni?'DNI: '+d.dni:''].filter(Boolean).join(' - ');if(ci)doc.text(ci,M+5,y+16);
+    y+=30;
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);doc.text('VEHICULO',M,y);y+=8;
+    doc.setFillColor(252,252,250);doc.setDrawColor(230,228,224);doc.roundedRect(M,y,W-M*2,d.notas?32:22,2,2,'FD');
     doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(200,16,46);
-    doc.text((d.modelo||'Vehículo')+(d.anio?' '+d.anio:''),M+5,y+10);
-    const vi=[d.color?'Color: '+d.color:'',d.km?'KM: '+Number(d.km).toLocaleString('es-AR'):'',d.patente?'Pat: '+d.patente:''].filter(Boolean).join(' · ');
-    if(vi){doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(100,100,100);doc.text(vi,M+5,y+18)}
-    if(d.notas){doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text(d.notas,M+5,y+27,{maxWidth:W-M*2-10})}
-    y+=d.notas?44:34;
-    // Precios
-    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);doc.text('PRECIOS',M,y);
-    doc.setDrawColor(200,16,46);doc.line(M,y+1.5,M+doc.getTextWidth('PRECIOS'),y+1.5);y+=10;
-    const rows=[];
+    doc.text((d.modelo||'Vehiculo')+(d.anio?' '+d.anio:''),M+5,y+10);
+    var vi=[d.color?'Color: '+d.color:'',d.km?'KM: '+Number(d.km).toLocaleString('es-AR'):'',d.patente?'Pat: '+d.patente:''].filter(Boolean).join(' - ');
+    if(vi){doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(100,100,100);doc.text(vi,M+5,y+18);}
+    if(d.notas){doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text(d.notas,M+5,y+27,{maxWidth:W-M*2-10});}
+    y+=d.notas?42:32;
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);doc.text('PRECIOS',M,y);y+=10;
+    var rows=[];
     if(d.precioLista)rows.push({l:'Precio de lista',v:fmt(d.precioLista),c:[60,60,60]});
     if(d.precioContado&&d.precioContado!==d.precioLista)rows.push({l:'Precio contado',v:fmt(d.precioContado),c:[30,122,74],b:true});
-    if(d.tienePermuta&&d.permuValor){const pm=d.permuModelo+(d.permuAnio?' '+d.permuAnio:'');rows.push({l:'Permuta: '+pm,v:'- '+fmt(d.permuValor),c:[180,100,0]})}
+    if(d.tienePermuta&&d.permuValor)rows.push({l:'Permuta: '+(d.permuModelo||'')+(d.permuAnio?' '+d.permuAnio:''),v:'- '+fmt(d.permuValor),c:[180,100,0]});
     rows.push({l:'DIFERENCIA A PAGAR',v:fmt(diff),c:[200,16,46],b:true,big:true});
-    rows.forEach(r=>{
-      if(r.big){doc.setFillColor(20,20,20);doc.rect(M,y-5,W-M*2,12,'F');doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(255,255,255);doc.text(r.l,M+5,y+3);doc.setTextColor(200,16,46);doc.text(r.v,W-M-5,y+3,{align:'right'});y+=14}
-      else{doc.setFont('helvetica',r.b?'bold':'normal');doc.setFontSize(11);doc.setTextColor(...r.c);doc.text(r.l,M+3,y);doc.text(r.v,W-M-3,y,{align:'right'});doc.setDrawColor(230,228,224);doc.line(M,y+2,W-M,y+2);y+=9}
+    rows.forEach(function(r){
+      if(r.big){doc.setFillColor(20,20,20);doc.rect(M,y-5,W-M*2,12,'F');doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(255,255,255);doc.text(r.l,M+5,y+3);doc.setTextColor(200,16,46);doc.text(r.v,W-M-5,y+3,{align:'right'});y+=14;}
+      else{doc.setFont('helvetica',r.b?'bold':'normal');doc.setFontSize(11);doc.setTextColor.apply(doc,r.c.length?[[r.c[0],r.c[1],r.c[2]]]:[]);doc.setTextColor(r.c[0],r.c[1],r.c[2]);doc.text(r.l,M+3,y);doc.text(r.v,W-M-3,y,{align:'right'});doc.setDrawColor(230,228,224);doc.line(M,y+2,W-M,y+2);y+=9;}
     });
     if(d.tieneCredito&&d.monto&&cuotaEst){
-      y+=6;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(26,79,171);doc.text('FINANCIACIÓN',M,y);
-      doc.setDrawColor(26,79,171);doc.line(M,y+1.5,M+doc.getTextWidth('FINANCIACIÓN'),y+1.5);y+=10;
-      doc.setFillColor(232,238,250);doc.setDrawColor(180,200,240);doc.roundedRect(M,y,W-M*2,28,2,2,'FD');
-      const cr2=[[d.banco||'A confirmar','Entidad'],[fmt(d.monto),'Monto'],[d.tna+'%','TNA'],[d.cuotas+' cuotas','Plazo']];
-      let cy=y+8;
-      cr2.forEach(([val,lbl])=>{doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(60,80,140);doc.text(lbl+':',M+5,cy);doc.setFont('helvetica','bold');doc.setTextColor(20,20,80);doc.text(val,M+50,cy);cy+=6});
+      y+=6;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(26,79,171);doc.text('FINANCIACION',M,y);y+=10;
+      doc.setFillColor(232,238,250);doc.setDrawColor(180,200,240);doc.roundedRect(M,y,W-M*2,26,2,2,'FD');
+      var cy=y+8;
+      [[d.banco||'A confirmar','Entidad'],[fmt(d.monto),'Monto'],[d.tna+'%','TNA'],[d.cuotas+' cuotas','Plazo']].forEach(function(pair){
+        doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(60,80,140);doc.text(pair[1]+':',M+5,cy);
+        doc.setFont('helvetica','bold');doc.setTextColor(20,20,80);doc.text(pair[0],M+48,cy);cy+=6;
+      });
       doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(26,79,171);doc.text('Cuota est: '+fmt(Math.round(cuotaEst))+' x '+d.cuotas,W-M-5,y+14,{align:'right'});
-      doc.setFont('helvetica','italic');doc.setFontSize(8);doc.setTextColor(120,130,160);doc.text('* Sujeta a aprobación crediticia.',M+5,y+25);
-      y+=38;
+      y+=36;
     }
-    y=Math.max(y,220);
-    doc.setFillColor(248,246,242);doc.rect(M,y,W-M*2,12,'F');
-    doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100,100,100);doc.text('Vigencia del presupuesto: '+d.vigencia+' desde la fecha de emisión.',M+4,y+8);
+    y=Math.max(y,215);
+    doc.setFillColor(248,246,242);doc.rect(M,y,W-M*2,12,'F');doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100,100,100);doc.text('Vigencia: '+d.vigencia+' desde la fecha de emision.',M+4,y+8);
     y+=20;doc.setDrawColor(180,180,180);doc.line(M,y,M+55,y);doc.line(W-M-55,y,W-M,y);
     doc.setFontSize(8);doc.setTextColor(150,150,150);doc.text('Firma del cliente',M+4,y+5);doc.text('Asesor de ventas',W-M-4,y+5,{align:'right'});
     doc.setFillColor(20,20,20);doc.rect(0,H-18,W,18,'F');doc.setFillColor(200,16,46);doc.rect(0,H-18,W,2,'F');
     doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(150,150,150);
-    doc.text(E.nombre+' · '+E.ciudad+' · '+E.telefono+' · '+E.web,W/2,H-8,{align:'center'});
-    const fname='Presupuesto_'+(d.cliente||'Cliente').replace(/\s+/g,'_')+'_'+(d.modelo?.split(' ')[0]||'Auto')+'_Tutu.pdf';
-    doc.save(fname);
-    snkShow('✅ PDF descargado');
-  }catch(e){snkShow('❌ Error: '+e.message);console.error(e)}
-  btn.disabled=false;btn.textContent='⬇ Generar PDF del Presupuesto';
+    doc.text(E.nombre+' - '+E.ciudad+' - '+E.web,W/2,H-8,{align:'center'});
+    doc.save('Presupuesto_'+(d.cliente||'Cliente').replace(/\s+/g,'_')+'_Tutu.pdf');
+    snkShow('PDF descargado');
+  } catch(e){ snkShow('Error: '+e.message); console.error(e); }
+  btn.disabled=false; btn.textContent='Generar PDF del Presupuesto';
 }
 
-function snkShow(msg){const s=document.getElementById('snk');s.textContent=msg;s.classList.add('show');clearTimeout(window._st);window._st=setTimeout(()=>s.classList.remove('show'),3000)}
+function snkShow(msg){ var s=document.getElementById('snk'); s.textContent=msg; s.classList.add('show'); clearTimeout(window._st); window._st=setTimeout(function(){ s.classList.remove('show'); },3000); }
 
-// ══ SETUP / INIT ══════════════════════════════════════
-function saveKey(){
-  const k=document.getElementById('keyInput').value.trim();
-  if(!k.startsWith('sk-ant-')){
-    const err=document.getElementById('key-error');
-    err.textContent='La key debe empezar con sk-ant-api03-...';
-    err.style.display='block';return;
-  }
-  API_KEY=k;
-  try{ localStorage.setItem('ruthina_key',k); }catch(e){}
-  document.getElementById('setup').style.display='none';
-  startApp();
-}
-
-function startApp(){
-  setTimeout(()=>addBubble('¡Hola! Soy <strong>Ruthina</strong> 🚗 Tu asistente de ventas de Tutu Automotores.\n\nPreguntame sobre <strong>precios, stock o características</strong> de cualquier vehículo. También podés pedirme que arme un <strong>presupuesto</strong> con crédito y permuta.\n\n¿En qué te ayudo hoy?','ruthina'),300);
-  loadDrive().catch(()=>document.getElementById('dbanner').style.display='none');
-}
-
-function cambiarKey(){
-  try{ localStorage.removeItem('ruthina_key'); }catch(e){}
-  API_KEY='';
-  history=[];lastFrom=null;firstMsg=true;
-  document.getElementById('msgs').innerHTML='<div class="dsep"><span>Hoy</span></div>';
-  document.getElementById('quick').style.display='flex';
-  document.getElementById('setup').style.display='flex';
-  setTimeout(()=>{ const ki=document.getElementById('keyInput'); if(ki){ki.value='';ki.focus();} },100);
-}
-
-window.addEventListener('DOMContentLoaded',()=>{
-  // Intentar leer key guardada
-  try { API_KEY = localStorage.getItem('ruthina_key') || ''; } catch(e){ API_KEY = ''; }
-  if(!API_KEY){
-    const setup = document.getElementById('setup');
-    setup.style.display='flex';
-    setTimeout(()=>{ const ki=document.getElementById('keyInput'); if(ki)ki.focus(); },200);
+// ══ INIT ════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', function(){
+  try { API_KEY = localStorage.getItem('ruthina_key') || ''; } catch(e){ API_KEY=''; }
+  if (!API_KEY) {
+    document.getElementById('setup').style.display = 'flex';
+    setTimeout(function(){ var ki=document.getElementById('keyInput'); if(ki) ki.focus(); }, 200);
   } else {
     startApp();
   }
