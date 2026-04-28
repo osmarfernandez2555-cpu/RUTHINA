@@ -318,11 +318,11 @@ function buildSystem() {
 }
 
 // ══ CHAT ══════════════════════════════════════════════
-var history = [], typing = false, lastFrom = null, firstMsg = true;
+var chatHistory = [], typing = false, lastFrom = null, firstMsg = true;
 
 async function callClaude(userText) {
-  history.push({role:'user', content: userText});
-  var messages = history.map(function(m){ return {role:m.role, content:m.content}; });
+  chatHistory.push({role:'user', content: userText});
+  var messages = chatHistory.map(function(m){ return {role:m.role, content:m.content}; });
   var res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -344,8 +344,8 @@ async function callClaude(userText) {
   }
   var data = await res.json();
   var reply = data.content && data.content[0] ? data.content[0].text : 'No pude responder.';
-  history.push({role:'assistant', content: reply});
-  if (history.length > 20) history = history.slice(-20);
+  chatHistory.push({role:'assistant', content: reply});
+  if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
   return reply;
 }
 
@@ -418,7 +418,7 @@ function saveKey(){
 
 function cambiarKey(){
   try { localStorage.removeItem('ruthina_key'); } catch(e){}
-  API_KEY = ''; history = []; lastFrom = null; firstMsg = true;
+  API_KEY = ''; chatHistory = []; lastFrom = null; firstMsg = true;
   document.getElementById('msgs').innerHTML = '<div class="dsep"><span>Hoy</span></div>';
   document.getElementById('quick').style.display = 'flex';
   document.getElementById('setup').style.display = 'flex';
