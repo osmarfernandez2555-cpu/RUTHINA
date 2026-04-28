@@ -142,10 +142,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
   <div class="msgs" id="msgs"><div class="dsep"><span>Hoy</span></div></div>
   <div class="quick" id="quick">
     <button class="qb" onclick="sendQ('¿Cuáles son los autos nuevos disponibles con precios?')">🆕 Nuevos</button>
-    <button class="qb" onclick="sendQ('Contame todo sobre el JMC Vigus Pro')">🚙 JMC Vigus</button>
+    <button class="qb" onclick="sendQ('Dame todo el stock de JMC disponible con precios')">🚙 JMC</button>
     <button class="qb" onclick="sendQ('¿Cuáles son los usados más económicos?')">💰 Usados</button>
     <button class="qb" onclick="sendQ('¿Cómo funciona la financiación?')">💳 Crédito</button>
-    <button class="qb" onclick="sendQ('¿Qué modelos Shineray tienen?')">⚡ Shineray</button>
+    <button class="qb" onclick="sendQ('Dame todo el stock de Shineray disponible con precios')">⚡ Shineray</button>
   </div>
   <div class="ibar">
     <div class="ibox">
@@ -383,50 +383,19 @@ const PDFS = [
 ];
 
 // ══ DRIVE LOADER ═════════════════════════════════════
-let driveCtx = null, driveLoaded = false;
+let driveCtx = null;
 
 async function loadDrive() {
-  const banner = document.getElementById('dbanner');
-  banner.style.display = 'flex';
-  let ctx = [];
-  for (const pdf of PDFS) {
-    try {
-      const url = `https://drive.google.com/uc?export=download&id=${pdf.id}`;
-      const res = await fetch(url);
-      if (!res.ok) { ctx.push(`[${pdf.label}: no disponible]`); continue; }
-      const blob = await res.blob();
-      const b64 = await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(blob)});
-      ctx.push({type:'pdf',b64,label:pdf.label});
-    } catch(e) { ctx.push(`[${pdf.label}: error - ${e.message}]`); }
-  }
-  driveCtx = ctx;
-  driveLoaded = true;
-  banner.style.display = 'none';
+  // Stock embebido — no se necesita Drive
+  document.getElementById('dbanner').style.display = 'none';
 }
 
 // ══ CHAT ENGINE ═══════════════════════════════════════
 let history = [], typing = false, lastFrom = null, firstMsg = true;
 
 async function callClaude(userText) {
-  // Build messages — attach PDFs on first message
-  let messages;
-  const isFirst = history.length === 0;
   history.push({role:'user', content: userText});
-
-  if (isFirst && driveCtx) {
-    const pdfDocs = driveCtx.filter(x => x.type === 'pdf');
-    if (pdfDocs.length > 0) {
-      const content = [
-        ...pdfDocs.map(p => ({type:'document',source:{type:'base64',media_type:'application/pdf',data:p.b64},title:p.label})),
-        {type:'text', text: userText}
-      ];
-      messages = [{role:'user', content}];
-    } else {
-      messages = history.map(m => ({role:m.role, content:m.content}));
-    }
-  } else {
-    messages = history.map(m => ({role:m.role, content:m.content}));
-  }
+  const messages = history.map(m => ({role:m.role, content:m.content}));
 
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
@@ -646,7 +615,7 @@ function saveKey(){
     err.style.display='block';return;
   }
   API_KEY=k;
-  localStorage.setItem('ruthina_key',k);
+  try{ localStorage.setItem('ruthina_key',k); }catch(e){}
   document.getElementById('setup').style.display='none';
   startApp();
 }
@@ -657,15 +626,22 @@ function startApp(){
 }
 
 function cambiarKey(){
-  localStorage.removeItem('ruthina_key');
+  try{ localStorage.removeItem('ruthina_key'); }catch(e){}
   API_KEY='';
+  history=[];lastFrom=null;firstMsg=true;
+  document.getElementById('msgs').innerHTML='<div class="dsep"><span>Hoy</span></div>';
+  document.getElementById('quick').style.display='flex';
   document.getElementById('setup').style.display='flex';
+  setTimeout(()=>{ const ki=document.getElementById('keyInput'); if(ki){ki.value='';ki.focus();} },100);
 }
 
 window.addEventListener('DOMContentLoaded',()=>{
+  // Intentar leer key guardada
+  try { API_KEY = localStorage.getItem('ruthina_key') || ''; } catch(e){ API_KEY = ''; }
   if(!API_KEY){
-    document.getElementById('setup').style.display='flex';
-    setTimeout(()=>document.getElementById('keyInput').focus(),100);
+    const setup = document.getElementById('setup');
+    setup.style.display='flex';
+    setTimeout(()=>{ const ki=document.getElementById('keyInput'); if(ki)ki.focus(); },200);
   } else {
     startApp();
   }
