@@ -4,216 +4,188 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Ruthina · Tutu Automotores</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23C8102E'/><text x='16' y='22' text-anchor='middle' font-family='Arial' font-weight='bold' font-size='16' fill='white'>R</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-:root{
-  --rojo:#C8102E;--rojo-dark:#A00D24;
-  --bg:#E5DDD5;
-  --bubble-in:#FFFFFF;--bubble-out:#DCF8C6;
-  --header:#1A1A1A;
-  --text:#111;--text2:#667781;
-  --border:#E0E0E0;
-}
+:root{--rojo:#C8102E;--rojo-dark:#A00D24;--bg:#E5DDD5;--text:#111;--text2:#667781;--border:#E0E0E0}
 html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
-#screen-chat{display:flex;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:var(--bg)}
-.chat-header{background:var(--header);padding:8px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:3px solid var(--rojo)}
-.hdr-avatar{width:40px;height:40px;border-radius:50%;background:var(--rojo);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:white;flex-shrink:0}
-.hdr-info{flex:1;min-width:0}
-.hdr-name{font-size:15px;font-weight:600;color:white}
-.hdr-status{font-size:11.5px;color:#4ade80;display:flex;align-items:center;gap:4px}
-.sdot{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
+#sc{display:flex;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:var(--bg)}
+.chdr{background:#1A1A1A;padding:8px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:3px solid var(--rojo)}
+.hav{width:40px;height:40px;border-radius:50%;background:var(--rojo);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:white;flex-shrink:0}
+.hin{flex:1;min-width:0}
+.hn{font-size:15px;font-weight:600;color:white}
+.hs{font-size:11.5px;color:#4ade80;display:flex;align-items:center;gap:4px}
+.sd{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.hdr-btns{display:flex;gap:6px}
-.hbtn{background:rgba(255,255,255,0.1);border:none;border-radius:8px;padding:7px 11px;color:white;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;transition:background .15s;display:flex;align-items:center;gap:5px;white-space:nowrap}
-.hbtn:hover{background:rgba(255,255,255,0.2)}
-#drive-banner{background:#FEF3C7;border-bottom:1px solid #F59E0B;padding:7px 14px;font-size:12px;color:#92400E;display:none;align-items:center;gap:8px;flex-shrink:0}
+.hbtn{background:rgba(255,255,255,0.12);border:none;border-radius:8px;padding:7px 11px;color:white;font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap}
+.hbtn:hover{background:rgba(255,255,255,0.22)}
+#dbanner{background:#FEF3C7;border-bottom:1px solid #F59E0B;padding:7px 14px;font-size:12px;color:#92400E;display:none;align-items:center;gap:8px;flex-shrink:0}
 .spin{width:11px;height:11px;border:2px solid #F59E0B;border-top-color:transparent;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
-.messages{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:2px;scroll-behavior:smooth}
-.messages::-webkit-scrollbar{width:3px}
-.messages::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.2);border-radius:3px}
+.msgs{flex:1;overflow-y:auto;padding:12px 10px;display:flex;flex-direction:column;gap:2px;scroll-behavior:smooth}
+.msgs::-webkit-scrollbar{width:3px}
+.msgs::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.2);border-radius:3px}
 .dsep{text-align:center;margin:10px 0}
-.dsep span{background:rgba(255,255,255,0.75);border-radius:7px;padding:3px 12px;font-size:11.5px;color:var(--text2);box-shadow:0 1px 1px rgba(0,0,0,.06)}
-.mrow{display:flex;margin-bottom:1px;padding:0 4px}
-.mrow.out{justify-content:flex-end}
-.mrow.in{justify-content:flex-start}
-.mrow.gap{margin-top:8px}
-.bubble{max-width:72%;padding:7px 9px 5px;border-radius:8px;font-size:14px;line-height:1.55;position:relative;word-wrap:break-word;box-shadow:0 1px 1px rgba(0,0,0,.12)}
-.mrow.in .bubble{background:var(--bubble-in);color:var(--text);border-top-left-radius:0}
-.mrow.out .bubble{background:var(--bubble-out);color:#111;border-top-right-radius:0}
-.bsender{font-size:12px;font-weight:600;color:var(--rojo);margin-bottom:3px}
-.bubble strong{font-weight:600}
-.mrow.in .bubble strong{color:var(--rojo)}
-.bubble code{background:rgba(0,0,0,.07);border-radius:3px;padding:1px 5px;font-size:12px;font-family:monospace}
-.bubble em{font-style:italic;opacity:.85}
-.btime{font-size:10.5px;opacity:.6;text-align:right;margin-top:2px}
-.mrow.out .btime::after{content:' ✓✓';font-size:10px}
-.typing-bbl{background:white;padding:10px 13px;border-radius:8px;border-top-left-radius:0;display:flex;gap:4px;align-items:center;box-shadow:0 1px 1px rgba(0,0,0,.1)}
+.dsep span{background:rgba(255,255,255,0.75);border-radius:7px;padding:3px 12px;font-size:11.5px;color:var(--text2)}
+.mr{display:flex;margin-bottom:1px;padding:0 4px}
+.mr.out{justify-content:flex-end}
+.mr.in{justify-content:flex-start}
+.mr.gap{margin-top:8px}
+.bbl{max-width:72%;padding:7px 9px 5px;border-radius:8px;font-size:14px;line-height:1.55;word-wrap:break-word;box-shadow:0 1px 1px rgba(0,0,0,.12)}
+.mr.in .bbl{background:#fff;color:var(--text);border-top-left-radius:0}
+.mr.out .bbl{background:#DCF8C6;color:#111;border-top-right-radius:0}
+.bsndr{font-size:12px;font-weight:600;color:var(--rojo);margin-bottom:3px}
+.bbl strong{font-weight:600}
+.mr.in .bbl strong{color:var(--rojo)}
+.bbl code{background:rgba(0,0,0,.07);border-radius:3px;padding:1px 5px;font-size:12px;font-family:monospace}
+.bbl em{font-style:italic;opacity:.85}
+.bt{font-size:10.5px;opacity:.6;text-align:right;margin-top:2px}
+.mr.out .bt::after{content:' ✓✓';font-size:10px}
+.tbbl{background:#fff;padding:10px 13px;border-radius:8px;border-top-left-radius:0;display:flex;gap:4px;align-items:center;box-shadow:0 1px 1px rgba(0,0,0,.1)}
 .td{width:7px;height:7px;background:#B0B0B0;border-radius:50%;animation:td 1.2s infinite}
 .td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
 @keyframes td{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
 .quick{padding:8px 10px;display:flex;gap:6px;flex-wrap:wrap;background:rgba(229,221,213,.9);border-top:1px solid rgba(0,0,0,.08);flex-shrink:0}
-.qbtn{padding:6px 12px;border-radius:18px;border:1px solid rgba(0,0,0,.15);background:white;font-family:'Inter',sans-serif;font-size:12px;color:var(--text);cursor:pointer;transition:all .15s;white-space:nowrap}
-.qbtn:hover{border-color:var(--rojo);color:var(--rojo);background:#FEF0F2}
-.input-bar{background:var(--bg);padding:7px 10px 10px;display:flex;align-items:flex-end;gap:8px;flex-shrink:0}
-.input-box{flex:1;background:white;border-radius:22px;padding:9px 14px;box-shadow:0 1px 2px rgba(0,0,0,.08);display:flex;align-items:center}
-#chatInput{flex:1;border:none;background:none;font-family:'Inter',sans-serif;font-size:15px;color:var(--text);outline:none;resize:none;max-height:110px;line-height:1.4}
-#chatInput::placeholder{color:#AAA}
-.send-btn{width:44px;height:44px;border-radius:50%;background:var(--rojo);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .15s;flex-shrink:0}
-.send-btn:hover{background:var(--rojo-dark)}
-.send-btn:active{transform:scale(.94)}
-#screen-budget{display:none;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:#F5F5F5}
-.back-hdr{background:var(--header);padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid var(--rojo)}
-.back-btn{background:none;border:none;color:white;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:14px;padding:4px 0}
-.back-ttl{font-size:15px;font-weight:600;color:white;font-family:'Inter',sans-serif}
+.qb{padding:6px 12px;border-radius:18px;border:1px solid rgba(0,0,0,.15);background:#fff;font-family:'Inter',sans-serif;font-size:12px;color:var(--text);cursor:pointer;white-space:nowrap}
+.qb:hover{border-color:var(--rojo);color:var(--rojo);background:#FEF0F2}
+.ibar{background:var(--bg);padding:7px 10px 10px;display:flex;align-items:flex-end;gap:8px;flex-shrink:0}
+.ibox{flex:1;background:#fff;border-radius:22px;padding:9px 14px;box-shadow:0 1px 2px rgba(0,0,0,.08);display:flex;align-items:center}
+#ci{flex:1;border:none;background:none;font-family:'Inter',sans-serif;font-size:15px;color:var(--text);outline:none;resize:none;max-height:110px;line-height:1.4}
+#ci::placeholder{color:#AAA}
+.sbtn{width:44px;height:44px;border-radius:50%;background:var(--rojo);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.sbtn:hover{background:var(--rojo-dark)}
+.sbtn:active{transform:scale(.94)}
+#sb{display:none;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:#F5F5F5}
+.bhdr{background:#1A1A1A;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid var(--rojo)}
+.bbtn{background:none;border:none;color:white;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:14px;padding:4px 0}
+.bttl{font-size:15px;font-weight:600;color:white;font-family:'Inter',sans-serif}
 .bscroll{flex:1;overflow-y:auto;padding:14px}
 .bscroll::-webkit-scrollbar{width:3px}
-.bscroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:3px}
-.bcard{background:white;border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
-.bcard-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+.bc{background:#fff;border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.bct{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
 .fg{margin-bottom:10px}
 .fg label{display:block;font-size:11.5px;color:var(--text2);margin-bottom:4px;font-weight:500}
-.fg input,.fg select,.fg textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:white;outline:none;transition:border-color .2s}
+.fg input,.fg select,.fg textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:'Inter',sans-serif;font-size:14px;color:var(--text);background:#fff;outline:none;transition:border-color .2s}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--rojo)}
 .fg textarea{resize:vertical;min-height:60px}
-.fgrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.trow{display:flex;align-items:center;justify-content:space-between;background:white;border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer}
-.trow-text .trow-label{font-size:14px;font-weight:500;color:var(--text)}
-.trow-text .trow-sub{font-size:11.5px;color:var(--text2);margin-top:2px}
+.fgr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.trow{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer}
+.trl{font-size:14px;font-weight:500;color:var(--text)}
+.trs{font-size:11.5px;color:var(--text2);margin-top:2px}
 .tog{position:relative;width:40px;height:22px;flex-shrink:0}
 .tog input{opacity:0;width:0;height:0}
-.togsl{position:absolute;cursor:pointer;inset:0;background:#CCC;border-radius:22px;transition:.25s}
-.togsl::before{position:absolute;content:'';height:16px;width:16px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.25s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
-input:checked+.togsl{background:var(--rojo)}
-input:checked+.togsl::before{transform:translateX(18px)}
-.preview{background:#1A1A1A;border-radius:14px;padding:15px;margin-bottom:12px}
-.prev-lbl{font-size:10px;font-weight:600;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
-.prow{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #2A2A2A;font-size:13.5px;color:#CCC}
-.prow:last-child{border:none}
-.prow.ptot{font-size:18px;font-weight:700;color:var(--rojo);margin-top:4px;padding-top:8px;border-top:1px solid #333}
-.btn-gen{width:100%;padding:14px;background:var(--rojo);color:white;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background .15s;margin-bottom:24px}
-.btn-gen:hover{background:var(--rojo-dark)}
-.btn-gen:disabled{background:#CCC;cursor:default}
-.snack{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#1A1A1A;color:white;padding:10px 20px;border-radius:22px;font-size:13px;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.tsl{position:absolute;cursor:pointer;inset:0;background:#CCC;border-radius:22px;transition:.25s}
+.tsl::before{position:absolute;content:'';height:16px;width:16px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.25s}
+input:checked+.tsl{background:var(--rojo)}
+input:checked+.tsl::before{transform:translateX(18px)}
+.prev{background:#1A1A1A;border-radius:14px;padding:15px;margin-bottom:12px}
+.plbl{font-size:10px;font-weight:600;color:#555;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.pr{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #2A2A2A;font-size:13.5px;color:#CCC}
+.pr:last-child{border:none}
+.pr.pt{font-size:18px;font-weight:700;color:var(--rojo);margin-top:4px;padding-top:8px;border-top:1px solid #333}
+.bgen{width:100%;padding:14px;background:var(--rojo);color:#fff;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;cursor:pointer;margin-bottom:24px}
+.bgen:hover{background:var(--rojo-dark)}
+.bgen:disabled{background:#CCC;cursor:default}
+.snack{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#1A1A1A;color:#fff;padding:10px 20px;border-radius:22px;font-size:13px;opacity:0;transition:all .3s;z-index:999;white-space:nowrap}
 .snack.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:600px){
-  .bubble{max-width:86%}
-  .hbtn span{display:none}
-  .fgrow{grid-template-columns:1fr}
-}
+.seclbl{padding:0 4px 8px;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px}
+@media(max-width:600px){.bbl{max-width:86%}.hbtn span{display:none}.fgr{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 
-<div id="screen-chat">
-  <div class="chat-header">
-    <div class="hdr-avatar">Ru</div>
-    <div class="hdr-info">
-      <div class="hdr-name">Ruthina</div>
-      <div class="hdr-status"><div class="sdot"></div><span id="status-txt">En línea</span></div>
+<div id="sc">
+  <div class="chdr">
+    <div class="hav">Ru</div>
+    <div class="hin">
+      <div class="hn">Ruthina</div>
+      <div class="hs"><div class="sd"></div><span id="stxt">En línea</span></div>
     </div>
-    <div class="hdr-btns">
-      <button class="hbtn" onclick="openBudget()">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        <span>Presupuesto</span>
-      </button>
-    </div>
+    <button class="hbtn" onclick="openB()">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span>Presupuesto</span>
+    </button>
   </div>
-  <div id="drive-banner"><div class="spin"></div>Cargando datos de Drive...</div>
-  <div class="messages" id="messages">
-    <div class="dsep"><span>Hoy</span></div>
-  </div>
+  <div id="dbanner"><div class="spin"></div>Cargando datos de Drive...</div>
+  <div class="msgs" id="msgs"><div class="dsep"><span>Hoy</span></div></div>
   <div class="quick" id="quick">
-    <button class="qbtn" onclick="sendQ('¿Cuáles son los autos nuevos disponibles con precios?')">🆕 Nuevos</button>
-    <button class="qbtn" onclick="sendQ('Contame todo sobre el JMC Vigus Pro')">🚙 JMC Vigus</button>
-    <button class="qbtn" onclick="sendQ('¿Cuáles son los usados más económicos?')">💰 Usados</button>
-    <button class="qbtn" onclick="sendQ('¿Cómo funciona la financiación en cuotas?')">💳 Crédito</button>
-    <button class="qbtn" onclick="sendQ('¿Qué modelos Shineray tienen disponibles?')">⚡ Shineray</button>
+    <button class="qb" onclick="sendQ('¿Cuáles son los autos nuevos disponibles con precios?')">🆕 Nuevos</button>
+    <button class="qb" onclick="sendQ('Contame todo sobre el JMC Vigus Pro')">🚙 JMC Vigus</button>
+    <button class="qb" onclick="sendQ('¿Cuáles son los usados más económicos?')">💰 Usados</button>
+    <button class="qb" onclick="sendQ('¿Cómo funciona la financiación?')">💳 Crédito</button>
+    <button class="qb" onclick="sendQ('¿Qué modelos Shineray tienen?')">⚡ Shineray</button>
   </div>
-  <div class="input-bar">
-    <div class="input-box">
-      <textarea id="chatInput" placeholder="Escribí tu consulta..." rows="1"
-        onkeydown="hKey(event)" oninput="aResize(this)"></textarea>
+  <div class="ibar">
+    <div class="ibox">
+      <textarea id="ci" placeholder="Escribí tu consulta..." rows="1" onkeydown="hKey(event)" oninput="aRz(this)"></textarea>
     </div>
-    <button class="send-btn" onclick="sendMsg()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
-        <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-      </svg>
+    <button class="sbtn" onclick="sendMsg()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
     </button>
   </div>
 </div>
 
-<div id="screen-budget">
-  <div class="back-hdr">
-    <button class="back-btn" onclick="closeBudget()">
+<div id="sb">
+  <div class="bhdr">
+    <button class="bbtn" onclick="closeB()">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
       Volver
     </button>
-    <div class="back-ttl">Armar Presupuesto</div>
+    <div class="bttl">Armar Presupuesto</div>
   </div>
   <div class="bscroll">
-    <div class="bcard">
-      <div class="bcard-title">Cliente</div>
-      <div class="fgrow">
-        <div class="fg"><label>Nombre *</label><input id="b-client" type="text" placeholder="Juan Pérez" oninput="upP()"></div>
-        <div class="fg"><label>Teléfono</label><input id="b-phone" type="text" placeholder="+54 351..."></div>
-        <div class="fg"><label>DNI</label><input id="b-dni" type="text" placeholder="XX.XXX.XXX"></div>
-        <div class="fg"><label>Asesor</label><input id="b-vendedor" type="text" placeholder="Tu nombre"></div>
+    <div class="bc">
+      <div class="bct">Cliente</div>
+      <div class="fgr">
+        <div class="fg"><label>Nombre *</label><input id="bc" type="text" placeholder="Juan Pérez" oninput="upP()"></div>
+        <div class="fg"><label>Teléfono</label><input id="bf" type="text" placeholder="+54 351..."></div>
+        <div class="fg"><label>DNI</label><input id="bd" type="text" placeholder="XX.XXX.XXX"></div>
+        <div class="fg"><label>Asesor</label><input id="bv" type="text" placeholder="Tu nombre"></div>
       </div>
     </div>
-    <div class="bcard">
-      <div class="bcard-title">Vehículo</div>
-      <div class="fg"><label>Marca y Modelo *</label><input id="b-model" type="text" placeholder="JMC Vigus Pro 4x4" oninput="upP()"></div>
-      <div class="fgrow">
-        <div class="fg"><label>Año</label><input id="b-year" type="text" placeholder="2024"></div>
-        <div class="fg"><label>Color</label><input id="b-color" type="text" placeholder="Blanco"></div>
-        <div class="fg"><label>Km</label><input id="b-km" type="number" placeholder="0"></div>
-        <div class="fg"><label>Patente</label><input id="b-patente" type="text" placeholder="AA000BB"></div>
-        <div class="fg"><label>Precio Lista (ARS) *</label><input id="b-price" type="number" placeholder="12500000" oninput="upP()"></div>
-        <div class="fg"><label>Precio Contado (ARS)</label><input id="b-cash" type="number" placeholder="11800000" oninput="upP()"></div>
+    <div class="bc">
+      <div class="bct">Vehículo</div>
+      <div class="fg"><label>Marca y Modelo *</label><input id="bm" type="text" placeholder="JMC Vigus Pro 4x4" oninput="upP()"></div>
+      <div class="fgr">
+        <div class="fg"><label>Año</label><input id="by" type="text" placeholder="2024"></div>
+        <div class="fg"><label>Color</label><input id="bco" type="text" placeholder="Blanco"></div>
+        <div class="fg"><label>Km</label><input id="bk" type="number" placeholder="0"></div>
+        <div class="fg"><label>Patente</label><input id="bpa" type="text" placeholder="AA000BB"></div>
+        <div class="fg"><label>Precio Lista (ARS) *</label><input id="bpl" type="number" placeholder="12500000" oninput="upP()"></div>
+        <div class="fg"><label>Precio Contado (ARS)</label><input id="bpc" type="number" placeholder="11800000" oninput="upP()"></div>
       </div>
-      <div class="fg"><label>Observaciones</label><textarea id="b-notes" placeholder="Equipamiento, garantía..."></textarea></div>
+      <div class="fg"><label>Observaciones</label><textarea id="bno" placeholder="Equipamiento, garantía..."></textarea></div>
     </div>
-    <div class="bcard-title" style="padding:0 4px 8px;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px">Permuta</div>
-    <div class="trow" onclick="toggleChk('chk-p','sec-p')">
-      <div class="trow-text">
-        <div class="trow-label">Entrega vehículo en permuta</div>
-        <div class="trow-sub">Activá si el cliente permuta su auto</div>
-      </div>
+    <div class="seclbl">Permuta</div>
+    <div class="trow" onclick="tChk('cp','sp')">
+      <div><div class="trl">Entrega vehículo en permuta</div><div class="trs">Activá si el cliente permuta su auto</div></div>
       <label class="tog" onclick="event.stopPropagation()">
-        <input type="checkbox" id="chk-p" onchange="showSec('sec-p',this.checked);upP()">
-        <span class="togsl"></span>
+        <input type="checkbox" id="cp" onchange="sSec('sp',this.checked);upP()"><span class="tsl"></span>
       </label>
     </div>
-    <div id="sec-p" style="display:none" class="bcard">
-      <div class="fg"><label>Vehículo a permutar</label><input id="b-perm-model" type="text" placeholder="Chevrolet Cruze 2019" oninput="upP()"></div>
-      <div class="fgrow">
-        <div class="fg"><label>Año</label><input id="b-perm-year" type="text" placeholder="2019"></div>
-        <div class="fg"><label>Km</label><input id="b-perm-km" type="number" placeholder="80000"></div>
+    <div id="sp" style="display:none" class="bc">
+      <div class="fg"><label>Vehículo a permutar</label><input id="bpm" type="text" placeholder="Chevrolet Cruze 2019" oninput="upP()"></div>
+      <div class="fgr">
+        <div class="fg"><label>Año</label><input id="bpy" type="text" placeholder="2019"></div>
+        <div class="fg"><label>Km</label><input id="bpk" type="number" placeholder="80000"></div>
       </div>
-      <div class="fg"><label>Valor tasación (ARS)</label><input id="b-perm-val" type="number" placeholder="5000000" oninput="upP()"></div>
+      <div class="fg"><label>Valor tasación (ARS)</label><input id="bpv" type="number" placeholder="5000000" oninput="upP()"></div>
     </div>
-    <div class="bcard-title" style="padding:0 4px 8px;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px">Financiación</div>
-    <div class="trow" onclick="toggleChk('chk-c','sec-c')">
-      <div class="trow-text">
-        <div class="trow-label">Financia en cuotas</div>
-        <div class="trow-sub">Activá si el cliente toma crédito</div>
-      </div>
+    <div class="seclbl">Financiación</div>
+    <div class="trow" onclick="tChk('cc','sc2')">
+      <div><div class="trl">Financia en cuotas</div><div class="trs">Activá si el cliente toma crédito</div></div>
       <label class="tog" onclick="event.stopPropagation()">
-        <input type="checkbox" id="chk-c" onchange="showSec('sec-c',this.checked);upP()">
-        <span class="togsl"></span>
+        <input type="checkbox" id="cc" onchange="sSec('sc2',this.checked);upP()"><span class="tsl"></span>
       </label>
     </div>
-    <div id="sec-c" style="display:none" class="bcard">
-      <div class="fg"><label>Entidad Financiera</label><input id="b-banco" type="text" placeholder="Banco Galicia, Santander..."></div>
-      <div class="fgrow">
-        <div class="fg"><label>Monto a financiar</label><input id="b-fin" type="number" placeholder="8000000" oninput="upP()"></div>
-        <div class="fg"><label>Anticipo</label><input id="b-ant" type="number" placeholder="3000000"></div>
-        <div class="fg"><label>TNA %</label><input id="b-tna" type="number" placeholder="60" oninput="upP()"></div>
+    <div id="sc2" style="display:none" class="bc">
+      <div class="fg"><label>Entidad Financiera</label><input id="bba" type="text" placeholder="Banco Galicia, Santander..."></div>
+      <div class="fgr">
+        <div class="fg"><label>Monto a financiar</label><input id="bfi" type="number" placeholder="8000000" oninput="upP()"></div>
+        <div class="fg"><label>Anticipo</label><input id="ban" type="number" placeholder="3000000"></div>
+        <div class="fg"><label>TNA %</label><input id="btn" type="number" placeholder="60" oninput="upP()"></div>
         <div class="fg"><label>Cuotas</label>
-          <select id="b-cuotas" onchange="upP()">
+          <select id="bcu" onchange="upP()">
             <option value="12">12 cuotas</option><option value="18">18 cuotas</option>
             <option value="24">24 cuotas</option><option value="36">36 cuotas</option>
             <option value="48">48 cuotas</option><option value="60">60 cuotas</option>
@@ -221,110 +193,234 @@ input:checked+.togsl::before{transform:translateX(18px)}
         </div>
       </div>
     </div>
-    <div class="preview">
-      <div class="prev-lbl">RESUMEN</div>
-      <div class="prow"><span>Vehículo</span><span id="pv-m" style="color:#ccc;text-align:right;max-width:55%">—</span></div>
-      <div class="prow"><span>Precio lista</span><span id="pv-p">—</span></div>
-      <div class="prow"><span>Precio contado</span><span id="pv-c" style="color:#4ade80">—</span></div>
-      <div class="prow" id="pv-pr" style="display:none"><span>Permuta</span><span id="pv-pv" style="color:#fb923c">—</span></div>
-      <div class="prow" id="pv-cr" style="display:none"><span>Cuota est.</span><span id="pv-cu" style="color:#60a5fa">—</span></div>
-      <div class="prow ptot"><span>A pagar</span><span id="pv-t">—</span></div>
+    <div class="prev">
+      <div class="plbl">RESUMEN</div>
+      <div class="pr"><span>Vehículo</span><span id="pvm" style="color:#ccc;text-align:right;max-width:55%">—</span></div>
+      <div class="pr"><span>Precio lista</span><span id="pvp">—</span></div>
+      <div class="pr"><span>Precio contado</span><span id="pvc" style="color:#4ade80">—</span></div>
+      <div class="pr" id="pvpr" style="display:none"><span>Permuta</span><span id="pvpv" style="color:#fb923c">—</span></div>
+      <div class="pr" id="pvcr" style="display:none"><span>Cuota est.</span><span id="pvcu" style="color:#60a5fa">—</span></div>
+      <div class="pr pt"><span>A pagar</span><span id="pvt">—</span></div>
     </div>
-    <div class="bcard">
-      <div class="fg"><label>Vigencia del presupuesto</label>
-        <select id="b-vig">
-          <option value="24 horas">24 horas</option>
-          <option value="48 horas">48 horas</option>
-          <option value="72 horas" selected>72 horas</option>
-          <option value="7 días">7 días</option>
+    <div class="bc">
+      <div class="fg"><label>Vigencia</label>
+        <select id="bvi">
+          <option value="24 horas">24 horas</option><option value="48 horas">48 horas</option>
+          <option value="72 horas" selected>72 horas</option><option value="7 días">7 días</option>
         </select>
       </div>
     </div>
-    <button class="btn-gen" id="btn-gen" onclick="genPDF()">⬇ Generar PDF del Presupuesto</button>
+    <button class="bgen" id="bgen" onclick="genPDF()">⬇ Generar PDF del Presupuesto</button>
   </div>
 </div>
 
-<div class="snack" id="snack"></div>
+<div class="snack" id="snk"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="config.js"></script>
-<script src="js/dataloader.js"></script>
-<script src="js/chat.js"></script>
-<script src="js/budget.js"></script>
 <script>
-function openBudget(){document.getElementById('screen-chat').style.display='none';document.getElementById('screen-budget').style.display='flex'}
-function closeBudget(){document.getElementById('screen-budget').style.display='none';document.getElementById('screen-chat').style.display='flex'}
-let typing=false,lastFrom=null,firstMsg=true;
+const API_KEY="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";
+const EMPRESA={nombre:"Tutu Automotores",ciudad:"Córdoba, Argentina",telefono:"+54 351 XXX-XXXX",web:"www.tutuautomotores.com.ar"};
+const SYSTEM=`Sos Ruthina, la asistente interna de ventas de Tutu Automotores, una concesionaria con 4 sucursales en Córdoba, Argentina. Sos especialista en autos nuevos (JMC y Shineray) y usados. Respondés en español argentino, de manera profesional pero cercana. Ayudás con precios, características, comparaciones, financiación y permutas. Usá emojis con moderación. Si no sabés algo, decilo claramente.`;
+const PDFS=[
+  {id:"1tDasFWX6Vt3yLlBrZ73ljVGiLxskwn5H",label:"Archivo 1"},
+  {id:"1FEWgIilneb-OzN3cCa5rUHDBJupKclQ1",label:"Archivo 2"},
+  {id:"1oZXOa4wbBc7CqEbPjDUhDeazT8Ji1_j9",label:"Archivo 3"},
+  {id:"1HLz5nYZh6vzB5i5MYEt7-s5Fqas9uZ5B",label:"Archivo 4"},
+  {id:"1dbbYAicC5XFx7r_N4ENNegKhN3kOi9PW",label:"Archivo 5"},
+  {id:"17rg0xBgZebIMomZgvFh2PiGiTQjqOXkc",label:"Archivo 6"},
+  {id:"1ve6QvdzYqMRuW9qnoKYa6YWjpwr-xh64",label:"Archivo 7"},
+  {id:"1p6xIir5cNLB1xf2CLbMzYUM5-AsbvhJv",label:"Archivo 8"},
+  {id:"1wf4CPO7gs97nrGYE30hXmKhdgO3T2nXL",label:"Archivo 9"},
+  {id:"1tnb_pxfiyrky0f6bLaJzkgtxAsD8AsoK",label:"Archivo 10"},
+  {id:"1e3jpdfiIwIf9TUN5-5iVfMmFNGUcpy9P",label:"Archivo 11"},
+  {id:"10eNLZeNc4Cltab8YtqJvPIRY61y6UlX_",label:"Archivo 12"}
+];
+let driveCtx=null,history=[],typing=false,lastFrom=null,firstMsg=true;
+
+async function loadDrive(){
+  const banner=document.getElementById('dbanner');
+  banner.style.display='flex';
+  let ctx=[];
+  for(const pdf of PDFS){
+    try{
+      const res=await fetch(`https://drive.google.com/uc?export=download&id=${pdf.id}`);
+      if(!res.ok){ctx.push(`[${pdf.label}: no disponible]`);continue}
+      const blob=await res.blob();
+      const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(blob)});
+      ctx.push({type:'pdf',b64,label:pdf.label});
+    }catch(e){ctx.push(`[${pdf.label}: error]`)}
+  }
+  driveCtx=ctx;
+  banner.style.display='none';
+}
+
+async function callClaude(userText){
+  const isFirst=history.length===0;
+  history.push({role:'user',content:userText});
+  let messages;
+  if(isFirst&&driveCtx){
+    const docs=driveCtx.filter(x=>x.type==='pdf');
+    if(docs.length>0){
+      messages=[{role:'user',content:[
+        ...docs.map(p=>({type:'document',source:{type:'base64',media_type:'application/pdf',data:p.b64},title:p.label})),
+        {type:'text',text:userText}
+      ]}];
+    }else{
+      messages=history.map(m=>({role:m.role,content:m.content}));
+    }
+  }else{
+    messages=history.map(m=>({role:m.role,content:m.content}));
+  }
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','x-api-key':API_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1024,system:SYSTEM,messages})
+  });
+  if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.error?.message||`HTTP ${res.status}`)}
+  const data=await res.json();
+  const reply=data.content?.[0]?.text||'No pude responder.';
+  history.push({role:'assistant',content:reply});
+  if(history.length>20)history=history.slice(-20);
+  return reply;
+}
+
+function openB(){document.getElementById('sc').style.display='none';document.getElementById('sb').style.display='flex'}
+function closeB(){document.getElementById('sb').style.display='none';document.getElementById('sc').style.display='flex'}
 function hKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}}
-function aResize(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px'}
-function sendQ(t){document.getElementById('chatInput').value=t;sendMsg()}
+function aRz(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px'}
+function sendQ(t){document.getElementById('ci').value=t;sendMsg()}
+
 function addBubble(html,from){
-  const msgs=document.getElementById('messages');
+  const msgs=document.getElementById('msgs');
   const now=new Date().toLocaleTimeString('es-AR',{hour:'2-digit',minute:'2-digit'});
   const isOut=from==='user',isGap=lastFrom!==from;
   lastFrom=from;
   const row=document.createElement('div');
-  row.className='mrow '+(isOut?'out':'in')+(isGap?' gap':'');
+  row.className='mr '+(isOut?'out':'in')+(isGap?' gap':'');
   const txt=isOut?html:html.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/`(.*?)`/g,'<code>$1</code>').replace(/\n/g,'<br>');
-  const sender=(!isOut&&isGap)?'<div class="bsender">Ruthina</div>':'';
-  row.innerHTML=`<div class="bubble">${sender}${txt}<div class="btime">${now}</div></div>`;
+  const sndr=(!isOut&&isGap)?'<div class="bsndr">Ruthina</div>':'';
+  row.innerHTML=`<div class="bbl">${sndr}${txt}<div class="bt">${now}</div></div>`;
   msgs.appendChild(row);
   if(isOut&&firstMsg){document.getElementById('quick').style.display='none';firstMsg=false}
   msgs.scrollTop=msgs.scrollHeight;
 }
-function showTyping(){
-  const m=document.getElementById('messages'),d=document.createElement('div');
-  d.className='mrow in gap';d.id='typ';
-  d.innerHTML='<div class="typing-bbl"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
-  m.appendChild(d);m.scrollTop=m.scrollHeight;
-}
-function hideTyping(){const t=document.getElementById('typ');if(t)t.remove()}
+function showTyp(){const m=document.getElementById('msgs'),d=document.createElement('div');d.className='mr in gap';d.id='typ';d.innerHTML='<div class="tbbl"><div class="td"></div><div class="td"></div><div class="td"></div></div>';m.appendChild(d);m.scrollTop=m.scrollHeight}
+function hideTyp(){const t=document.getElementById('typ');if(t)t.remove()}
+
 async function sendMsg(){
   if(typing)return;
-  const inp=document.getElementById('chatInput');
-  const txt=inp.value.trim();if(!txt)return;
+  const inp=document.getElementById('ci');
+  const txt=inp.value.trim();
+  if(!txt)return;
   inp.value='';inp.style.height='auto';
   typing=true;
   addBubble(txt,'user');
-  document.getElementById('status-txt').textContent='escribiendo...';
-  showTyping();
-  try{
-    const r=await ChatEngine.sendMessage(txt);
-    hideTyping();addBubble(r,'ruthina');
-  }catch(e){
-    hideTyping();
-    addBubble(e.message?.includes('401')?'⚠️ API Key incorrecta.':'⚠️ Error: '+e.message,'ruthina');
-  }
+  document.getElementById('stxt').textContent='escribiendo...';
+  showTyp();
+  try{const r=await callClaude(txt);hideTyp();addBubble(r,'ruthina')}
+  catch(e){hideTyp();addBubble(e.message?.includes('401')?'⚠️ API Key incorrecta.':'⚠️ Error: '+e.message,'ruthina')}
   typing=false;
-  document.getElementById('status-txt').textContent='En línea';
+  document.getElementById('stxt').textContent='En línea';
 }
-function toggleChk(cid,sid){const c=document.getElementById(cid);c.checked=!c.checked;showSec(sid,c.checked);upP()}
-function showSec(id,v){document.getElementById(id).style.display=v?'block':'none'}
+
+function tChk(cid,sid){const c=document.getElementById(cid);c.checked=!c.checked;sSec(sid,c.checked);upP()}
+function sSec(id,v){const el=document.getElementById(id);if(el)el.style.display=v?'block':'none'}
 const gv=id=>document.getElementById(id)?.value?.trim()||'';
 const gn=id=>parseFloat(document.getElementById(id)?.value)||0;
 const gc=id=>document.getElementById(id)?.checked||false;
-const fmt=n=>n?'$ '+Math.round(n).toLocaleString('es-AR'):'—';
+const fmtP=n=>n?'$ '+Math.round(n).toLocaleString('es-AR'):'—';
+
 function upP(){
-  const price=gn('b-price'),cash=gn('b-cash');
-  const perm=gc('chk-p'),pv=gn('b-perm-val');
-  const cred=gc('chk-c'),tna=gn('b-tna'),cuotas=parseInt(gv('b-cuotas'))||12,fin=gn('b-fin');
+  const price=gn('bpl'),cash=gn('bpc'),perm=gc('cp'),pv=gn('bpv');
+  const cred=gc('cc'),tna=gn('btn'),cuotas=parseInt(gv('bcu'))||12,fin=gn('bfi');
   const base=cash||price,diff=base-(perm?pv:0);
-  document.getElementById('pv-m').textContent=gv('b-model')||'—';
-  document.getElementById('pv-p').textContent=fmt(price);
-  document.getElementById('pv-c').textContent=fmt(cash);
-  const pr=document.getElementById('pv-pr');pr.style.display=perm&&pv?'flex':'none';
-  document.getElementById('pv-pv').textContent='- '+fmt(pv);
-  const cr=document.getElementById('pv-cr');
-  if(cred&&fin&&tna){const tm=Math.pow(1+tna/100,1/12)-1;const c=fin*tm/(1-Math.pow(1+tm,-cuotas));document.getElementById('pv-cu').textContent=fmt(Math.round(c))+' x '+cuotas;cr.style.display='flex'}else cr.style.display='none';
-  document.getElementById('pv-t').textContent=diff>0?fmt(diff):'—';
+  document.getElementById('pvm').textContent=gv('bm')||'—';
+  document.getElementById('pvp').textContent=fmtP(price);
+  document.getElementById('pvc').textContent=fmtP(cash);
+  document.getElementById('pvpr').style.display=perm&&pv?'flex':'none';
+  document.getElementById('pvpv').textContent='- '+fmtP(pv);
+  const cr=document.getElementById('pvcr');
+  if(cred&&fin&&tna){const tm=Math.pow(1+tna/100,1/12)-1;const c=fin*tm/(1-Math.pow(1+tm,-cuotas));document.getElementById('pvcu').textContent=fmtP(Math.round(c))+' x '+cuotas;cr.style.display='flex'}
+  else cr.style.display='none';
+  document.getElementById('pvt').textContent=diff>0?fmtP(diff):'—';
 }
+
 function genPDF(){
-  const btn=document.getElementById('btn-gen');
-  if(!gv('b-model')&&!gn('b-price')){snk('⚠️ Ingresá modelo y precio');return}
+  const btn=document.getElementById('bgen');
+  if(!gv('bm')&&!gn('bpl')){snkShow('⚠️ Ingresá modelo y precio');return}
   btn.disabled=true;btn.textContent='Generando...';
-  try{BudgetPDF.generate();snk('✅ PDF descargado')}
-  catch(e){snk('❌ Error: '+e.message);console.error(e)}
+  try{
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({unit:'mm',format:'a4'});
+    const W=210,H=297,M=18;let y=20;const E=EMPRESA;
+    const d={cliente:gv('bc'),telefono:gv('bf'),dni:gv('bd'),vendedor:gv('bv'),modelo:gv('bm'),anio:gv('by'),color:gv('bco'),km:gv('bk'),patente:gv('bpa'),notas:gv('bno'),precioLista:gn('bpl'),precioContado:gn('bpc'),tienePermuta:gc('cp'),permuModelo:gv('bpm'),permuAnio:gv('bpy'),permuValor:gn('bpv'),tieneCredito:gc('cc'),banco:gv('bba'),cuotas:parseInt(gv('bcu'))||12,tna:gn('btn'),monto:gn('bfi'),anticipo:gn('ban'),vigencia:gv('bvi'),fecha:new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'})};
+    const base=d.precioContado||d.precioLista,diff=base-(d.tienePermuta?d.permuValor:0);
+    let cuotaEst=0;
+    if(d.tieneCredito&&d.monto&&d.tna){const tm=Math.pow(1+d.tna/100,1/12)-1;cuotaEst=d.monto*tm/(1-Math.pow(1+tm,-d.cuotas))}
+    const fmt=n=>n?'$ '+Math.round(n).toLocaleString('es-AR'):'—';
+    doc.setFillColor(20,20,20);doc.rect(0,0,W,48,'F');
+    doc.setFillColor(200,16,46);doc.rect(0,44,W,4,'F');
+    doc.setFillColor(200,16,46);doc.roundedRect(M,10,28,28,3,3,'F');
+    doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(16);doc.text('T',M+14,28,{align:'center'});
+    doc.setFontSize(22);doc.text(E.nombre.toUpperCase(),M+34,22);
+    doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(170,170,170);
+    doc.text(E.ciudad+' · '+E.telefono+' · '+E.web,M+34,38);
+    const presNum='PRES-'+Date.now().toString().slice(-6);
+    doc.setTextColor(150,150,150);doc.text('N° '+presNum,W-M,18,{align:'right'});doc.text(d.fecha,W-M,25,{align:'right'});doc.text('Vigencia: '+d.vigencia,W-M,32,{align:'right'});
+    y=58;doc.setFillColor(248,246,242);doc.rect(0,y-6,W,14,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(20,20,20);doc.text('PRESUPUESTO DE VENTA',M,y+2);
+    if(d.vendedor){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text('Asesor: '+d.vendedor,W-M,y+2,{align:'right'})}
+    y+=18;
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);doc.text('CLIENTE',M,y);doc.setDrawColor(200,16,46);doc.line(M,y+1.5,M+doc.getTextWidth('CLIENTE'),y+1.5);y+=8;
+    doc.setFillColor(252,252,250);doc.setDrawColor(230,228,224);doc.roundedRect(M,y,W-M*2,22,2,2,'FD');
+    doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(20,20,20);doc.text(d.cliente||'Cliente',M+5,y+9);
+    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(100,100,100);
+    const ci=[d.telefono,d.dni?'DNI: '+d.dni:''].filter(Boolean).join(' · ');if(ci)doc.text(ci,M+5,y+17);
+    y+=32;
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);doc.text('VEHÍCULO',M,y);doc.setDrawColor(200,16,46);doc.line(M,y+1.5,M+doc.getTextWidth('VEHÍCULO'),y+1.5);y+=8;
+    doc.setFillColor(252,252,250);doc.setDrawColor(230,228,224);doc.roundedRect(M,y,W-M*2,d.notas?34:24,2,2,'FD');
+    doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(200,16,46);doc.text((d.modelo||'Vehículo')+(d.anio?' '+d.anio:''),M+5,y+10);
+    const vi=[d.color?'Color: '+d.color:'',d.km?'KM: '+Number(d.km).toLocaleString('es-AR'):'',d.patente?'Pat: '+d.patente:''].filter(Boolean).join(' · ');
+    if(vi){doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(100,100,100);doc.text(vi,M+5,y+18)}
+    if(d.notas){doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text(d.notas,M+5,y+27,{maxWidth:W-M*2-10})}
+    y+=d.notas?44:34;
+    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);doc.text('PRECIOS',M,y);doc.setDrawColor(200,16,46);doc.line(M,y+1.5,M+doc.getTextWidth('PRECIOS'),y+1.5);y+=10;
+    const rows=[];
+    if(d.precioLista)rows.push({l:'Precio de lista',v:fmt(d.precioLista),c:[60,60,60]});
+    if(d.precioContado&&d.precioContado!==d.precioLista)rows.push({l:'Precio contado',v:fmt(d.precioContado),c:[30,122,74],b:true});
+    if(d.tienePermuta&&d.permuValor)rows.push({l:'Permuta: '+d.permuModelo+(d.permuAnio?' '+d.permuAnio:''),v:'- '+fmt(d.permuValor),c:[180,100,0]});
+    rows.push({l:'DIFERENCIA A PAGAR',v:fmt(diff),c:[200,16,46],b:true,big:true});
+    rows.forEach(r=>{
+      if(r.big){doc.setFillColor(20,20,20);doc.rect(M,y-5,W-M*2,12,'F');doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(255,255,255);doc.text(r.l,M+5,y+3);doc.setTextColor(200,16,46);doc.text(r.v,W-M-5,y+3,{align:'right'});y+=14}
+      else{doc.setFont('helvetica',r.b?'bold':'normal');doc.setFontSize(11);doc.setTextColor(...r.c);doc.text(r.l,M+3,y);doc.text(r.v,W-M-3,y,{align:'right'});doc.setDrawColor(230,228,224);doc.line(M,y+2,W-M,y+2);y+=9}
+    });
+    if(d.tieneCredito&&d.monto&&cuotaEst){
+      y+=6;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(26,79,171);doc.text('FINANCIACIÓN',M,y);doc.setDrawColor(26,79,171);doc.line(M,y+1.5,M+doc.getTextWidth('FINANCIACIÓN'),y+1.5);y+=10;
+      doc.setFillColor(232,238,250);doc.setDrawColor(180,200,240);doc.roundedRect(M,y,W-M*2,28,2,2,'FD');
+      let cy=y+8;
+      [[d.banco||'A confirmar','Entidad'],[fmt(d.monto),'Monto'],[d.tna+'%','TNA'],[d.cuotas+' cuotas','Plazo']].forEach(([val,lbl])=>{doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(60,80,140);doc.text(lbl+':',M+5,cy);doc.setFont('helvetica','bold');doc.setTextColor(20,20,80);doc.text(val,M+50,cy);cy+=6});
+      doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(26,79,171);doc.text('Cuota est: '+fmt(Math.round(cuotaEst))+' x '+d.cuotas,W-M-5,y+14,{align:'right'});
+      doc.setFont('helvetica','italic');doc.setFontSize(8);doc.setTextColor(120,130,160);doc.text('* Sujeta a aprobación crediticia.',M+5,y+25);
+      y+=38;
+    }
+    y=Math.max(y,220);
+    doc.setFillColor(248,246,242);doc.rect(M,y,W-M*2,12,'F');doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100,100,100);doc.text('Vigencia: '+d.vigencia+' desde la fecha de emisión.',M+4,y+8);
+    y+=20;doc.setDrawColor(180,180,180);doc.line(M,y,M+55,y);doc.line(W-M-55,y,W-M,y);
+    doc.setFontSize(8);doc.setTextColor(150,150,150);doc.text('Firma del cliente',M+4,y+5);doc.text('Asesor de ventas',W-M-4,y+5,{align:'right'});
+    doc.setFillColor(20,20,20);doc.rect(0,H-18,W,18,'F');doc.setFillColor(200,16,46);doc.rect(0,H-18,W,2,'F');
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(150,150,150);doc.text(E.nombre+' · '+E.ciudad+' · '+E.web,W/2,H-8,{align:'center'});
+    doc.save('Presupuesto_'+(d.cliente||'Cliente').replace(/\s+/g,'_')+'_Tutu.pdf');
+    snkShow('✅ PDF descargado');
+  }catch(e){snkShow('❌ Error: '+e.message);console.error(e)}
   btn.disabled=false;btn.textContent='⬇ Generar PDF del Presupuesto';
 }
-function snk(msg){const s=document.getElementById('snack');s.textContent=msg;s.classList.add('show');clearTimeout(window._st);window._st=setTimeout(()=>s.classList.remove('show'),3000)}
-window.addEventListener('DOMContentLoa
+
+function snkShow(msg){const s=document.getElementById('snk');s.textContent=msg;s.classList.add('show');clearTimeout(window._st);window._st=setTimeout(()=>s.classList.remove('show'),3000)}
+
+window.addEventListener('DOMContentLoaded',()=>{
+  setTimeout(()=>addBubble('¡Hola! Soy <strong>Ruthina</strong> 🚗 Tu asistente de ventas de Tutu Automotores.\n\nPreguntame sobre <strong>precios, stock o características</strong> de cualquier vehículo. También podés pedirme que arme un <strong>presupuesto</strong> con crédito y permuta.\n\n¿En qué te ayudo hoy?','ruthina'),300);
+  loadDrive().catch(()=>document.getElementById('dbanner').style.display='none');
+});
+</script>
+</body>
+</html>
