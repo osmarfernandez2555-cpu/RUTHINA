@@ -351,22 +351,107 @@ const STOCK_DATA = `-  RANGER RZR XP AT 1000CC 4 PLAZAS | Año:2014 | KM:4.800 |
 - SHINERAY T30 CH BOX REFRIGERADO 1.6 | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 35.600,00 USD | Lista:$ 36.200,00 USD | Estado:POR INGRESAR | Ubicación:PROVEEDOR EXTERNO | Nota:Se reserva con un anticipo (5 mil USD o equivalente en $). El saldo se cancela cuando la unidad lleg
 - SHINERAY X30 L "EV" ELECTRICA 7AS | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 24.600,00 USD | Lista:$ 25.200,00 USD | Estado:POR INGRESAR | Nota:PRECIO OFERTA CYBER MONDAY DE CONTADO USD 24.000 DE LISTA USD 24.600  ------       Se reserva con un`;
 
-const SYSTEM = `Sos Ruthina, la asistente interna de ventas de Tutu Automotores. Hablás EXCLUSIVAMENTE con los VENDEDORES del equipo, NUNCA con clientes finales. Sos su herramienta de consulta rápida mientras atienden.
+const FICHAS_TECNICAS = `
+==============================================================
+FICHAS TÉCNICAS - MODELOS TUTU AUTOMOTORES
+==============================================================
 
-STOCK ACTUAL DE TUTU (hoy):
-${STOCK_DATA}
+JMC GRAND AVENUE GL — Motor: 2.3L GTDI Nafta 241 HP / Torque 295 lb-ft / Tanque 80L / Dimensiones: 5.450x1.935x1.872mm / Entre ejes 3.270mm / Caja carga 1.546x1.595x545mm / Cap. remolque 2.9 ton
+Versiones: GL TM 4x2 Manual 6vel (vacío 1.825kg, carga 925kg) | GL TA 4x2 Automática ZF 8vel | GL TA 4x4 Automática ZF 8vel + 4WD con bloqueo
+Suspensión del: doble horquilla resorte helicoidal / Tras: muelles / Frenos disco 4 ruedas (TA/4x4)
+Seguridad: ABS/EBD, ESP, TCS, RMI anti-vuelco, airbags delanteros+laterales+cortina, TPMS, ISOFIX
+Interior: pantalla 10" CarPlay+Android Auto, Bluetooth, asientos cuero, cámara reversa HD, sensores del y tras (TA)
+Neumáticos: 245/70R17 (4x2) / 265/70R17 (4x4)
 
-REGLAS:
-- Hablás de vos a vos con el vendedor, tono directo y ágil
-- NUNCA asumas que hablás con un cliente
-- Respondé SIEMPRE con datos del stock de arriba. Si no encontrás el vehículo, decilo claro
-- JMC y Shineray son marcas DISTINTAS. No las confundas nunca:
-  * JMC: Vigus Pro, Grand Avenue, N900 Camión
-  * Shineray: T30, X30 EV, M7, G03F
-- Cuando des precios indicá siempre la moneda (ARS o USD) y si es contado o lista
-- Sé conciso. El vendedor necesita la info rápido para cerrar la venta
-- Para armar un presupuesto decile que use el botón "Presupuesto" arriba a la derecha`;
+JMC GRAND AVENUE PLUS LX y SLX — Motor nafta JX4G23 GTDi 2.3L 245HP/400Nm | Motor diesel PUMA JXD23 2.3L 177HP/450Nm — ZF automática 8vel
+Dimensiones: 5.435x1.935x1.872mm / Entre ejes 3.270mm / Caja carga 1.546x1.594x546mm / Altura suelo 235mm
+4x4 con bloqueo diferencial trasero / Suspensión del: doble horquilla / Tras: multibrazo + enlace Watts / Neumáticos 265/65R17(LX) - 265/65R18(SLX)
+Interior SLX: pantalla ROTATIVA 12", tablero LCD 12.3", asientos eléctricos 8 dir con ventilación y calefacción, carga inalámbrica, freno mano eléctrico
+Interior LX: pantalla 12", tablero LCD 7", asientos cuero manuales / Colores: Gris Oscuro, Negro Grafito, Blanco Nieve
 
+JMC N900 CAMIÓN — Motor Diesel JX493ZLQ5 2.771cc 115HP@3400rpm / Torque 285Nm / Inyección Common Rail Bosch EDC17 con intercooler
+Tanque 83L diesel + 16L urea / Dimensiones 5.995x2.140x2.382mm / Entre ejes 3.360mm / Caja carga 4.100x2.050x380mm
+Carga útil 4.000kg / PBV 5.995kg / Transmisión GETRAG MT 5 marchas / Dirección hidráulica
+Suspensión: doble efecto ballestas + amortiguadores hidráulicos telescópicos + barra torsión / Frenos campana + freno motor + ABS
+Equipamiento: A/C, radio MP3+USB, levantavidrios eléctricos, volante multifunción, cierre centralizado
+Garantía 3 años/80.000km — Industria Argentina — Chasis para: caja seca, volcadora o furgón
+
+SHINERAY T30 CABINA SIMPLE 1.6 — Motor 1.298cc nafta 85HP / Torque 105Nm / Manual 5vel / Tracción trasera
+Dimensiones 4.930x1.720x1.995mm / Entre ejes 3.050mm / Caja carga 2.950x1.670x370mm / Carga útil 1.000kg / Tanque 40L
+Suspensión del: McPherson independiente / Tras: muelles / Neumáticos 175/70R14
+Seguridad: ABS+EBD, EPS, cinturón 3 puntos, DRL LED, neblineros, cierre automático en marcha
+Interior: A/C, cierre centralizado, levantavidrios eléctrico, radio MP3+USB / 2 pasajeros
+Versiones: cabina simple estándar, duales, producción nacional, box refrigerado (llave en mano para frío)
+ARGUMENTO: utilitario para laburar todos los días, mecánica simple, bajo costo mantenimiento
+
+SHINERAY T30 CABINA DOBLE (DOMY K2) 1.5 — Motor DAM15DR 1.498cc nafta 104HP / Torque 138Nm / Manual 5vel / 4x2 trasera
+Dimensiones 4.780x1.635x1.900mm / Entre ejes 3.050mm / Caja carga 2.160x1.540x375mm / Carga útil 940kg / Tanque 40L
+Suspensión del: ballesta 5 piezas / Tras: ballesta 6 piezas / 5 asientos
+Interior: A/C, dirección asistida, levantavidrios eléctrico, radio MP3+USB, neblineros, control estabilidad
+
+SHINERAY T32/V1 FURGÓN 1.5 — Motor DAM15DR 1.498cc nafta 104HP / Manual 5vel / 4x2 trasera
+Dimensiones 4.400x1.635x1.920mm / Carga interior 2.200x1.400x1.250mm / Carga útil 585kg / Tanque 45L / 2 asientos
+A/C frontal y de techo, ABS+EBD, radio MP3+USB
+
+SHINERAY M7 PASAJEROS 7AS — Motor SWE20F 1.988cc nafta 136HP / Torque 200Nm / 5MT / Tracción trasera
+Dimensiones 4.890x1.700x1.995mm / Entre ejes 3.185mm / Tanque 45L
+7 asientos (2+2+3) símil cuero negro / Llantas aleación / Frenos disco delanteros y traseros
+A/C delantero + trasero independiente, pantalla 8", Bluetooth, USB, cámara, radar marcha atrás, ABS+EBD, ESC, doble airbag, ISOFIX
+Asientos 2da fila: independientes, deslizables, reclinables / 3ra fila abatible
+ARGUMENTO: por este valor no hay otro 0km que transporte tantas personas
+
+SHINERAY M7 FURGÓN — Mismo motor/chasis que M7 pasajeros
+Caja carga interior: 2.510x1.475x1.350mm = 5m³ / Carga útil 700kg / 2 asientos / Separador de chapa
+Frenos traseros tambor / Sin ISOFIX ni seguro niños
+
+SHINERAY M7 11 ASIENTOS — Motor SWD15F 1.5L 110HP / Torque 146Nm / 5MT / Tracción trasera
+Dimensiones 4.890x1.700x1.995mm / 11 asientos (2+3+3+3) / Versión Luxury / Categoría M2
+A/C delantero manual + trasero superior independiente, pantalla 8", Bluetooth, USB, asientos cuero, cámara, doble airbag, ABS+EBD, ISOFIX, control central 5 puertas, llave remota
+
+SHINERAY SWM G03F 1.5 MT NAFTA — Motor 1.498cc nafta 108HP / Torque 152Nm / 5MT / Tracción delantera
+Dimensiones 4.605x1.815x1.825mm / Entre ejes 2.780mm / PBV 1.925kg / Tanque 50L / Neumáticos 215/60R17 llantas aleación 17"
+7 asientos (2+2+3) / Maletero: 165L (3ra fila armada) / 531L (3ra fila abatida)
+Suspensión del: McPherson / Tras: eje de torsión / Frenos disco del / tambor tras
+Seguridad: doble airbag, ABS+EBD, ESP, TCS, HSA, cámara reversa, ISOFIX x2, cinturones 3 puntos
+Interior: pantalla 10.25" CarPlay+Android Auto, A/C eléctrico, salida aire trasera, levantavidrios 4 puertas, Bluetooth, 4 parlantes + 2 tweeters, asientos eco-cuero
+Consumo: 16.3/13.3/10 km/L (ruta/mixto/ciudad) / Colores: Gris Oscuro, Negro Grafito, Blanco Nieve
+ARGUMENTO: SUV 7 plazas al precio de un SUV chico
+
+SHINERAY SWM G03F HEV HÍBRIDO — Motor F31A1 1.5L híbrido autonomía extendida / Batería LFP 8.83kWh
+Motor eléctrico 75kW/126Nm / Motor tracción 105kW/210Nm / Autonomía eléctrica 51km(NEDC)/46km(WLTC) / Total 1.000km
+Consumo: 5.5L/100km + 16.3kWh/100km / Velocidad máx 155km/h / Carga lenta 3.5h / Norma Euro 6E
+Dimensiones 4.605x1.815x1.825mm / Neumáticos 215/60R17 / Tracción delantera / Freno mano eléctrico
+5 asientos (2+3) o 7 asientos (2+2+3) con 3ra fila abatible, asientos 2da fila deslizables e independientes
+Seguridad completa: ESP, TCS, EBA, HSA, ISOFIX x2, TPMS, control crucero, recuperación energía frenado
+Interior: pantalla 10.25" HD CarPlay+Android Auto (español), tablero TFT 7", 6 parlantes, carga móvil 5m, cargador europeo
+ARGUMENTO: 7 asientos + automático + híbrido por un valor muy difícil de encontrar
+
+==============================================================
+GUÍA RÁPIDA DE VENTA POR NECESIDAD DEL CLIENTE
+==============================================================
+Cliente necesita... → Mostrar...
+Trabajo pesado urbano → Shineray T30 Cabina Simple
+Frío / alimentos / logística frío → Shineray T30 Box Refrigerado
+Reparto / paquetería → Shineray M7 Furgón o T32 Furgón
+Transporte escolar/empresarial → Shineray M7 7/9/11 asientos
+Familia grande + funcionalidad → Shineray SWM G03F 7 plazas
+Ahorro combustible → Shineray X30 EV o G03F HEV
+Pickup nafta potente → JMC Grand Avenue GL (241 HP)
+Pickup diesel real → JMC Grand Avenue Diesel Puma (limitado → usar urgencia)
+Pickup top de gama → JMC Grand Avenue PLUS SLX
+Máxima potencia pickup → JMC Grand Avenue DADAO PRO 252 HP
+Camión liviano → JMC N900 (4.000kg, industria argentina)
+Camión mediano → JMC N800 BIG (7.500kg)
+
+DEFENSA JMC vs competencia: Más potencia por dólar / Chasis pensado para trabajo / Excelente alternativa a marcas con sobreprecio
+`;
+
+const SYSTEM = `${core_prompt}
+
+==============================================================
+FICHAS TÉCNICAS Y ARGUMENTOS DE VENTA
+==============================================================
+${FICHAS_TECNICAS}`;
 const PDFS = [
   {id:"1tDasFWX6Vt3yLlBrZ73ljVGiLxskwn5H",label:"Archivo 1"},
   {id:"1FEWgIilneb-OzN3cCa5rUHDBJupKclQ1",label:"Archivo 2"},
