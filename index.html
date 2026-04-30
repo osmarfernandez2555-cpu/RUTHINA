@@ -154,6 +154,24 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <div class="bttl">Armar Presupuesto</div>
   </div>
   <div class="bscroll">
+    <!-- COTIZACION USD -->
+    <div style="background:#1A1A1A;border-radius:14px;padding:14px;margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:8px;flex:1">
+        <span style="font-size:22px">💵</span>
+        <div>
+          <div style="font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px">Cotización USD del día</div>
+          <div style="font-size:10px;color:#555;margin-top:2px">Usada para convertir autos en dólares a pesos</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span style="color:#4ade80;font-weight:600;font-size:15px">$</span>
+        <input id="usd-hoy" type="number" value="1250" placeholder="1250"
+          style="width:120px;background:#252525;border:1.5px solid #333;border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:16px;font-weight:700;color:#4ade80;outline:none;text-align:center"
+          oninput="onUSDChange()">
+        <span style="color:#555;font-size:12px">por USD</span>
+      </div>
+    </div>
+
     <div class="bc">
       <div class="bct">Cliente</div>
       <div class="fgr">
@@ -165,13 +183,23 @@ input:checked+.tsl::before{transform:translateX(18px)}
     </div>
     <div class="bc">
       <div class="bct">Vehiculo</div>
-      <div class="fg"><label>Marca y Modelo *</label><input id="bm" type="text" placeholder="JMC Grand Avenue GL 4x4" oninput="upP()"></div>
+      <div class="fg">
+        <label>Buscar del stock</label>
+        <select id="stock-sel" onchange="autoFillStock(this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:13px;color:var(--text);background:#fff;outline:none">
+          <option value="">-- Seleccionar del stock (opcional) --</option>
+        </select>
+      </div>
+      <div class="fg"><label>Marca y Modelo *</label><input id="bm" type="text" placeholder="O escribi manualmente..." oninput="upP()"></div>
       <div class="fgr">
         <div class="fg"><label>Año</label><input id="by" type="text" placeholder="2026"></div>
         <div class="fg"><label>Color</label><input id="bco" type="text" placeholder="Blanco"></div>
         <div class="fg"><label>Km</label><input id="bk" type="number" placeholder="0"></div>
         <div class="fg"><label>Patente</label><input id="bpa" type="text" placeholder="AA000BB"></div>
-        <div class="fg"><label>Precio Lista (ARS) *</label><input id="bpl" type="number" placeholder="12500000" oninput="upP()"></div>
+        <div class="fg">
+          <label>Precio Lista (ARS) *</label>
+          <input id="bpl" type="number" placeholder="12500000" oninput="upP()">
+          <div id="usd-badge" style="display:none;font-size:11px;color:#fb923c;margin-top:4px;padding:4px 8px;background:#2A1A00;border-radius:6px"></div>
+        </div>
         <div class="fg"><label>Precio Contado (ARS)</label><input id="bpc" type="number" placeholder="11800000" oninput="upP()"></div>
       </div>
       <div class="fg"><label>Observaciones</label><textarea id="bno" placeholder="Equipamiento, garantia..."></textarea></div>
@@ -190,6 +218,34 @@ input:checked+.tsl::before{transform:translateX(18px)}
         <div class="fg"><label>Km</label><input id="bpk" type="number" placeholder="80000"></div>
       </div>
       <div class="fg"><label>Valor tasacion (ARS)</label><input id="bpv" type="number" placeholder="5000000" oninput="upP()"></div>
+      <div class="fgr">
+        <div class="fg">
+          <label style="color:#fb923c">(-) Posicion de venta (ARS)</label>
+          <input id="bppos" type="number" placeholder="0" oninput="upP()"
+            style="border-color:#fb923c44">
+          <div style="font-size:10px;color:#666;margin-top:3px">Costo de venta del usado</div>
+        </div>
+        <div class="fg">
+          <label style="color:#fb923c">(-) Peritaje (ARS)</label>
+          <input id="bpper" type="number" placeholder="0" oninput="upP()"
+            style="border-color:#fb923c44">
+          <div style="font-size:10px;color:#666;margin-top:3px">Costo de peritaje</div>
+        </div>
+      </div>
+      <div id="perm-neta-box" style="display:none;background:#2A1500;border:1px solid #fb923c44;border-radius:8px;padding:10px 12px;margin-top:4px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px">
+          <span>Tasacion</span><span id="perm-tasacion">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#fb923c;margin-bottom:4px">
+          <span>(-) Posicion de venta</span><span id="perm-pos">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#fb923c;margin-bottom:6px">
+          <span>(-) Peritaje</span><span id="perm-per">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#4ade80;border-top:1px solid #444;padding-top:6px">
+          <span>Valor neto permuta</span><span id="perm-neta">-</span>
+        </div>
+      </div>
     </div>
     <div class="seclbl">Financiacion</div>
     <div class="trow" onclick="tChk('cc','sc2')">
@@ -199,11 +255,17 @@ input:checked+.tsl::before{transform:translateX(18px)}
       </label>
     </div>
     <div id="sc2" style="display:none" class="bc">
-      <div class="fg"><label>Entidad Financiera</label><input id="bba" type="text" placeholder="Banco Galicia, Santander..."></div>
+      <div class="fg">
+        <label>Banco / Entidad</label>
+        <select id="banco-sel" onchange="autoFillBanco(this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:13px;color:var(--text);background:#fff;outline:none;margin-bottom:6px">
+          <option value="">-- Seleccionar banco --</option>
+        </select>
+        <input id="bba" type="text" placeholder="O escribi el banco manualmente">
+      </div>
       <div class="fgr">
         <div class="fg"><label>Monto a financiar</label><input id="bfi" type="number" placeholder="8000000" oninput="upP()"></div>
         <div class="fg"><label>Anticipo</label><input id="ban" type="number" placeholder="3000000"></div>
-        <div class="fg"><label>TNA %</label><input id="btn" type="number" placeholder="60" oninput="upP()"></div>
+        <div class="fg"><label>TNA % <span id="tna-hint" style="color:#C8102E;font-size:10px"></span></label><input id="btn" type="number" placeholder="60" oninput="upP()"></div>
         <div class="fg"><label>Cuotas</label>
           <select id="bcu" onchange="upP()">
             <option value="12">12 cuotas</option><option value="18">18 cuotas</option>
@@ -213,14 +275,79 @@ input:checked+.tsl::before{transform:translateX(18px)}
         </div>
       </div>
     </div>
+    <div class="seclbl">Credito Personal BNA</div>
+    <div class="trow" onclick="tChk('cbna','sc-bna')">
+      <div>
+        <div class="trl">Credito Personal BNA</div>
+        <div class="trs">Gasto fijo de $800.000 descontado del monto solicitado</div>
+      </div>
+      <label class="tog" onclick="event.stopPropagation()">
+        <input type="checkbox" id="cbna" onchange="onToggleBNA(this.checked)"><span class="tsl"></span>
+      </label>
+    </div>
+    <div id="sc-bna" style="display:none" class="bc">
+      <div style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#92400E">
+        ⚠️ El banco descuenta $800.000 de gastos fijos del monto solicitado. El cliente recibe menos de lo que pide.
+      </div>
+      <div class="fgr">
+        <div class="fg">
+          <label>Monto solicitado (ARS)</label>
+          <input id="bna-monto" type="number" placeholder="5000000" oninput="upP()">
+        </div>
+        <div class="fg">
+          <label>Cuotas</label>
+          <select id="bna-cuotas" onchange="upP()">
+            <option value="12">12 cuotas</option>
+            <option value="18">18 cuotas</option>
+            <option value="24">24 cuotas</option>
+            <option value="36">36 cuotas</option>
+            <option value="48">48 cuotas</option>
+            <option value="60">60 cuotas</option>
+          </select>
+        </div>
+      </div>
+      <div id="bna-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:4px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px">
+          <span>Monto solicitado</span><span id="bna-r-monto" style="color:#CCC">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:4px">
+          <span>(-) Gastos fijos BNA</span><span>- $ 800.000</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#4ade80;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #333">
+          <span style="font-weight:600">Monto a recibir</span><span id="bna-r-recibe" style="font-weight:700">-</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700">
+          <span>Cuota estimada</span><span id="bna-r-cuota">-</span>
+        </div>
+        <div style="font-size:10px;color:#555;margin-top:6px">TNA 38% — Sujeto a aprobacion BNA</div>
+      </div>
+    </div>
+
     <div class="prev">
       <div class="plbl">RESUMEN</div>
       <div class="pr"><span>Vehiculo</span><span id="pvm" style="color:#ccc;text-align:right;max-width:55%">—</span></div>
-      <div class="pr"><span>Precio lista</span><span id="pvp">—</span></div>
-      <div class="pr"><span>Precio contado</span><span id="pvc" style="color:#4ade80">—</span></div>
-      <div class="pr" id="pvpr" style="display:none"><span>Permuta</span><span id="pvpv" style="color:#fb923c">—</span></div>
-      <div class="pr" id="pvcr" style="display:none"><span>Cuota est.</span><span id="pvcu" style="color:#60a5fa">—</span></div>
-      <div class="pr pt"><span>A pagar</span><span id="pvt">—</span></div>
+      <div class="pr" id="pvp-row" style="display:none"><span id="pvp-label">Precio lista</span><span id="pvp">—</span></div>
+      <div class="pr" id="pvc-row" style="display:none"><span>Precio contado</span><span id="pvc" style="color:#4ade80">—</span></div>
+      <div class="pr" id="pvpr" style="display:none"><span>Tasacion permuta</span><span id="pvpv" style="color:#fb923c">—</span></div>
+      <div class="pr" id="pvpos-row" style="display:none"><span>(-) Posicion venta</span><span id="pvpos" style="color:#f87171">—</span></div>
+      <div class="pr" id="pvper-row" style="display:none"><span>(-) Peritaje</span><span id="pvper" style="color:#f87171">—</span></div>
+      <div class="pr" id="pvneta-row" style="display:none"><span style="font-weight:600">Neto permuta</span><span id="pvneta" style="color:#4ade80;font-weight:700">—</span></div>
+      <div class="pr" id="pvmf-row" style="display:none"><span>Monto solicitado</span><span id="pvmf" style="color:#60a5fa;font-weight:600">—</span></div>
+      <div class="pr" id="pvgas-row" style="display:none"><span id="pvgas-label">(-) Gastos (4.2%)</span><span id="pvgas" style="color:#f87171">—</span></div>
+      <div class="pr" id="pvrecibe-row" style="display:none"><span style="font-weight:600">Monto a recibir</span><span id="pvrecibe" style="color:#4ade80;font-weight:700">—</span></div>
+      <div class="pr" id="pvbna-row" style="display:none"><span>BNA Personal solicitado</span><span id="pvbna-monto" style="color:#60a5fa">—</span></div>
+      <div class="pr" id="pvbna-gas-row" style="display:none"><span>(-) Gastos BNA</span><span style="color:#f87171">- $ 800.000</span></div>
+      <div class="pr" id="pvbna-rec-row" style="display:none"><span style="font-weight:600">BNA a recibir</span><span id="pvbna-recibe" style="color:#4ade80;font-weight:700">—</span></div>
+      <div class="pr" id="pvbna-cuota-row" style="display:none"><span>Cuota BNA est.</span><span id="pvbna-cuota" style="color:#60a5fa">—</span></div>
+      <div class="pr" id="pvtr" style="display:none"><span>(+) Transferencia (6%)</span><span id="pvtrv" style="color:#fbbf24">—</span></div>
+      <div class="pr" id="pvtotal-op-row" style="display:none;border-top:1px solid #444;padding-top:6px;margin-top:4px"><span style="font-weight:600">Valor total operacion</span><span id="pvtotal-op" style="color:#fff;font-weight:700">—</span></div>
+      <div class="pr" id="pvdif-row" style="display:none"><span style="font-weight:600">Diferencia del cliente</span><span id="pvdif" style="color:#fb923c;font-weight:700;font-size:16px">—</span></div>
+      <div class="pr" id="pvcr" style="display:none"><span>Cuota est. <span id="pvcu-banco" style="font-size:10px;opacity:.7"></span></span><span id="pvcu" style="color:#60a5fa">—</span></div>
+      <div id="tabla-cuotas" style="display:none;margin-top:6px">
+        <div style="font-size:10px;color:#666;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Cuota por banco (sobre monto a financiar)</div>
+        <div id="cuotas-body"></div>
+      </div>
+      <div class="pr pt"><span id="pvt-label">Total a pagar</span><span id="pvt">—</span></div>
     </div>
     <div class="bc">
       <div class="fg"><label>Vigencia</label>
@@ -312,6 +439,117 @@ var API_KEY = '';
 try { API_KEY = localStorage.getItem('ruthina_key') || ''; } catch(e){}
 
 const EMPRESA = {nombre:"Tutu Automotores",ciudad:"Cordoba, Argentina",telefono:"+54 351 XXX-XXXX",web:"www.tutuautomotores.com.ar"};
+
+var STOCK_LIST = [
+  {label:'AUDI A3 SPORTBACK 1.4 TFSI STRONIC 2016',precio:31000000.0,moneda:'ARS'},
+  {label:'CAMPANILI LANCHA CAMPANILI VENTURA 140 HP 2000 2000',precio:14400.0,moneda:'USD'},
+  {label:'CHEVROLET CRUZE 5P 1.4 TURBO LT MT 2018',precio:21500000.0,moneda:'ARS'},
+  {label:'CHEVROLET S10 2.8 TD 4X2 LS MT 2020',precio:35000000.0,moneda:'ARS'},
+  {label:'CHEVROLET TRACKER 1.2T AT 2025',precio:35500000.0,moneda:'ARS'},
+  {label:'CHEVROLET TRACKER LT AT 1.2T 2026',precio:0.0,moneda:''},
+  {label:'CHRYSLER TOWN & COUNTRY LIMITED 3.6 2012',precio:26000000.0,moneda:'ARS'},
+  {label:'CITROEN BERLINGO MULTISPACE 1.6 HDI XTR 2016',precio:18000000.0,moneda:'ARS'},
+  {label:'CITROEN C3 AIRCROSS T200SHINE 7 MY24 2024',precio:30500000.0,moneda:'ARS'},
+  {label:'DODGE RAM 1500 5.7 V8 LARAMIE 4X4 2015',precio:33300.0,moneda:'USD'},
+  {label:'FIAT CRONOS LIKE 1.3 GSE BZ 2026',precio:33207820.0,moneda:'ARS'},
+  {label:'FIAT DUCATO CARGO 2.3 JDT 2011',precio:17000000.0,moneda:'ARS'},
+  {label:'FIAT FIORINO FIRE 1242 MPI 8V 2014',precio:12500000.0,moneda:'ARS'},
+  {label:'FIAT GRAND SIENA ATTRACTIVE 1.4N 8V MT 2014',precio:13000000.0,moneda:'ARS'},
+  {label:'FIAT PALIO ATTRACTIVE 5P 1.4 8V 2015',precio:15500000.0,moneda:'ARS'},
+  {label:'FIAT PUNTO SPORTING 1.6 16V 2016',precio:17500000.0,moneda:'ARS'},
+  {label:'FORD BRONCO SPORT WILDTRAK 2.0L AT 2021',precio:47900000.0,moneda:'ARS'},
+  {label:'FORD BRONCO SPORT WILDTRAK 2.0L AT 2022',precio:55000000.0,moneda:'ARS'},
+  {label:'FORD FIESTA 1.6L S PLUS 5P MT 2015',precio:16500000.0,moneda:'ARS'},
+  {label:'FORD FOCUS S 1.6 2014',precio:16700000.0,moneda:'ARS'},
+  {label:'FORD KA FLY VIRAL 1.0 L 2012',precio:11500000.0,moneda:'ARS'},
+  {label:'FORD NUEVA RANGER DC 4X2 XL 2.2D MT 2016',precio:28000000.0,moneda:'ARS'},
+  {label:'FORD RANGER 3.0 TDI DC 4X4 L/23 LTD+ V6 10AT 2024',precio:71000000.0,moneda:'USD'},
+  {label:'FORD RANGER DC 4X2 XL 2.2D MT 2019',precio:20300.0,moneda:'USD'},
+  {label:'FORD RANGER DC 4X4 XLT AT 3.2L D 2019',precio:37000000.0,moneda:'ARS'},
+  {label:'FORD RANGER RAPTOR 2.0L BIT 4X4 10AT 2022',precio:65000000.0,moneda:'USD'},
+  {label:'HONDA HRV LX CVT 2017',precio:26000000.0,moneda:'ARS'},
+  {label:'HYUNDAI H1 2.5 CRDI 12 PAS VGT FULL 2016',precio:31500.0,moneda:'USD'},
+  {label:'IVECO DAILY 55C16 PASO 3750 2013',precio:75000.0,moneda:'USD'},
+  {label:'JAC S2 1.5 CVT LUXURY LV 2026',precio:21900.0,moneda:'USD'},
+  {label:'JAC S2 1.5 CVT LUXURY LV 2026',precio:21900.0,moneda:'USD'},
+  {label:'JAC S4 1.5 CVT FLAGSHIP 2026',precio:29500.0,moneda:'USD'},
+  {label:'JAC S4 1.5 CVT FLAGSHIP 2026',precio:29500.0,moneda:'USD'},
+  {label:'JAC S4 1.5T + CVT LV 2026',precio:27500.0,moneda:'USD'},
+  {label:'JAC S4 1.5T + CVT LV 2026',precio:27500.0,moneda:'USD'},
+  {label:'JEEP COMPASS SPORT 2.4N 4X2 MT6 2021',precio:32000000.0,moneda:'ARS'},
+  {label:'JEEP RENEGADE LONGITUDE 1.8L AT6 AUTOMATICO 2020',precio:21700.0,moneda:'USD'},
+  {label:'JEEP RENEGADE SPORT 1.8 AT6 2023',precio:32000000.0,moneda:'ARS'},
+  {label:'KIA CERATO EX 1.6L 2018',precio:22500000.0,moneda:'ARS'},
+  {label:'KIA SPORTAGE EX 2.0N 4X2 AT 2018',precio:29500000.0,moneda:'ARS'},
+  {label:'LAND ROVER RANGE ROVER EVOQUE SI4 2.0 AT 2012',precio:34000000.0,moneda:'USD'},
+  {label:'NISSAN MURANO XTRONIC V6 3.5L 4X4 CVT 2014',precio:18000.0,moneda:'USD'},
+  {label:'NISSAN NOTE 1.6 SENSE PURE DRIVE 2019',precio:23200000.0,moneda:'ARS'},
+  {label:'PEUGEOT 207 COMPACT XT 1.9D 5P 2010',precio:11000000.0,moneda:'ARS'},
+  {label:'PEUGEOT 208 ALLURE MT 2025',precio:0.0,moneda:'ARS'},
+  {label:'PEUGEOT 208 ALLURE PACK 1.0T AT 2026',precio:36500000.0,moneda:'ARS'},
+  {label:'PEUGEOT BOXER 330M 2.8 HDI 2009',precio:17500000.0,moneda:'ARS'},
+  {label:'RAM RAM RAMPAGE REBEL 2.0 GME AT9 4X4 2024',precio:52500000.0,moneda:'ARS'},
+  {label:'RENAULT DUSTER PH2 PRIVILEGE 2.0 2018',precio:23500000.0,moneda:'ARS'},
+  {label:'RENAULT KANGOO SPORTWAY 1.6 ABCP 2P C/GAS 2010',precio:13500000.0,moneda:'ARS'},
+  {label:'RENAULT KARDIAN ICONIC EDITION 200 EDC 2026',precio:43500000.0,moneda:'ARS'},
+  {label:'RENAULT NUEVO MASTER L3H2 AA 2019',precio:33500.0,moneda:'USD'},
+  {label:'RENAULT SANDERO PH2 STEPWAY 1.6 INTENS MT 2021',precio:23500000.0,moneda:'ARS'},
+  {label:'RENAULT SANDERO STEPWAY INTENS 16 CVT 2025',precio:29500000.0,moneda:'ARS'},
+  {label:'RENAULT SANDERO STEPWAY PH2 1.6 ZEN 2020',precio:21750000.0,moneda:'ARS'},
+  {label:'TOYOTA COROLLA 1.8 SE-G L/08 AUT 2010',precio:15500000.0,moneda:'ARS'},
+  {label:'TOYOTA COROLLA 2.0N XLI CVT  L/23 2023',precio:26000.0,moneda:'USD'},
+  {label:'TOYOTA COROLLA CROSS 2.0 SEG CVT 2021',precio:43500000.0,moneda:'ARS'},
+  {label:'TOYOTA COROLLA CROSS XEI 2.0N CVT 2022',precio:31500.0,moneda:'USD'},
+  {label:'TOYOTA HILUX 4X4 DC CONQUEST 2.8 TDI 6 AT 2023',precio:48300.0,moneda:'USD'},
+  {label:'VOLKSWAGEN AMAROK 2.0L TDI 180 CV 4X4 2013',precio:23900000.0,moneda:'ARS'},
+  {label:'VOLKSWAGEN AMAROK COMFORTLINE 4X4 AT V6 3.0L 258 CV 2022',precio:45000000.0,moneda:'ARS'},
+  {label:'VOLKSWAGEN FOX TRENDLINE 1.6N 5P MT C/GNC 2011',precio:13400000.0,moneda:'ARS'},
+  {label:'VOLKSWAGEN GOL TREND 2019',precio:17000000.0,moneda:''},
+  {label:'VOLKSWAGEN GOLF GTI 2001',precio:11600.0,moneda:'USD'},
+  {label:'VOLKSWAGEN NIVUS HIGHLINE HERO 200 TSI AT 2021',precio:35000000.0,moneda:'ARS'},
+  {label:'VOLKSWAGEN SURAN 1.6 5D TRENDLINE 2018',precio:18000000.0,moneda:'ARS'},
+  {label:'VOLKSWAGEN SURAN 1.6 16V 5D CROSS 2015',precio:17560000.0,moneda:'ARS'},
+  {label:'VOLKSWAGEN T-CROSS 170TSI MT 2023',precio:33000000.0,moneda:'ARS'},
+  {label:'VOLKSWAGEN VOYAGE 1.6 TRENDLINE 4P 2016',precio:17000000.0,moneda:'ARS'},
+  {label:'CITROEN C3 VTI  FEEL AT6 2026',precio:30100000.0,moneda:'ARS'},
+  {label:'CITROEN C4 CACTUS VTI 115 FEEL MT 2021',precio:22500000.0,moneda:'ARS'},
+  {label:'DOMY DOMY 1.5 K2 C/D 2026',precio:19900.0,moneda:'USD'},
+  {label:'DOMY VICTORY FURGON V1 1.5 104HP 2026',precio:19900.0,moneda:'USD'},
+  {label:'JMC GRAND AVENUE GL AT 4X2 NAFTA DC 2.3 CC 241 HP 2026',precio:31100.0,moneda:'USD'},
+  {label:'JMC GRAND AVENUE GL AT 4X4 DIESEL 2.3 MOTOR PUMA 174HP 2026',precio:41300.0,moneda:'USD'},
+  {label:'JMC GRAND AVENUE GL MT 4X2 NAFTA DC 2.3 CC 241 HP 2026',precio:28300.0,moneda:'USD'},
+  {label:'JMC GRAND AVENUE GL MT 4X4 DIESEL 2.3 MOTOR PUMA 174HP 2026',precio:37500.0,moneda:'USD'},
+  {label:'JMC GRAND AVENUE PRO DADAO 2026',precio:54200.0,moneda:'ARS'},
+  {label:'JMC GRAND AVENUE SLX AT 4X4 NAFTA 2.3 CC- 241HP 2026',precio:45800.0,moneda:'USD'},
+  {label:'JMC JMC GRAND AVENUE GL AT 4X4 NAFTA 2026',precio:44700.0,moneda:'USD'},
+  {label:'JMC N900 CAMION 4000 Kgs IND. ARG 2025',precio:41500.0,moneda:'USD'},
+  {label:'SHINERAY G03 F 1.5 AUT HIBRIDA SUV 7AS 2026',precio:24200.0,moneda:'USD'},
+  {label:'SHINERAY M7 - FURGON MT 2.0 NAFTA 2026',precio:23700.0,moneda:'USD'},
+  {label:'SHINERAY M7 PASAJEROS 7AS MT 2.0 NAFTA 2026',precio:29300.0,moneda:'ARS'},
+  {label:'SHINERAY M7 PASAJEROS 9AS MT 2.0 NAFTA 2026',precio:29400.0,moneda:'USD'},
+  {label:'SHINERAY M7 PASAJEROS 11AS 2026',precio:29700.0,moneda:'USD'},
+  {label:'SHINERAY SWM G03F 1.5 MT NAFTA 1.5 108 HP 2026',precio:24200.0,moneda:'ARS'},
+  {label:'SHINERAY T30 1.6 C/S - CH/DUAL 2.0 T 2026',precio:23600.0,moneda:'USD'},
+  {label:'SHINERAY T30 CH BOX REFRIGERADO 1.6 2026',precio:35600.0,moneda:'USD'},
+  {label:'SHINERAY X30 L  EV  ELECTRICA 7AS 2026',precio:24600.0,moneda:'USD'}
+];
+
+// Bancos: tna_fijo = tasa fija anual, sello = gasto adicional sobre monto
+var BANCOS = [
+  {nombre:"-- Seleccionar banco --", tna:0, sello:0, gastos:0, fijo:0},
+  {nombre:"BNA Prendario (38% fijo)", tna:38, sello:0, gastos:0.042, fijo:0},
+  {nombre:"BNA Personal (cuota fija $800.000)", tna:38, sello:0, gastos:0, fijo:800000, personal:true},
+  {nombre:"Bancor (42% fijo)", tna:42, sello:0, gastos:0.042, fijo:0},
+  {nombre:"Bancor (47% fijo)", tna:47, sello:0, gastos:0.042, fijo:0},
+  {nombre:"BBVA (47.9% fijo)", tna:47.9, sello:0, gastos:0.042, fijo:0},
+  {nombre:"ICBC (53% fijo)", tna:53, sello:0, gastos:0.042, fijo:0},
+  {nombre:"Santander (55.9% fijo)", tna:55.9, sello:0, gastos:0.042, fijo:0},
+  {nombre:"Galicia (64% fijo)", tna:64, sello:0, gastos:0.042, fijo:0},
+  {nombre:"Galicia (69% fijo)", tna:69, sello:0, gastos:0.042, fijo:0},
+  {nombre:"MG Group (58% fijo + 0.7% sellos)", tna:58, sello:0.007, gastos:0.042, fijo:0},
+  {nombre:"Leasing (36% fijo - solo empresas)", tna:36, sello:0, gastos:0.042, fijo:0},
+  {nombre:"Credicoop (44% fijo - solo empresas)", tna:44, sello:0, gastos:0.042, fijo:0}
+];
 
 function buildSystem() {
   return "Sos Ruthina, la asistente interna de ventas de Tutu Automotores. Hablas EXCLUSIVAMENTE con los VENDEDORES del equipo, NUNCA con clientes finales. Sos su herramienta de consulta rapida mientras atienden.\n\nREGLAS:\n- Trato de vos a vos con el vendedor, tono directo y agil\n- NUNCA asumas que hablas con un cliente\n- JMC y Shineray son marcas DISTINTAS, no las confundas nunca\n- Cuando des precios indica siempre la moneda (ARS o USD) y si es contado o lista\n- Se conciso. El vendedor necesita la info rapido para cerrar la venta\n- Para armar un presupuesto decile que use el boton Presupuesto arriba a la derecha\n\n== STOCK ACTUAL TUTU ==\n" + STOCK_DATA + "\n\n== FICHAS TECNICAS Y ARGUMENTOS ==\n" + FICHAS;
@@ -426,6 +664,16 @@ function cambiarKey(){
 }
 
 function startApp(){
+  // Restore saved USD cotizacion
+  try {
+    var savedUSD = localStorage.getItem('ruthina_usd');
+    if (savedUSD) {
+      var el = document.getElementById('usd-hoy');
+      if (el) el.value = savedUSD;
+    }
+  } catch(e){}
+  initStockSelect();
+  initBancoSelect();
   setTimeout(function(){
     addBubble('Hola! Soy <strong>Ruthina</strong>, tu asistente de ventas de Tutu. Tengo cargado el stock completo y las fichas tecnicas de JMC y Shineray. Preguntame lo que necesites!', 'ruthina');
   }, 300);
@@ -433,6 +681,12 @@ function startApp(){
 
 // ══ PRESUPUESTO ══════════════════════════════════════
 function tChk(cid,sid){ var c=document.getElementById(cid); c.checked=!c.checked; sSec(sid,c.checked); upP(); }
+
+function onToggleBNA(checked) {
+  sSec('sc-bna', checked);
+  // Si activan BNA personal, desactivar financiacion prendaria para evitar confusion
+  upP();
+}
 function sSec(id,v){ var el=document.getElementById(id); if(el) el.style.display=v?'block':'none'; }
 function gv(id){ return (document.getElementById(id)||{}).value ? document.getElementById(id).value.trim() : ''; }
 function gn(id){ return parseFloat((document.getElementById(id)||{}).value)||0; }
@@ -440,22 +694,214 @@ function gc(id){ return (document.getElementById(id)||{}).checked||false; }
 function fmtP(n){ return n ? '$ '+Math.round(n).toLocaleString('es-AR') : '-'; }
 
 function upP(){
-  var price=gn('bpl'), cash=gn('bpc'), perm=gc('cp'), pv=gn('bpv');
-  var cred=gc('cc'), tna=gn('btn'), cuotas=parseInt(gv('bcu'))||12, fin=gn('bfi');
-  var base=cash||price, diff=base-(perm?pv:0);
-  document.getElementById('pvm').textContent=gv('bm')||'-';
-  document.getElementById('pvp').textContent=fmtP(price);
-  document.getElementById('pvc').textContent=fmtP(cash);
-  document.getElementById('pvpr').style.display=perm&&pv?'flex':'none';
-  document.getElementById('pvpv').textContent='- '+fmtP(pv);
-  var cr=document.getElementById('pvcr');
-  if(cred&&fin&&tna){
-    var tm=Math.pow(1+tna/100,1/12)-1;
-    var c=fin*tm/(1-Math.pow(1+tm,-cuotas));
-    document.getElementById('pvcu').textContent=fmtP(Math.round(c))+' x '+cuotas;
-    cr.style.display='flex';
-  } else cr.style.display='none';
-  document.getElementById('pvt').textContent=diff>0?fmtP(diff):'-';
+  var price = gn('bpl');   // precio lista
+  var cash  = gn('bpc');   // precio contado
+  var perm  = gc('cp');    // tiene permuta
+  var pv    = gn('bpv');   // valor permuta
+  var cred  = gc('cc');    // tiene credito
+  var tna   = gn('btn');   // TNA %
+  var cuotas= parseInt(gv('bcu'))||12;
+  var fin   = gn('bfi');   // monto a financiar ingresado
+
+  document.getElementById('pvm').textContent = gv('bm') || '-';
+
+  // ── LOGICA DE PRECIOS ─────────────────────────────
+  // Solo contado (sin permuta, sin credito): muestra precio contado
+  // Con permuta o credito: usa precio LISTA como base
+  var usaLista = perm || cred;
+  var baseCalc = usaLista ? price : (cash || price);
+
+  // Fila precio lista: siempre visible si hay precio
+  var pvpRow = document.getElementById('pvp-row');
+  var pvpLabel = document.getElementById('pvp-label');
+  if(pvpRow) {
+    pvpRow.style.display = price > 0 ? 'flex' : 'none';
+    document.getElementById('pvp').textContent = fmtP(price);
+  }
+
+  // Fila precio contado: solo si NO es permuta/credito y hay precio contado distinto
+  var pvcRow = document.getElementById('pvc-row');
+  if(pvcRow) {
+    pvcRow.style.display = (!usaLista && cash && cash !== price) ? 'flex' : 'none';
+    document.getElementById('pvc').textContent = fmtP(cash);
+  }
+
+  // Permuta con posicion y peritaje
+  var pos  = perm ? gn('bppos') : 0;   // posicion de venta
+  var per  = perm ? gn('bpper') : 0;   // peritaje
+  var pvNeta = pv - pos - per;          // valor neto real de la permuta
+
+  document.getElementById('pvpr').style.display = perm && pv ? 'flex' : 'none';
+  document.getElementById('pvpv').textContent = fmtP(pv);
+
+  document.getElementById('pvpos-row').style.display = perm && pos > 0 ? 'flex' : 'none';
+  document.getElementById('pvpos').textContent = '- ' + fmtP(pos);
+
+  document.getElementById('pvper-row').style.display = perm && per > 0 ? 'flex' : 'none';
+  document.getElementById('pvper').textContent = '- ' + fmtP(per);
+
+  document.getElementById('pvneta-row').style.display = perm && pv && (pos||per) ? 'flex' : 'none';
+  document.getElementById('pvneta').textContent = fmtP(pvNeta > 0 ? pvNeta : 0);
+
+  // Mini box dentro del formulario
+  var permNetaBox = document.getElementById('perm-neta-box');
+  if(permNetaBox) {
+    permNetaBox.style.display = perm && pv ? 'block' : 'none';
+    document.getElementById('perm-tasacion').textContent = fmtP(pv);
+    document.getElementById('perm-pos').textContent = pos > 0 ? '- ' + fmtP(pos) : '$ 0';
+    document.getElementById('perm-per').textContent = per > 0 ? '- ' + fmtP(per) : '$ 0';
+    document.getElementById('perm-neta').textContent = fmtP(pvNeta > 0 ? pvNeta : 0);
+  }
+
+  // Diferencia tras permuta (usa neto real)
+  var diferencia = baseCalc - (perm ? pvNeta : 0);
+
+  // Monto a financiar
+  var montoFinanciar = cred ? (fin || diferencia) : 0;
+  var pvmfRow = document.getElementById('pvmf-row');
+  if(pvmfRow) {
+    pvmfRow.style.display = cred && montoFinanciar > 0 ? 'flex' : 'none';
+    document.getElementById('pvmf').textContent = fmtP(montoFinanciar);
+  }
+
+  // Transferencia: 6% del precio lista (si hay permuta/credito) o contado
+  var baseTransf = usaLista ? price : (cash || price);
+  var transferencia = baseTransf > 0 ? Math.round(baseTransf * 0.06) : 0;
+  var pvtr = document.getElementById('pvtr');
+  if(pvtr) {
+    pvtr.style.display = transferencia > 0 ? 'flex' : 'none';
+    document.getElementById('pvtrv').textContent = fmtP(transferencia) + ' (6%)';
+  }
+
+  // ── TOTAL FINAL ────────────────────────────────────
+  // Valor del auto usado como base del precio
+  var precioBase = usaLista ? price : (cash || price);
+
+  // Valor total de la operacion = precio base + transferencia (SIEMPRE)
+  var valorTotalOp = precioBase + transferencia;
+
+  // Si hay permuta: restar neto permuta del total
+  var valorTrasPermuta = valorTotalOp - (perm ? pvNeta : 0);
+
+  // Si hay credito: diferencia = valor total - monto que presta el banco
+  var diferenciaCred = cred ? Math.max(0, valorTotalOp - montoFinanciar) : 0;
+
+  // Mostrar fila valor total operacion (siempre que haya precio)
+  var pvTotalOpRow = document.getElementById('pvtotal-op-row');
+  var pvDifRow = document.getElementById('pvdif-row');
+
+  if(pvTotalOpRow) pvTotalOpRow.style.display = precioBase > 0 ? 'flex' : 'none';
+  if(precioBase > 0) document.getElementById('pvtotal-op').textContent = fmtP(valorTotalOp);
+
+  // Fila diferencia del cliente (solo si hay credito)
+  if(pvDifRow) pvDifRow.style.display = (cred && montoFinanciar > 0) ? 'flex' : 'none';
+  if(cred && montoFinanciar > 0) document.getElementById('pvdif').textContent = fmtP(diferenciaCred);
+
+  // Total final (linea roja destacada)
+  var totalMostrar, labelTotal;
+  if(cred) {
+    totalMostrar = diferenciaCred;
+    labelTotal = 'Diferencia a pagar hoy';
+  } else if(perm) {
+    totalMostrar = valorTrasPermuta;
+    labelTotal = 'Diferencia tras permuta';
+  } else {
+    totalMostrar = valorTotalOp;
+    labelTotal = 'Total a pagar';
+  }
+  var pvtLabel = document.getElementById('pvt-label');
+  if(pvtLabel) pvtLabel.textContent = labelTotal;
+  document.getElementById('pvt').textContent = totalMostrar > 0 ? fmtP(totalMostrar) : '-';
+
+  // ── CUOTAS + GASTOS ────────────────────────────────
+  var cr = document.getElementById('pvcr');
+  if(cred && montoFinanciar && cuotas) {
+    var bancoIdx = parseInt((document.getElementById('banco-sel')||{}).value)||0;
+    var banco = BANCOS[bancoIdx] || {tna:0, sello:0, gastos:0, fijo:0};
+    var sello = banco.sello || 0;
+    var tnaUsada = tna || banco.tna || 0;
+
+    // Calcular gastos y monto real a recibir
+    var gastosPorc = banco.gastos || 0;
+    var gastosFijo = banco.fijo || 0;
+    var gastosARS = banco.personal ? gastosFijo : Math.round(montoFinanciar * gastosPorc) + gastosFijo;
+    var montoRecibe = montoFinanciar - gastosARS;
+
+    // Mostrar filas de gastos
+    var pvmfRow = document.getElementById('pvmf-row');
+    var pvgasRow = document.getElementById('pvgas-row');
+    var pvrecibeRow = document.getElementById('pvrecibe-row');
+    if(pvmfRow) pvmfRow.style.display = 'flex';
+    document.getElementById('pvmf').textContent = fmtP(montoFinanciar);
+    if(pvgasRow) {
+      pvgasRow.style.display = gastosARS > 0 ? 'flex' : 'none';
+      var gasLabel = banco.personal
+        ? '(-) Gastos fijos'
+        : '(-) Gastos (' + Math.round(gastosPorc*100*10)/10 + '%' + (sello>0 ? ' + ' + Math.round(sello*100*10)/10 + '% sellos' : '') + ')';
+      document.getElementById('pvgas-label').textContent = gasLabel;
+      document.getElementById('pvgas').textContent = '- ' + fmtP(gastosARS);
+    }
+    if(pvrecibeRow) {
+      pvrecibeRow.style.display = gastosARS > 0 ? 'flex' : 'none';
+      document.getElementById('pvrecibe').textContent = fmtP(montoRecibe > 0 ? montoRecibe : 0);
+    }
+
+    // Cuota del banco seleccionado
+    if(tnaUsada > 0) {
+      var montoConSello = montoFinanciar * (1 + sello);
+      var tm = Math.pow(1+tnaUsada/100,1/12)-1;
+      var c = montoConSello*tm/(1-Math.pow(1+tm,-cuotas));
+      document.getElementById('pvcu').textContent = fmtP(Math.round(c))+' x '+cuotas+(sello>0?' (c/sellos)':'');
+      document.getElementById('pvcu-banco').textContent = banco.nombre ? banco.nombre.split(' (')[0] : '';
+      cr.style.display = 'flex';
+    }
+
+    // Solo mostrar banco seleccionado - ocultar tabla general
+    var tabla = document.getElementById('tabla-cuotas');
+    if(tabla) tabla.style.display = 'none';
+  } else {
+    if(cr) cr.style.display = 'none';
+    var tabla2 = document.getElementById('tabla-cuotas');
+    if(tabla2) tabla2.style.display = 'none';
+    ['pvmf-row','pvgas-row','pvrecibe-row'].forEach(function(id){
+      var el = document.getElementById(id); if(el) el.style.display='none';
+    });
+  }
+
+  // ── CREDITO PERSONAL BNA ───────────────────────────
+  var bna = gc('cbna');
+  var bnaMonto = gn('bna-monto');
+  var bnaCuotas = parseInt(gv('bna-cuotas'))||12;
+  var BNA_GASTOS = 800000;
+  var BNA_TNA = 38;
+
+  // Mostrar filas resumen BNA
+  ['pvbna-row','pvbna-gas-row','pvbna-rec-row','pvbna-cuota-row'].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.style.display = (bna && bnaMonto > 0) ? 'flex' : 'none';
+  });
+
+  if(bna && bnaMonto > 0) {
+    var bnaRecibe = bnaMonto - BNA_GASTOS;
+    var bnaTm = Math.pow(1+BNA_TNA/100,1/12)-1;
+    var bnaCuota = bnaMonto * bnaTm / (1-Math.pow(1+bnaTm,-bnaCuotas));
+
+    document.getElementById('pvbna-monto').textContent = fmtP(bnaMonto);
+    document.getElementById('pvbna-recibe').textContent = fmtP(bnaRecibe > 0 ? bnaRecibe : 0);
+    document.getElementById('pvbna-cuota').textContent = fmtP(Math.round(bnaCuota))+' x '+bnaCuotas;
+
+    // Mini resumen dentro del formulario
+    var bnaRes = document.getElementById('bna-resumen');
+    if(bnaRes) {
+      bnaRes.style.display = 'block';
+      document.getElementById('bna-r-monto').textContent = fmtP(bnaMonto);
+      document.getElementById('bna-r-recibe').textContent = fmtP(bnaRecibe > 0 ? bnaRecibe : 0);
+      document.getElementById('bna-r-cuota').textContent = fmtP(Math.round(bnaCuota))+' x '+bnaCuotas;
+    }
+  } else {
+    var bnaRes2 = document.getElementById('bna-resumen');
+    if(bnaRes2) bnaRes2.style.display = 'none';
+  }
 }
 
 function genPDF(){
@@ -470,13 +916,17 @@ function genPDF(){
       cliente:gv('bc'),telefono:gv('bf'),dni:gv('bd'),vendedor:gv('bv'),
       modelo:gv('bm'),anio:gv('by'),color:gv('bco'),km:gv('bk'),patente:gv('bpa'),notas:gv('bno'),
       precioLista:gn('bpl'),precioContado:gn('bpc'),
-      tienePermuta:gc('cp'),permuModelo:gv('bpm'),permuAnio:gv('bpy'),permuValor:gn('bpv'),
+      tienePermuta:gc('cp'),permuModelo:gv('bpm'),permuAnio:gv('bpy'),permuValor:gn('bpv'),permuPos:gn('bppos'),permuPer:gn('bpper'),
+      tieneBNA:gc('cbna'),bnaMonto:gn('bna-monto'),bnaCuotas:parseInt(gv('bna-cuotas'))||12,
       tieneCredito:gc('cc'),banco:gv('bba'),cuotas:parseInt(gv('bcu'))||12,tna:gn('btn'),monto:gn('bfi'),anticipo:gn('ban'),
       vigencia:gv('bvi'),fecha:new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'})
     };
-    var base=d.precioContado||d.precioLista, diff=base-(d.tienePermuta?d.permuValor:0);
-    var cuotaEst=0;
-    if(d.tieneCredito&&d.monto&&d.tna){var tm=Math.pow(1+d.tna/100,1/12)-1;cuotaEst=d.monto*tm/(1-Math.pow(1+tm,-d.cuotas));}
+    var usaLista = d.tienePermuta || d.tieneCredito;
+    var baseCalc = usaLista ? d.precioLista : (d.precioContado || d.precioLista);
+    var pvNeta = d.permuValor - (d.permuPos||0) - (d.permuPer||0);
+    var diferencia = baseCalc - (d.tienePermuta ? pvNeta : 0);
+    var montoFin = d.tieneCredito ? (d.monto || diferencia) : 0;
+    var cuotaEst=0; // handled in bank table below
     var fmt=function(n){return n?'$ '+Math.round(n).toLocaleString('es-AR'):'-';};
     doc.setFillColor(20,20,20);doc.rect(0,0,W,48,'F');
     doc.setFillColor(200,16,46);doc.rect(0,44,W,4,'F');
@@ -486,7 +936,8 @@ function genPDF(){
     doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(170,170,170);
     doc.text(E.ciudad+' - '+E.web,M+34,38);
     var presNum='PRES-'+Date.now().toString().slice(-6);
-    doc.setTextColor(150,150,150);doc.text('N '+presNum,W-M,18,{align:'right'});doc.text(d.fecha,W-M,25,{align:'right'});doc.text('Vigencia: '+d.vigencia,W-M,32,{align:'right'});
+    var usdHoyPdf = parseFloat((document.getElementById('usd-hoy')||{value:'1250'}).value)||1250;
+    doc.setTextColor(150,150,150);doc.text('N '+presNum,W-M,18,{align:'right'});doc.text(d.fecha,W-M,25,{align:'right'});doc.text('USD: $'+usdHoyPdf.toLocaleString('es-AR')+' | Vigencia: '+d.vigencia,W-M,32,{align:'right'});
     y=58;doc.setFillColor(248,246,242);doc.rect(0,y-6,W,14,'F');
     doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(20,20,20);doc.text('PRESUPUESTO DE VENTA',M,y+2);
     if(d.vendedor){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text('Asesor: '+d.vendedor,W-M,y+2,{align:'right'});}
@@ -506,26 +957,132 @@ function genPDF(){
     if(d.notas){doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text(d.notas,M+5,y+27,{maxWidth:W-M*2-10});}
     y+=d.notas?42:32;
     doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);doc.text('PRECIOS',M,y);y+=10;
+    var precioBasePDF = usaLista ? d.precioLista : (d.precioContado || d.precioLista);
+    var transferencia = Math.round(precioBasePDF * 0.06);
+    var valorTotalOpPDF = precioBasePDF + transferencia;
+    var valorTrasPermutaPDF = valorTotalOpPDF - (d.tienePermuta ? pvNeta : 0);
+    var diferenciaCreditoPDF = d.tieneCredito ? Math.max(0, valorTotalOpPDF - montoFin) : 0;
+
     var rows=[];
-    if(d.precioLista)rows.push({l:'Precio de lista',v:fmt(d.precioLista),c:[60,60,60]});
-    if(d.precioContado&&d.precioContado!==d.precioLista)rows.push({l:'Precio contado',v:fmt(d.precioContado),c:[30,122,74],b:true});
-    if(d.tienePermuta&&d.permuValor)rows.push({l:'Permuta: '+(d.permuModelo||'')+(d.permuAnio?' '+d.permuAnio:''),v:'- '+fmt(d.permuValor),c:[180,100,0]});
-    rows.push({l:'DIFERENCIA A PAGAR',v:fmt(diff),c:[200,16,46],b:true,big:true});
+    if(d.precioLista) rows.push({l:'Precio de lista',v:fmt(d.precioLista),c:[60,60,60]});
+    if(!usaLista && d.precioContado && d.precioContado!==d.precioLista) rows.push({l:'Precio contado',v:fmt(d.precioContado),c:[30,122,74],b:true});
+    if(d.tienePermuta && d.permuValor){
+      rows.push({l:'Tasacion: '+(d.permuModelo||'')+(d.permuAnio?' '+d.permuAnio:''),v:fmt(d.permuValor),c:[180,100,0]});
+      if(d.permuPos>0) rows.push({l:'  (-) Posicion de venta',v:'- '+fmt(d.permuPos),c:[200,80,60]});
+      if(d.permuPer>0) rows.push({l:'  (-) Peritaje',v:'- '+fmt(d.permuPer),c:[200,80,60]});
+      if(d.permuPos>0||d.permuPer>0) rows.push({l:'  Neto permuta',v:fmt(pvNeta>0?pvNeta:0),c:[30,150,80],b:true});
+    }
+    if(d.tieneCredito && montoFin) rows.push({l:'(-) Credito banco',v:'- '+fmt(montoFin),c:[26,79,171],b:true});
+    if(transferencia>0) rows.push({l:'(+) Transferencia (6%)',v:fmt(transferencia),c:[180,140,0]});
+    rows.push({l:'VALOR TOTAL OPERACION',v:fmt(valorTotalOpPDF),c:[80,80,80],b:true});
+    var labelFinal, totalFinal;
+    if(d.tieneCredito){
+      labelFinal = 'DIFERENCIA A PAGAR HOY';
+      totalFinal = diferenciaCreditoPDF;
+    } else if(d.tienePermuta){
+      labelFinal = 'DIFERENCIA TRAS PERMUTA';
+      totalFinal = valorTrasPermutaPDF;
+    } else {
+      labelFinal = 'TOTAL A PAGAR';
+      totalFinal = valorTotalOpPDF;
+    }
+    rows.push({l:labelFinal,v:fmt(totalFinal),c:[200,16,46],b:true,big:true});
     rows.forEach(function(r){
       if(r.big){doc.setFillColor(20,20,20);doc.rect(M,y-5,W-M*2,12,'F');doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(255,255,255);doc.text(r.l,M+5,y+3);doc.setTextColor(200,16,46);doc.text(r.v,W-M-5,y+3,{align:'right'});y+=14;}
       else{doc.setFont('helvetica',r.b?'bold':'normal');doc.setFontSize(11);doc.setTextColor.apply(doc,r.c.length?[[r.c[0],r.c[1],r.c[2]]]:[]);doc.setTextColor(r.c[0],r.c[1],r.c[2]);doc.text(r.l,M+3,y);doc.text(r.v,W-M-3,y,{align:'right'});doc.setDrawColor(230,228,224);doc.line(M,y+2,W-M,y+2);y+=9;}
     });
-    if(d.tieneCredito&&d.monto&&cuotaEst){
-      y+=6;doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(26,79,171);doc.text('FINANCIACION',M,y);y+=10;
-      doc.setFillColor(232,238,250);doc.setDrawColor(180,200,240);doc.roundedRect(M,y,W-M*2,26,2,2,'FD');
-      var cy=y+8;
-      [[d.banco||'A confirmar','Entidad'],[fmt(d.monto),'Monto'],[d.tna+'%','TNA'],[d.cuotas+' cuotas','Plazo']].forEach(function(pair){
-        doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(60,80,140);doc.text(pair[1]+':',M+5,cy);
-        doc.setFont('helvetica','bold');doc.setTextColor(20,20,80);doc.text(pair[0],M+48,cy);cy+=6;
+    if(d.tieneCredito&&montoFin){
+      y+=6;
+      doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(26,79,171);
+      doc.text('FINANCIACION',M,y);
+      doc.setDrawColor(26,79,171);doc.line(M,y+1.5,M+doc.getTextWidth('FINANCIACION'),y+1.5);
+      y+=10;
+
+      // Header info box
+      doc.setFillColor(232,238,250);doc.setDrawColor(180,200,240);doc.roundedRect(M,y,W-M*2,20,2,2,'FD');
+      var cy=y+7;
+      [[fmt(montoFin),'Monto solicitado'],[d.cuotas+' cuotas','Plazo'],[d.banco||'Consultar','Entidad']].forEach(function(pair){
+        doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(60,80,140);doc.text(pair[1]+':',M+5,cy);
+        doc.setFont('helvetica','bold');doc.setTextColor(20,20,80);doc.text(pair[0],M+52,cy);cy+=6;
       });
-      doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(26,79,171);doc.text('Cuota est: '+fmt(Math.round(cuotaEst))+' x '+d.cuotas,W-M-5,y+14,{align:'right'});
-      y+=36;
+      y+=26;
+
+      // Cuota table - all banks
+      doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(26,79,171);
+      doc.text('CUOTA ESTIMADA POR BANCO ('+d.cuotas+' cuotas)',M,y);y+=8;
+
+      // Table header
+      doc.setFillColor(26,79,171);doc.rect(M,y,W-M*2,8,'F');
+      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(255,255,255);
+      doc.text('BANCO / ENTIDAD',M+4,y+5.5);
+      doc.text('TNA',M+90,y+5.5);
+      doc.text('CUOTA MENSUAL',W-M-4,y+5.5,{align:'right'});
+      y+=8;
+
+      var rowH = 7, alt = false;
+      BANCOS.slice(1).forEach(function(b){
+        if(b.tna === 0) return;
+        var mr = montoFin * (1 + b.sello);
+        var tm2 = Math.pow(1+b.tna/100,1/12)-1;
+        var cuota = mr*tm2/(1-Math.pow(1+tm2,-d.cuotas));
+        var nombre = b.nombre.split(' (')[0];
+        var esSeleccionado = d.banco && d.banco.toLowerCase().indexOf(nombre.toLowerCase().split(' ')[0]) >= 0;
+
+        if(alt){ doc.setFillColor(240,244,255); doc.rect(M,y,W-M*2,rowH,'F'); }
+        else { doc.setFillColor(255,255,255); doc.rect(M,y,W-M*2,rowH,'F'); }
+
+        if(esSeleccionado){
+          doc.setFillColor(200,230,255);doc.rect(M,y,W-M*2,rowH,'F');
+        }
+
+        doc.setFont('helvetica', esSeleccionado?'bold':'normal');
+        doc.setFontSize(8);
+        doc.setTextColor(esSeleccionado?26:50, esSeleccionado?79:50, esSeleccionado?171:50);
+        doc.text(nombre + (b.sello>0?' (+sellos)':''), M+4, y+5.5);
+        doc.setTextColor(80,80,80);
+        doc.text(b.tna+'%', M+80, y+5.5);
+        doc.setTextColor(30,130,70);
+        doc.text(fmt(recibeB>0?recibeB:0), M+104, y+5.5);
+        doc.setFont('helvetica','bold');
+        doc.setTextColor(esSeleccionado?26:40, esSeleccionado?79:80, esSeleccionado?171:160);
+        doc.text(fmt(Math.round(cuota)), W-M-4, y+5.5, {align:'right'});
+        doc.setDrawColor(220,228,245);doc.line(M,y+rowH,W-M,y+rowH);
+        y+=rowH; alt=!alt;
+      });
+
+      doc.setFontSize(7.5);doc.setFont('helvetica','italic');doc.setTextColor(130,130,130);
+      y+=4;doc.text('* Cuotas estimadas. Sujetas a aprobacion crediticia. No incluyen gastos administrativos salvo donde se indica.',M,y,{maxWidth:W-M*2});
+      y+=8;
     }
+    // Credito Personal BNA en PDF
+    if(d.tieneBNA && d.bnaMonto > 0) {
+      y+=8;
+      doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);
+      doc.text('CREDITO PERSONAL BNA',M,y);
+      doc.setDrawColor(200,16,46);doc.line(M,y+1.5,M+doc.getTextWidth('CREDITO PERSONAL BNA'),y+1.5);
+      y+=10;
+      var bnaRec = d.bnaMonto - 800000;
+      var bnaTm2 = Math.pow(1+38/100,1/12)-1;
+      var bnaCuotaPDF = d.bnaMonto*bnaTm2/(1-Math.pow(1+bnaTm2,-d.bnaCuotas));
+      doc.setFillColor(255,248,230);doc.setDrawColor(245,158,11);
+      doc.roundedRect(M,y,W-M*2,30,2,2,'FD');
+      var byy = y+8;
+      [[fmt(d.bnaMonto),'Monto solicitado','normal',[60,60,60]],
+       ['- $ 800.000','(-) Gastos fijos BNA','normal',[180,60,60]],
+       [fmt(bnaRec>0?bnaRec:0),'Monto a recibir','bold',[30,150,70]],
+       [fmt(Math.round(bnaCuotaPDF))+' x '+d.bnaCuotas,'Cuota estimada (TNA 38%)','bold',[26,79,171]]
+      ].forEach(function(row){
+        doc.setFont('helvetica',row[2]);doc.setFontSize(9);
+        doc.setTextColor(row[3][0],row[3][1],row[3][2]);
+        doc.text(row[1]+':',M+5,byy);
+        doc.text(row[0],W-M-5,byy,{align:'right'});
+        byy+=7;
+      });
+      doc.setFont('helvetica','italic');doc.setFontSize(7.5);doc.setTextColor(130,100,0);
+      doc.text('* Sujeto a aprobacion crediticia del Banco Nacion Argentina.',M+5,y+28);
+      y+=38;
+    }
+
     y=Math.max(y,215);
     doc.setFillColor(248,246,242);doc.rect(M,y,W-M*2,12,'F');doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100,100,100);doc.text('Vigencia: '+d.vigencia+' desde la fecha de emision.',M+4,y+8);
     y+=20;doc.setDrawColor(180,180,180);doc.line(M,y,M+55,y);doc.line(W-M-55,y,W-M,y);
@@ -540,6 +1097,83 @@ function genPDF(){
 }
 
 function snkShow(msg){ var s=document.getElementById('snk'); s.textContent=msg; s.classList.add('show'); clearTimeout(window._st); window._st=setTimeout(function(){ s.classList.remove('show'); },3000); }
+
+// ══ STOCK SELECTOR ════════════════════════════════════
+function initStockSelect() {
+  var sel = document.getElementById('stock-sel');
+  if (!sel) return;
+  STOCK_LIST.forEach(function(s) {
+    var opt = document.createElement('option');
+    opt.value = s.label + '|' + s.precio + '|' + s.moneda;
+    opt.textContent = s.label + (s.precio > 0 ? ' — ' + (s.moneda === 'USD' ? 'USD ' + s.precio.toLocaleString('es-AR') : '$ ' + Math.round(s.precio).toLocaleString('es-AR')) : '');
+    sel.appendChild(opt);
+  });
+}
+
+function getUSD() {
+  return parseFloat(document.getElementById('usd-hoy').value) || 1250;
+}
+
+function onUSDChange() {
+  var val = getUSD();
+  try { localStorage.setItem('ruthina_usd', val); } catch(e){}
+  // Si hay un auto USD seleccionado, recalcular precio
+  var sel = document.getElementById('stock-sel');
+  if (sel && sel.value) {
+    var parts = sel.value.split('|');
+    if (parts[2] === 'USD') {
+      autoFillStock(sel.value);
+      return; // autoFillStock llama upP()
+    }
+  }
+  upP();
+}
+
+function autoFillStock(val) {
+  if (!val) return;
+  var parts = val.split('|');
+  var label = parts[0], precio = parseFloat(parts[1])||0, moneda = parts[2]||'ARS';
+  document.getElementById('bm').value = label;
+  if (precio > 0) {
+    var precioARS = moneda === 'USD' ? Math.round(precio * getUSD()) : precio;
+    document.getElementById('bpl').value = precioARS;
+    document.getElementById('bpc').value = Math.round(precioARS * 0.97);
+    // Show USD badge if applicable
+    var usdBadge = document.getElementById('usd-badge');
+    if (usdBadge) {
+      if (moneda === 'USD') {
+        usdBadge.textContent = 'USD ' + precio.toLocaleString('es-AR') + ' x $ ' + getUSD().toLocaleString('es-AR') + ' = ARS';
+        usdBadge.style.display = 'block';
+      } else {
+        usdBadge.style.display = 'none';
+      }
+    }
+  }
+  upP();
+}
+
+// ══ BANCO SELECTOR ═════════════════════════════════════
+function initBancoSelect() {
+  var sel = document.getElementById('banco-sel');
+  if (!sel) return;
+  BANCOS.forEach(function(b, i) {
+    var opt = document.createElement('option');
+    opt.value = i;
+    opt.textContent = b.nombre;
+    sel.appendChild(opt);
+  });
+}
+
+function autoFillBanco(idx) {
+  if (idx === '' || idx === '0') return;
+  var b = BANCOS[parseInt(idx)];
+  if (!b || b.tna === 0) return;
+  document.getElementById('btn').value = b.tna;
+  document.getElementById('bba').value = b.nombre.split(' (')[0];
+  var hint = document.getElementById('tna-hint');
+  if (hint) hint.textContent = b.sello > 0 ? '+ ' + (b.sello*100) + '% sellos aplicado' : '';
+  upP();
+}
 
 // ══ INIT ════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', function(){
