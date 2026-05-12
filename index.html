@@ -333,22 +333,22 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div class="pr" id="pvper-row" style="display:none"><span>(-) Peritaje</span><span id="pvper" style="color:#f87171">—</span></div>
       <div class="pr" id="pvneta-row" style="display:none"><span style="font-weight:600">Neto permuta</span><span id="pvneta" style="color:#4ade80;font-weight:700">—</span></div>
       <div class="pr" id="pvmf-row" style="display:none"><span>(-) Credito banco</span><span id="pvmf" style="color:#60a5fa;font-weight:600">—</span></div>
-      <div class="pr" id="pvant-row" style="display:none"><span>(-) Anticipo</span><span id="pvant" style="color:#60a5fa">—</span></div>
       <div class="pr" id="pvgas-row" style="display:none"><span id="pvgas-label">(-) Gastos (4.2%)</span><span id="pvgas" style="color:#f87171">—</span></div>
-      <div class="pr" id="pvrecibe-row" style="display:none"><span style="font-weight:600">Monto a recibir</span><span id="pvrecibe" style="color:#4ade80;font-weight:700">—</span></div>
+      <div class="pr" id="pvrecibe-row" style="display:none"><span style="font-weight:600">Monto a recibir credito</span><span id="pvrecibe" style="color:#4ade80;font-weight:700">—</span></div>
       <div class="pr" id="pvbna-row" style="display:none"><span>BNA Personal solicitado</span><span id="pvbna-monto" style="color:#60a5fa">—</span></div>
       <div class="pr" id="pvbna-gas-row" style="display:none"><span>(-) Gastos BNA</span><span style="color:#f87171">- $ 800.000</span></div>
       <div class="pr" id="pvbna-rec-row" style="display:none"><span style="font-weight:600">BNA a recibir</span><span id="pvbna-recibe" style="color:#4ade80;font-weight:700">—</span></div>
       <div class="pr" id="pvbna-cuota-row" style="display:none"><span>Cuota BNA est.</span><span id="pvbna-cuota" style="color:#60a5fa">—</span></div>
+      <div class="pr" id="pvant-row" style="display:none"><span>(-) Anticipo</span><span id="pvant" style="color:#60a5fa">—</span></div>
       <div class="pr" id="pvtr" style="display:none"><span>(+) Transferencia (6%)</span><span id="pvtrv" style="color:#fbbf24">—</span></div>
-      <div class="pr" id="pvtotal-op-row" style="display:none;border-top:1px solid #444;padding-top:6px;margin-top:4px"><span style="font-weight:600">Valor total operacion</span><span id="pvtotal-op" style="color:#fff;font-weight:700">—</span></div>
-      <div class="pr" id="pvdif-row" style="display:none"><span style="font-weight:600">Diferencia del cliente</span><span id="pvdif" style="color:#fb923c;font-weight:700;font-size:16px">—</span></div>
+      <div class="pr" id="pvtotal-op-row" style="display:none;border-top:1px solid #333;padding-top:6px;margin-top:4px"><span style="font-weight:600">Valor total operacion</span><span id="pvtotal-op" style="color:#fff;font-weight:700">—</span></div>
+      <div class="pr" id="pvplata-row" style="display:none"><span style="font-weight:600">Plata total cliente</span><span id="pvplata" style="color:#aaa;font-weight:600">—</span></div>
       <div class="pr" id="pvcr" style="display:none"><span>Cuota est. <span id="pvcu-banco" style="font-size:10px;opacity:.7"></span></span><span id="pvcu" style="color:#60a5fa">—</span></div>
       <div id="tabla-cuotas" style="display:none;margin-top:6px">
         <div style="font-size:10px;color:#666;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Cuota por banco (sobre monto a financiar)</div>
         <div id="cuotas-body"></div>
       </div>
-      <div class="pr pt"><span id="pvt-label">Total a pagar</span><span id="pvt">—</span></div>
+      <div class="pr pt" id="pvdif-final" style="display:none"><span id="pvt-label">Diferencia</span><span id="pvt" style="font-size:18px;font-weight:800">—</span></div>
     </div>
     <div class="bc">
       <div class="fg"><label>Vigencia</label>
@@ -806,29 +806,42 @@ function upP(){
   // Diferencia que falta pagar hoy en efectivo
   var diferenciaPagar = Math.max(0, valorTotalOp - totalAportes);
 
-  // Mostrar valor total operacion siempre
+  // Valor total operacion
   var pvTotalOpRow = document.getElementById('pvtotal-op-row');
   if(pvTotalOpRow) pvTotalOpRow.style.display = precioBase > 0 ? 'flex' : 'none';
   if(precioBase > 0) document.getElementById('pvtotal-op').textContent = fmtP(valorTotalOp);
 
-  // Mostrar diferencia solo si hay credito o permuta
-  var pvDifRow = document.getElementById('pvdif-row');
-  var hayDescuento = (cred && aporteCred > 0) || (perm && aportePermuta > 0) || anticipo > 0 || aporteBNA > 0;
-  if(pvDifRow) pvDifRow.style.display = hayDescuento ? 'flex' : 'none';
-  if(hayDescuento) document.getElementById('pvdif').textContent = fmtP(diferenciaPagar);
+  // Plata total que pone el cliente (suma de todos los aportes netos)
+  var pvPlataRow = document.getElementById('pvplata-row');
+  var hayAportes = totalAportes > 0;
+  if(pvPlataRow) pvPlataRow.style.display = hayAportes ? 'flex' : 'none';
+  if(hayAportes) document.getElementById('pvplata').textContent = fmtP(totalAportes);
 
-  // Total final (linea roja)
-  var totalMostrar, labelTotal;
-  if(hayDescuento) {
-    totalMostrar = diferenciaPagar;
-    labelTotal = 'Diferencia a pagar hoy';
-  } else {
-    totalMostrar = valorTotalOp;
-    labelTotal = 'Total a pagar';
-  }
+  // Diferencia = valorTotalOp - totalAportes
+  // positivo (falta) = ROJO, cero o negativo (sobra/justo) = VERDE
+  var diferencia_final = valorTotalOp - totalAportes;
+  var pvDifFinal = document.getElementById('pvdif-final');
+  var pvtEl = document.getElementById('pvt');
   var pvtLabel = document.getElementById('pvt-label');
-  if(pvtLabel) pvtLabel.textContent = labelTotal;
-  document.getElementById('pvt').textContent = totalMostrar >= 0 ? fmtP(totalMostrar) : '-';
+
+  if(precioBase > 0) {
+    if(pvDifFinal) pvDifFinal.style.display = 'flex';
+    if(diferencia_final > 0) {
+      // Falta plata - ROJO
+      if(pvtLabel) pvtLabel.textContent = 'Falta al cliente';
+      if(pvtEl) { pvtEl.textContent = fmtP(diferencia_final); pvtEl.style.color = '#EF4444'; }
+    } else if(diferencia_final < 0) {
+      // Sobra plata - VERDE
+      if(pvtLabel) pvtLabel.textContent = 'Le sobra al cliente';
+      if(pvtEl) { pvtEl.textContent = fmtP(Math.abs(diferencia_final)); pvtEl.style.color = '#22c55e'; }
+    } else {
+      // Exacto - VERDE
+      if(pvtLabel) pvtLabel.textContent = 'Cubierto exacto';
+      if(pvtEl) { pvtEl.textContent = '$ 0'; pvtEl.style.color = '#22c55e'; }
+    }
+  } else {
+    if(pvDifFinal) pvDifFinal.style.display = 'none';
+  }
 
   // ── CUOTAS + GASTOS ────────────────────────────────
   var cr = document.getElementById('pvcr');
@@ -1019,9 +1032,17 @@ function genPDF(){
     }
     if(transferencia>0) rows.push({l:'(+) Transferencia (6%)',v:fmt(transferencia),c:[180,140,0]});
     rows.push({l:'VALOR TOTAL OPERACION',v:fmt(valorTotalOpPDF),c:[80,80,80],b:true});
-    var labelFinal = hayDescuentoPDF ? 'DIFERENCIA A PAGAR HOY' : 'TOTAL A PAGAR';
-    var totalFinal = hayDescuentoPDF ? diferenciaPagarPDF : valorTotalOpPDF;
-    rows.push({l:labelFinal,v:fmt(totalFinal),c:[200,16,46],b:true,big:true});
+    var diferencia_final_pdf = valorTotalOpPDF - totalAportesPDF;
+    rows.push({l:'PLATA TOTAL CLIENTE',v:fmt(totalAportesPDF),c:[80,80,150],b:true});
+    var labelFinal, totalFinal, colorFinal;
+    if(diferencia_final_pdf > 0){
+      labelFinal = 'FALTA AL CLIENTE'; totalFinal = diferencia_final_pdf; colorFinal = [200,16,46];
+    } else if(diferencia_final_pdf < 0){
+      labelFinal = 'LE SOBRA AL CLIENTE'; totalFinal = Math.abs(diferencia_final_pdf); colorFinal = [30,140,60];
+    } else {
+      labelFinal = 'CUBIERTO EXACTO'; totalFinal = 0; colorFinal = [30,140,60];
+    }
+    rows.push({l:labelFinal,v:fmt(totalFinal),c:colorFinal,b:true,big:true});
     rows.forEach(function(r){
       var lbl = String(r.l || '');
       var val = String(r.v || '');
