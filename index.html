@@ -756,8 +756,8 @@ function upP(){
   // Diferencia tras permuta (usa neto real)
   var diferencia = baseCalc - (perm ? pvNeta : 0);
 
-  // Monto a financiar
-  var montoFinanciar = cred ? (fin || diferencia) : 0;
+  // Monto a financiar = lo que el banco presta (ingresado en el campo)
+  var montoFinanciar = cred ? fin : 0;
   var pvmfRow = document.getElementById('pvmf-row');
   if(pvmfRow) {
     pvmfRow.style.display = cred && montoFinanciar > 0 ? 'flex' : 'none';
@@ -991,68 +991,53 @@ function genPDF(){
       if(r.big){doc.setFillColor(20,20,20);doc.rect(M,y-5,W-M*2,12,'F');doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(255,255,255);doc.text(r.l,M+5,y+3);doc.setTextColor(200,16,46);doc.text(r.v,W-M-5,y+3,{align:'right'});y+=14;}
       else{doc.setFont('helvetica',r.b?'bold':'normal');doc.setFontSize(11);doc.setTextColor.apply(doc,r.c.length?[[r.c[0],r.c[1],r.c[2]]]:[]);doc.setTextColor(r.c[0],r.c[1],r.c[2]);doc.text(r.l,M+3,y);doc.text(r.v,W-M-3,y,{align:'right'});doc.setDrawColor(230,228,224);doc.line(M,y+2,W-M,y+2);y+=9;}
     });
-    if(d.tieneCredito&&montoFin){
-      y+=6;
+    if(d.tieneCredito && montoFin){
+      y+=8;
       doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(26,79,171);
       doc.text('FINANCIACION',M,y);
       doc.setDrawColor(26,79,171);doc.line(M,y+1.5,M+doc.getTextWidth('FINANCIACION'),y+1.5);
       y+=10;
 
-      // Header info box
-      doc.setFillColor(232,238,250);doc.setDrawColor(180,200,240);doc.roundedRect(M,y,W-M*2,20,2,2,'FD');
-      var cy=y+7;
-      [[fmt(montoFin),'Monto solicitado'],[d.cuotas+' cuotas','Plazo'],[d.banco||'Consultar','Entidad']].forEach(function(pair){
-        doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(60,80,140);doc.text(pair[1]+':',M+5,cy);
-        doc.setFont('helvetica','bold');doc.setTextColor(20,20,80);doc.text(pair[0],M+52,cy);cy+=6;
-      });
-      y+=26;
+      // Calcular cuota del banco seleccionado
+      var bancoSelIdx2 = parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
+      var bancoSel2 = BANCOS[bancoSelIdx2]||{tna:d.tna||0,sello:0,gastos:0.042,fijo:0,personal:false,nombre:d.banco||'Banco'};
+      var tnaFinal = d.tna || bancoSel2.tna || 0;
+      var selloFinal = bancoSel2.sello || 0;
+      var gastosARS2 = bancoSel2.personal ? (bancoSel2.fijo||0) : Math.round(montoFin*(bancoSel2.gastos||0.042));
+      var montoRecibe2 = montoFin - gastosARS2;
+      var nombreBanco2 = (bancoSel2.nombre||d.banco||'Banco').split(' (')[0];
+      var cuotaFinal = 0;
+      if(tnaFinal > 0){
+        var tmF = Math.pow(1+tnaFinal/100,1/12)-1;
+        cuotaFinal = montoFin*(1+selloFinal)*tmF/(1-Math.pow(1+tmF,-d.cuotas));
+      }
 
-      // Cuota table - all banks
-      doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(26,79,171);
-      doc.text('CUOTA ESTIMADA POR BANCO ('+d.cuotas+' cuotas)',M,y);y+=8;
-
-      // Table header
-      doc.setFillColor(26,79,171);doc.rect(M,y,W-M*2,8,'F');
-      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(255,255,255);
-      doc.text('BANCO / ENTIDAD',M+4,y+5.5);
-      doc.text('TNA',M+90,y+5.5);
-      doc.text('CUOTA MENSUAL',W-M-4,y+5.5,{align:'right'});
-      y+=8;
-
-      var rowH = 7, alt = false;
-      BANCOS.slice(1).forEach(function(b){
-        if(b.tna === 0) return;
-        var mr = montoFin * (1 + b.sello);
-        var tm2 = Math.pow(1+b.tna/100,1/12)-1;
-        var cuota = mr*tm2/(1-Math.pow(1+tm2,-d.cuotas));
-        var nombre = b.nombre.split(' (')[0];
-        var esSeleccionado = d.banco && d.banco.toLowerCase().indexOf(nombre.toLowerCase().split(' ')[0]) >= 0;
-
-        if(alt){ doc.setFillColor(240,244,255); doc.rect(M,y,W-M*2,rowH,'F'); }
-        else { doc.setFillColor(255,255,255); doc.rect(M,y,W-M*2,rowH,'F'); }
-
-        if(esSeleccionado){
-          doc.setFillColor(200,230,255);doc.rect(M,y,W-M*2,rowH,'F');
-        }
-
-        doc.setFont('helvetica', esSeleccionado?'bold':'normal');
-        doc.setFontSize(8);
-        doc.setTextColor(esSeleccionado?26:50, esSeleccionado?79:50, esSeleccionado?171:50);
-        doc.text(nombre + (b.sello>0?' (+sellos)':''), M+4, y+5.5);
-        doc.setTextColor(80,80,80);
-        doc.text(b.tna+'%', M+80, y+5.5);
-        doc.setTextColor(30,130,70);
-        doc.text(fmt(recibeB>0?recibeB:0), M+104, y+5.5);
-        doc.setFont('helvetica','bold');
-        doc.setTextColor(esSeleccionado?26:40, esSeleccionado?79:80, esSeleccionado?171:160);
-        doc.text(fmt(Math.round(cuota)), W-M-4, y+5.5, {align:'right'});
-        doc.setDrawColor(220,228,245);doc.line(M,y+rowH,W-M,y+rowH);
-        y+=rowH; alt=!alt;
-      });
+      // Caja banco seleccionado
+      doc.setFillColor(232,238,250);doc.setDrawColor(180,200,240);
+      doc.roundedRect(M,y,W-M*2,gastosARS2>0?38:28,2,2,'FD');
+      doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,79,171);
+      doc.text(nombreBanco2,M+5,y+9);
+      var cyF=y+17;
+      doc.setFont('helvetica','normal');doc.setFontSize(9);
+      doc.setTextColor(60,60,60);doc.text('Monto solicitado:',M+5,cyF);
+      doc.setFont('helvetica','bold');doc.text(fmt(montoFin),M+70,cyF); cyF+=7;
+      if(gastosARS2>0){
+        doc.setFont('helvetica','normal');doc.setTextColor(180,60,60);
+        doc.text('(-) Gastos:',M+5,cyF);
+        doc.setFont('helvetica','bold');doc.text('- '+fmt(gastosARS2),M+70,cyF); cyF+=7;
+        doc.setFont('helvetica','bold');doc.setTextColor(30,140,60);
+        doc.text('Monto a recibir:',M+5,cyF);
+        doc.text(fmt(montoRecibe2>0?montoRecibe2:0),M+70,cyF);
+      }
+      doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(26,79,171);
+      doc.text(cuotaFinal>0?fmt(Math.round(cuotaFinal))+' x '+d.cuotas:'consultar',W-M-5,y+(gastosARS2>0?22:18),{align:'right'});
+      doc.setFontSize(8);doc.setTextColor(100,100,130);
+      doc.text('Cuota estimada',W-M-5,y+(gastosARS2>0?29:25),{align:'right'});
+      y+=(gastosARS2>0?46:36);
 
       doc.setFontSize(7.5);doc.setFont('helvetica','italic');doc.setTextColor(130,130,130);
-      y+=4;doc.text('* Cuotas estimadas. Sujetas a aprobacion crediticia. No incluyen gastos administrativos salvo donde se indica.',M,y,{maxWidth:W-M*2});
-      y+=8;
+      doc.text('* Cuota estimada. Sujeta a aprobacion crediticia.',M,y,{maxWidth:W-M*2});
+      y+=10;
     }
     // Credito Personal BNA en PDF
     if(d.tieneBNA && d.bnaMonto > 0) {
