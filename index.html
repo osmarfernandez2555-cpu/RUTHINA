@@ -787,11 +787,21 @@ function upP(){
   // Valor total operacion = precio + transferencia
   var valorTotalOp = precioBase + transferencia;
 
-  // Cuanto aporta el cliente con financiacion (credito + anticipo + permuta)
-  var aporteCred      = cred ? montoFinanciar : 0;
+  // Cuanto aporta NETO cada credito (descontando gastos)
+  var bna2        = gc('cbna');
+  var bnaMonto2   = bna2 ? gn('bna-monto') : 0;
+
+  // Credito prendario: neto = monto - 4.2% gastos
+  var gastosPrendario = cred && montoFinanciar > 0 ? Math.round(montoFinanciar * 0.042) : 0;
+  var aporteCred      = cred ? Math.max(0, montoFinanciar - gastosPrendario) : 0;
+
+  // BNA personal: neto = monto - $800.000 fijos
+  var gastosBNA       = bna2 && bnaMonto2 > 0 ? 800000 : 0;
+  var aporteBNA       = bna2 ? Math.max(0, bnaMonto2 - gastosBNA) : 0;
+
   var aportePermuta   = perm ? (pvNeta > 0 ? pvNeta : 0) : 0;
   var aporteAnticipo  = anticipo;
-  var totalAportes    = aporteCred + aportePermuta + aporteAnticipo;
+  var totalAportes    = aporteCred + aportePermuta + aporteAnticipo + aporteBNA;
 
   // Diferencia que falta pagar hoy en efectivo
   var diferenciaPagar = Math.max(0, valorTotalOp - totalAportes);
@@ -803,7 +813,7 @@ function upP(){
 
   // Mostrar diferencia solo si hay credito o permuta
   var pvDifRow = document.getElementById('pvdif-row');
-  var hayDescuento = (cred && aporteCred > 0) || (perm && aportePermuta > 0) || anticipo > 0;
+  var hayDescuento = (cred && aporteCred > 0) || (perm && aportePermuta > 0) || anticipo > 0 || aporteBNA > 0;
   if(pvDifRow) pvDifRow.style.display = hayDescuento ? 'flex' : 'none';
   if(hayDescuento) document.getElementById('pvdif').textContent = fmtP(diferenciaPagar);
 
@@ -934,7 +944,12 @@ function genPDF(){
     var montoFin = d.tieneCredito ? (d.monto || 0) : 0;
     var anticipo = d.anticipo || 0;
     var aportePermuta = d.tienePermuta ? Math.max(0, pvNeta) : 0;
-    var totalAportesPDF = montoFin + anticipo + aportePermuta;
+    // Neto credito prendario (descuenta 4.2% gastos)
+    var gastosPrenPDF   = montoFin > 0 ? Math.round(montoFin * 0.042) : 0;
+    var aporteCredPDF   = Math.max(0, montoFin - gastosPrenPDF);
+    // Neto BNA (descuenta $800.000 fijos)
+    var aporteBNApdf    = d.tieneBNA && d.bnaMonto > 0 ? Math.max(0, d.bnaMonto - 800000) : 0;
+    var totalAportesPDF = aporteCredPDF + anticipo + aportePermuta + aporteBNApdf;
     var cuotaEst=0; // handled in bank table below
     var fmt=function(n){return n?'$ '+Math.round(n).toLocaleString('es-AR'):'-';};
     var tx=function(doc,str,x,y,opts){var s=String(str||'');if(s)opts?doc.text(s,x,y,opts):doc.text(s,x,y);};
@@ -991,8 +1006,17 @@ function genPDF(){
       if(d.permuPer>0) rows.push({l:'  (-) Peritaje',v:'- '+fmt(d.permuPer),c:[200,80,60]});
       rows.push({l:'  (-) Neto permuta',v:'- '+fmt(aportePermuta),c:[30,150,80],b:true});
     }
-    if(d.tieneCredito && montoFin) rows.push({l:'(-) Credito banco',v:'- '+fmt(montoFin),c:[26,79,171],b:true});
+    if(d.tieneCredito && montoFin){
+      rows.push({l:'Credito banco (bruto)',v:fmt(montoFin),c:[80,80,80]});
+      if(gastosPrenPDF>0) rows.push({l:'  (-) Gastos 4.2%',v:'- '+fmt(gastosPrenPDF),c:[180,60,60]});
+      rows.push({l:'  Neto credito banco',v:'- '+fmt(aporteCredPDF),c:[26,79,171],b:true});
+    }
     if(anticipo > 0) rows.push({l:'(-) Anticipo',v:'- '+fmt(anticipo),c:[26,79,171]});
+    if(d.tieneBNA && d.bnaMonto > 0){
+      rows.push({l:'Credito BNA (bruto)',v:fmt(d.bnaMonto),c:[80,80,80]});
+      rows.push({l:'  (-) Gastos fijos BNA',v:'- $ 800.000',c:[180,60,60]});
+      rows.push({l:'  Neto BNA',v:'- '+fmt(aporteBNApdf),c:[26,120,171],b:true});
+    }
     if(transferencia>0) rows.push({l:'(+) Transferencia (6%)',v:fmt(transferencia),c:[180,140,0]});
     rows.push({l:'VALOR TOTAL OPERACION',v:fmt(valorTotalOpPDF),c:[80,80,80],b:true});
     var labelFinal = hayDescuentoPDF ? 'DIFERENCIA A PAGAR HOY' : 'TOTAL A PAGAR';
