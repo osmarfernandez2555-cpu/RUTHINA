@@ -265,7 +265,15 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div class="fgr">
         <div class="fg"><label>Monto a financiar</label><input id="bfi" type="number" placeholder="8000000" oninput="upP()"></div>
         <div class="fg"><label>Anticipo</label><input id="ban" type="number" placeholder="3000000"></div>
-        <div class="fg"><label>TNA % <span id="tna-hint" style="color:#C8102E;font-size:10px"></span></label><input id="btn" type="number" placeholder="60" oninput="upP()"></div>
+        <div class="fg">
+          <label>TNA % <span id="tna-hint" style="color:#C8102E;font-size:10px;font-weight:600"></span></label>
+          <div style="display:flex;gap:6px;align-items:center">
+            <input id="btn" type="number" placeholder="60" oninput="upP()"
+              style="flex:1;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:15px;font-weight:600;color:#C8102E;outline:none;background:#FEF0F2">
+            <div style="font-size:11px;color:#999;white-space:nowrap">% anual</div>
+          </div>
+          <div style="font-size:10px;color:#999;margin-top:3px">Editá la tasa si cambió desde la lista</div>
+        </div>
         <div class="fg"><label>Cuotas</label>
           <select id="bcu" onchange="upP()">
             <option value="12">12 cuotas</option><option value="18">18 cuotas</option>
@@ -1292,7 +1300,14 @@ function autoFillBanco(idx) {
   document.getElementById('btn').value = b.tna;
   document.getElementById('bba').value = b.nombre.split(' (')[0];
   var hint = document.getElementById('tna-hint');
-  if (hint) hint.textContent = b.sello > 0 ? '+ ' + (b.sello*100) + '% sellos aplicado' : '';
+  if (hint) {
+    var parts = [];
+    if (b.sello > 0) parts.push(b.sello*100 + '% sellos');
+    if (b.gastos > 0) parts.push(b.gastos*100 + '% gastos');
+    if (b.gastoTotal > 0) parts.push(b.gastoTotal*100 + '% s/total (MG)');
+    if (b.fijo > 0) parts.push('$800k fijo (BNA)');
+    hint.textContent = parts.length ? '(' + parts.join(' + ') + ')' : '';
+  }
   upP();
 }
 
