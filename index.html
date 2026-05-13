@@ -1222,8 +1222,22 @@ function genPDF(){
     var gastosPrenPDFtotal = gastosPrenPDF + gastosSelloPDF + gastoTotalMGpdf;
     var aporteCredPDF   = Math.max(0, montoFin - gastosPrenPDFtotal);
     // Neto BNA (descuenta $800.000 fijos)
-    var aporteBNApdf    = d.tieneBNA && d.bnaMonto > 0 ? Math.max(0, d.bnaMonto - 800000) : 0;
-    var aportePSApdf = d.tienePSA && d.psaMonto > 0 ? _psaNetoPDF : 0;
+    var aporteBNApdf = d.tieneBNA && d.bnaMonto > 0 ? Math.max(0, d.bnaMonto - 800000) : 0;
+    // Calcular PSA aqui para usarlo en totalAportes y en las filas
+    var _psaGastosPDF=0, _psaNetoPDF=0, _psaCuotaPDF=0;
+    if(d.tienePSA && d.psaMonto > 0){
+      _psaGastosPDF = Math.round(d.psaMonto * (d.psaGastoPct||14.54) / 100);
+      _psaNetoPDF   = Math.max(0, d.psaMonto - _psaGastosPDF);
+      if(d.psaTipo === '0km'){
+        _psaCuotaPDF = d.psaCuotasN > 0 ? Math.round(d.psaMonto / d.psaCuotasN) : 0;
+      } else {
+        var _tmPSApdf = d.psaTNAp > 0 ? Math.pow(1+d.psaTNAp/100,1/12)-1 : 0;
+        _psaCuotaPDF  = _tmPSApdf > 0
+          ? Math.round(d.psaMonto*_tmPSApdf/(1-Math.pow(1+_tmPSApdf,-d.psaCuotasN)))
+          : (d.psaCuotasN > 0 ? Math.round(d.psaMonto/d.psaCuotasN) : 0);
+      }
+    }
+    var aportePSApdf = _psaNetoPDF;
     var totalAportesPDF = aporteCredPDF + anticipo + aportePermuta + aporteBNApdf + aportePSApdf;
     var cuotaEst=0; // handled in bank table below
     var fmt=function(n){return n?'$ '+Math.round(n).toLocaleString('es-AR'):'-';};
@@ -1298,16 +1312,7 @@ function genPDF(){
       rows.push({l:'  Neto credito banco',v:'- '+fmt(aporteCredPDF),c:[26,79,171],b:true});
     }
     if(anticipo > 0) rows.push({l:'(-) Anticipo',v:'- '+fmt(anticipo),c:[26,79,171]});
-    var _psaGastosPDF=0,_psaNetoPDF=0,_psaCuotaPDF=0;
     if(d.tienePSA && d.psaMonto > 0){
-      _psaGastosPDF = Math.round(d.psaMonto * d.psaGastoPct / 100);
-      _psaNetoPDF   = Math.max(0, d.psaMonto - _psaGastosPDF);
-      if(d.psaTipo==='0km'){
-        _psaCuotaPDF = Math.round(d.psaMonto / d.psaCuotasN);
-      } else {
-        var _tmPSA = d.psaTNAp>0 ? Math.pow(1+d.psaTNAp/100,1/12)-1 : 0;
-        _psaCuotaPDF = _tmPSA>0 ? Math.round(d.psaMonto*_tmPSA/(1-Math.pow(1+_tmPSA,-d.psaCuotasN))) : Math.round(d.psaMonto/d.psaCuotasN);
-      }
       var psaLabel = 'PSA ' + (d.psaTipo==='0km'?'0km':'Patentado');
       rows.push({l:psaLabel+' (bruto)',v:fmt(d.psaMonto),c:[80,80,80]});
       rows.push({l:'  (-) Gastos PSA ('+d.psaGastoPct+'%)',v:'- '+fmt(_psaGastosPDF),c:[180,60,60]});
