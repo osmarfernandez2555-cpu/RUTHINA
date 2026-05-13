@@ -547,7 +547,7 @@ var BANCOS = [
   {nombre:"Santander (55.9% fijo)", tna:55.9, sello:0, gastos:0.042, fijo:0},
   {nombre:"Galicia (64% fijo)", tna:64, sello:0, gastos:0.042, fijo:0},
   {nombre:"Galicia (69% fijo)", tna:69, sello:0, gastos:0.042, fijo:0},
-  {nombre:"MG Group (58% fijo + 0.7% sellos)", tna:58, sello:0.007, gastos:0.042, fijo:0},
+  {nombre:"MG Group (58% fijo + 0.7% sellos)", tna:58, sello:0.007, gastos:0.042, fijo:0, gastoTotal:0.02},
   {nombre:"Leasing (36% fijo - solo empresas)", tna:36, sello:0, gastos:0.042, fijo:0},
   {nombre:"Credicoop (44% fijo - solo empresas)", tna:44, sello:0, gastos:0.042, fijo:0}
 ];
@@ -795,8 +795,20 @@ function upP(){
   var bancoIdxAporte = parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
   var bancoAporte = BANCOS[bancoIdxAporte] || {gastos:0.042, fijo:0};
   var gastosPorc = bancoAporte.gastos !== undefined ? bancoAporte.gastos : 0.042;
+  var selloPorc    = bancoAporte.sello || 0;
   var gastosPrendario = cred && montoFinanciar > 0 ? Math.round(montoFinanciar * gastosPorc) : 0;
-  var aporteCred      = cred ? Math.max(0, montoFinanciar - gastosPrendario) : 0;
+  // Sello: se cobra del monto solicitado
+  var gastosSello  = cred && montoFinanciar > 0 ? Math.round(montoFinanciar * selloPorc) : 0;
+  // MG Group: 2% adicional sobre total a devolver (cuota x cuotas)
+  var gastoTotalPorc = bancoAporte.gastoTotal || 0;
+  var gastoTotalMG = 0;
+  if(cred && gastoTotalPorc > 0 && montoFinanciar > 0) {
+    var _tm = Math.pow(1+bancoAporte.tna/100,1/12)-1;
+    var _cuota = montoFinanciar*_tm/(1-Math.pow(1+_tm,-cuotas)); // sin sello para total devolver
+    var _totalDevolver = Math.round(_cuota * cuotas);
+    gastoTotalMG = Math.round(_totalDevolver * gastoTotalPorc);
+  }
+  var aporteCred = cred ? Math.max(0, montoFinanciar - gastosPrendario - gastosSello - gastoTotalMG) : 0;
 
   // BNA personal: neto = monto - $800.000 fijos
   var gastosBNA       = bna2 && bnaMonto2 > 0 ? 800000 : 0;
@@ -869,17 +881,18 @@ function upP(){
     if(pvgasRow) {
       pvgasRow.style.display = gastosARS > 0 ? 'flex' : 'none';
       var gastoPorcDisplay = bancoAporte.gastos !== undefined ? bancoAporte.gastos : 0.042;
+      var totalGastosDisplay = gastosPrendario + gastosSello + gastoTotalMG;
       var gasLabel = banco.personal
-        ? '(-) Gastos fijos'
-        : gastoPorcDisplay === 0
+        ? '(-) Gastos fijos BNA'
+        : totalGastosDisplay === 0
           ? '(-) Sin gastos (Bancor)'
-          : '(-) Gastos (' + Math.round(gastoPorcDisplay*100*10)/10 + '%' + (sello>0 ? ' + ' + Math.round(sello*100*10)/10 + '% sellos' : '') + ')';
+          : '(-) Gastos: 4.2%' + (gastosSello>0?' + 0.7% sellos':'') + (gastoTotalMG>0?' + 2% s/total':'');
       document.getElementById('pvgas-label').textContent = gasLabel;
-      document.getElementById('pvgas').textContent = '- ' + fmtP(gastosARS);
+      document.getElementById('pvgas').textContent = '- ' + fmtP(gastosPrendario + gastosSello + gastoTotalMG);
     }
     if(pvrecibeRow) {
       pvrecibeRow.style.display = gastosARS > 0 ? 'flex' : 'none';
-      document.getElementById('pvrecibe').textContent = fmtP(montoRecibe > 0 ? montoRecibe : 0);
+      document.getElementById('pvrecibe').textContent = fmtP(aporteCred > 0 ? aporteCred : 0);
     }
 
     // Cuota del banco seleccionado
@@ -966,9 +979,20 @@ function genPDF(){
     // Neto credito prendario (gastos segun banco - Bancor = 0%)
     var bancoSelPDF = parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
     var bancoPDF = BANCOS[bancoSelPDF] || {gastos:0.042};
-    var gastosPorcPDF = bancoPDF.gastos !== undefined ? bancoPDF.gastos : 0.042;
-    var gastosPrenPDF   = montoFin > 0 ? Math.round(montoFin * gastosPorcPDF) : 0;
-    var aporteCredPDF   = Math.max(0, montoFin - gastosPrenPDF);
+    var gastosPorcPDF  = bancoPDF.gastos !== undefined ? bancoPDF.gastos : 0.042;
+    var sellosPorcPDF  = bancoPDF.sello || 0;
+    var gastosPrenPDF  = montoFin > 0 ? Math.round(montoFin * gastosPorcPDF) : 0;
+    var gastosSelloPDF = montoFin > 0 ? Math.round(montoFin * sellosPorcPDF) : 0;
+    // MG Group: 2% sobre total a devolver
+    var gastoTotalPorcPDF = bancoPDF.gastoTotal || 0;
+    var gastoTotalMGpdf = 0;
+    if(gastoTotalPorcPDF > 0 && montoFin > 0 && d.cuotas > 0) {
+      var _tmPDF = Math.pow(1+bancoPDF.tna/100,1/12)-1;
+      var _cuotaPDF = montoFin*_tmPDF/(1-Math.pow(1+_tmPDF,-d.cuotas));
+      gastoTotalMGpdf = Math.round(_cuotaPDF * d.cuotas * gastoTotalPorcPDF);
+    }
+    var gastosPrenPDFtotal = gastosPrenPDF + gastosSelloPDF + gastoTotalMGpdf;
+    var aporteCredPDF   = Math.max(0, montoFin - gastosPrenPDFtotal);
     // Neto BNA (descuenta $800.000 fijos)
     var aporteBNApdf    = d.tieneBNA && d.bnaMonto > 0 ? Math.max(0, d.bnaMonto - 800000) : 0;
     var totalAportesPDF = aporteCredPDF + anticipo + aportePermuta + aporteBNApdf;
@@ -1038,7 +1062,9 @@ function genPDF(){
     }
     if(d.tieneCredito && montoFin){
       rows.push({l:'Credito banco (bruto)',v:fmt(montoFin),c:[80,80,80]});
-      if(gastosPrenPDF>0) rows.push({l:'  (-) Gastos 4.2%',v:'- '+fmt(gastosPrenPDF),c:[180,60,60]});
+      if(gastosPrenPDF>0) if(gastosPrenPDF>0) rows.push({l:'  (-) Gastos 4.2%',v:'- '+fmt(gastosPrenPDF),c:[180,60,60]});
+      if(gastosSelloPDF>0) rows.push({l:'  (-) Sellos 0.7% s/monto',v:'- '+fmt(gastosSelloPDF),c:[180,60,60]});
+      if(gastoTotalMGpdf>0) rows.push({l:'  (-) MG 2% s/total devolver',v:'- '+fmt(gastoTotalMGpdf),c:[180,60,60]});
       rows.push({l:'  Neto credito banco',v:'- '+fmt(aporteCredPDF),c:[26,79,171],b:true});
     }
     if(anticipo > 0) rows.push({l:'(-) Anticipo',v:'- '+fmt(anticipo),c:[26,79,171]});
@@ -1103,7 +1129,15 @@ function genPDF(){
       var bancoSel2 = BANCOS[bancoSelIdx2]||{tna:d.tna||0,sello:0,gastos:0.042,fijo:0,personal:false,nombre:d.banco||'Banco'};
       var tnaFinal = d.tna || bancoSel2.tna || 0;
       var selloFinal = bancoSel2.sello || 0;
-      var gastosARS2 = bancoSel2.personal ? (bancoSel2.fijo||0) : Math.round(montoFin*(bancoSel2.gastos||0.042));
+      var _gasBase2  = bancoSel2.personal ? (bancoSel2.fijo||0) : Math.round(montoFin*(bancoSel2.gastos!==undefined?bancoSel2.gastos:0.042));
+      var _gasSello2 = Math.round(montoFin*(bancoSel2.sello||0));
+      var _gastosTot2 = 0;
+      if((bancoSel2.gastoTotal||0) > 0 && montoFin > 0 && tnaFinal > 0){
+        var _tm2 = Math.pow(1+tnaFinal/100,1/12)-1;
+        var _c2 = montoFin*_tm2/(1-Math.pow(1+_tm2,-d.cuotas));
+        _gastosTot2 = Math.round(_c2*d.cuotas*(bancoSel2.gastoTotal||0));
+      }
+      var gastosARS2 = _gasBase2 + _gasSello2 + _gastosTot2;
       var montoRecibe2 = montoFin - gastosARS2;
       var nombreBanco2 = (bancoSel2.nombre||d.banco||'Banco').split(' (')[0];
       var cuotaFinal = 0;
