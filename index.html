@@ -791,8 +791,11 @@ function upP(){
   var bna2        = gc('cbna');
   var bnaMonto2   = bna2 ? gn('bna-monto') : 0;
 
-  // Credito prendario: neto = monto - 4.2% gastos
-  var gastosPrendario = cred && montoFinanciar > 0 ? Math.round(montoFinanciar * 0.042) : 0;
+  // Credito prendario: neto = monto - gastos segun banco (Bancor = 0%, resto = 4.2%)
+  var bancoIdxAporte = parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
+  var bancoAporte = BANCOS[bancoIdxAporte] || {gastos:0.042, fijo:0};
+  var gastosPorc = bancoAporte.gastos !== undefined ? bancoAporte.gastos : 0.042;
+  var gastosPrendario = cred && montoFinanciar > 0 ? Math.round(montoFinanciar * gastosPorc) : 0;
   var aporteCred      = cred ? Math.max(0, montoFinanciar - gastosPrendario) : 0;
 
   // BNA personal: neto = monto - $800.000 fijos
@@ -865,9 +868,12 @@ function upP(){
     document.getElementById('pvmf').textContent = fmtP(montoFinanciar);
     if(pvgasRow) {
       pvgasRow.style.display = gastosARS > 0 ? 'flex' : 'none';
+      var gastoPorcDisplay = bancoAporte.gastos !== undefined ? bancoAporte.gastos : 0.042;
       var gasLabel = banco.personal
         ? '(-) Gastos fijos'
-        : '(-) Gastos (' + Math.round(gastosPorc*100*10)/10 + '%' + (sello>0 ? ' + ' + Math.round(sello*100*10)/10 + '% sellos' : '') + ')';
+        : gastoPorcDisplay === 0
+          ? '(-) Sin gastos (Bancor)'
+          : '(-) Gastos (' + Math.round(gastoPorcDisplay*100*10)/10 + '%' + (sello>0 ? ' + ' + Math.round(sello*100*10)/10 + '% sellos' : '') + ')';
       document.getElementById('pvgas-label').textContent = gasLabel;
       document.getElementById('pvgas').textContent = '- ' + fmtP(gastosARS);
     }
@@ -957,8 +963,11 @@ function genPDF(){
     var montoFin = d.tieneCredito ? (d.monto || 0) : 0;
     var anticipo = d.anticipo || 0;
     var aportePermuta = d.tienePermuta ? Math.max(0, pvNeta) : 0;
-    // Neto credito prendario (descuenta 4.2% gastos)
-    var gastosPrenPDF   = montoFin > 0 ? Math.round(montoFin * 0.042) : 0;
+    // Neto credito prendario (gastos segun banco - Bancor = 0%)
+    var bancoSelPDF = parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
+    var bancoPDF = BANCOS[bancoSelPDF] || {gastos:0.042};
+    var gastosPorcPDF = bancoPDF.gastos !== undefined ? bancoPDF.gastos : 0.042;
+    var gastosPrenPDF   = montoFin > 0 ? Math.round(montoFin * gastosPorcPDF) : 0;
     var aporteCredPDF   = Math.max(0, montoFin - gastosPrenPDF);
     // Neto BNA (descuenta $800.000 fijos)
     var aporteBNApdf    = d.tieneBNA && d.bnaMonto > 0 ? Math.max(0, d.bnaMonto - 800000) : 0;
