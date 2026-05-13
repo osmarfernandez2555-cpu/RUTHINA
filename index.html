@@ -785,11 +785,12 @@ function upP(){
 
   // Transferencia: 6% del precio lista (si hay permuta/credito) o contado
   var baseTransf = usaLista ? price : (cash || price);
-  var transferencia = baseTransf > 0 ? Math.round(baseTransf * 0.06) : 0;
+  var porcTransf = baseTransf > 20000000 ? 0.05 : 0.06;
+  var transferencia = baseTransf > 0 ? Math.round(baseTransf * porcTransf) : 0;
   var pvtr = document.getElementById('pvtr');
   if(pvtr) {
     pvtr.style.display = transferencia > 0 ? 'flex' : 'none';
-    document.getElementById('pvtrv').textContent = fmtP(transferencia) + ' (6%)';
+    document.getElementById('pvtrv').textContent = fmtP(transferencia) + ' (' + (porcTransf*100) + '%)';
   }
 
   // ── TOTAL FINAL ────────────────────────────────────
@@ -1074,7 +1075,8 @@ function genPDF(){
     y+=d.notas?42:32;
     doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,52,96);doc.text('PRECIOS',M,y);doc.setDrawColor(15,52,96);doc.line(M,y+1.5,M+doc.getTextWidth('PRECIOS'),y+1.5);y+=10;
     var precioBasePDF = usaLista ? d.precioLista : (d.precioContado || d.precioLista);
-    var transferencia = Math.round(precioBasePDF * 0.06);
+    var porcTransfPDF = precioBasePDF > 20000000 ? 0.05 : 0.06;
+    var transferencia = Math.round(precioBasePDF * porcTransfPDF);
     var valorTotalOpPDF = precioBasePDF + transferencia;
     var diferenciaPagarPDF = Math.max(0, valorTotalOpPDF - totalAportesPDF);
     var hayDescuentoPDF = totalAportesPDF > 0;
@@ -1101,7 +1103,7 @@ function genPDF(){
       rows.push({l:'  (-) Gastos fijos BNA',v:'- $ 800.000',c:[180,60,60]});
       rows.push({l:'  Neto BNA',v:'- '+fmt(aporteBNApdf),c:[26,120,171],b:true});
     }
-    if(transferencia>0) rows.push({l:'(+) Transferencia (6%)',v:fmt(transferencia),c:[180,140,0]});
+    if(transferencia>0) rows.push({l:'(+) Transferencia ('+(porcTransfPDF*100)+'%)',v:fmt(transferencia),c:[180,140,0]});
     rows.push({l:'VALOR TOTAL OPERACION',v:fmt(valorTotalOpPDF),c:[80,80,80],b:true});
     var diferencia_final_pdf = valorTotalOpPDF - totalAportesPDF;
     if(totalAportesPDF > 0) rows.push({l:'PLATA TOTAL CLIENTE',v:fmt(totalAportesPDF),c:[80,80,150],b:true});
