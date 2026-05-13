@@ -283,6 +283,92 @@ input:checked+.tsl::before{transform:translateX(18px)}
         </div>
       </div>
     </div>
+    <div class="seclbl">Credito PSA</div>
+    <div class="trow" onclick="tChk('cpsa','sc-psa')">
+      <div>
+        <div class="trl">Credito PSA</div>
+        <div class="trs">PSA Prestamos Personales Patentados / 0km</div>
+      </div>
+      <label class="tog" onclick="event.stopPropagation()">
+        <input type="checkbox" id="cpsa" onchange="onTogglePSA(this.checked)"><span class="tsl"></span>
+      </label>
+    </div>
+    <div id="sc-psa" style="display:none" class="bc">
+      <!-- Tipo: 0km o Patentado -->
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button id="psa-btn-0km" onclick="setPSATipo('0km')"
+          style="flex:1;padding:10px;border-radius:10px;border:2px solid #C8102E;background:#C8102E;color:white;font-family:Inter,sans-serif;font-weight:600;font-size:13px;cursor:pointer">
+          0km
+        </button>
+        <button id="psa-btn-pat" onclick="setPSATipo('pat')"
+          style="flex:1;padding:10px;border-radius:10px;border:2px solid var(--border);background:white;color:var(--text);font-family:Inter,sans-serif;font-weight:600;font-size:13px;cursor:pointer">
+          Patentado
+        </button>
+      </div>
+
+      <!-- 0KM -->
+      <div id="psa-0km">
+        <div style="background:#E8F5E3;border:1px solid #4ade80;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#166534">
+          ✅ <strong>0km:</strong> Máximo $8.000.000 — Cuotas: 24 o 36 — Tasa 0% — Gasto: 14.54% sobre el monto
+        </div>
+        <div class="fgr">
+          <div class="fg"><label>Monto solicitado (ARS)</label><input id="psa-monto-0" type="number" placeholder="8000000" oninput="upP()"></div>
+          <div class="fg"><label>Cuotas</label>
+            <select id="psa-cuotas-0" onchange="upP()">
+              <option value="24">24 cuotas</option>
+              <option value="36">36 cuotas</option>
+            </select>
+          </div>
+          <div class="fg"><label>Gasto % (editable)</label>
+            <input id="psa-gasto-0" type="number" value="14.54" step="0.01" oninput="upP()"
+              style="color:#C8102E;font-weight:600">
+          </div>
+        </div>
+        <div id="psa-0km-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:4px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px"><span>Monto solicitado</span><span id="psa0-r-monto" style="color:#CCC">-</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:4px"><span id="psa0-r-glabel">(-) Gasto 14.54%</span><span id="psa0-r-gasto">-</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#4ade80;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #333"><span style="font-weight:600">Neto a recibir</span><span id="psa0-r-neto" style="font-weight:700">-</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700"><span>Cuota</span><span id="psa0-r-cuota">-</span></div>
+          <div style="font-size:10px;color:#555;margin-top:4px">Tasa 0% — División simple del monto en cuotas</div>
+        </div>
+      </div>
+
+      <!-- PATENTADO -->
+      <div id="psa-pat" style="display:none">
+        <div style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#92400E">
+          ⚠️ <strong>Patentado:</strong> Gastos = Quebranto 10% + IVA 4% + Gestión 5%-10% (editables)
+        </div>
+        <div class="fgr">
+          <div class="fg"><label>Monto solicitado (ARS)</label><input id="psa-monto-p" type="number" placeholder="10000000" oninput="upP()"></div>
+          <div class="fg"><label>TNA % (editable)</label>
+            <input id="psa-tna-p" type="number" placeholder="47.9" step="0.1" oninput="upP()"
+              style="color:#C8102E;font-weight:600">
+          </div>
+          <div class="fg"><label>Cuotas</label>
+            <select id="psa-cuotas-p" onchange="upP()">
+              <option value="12">12 cuotas</option>
+              <option value="24">24 cuotas</option>
+              <option value="36">36 cuotas</option>
+            </select>
+          </div>
+        </div>
+        <div style="font-size:11px;color:#666;margin-bottom:8px;font-weight:600">Gastos (editables):</div>
+        <div class="fgr">
+          <div class="fg"><label>Quebranto %</label><input id="psa-q" type="number" value="10" step="0.1" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
+          <div class="fg"><label>IVA %</label><input id="psa-iva" type="number" value="4" step="0.1" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
+          <div class="fg"><label>Gestion %</label><input id="psa-gest" type="number" value="5" step="0.1" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
+        </div>
+        <div id="psa-pat-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:8px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px"><span>Monto solicitado</span><span id="psap-r-monto" style="color:#CCC">-</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:2px"><span id="psap-q-lbl">(-) Quebranto 10%</span><span id="psap-r-q">-</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:2px"><span id="psap-iva-lbl">(-) IVA 4%</span><span id="psap-r-iva">-</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:4px"><span id="psap-g-lbl">(-) Gestion 5%</span><span id="psap-r-g">-</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#4ade80;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #333"><span style="font-weight:600">Neto a recibir</span><span id="psap-r-neto" style="font-weight:700">-</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700"><span>Cuota estimada</span><span id="psap-r-cuota">-</span></div>
+        </div>
+      </div>
+    </div>
+
     <div class="seclbl">Credito Personal BNA</div>
     <div class="trow" onclick="tChk('cbna','sc-bna')">
       <div>
@@ -351,6 +437,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div class="pr" id="pvbna-gas-row" style="display:none"><span>(-) Gastos BNA</span><span style="color:#f87171">- $ 800.000</span></div>
       <div class="pr" id="pvbna-rec-row" style="display:none"><span style="font-weight:600">BNA a recibir</span><span id="pvbna-recibe" style="color:#4ade80;font-weight:700">—</span></div>
       <div class="pr" id="pvbna-cuota-row" style="display:none"><span>Cuota BNA est.</span><span id="pvbna-cuota" style="color:#60a5fa">—</span></div>
+      <div class="pr" id="pvpsa-row" style="display:none"><span id="pvpsa-label">PSA solicitado</span><span id="pvpsa-monto" style="color:#60a5fa">—</span></div>
+      <div class="pr" id="pvpsa-gas-row" style="display:none"><span id="pvpsa-gas-label">(-) Gastos PSA</span><span id="pvpsa-gas" style="color:#f87171">—</span></div>
+      <div class="pr" id="pvpsa-neto-row" style="display:none"><span style="font-weight:600">PSA neto a recibir</span><span id="pvpsa-neto" style="color:#4ade80;font-weight:700">—</span></div>
+      <div class="pr" id="pvpsa-cuota-row" style="display:none"><span>Cuota PSA est.</span><span id="pvpsa-cuota" style="color:#60a5fa">—</span></div>
       <div class="pr" id="pvant-row" style="display:none"><span>(-) Anticipo</span><span id="pvant" style="color:#60a5fa">—</span></div>
       <div class="pr" id="pvtr" style="display:none"><span>(+) Transferencia (6%)</span><span id="pvtrv" style="color:#fbbf24">—</span></div>
       <div class="pr" id="pvtotal-op-row" style="display:none;border-top:1px solid #333;padding-top:6px;margin-top:4px"><span style="font-weight:600">Valor total operacion</span><span id="pvtotal-op" style="color:#fff;font-weight:700">—</span></div>
@@ -695,6 +785,26 @@ function startApp(){
 // ══ PRESUPUESTO ══════════════════════════════════════
 function tChk(cid,sid){ var c=document.getElementById(cid); c.checked=!c.checked; sSec(sid,c.checked); upP(); }
 
+var psaTipo = '0km';
+
+function setPSATipo(tipo) {
+  psaTipo = tipo;
+  document.getElementById('psa-0km').style.display = tipo==='0km' ? 'block' : 'none';
+  document.getElementById('psa-pat').style.display = tipo==='pat' ? 'block' : 'none';
+  document.getElementById('psa-btn-0km').style.background = tipo==='0km' ? '#C8102E' : 'white';
+  document.getElementById('psa-btn-0km').style.color = tipo==='0km' ? 'white' : 'var(--text)';
+  document.getElementById('psa-btn-0km').style.borderColor = tipo==='0km' ? '#C8102E' : 'var(--border)';
+  document.getElementById('psa-btn-pat').style.background = tipo==='pat' ? '#C8102E' : 'white';
+  document.getElementById('psa-btn-pat').style.color = tipo==='pat' ? 'white' : 'var(--text)';
+  document.getElementById('psa-btn-pat').style.borderColor = tipo==='pat' ? '#C8102E' : 'var(--border)';
+  upP();
+}
+
+function onTogglePSA(checked) {
+  sSec('sc-psa', checked);
+  upP();
+}
+
 function onToggleBNA(checked) {
   sSec('sc-bna', checked);
   // Si activan BNA personal, desactivar financiacion prendaria para evitar confusion
@@ -829,7 +939,8 @@ function upP(){
 
   var aportePermuta   = perm ? (pvNeta > 0 ? pvNeta : 0) : 0;
   var aporteAnticipo  = anticipo;
-  var totalAportes    = aporteCred + aportePermuta + aporteAnticipo + aporteBNA;
+  var aportePSA       = psa ? psaNeto : 0;
+  var totalAportes    = aporteCred + aportePermuta + aporteAnticipo + aporteBNA + aportePSA;
 
   // Diferencia que falta pagar hoy en efectivo
   var diferenciaPagar = Math.max(0, valorTotalOp - totalAportes);
@@ -946,6 +1057,75 @@ function upP(){
     });
   }
 
+  // ── CREDITO PSA ────────────────────────────────────
+  var psa = gc('cpsa');
+  var psaMonto = 0, psaGastos = 0, psaNeto = 0, psaCuota = 0, psaCuotasN = 0;
+  if(psa) {
+    if(psaTipo === '0km') {
+      psaMonto = gn('psa-monto-0');
+      psaCuotasN = parseInt(gv('psa-cuotas-0'))||24;
+      var psaGastoPct = gn('psa-gasto-0')||14.54;
+      psaGastos = Math.round(psaMonto * psaGastoPct / 100);
+      psaNeto = Math.max(0, psaMonto - psaGastos);
+      psaCuota = psaCuotasN > 0 ? Math.round(psaMonto / psaCuotasN) : 0; // tasa 0%
+      // Update mini resumen
+      var r0 = document.getElementById('psa-0km-resumen');
+      if(r0 && psaMonto > 0) {
+        r0.style.display = 'block';
+        document.getElementById('psa0-r-monto').textContent = fmtP(psaMonto);
+        document.getElementById('psa0-r-glabel').textContent = '(-) Gasto ' + psaGastoPct + '%';
+        document.getElementById('psa0-r-gasto').textContent = '- ' + fmtP(psaGastos);
+        document.getElementById('psa0-r-neto').textContent = fmtP(psaNeto);
+        document.getElementById('psa0-r-cuota').textContent = fmtP(psaCuota) + ' x ' + psaCuotasN + ' (tasa 0%)';
+      } else if(r0) r0.style.display = 'none';
+    } else {
+      psaMonto = gn('psa-monto-p');
+      var psaTNAp = gn('psa-tna-p')||47.9;
+      psaCuotasN = parseInt(gv('psa-cuotas-p'))||24;
+      var psaQ = gn('psa-q')||10;
+      var psaIVA = gn('psa-iva')||4;
+      var psaGest = gn('psa-gest')||5;
+      var totalGastoPct = psaQ + psaIVA + psaGest;
+      psaGastos = Math.round(psaMonto * totalGastoPct / 100);
+      psaNeto = Math.max(0, psaMonto - psaGastos);
+      var tmP = Math.pow(1+psaTNAp/100,1/12)-1;
+      psaCuota = tmP > 0 ? Math.round(psaMonto*tmP/(1-Math.pow(1+tmP,-psaCuotasN))) : Math.round(psaMonto/psaCuotasN);
+      // Update mini resumen
+      var rP = document.getElementById('psa-pat-resumen');
+      if(rP && psaMonto > 0) {
+        rP.style.display = 'block';
+        document.getElementById('psap-r-monto').textContent = fmtP(psaMonto);
+        document.getElementById('psap-q-lbl').textContent = '(-) Quebranto ' + psaQ + '%';
+        document.getElementById('psap-r-q').textContent = '- ' + fmtP(Math.round(psaMonto*psaQ/100));
+        document.getElementById('psap-iva-lbl').textContent = '(-) IVA ' + psaIVA + '%';
+        document.getElementById('psap-r-iva').textContent = '- ' + fmtP(Math.round(psaMonto*psaIVA/100));
+        document.getElementById('psap-g-lbl').textContent = '(-) Gestion ' + psaGest + '%';
+        document.getElementById('psap-r-g').textContent = '- ' + fmtP(Math.round(psaMonto*psaGest/100));
+        document.getElementById('psap-r-neto').textContent = fmtP(psaNeto);
+        document.getElementById('psap-r-cuota').textContent = fmtP(psaCuota) + ' x ' + psaCuotasN;
+      } else if(rP) rP.style.display = 'none';
+    }
+    // Preview rows
+    ['pvpsa-row','pvpsa-gas-row','pvpsa-neto-row','pvpsa-cuota-row'].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.style.display = psaMonto > 0 ? 'flex' : 'none';
+    });
+    if(psaMonto > 0) {
+      document.getElementById('pvpsa-label').textContent = 'PSA ' + (psaTipo==='0km'?'0km':'Patentado') + ' solicitado';
+      document.getElementById('pvpsa-monto').textContent = fmtP(psaMonto);
+      document.getElementById('pvpsa-gas-label').textContent = '(-) Gastos PSA';
+      document.getElementById('pvpsa-gas').textContent = '- ' + fmtP(psaGastos);
+      document.getElementById('pvpsa-neto').textContent = fmtP(psaNeto);
+      document.getElementById('pvpsa-cuota').textContent = fmtP(psaCuota) + ' x ' + psaCuotasN + (psaTipo==='0km'?' (tasa 0%)':'');
+    }
+  } else {
+    ['pvpsa-row','pvpsa-gas-row','pvpsa-neto-row','pvpsa-cuota-row'].forEach(function(id){
+      var el = document.getElementById(id); if(el) el.style.display='none';
+    });
+    var r0b=document.getElementById('psa-0km-resumen'); if(r0b) r0b.style.display='none';
+    var rPb=document.getElementById('psa-pat-resumen'); if(rPb) rPb.style.display='none';
+  }
+
   // ── CREDITO PERSONAL BNA ───────────────────────────
   var bna = gc('cbna');
   var bnaMonto = gn('bna-monto');
@@ -996,6 +1176,9 @@ function genPDF(){
       precioLista:gn('bpl'),precioContado:gn('bpc'),
       tienePermuta:gc('cp'),permuModelo:gv('bpm'),permuAnio:gv('bpy'),permuValor:gn('bpv'),permuPos:gn('bppos'),permuPer:gn('bpper'),
       tieneBNA:gc('cbna'),bnaMonto:gn('bna-monto'),bnaCuotas:parseInt(gv('bna-cuotas'))||12,
+      tienePSA:gc('cpsa'),psaTipo:psaTipo,
+      psaMonto:psaTipo==='0km'?gn('psa-monto-0'):gn('psa-monto-p'),
+      psaGastos:psaGastos,psaNeto:psaNeto,psaCuota:psaCuota,psaCuotasN:psaCuotasN,
       tieneCredito:gc('cc'),banco:gv('bba'),cuotas:parseInt(gv('bcu'))||12,tna:gn('btn'),monto:gn('bfi'),anticipo:gn('ban'),
       vigencia:gv('bvi'),fecha:new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'})
     };
@@ -1024,7 +1207,8 @@ function genPDF(){
     var aporteCredPDF   = Math.max(0, montoFin - gastosPrenPDFtotal);
     // Neto BNA (descuenta $800.000 fijos)
     var aporteBNApdf    = d.tieneBNA && d.bnaMonto > 0 ? Math.max(0, d.bnaMonto - 800000) : 0;
-    var totalAportesPDF = aporteCredPDF + anticipo + aportePermuta + aporteBNApdf;
+    var aportePSApdf = d.tienePSA ? (d.psaNeto||0) : 0;
+    var totalAportesPDF = aporteCredPDF + anticipo + aportePermuta + aporteBNApdf + aportePSApdf;
     var cuotaEst=0; // handled in bank table below
     var fmt=function(n){return n?'$ '+Math.round(n).toLocaleString('es-AR'):'-';};
     var tx=function(doc,str,x,y,opts){var s=String(str||'');if(s)opts?doc.text(s,x,y,opts):doc.text(s,x,y);};
@@ -1098,6 +1282,12 @@ function genPDF(){
       rows.push({l:'  Neto credito banco',v:'- '+fmt(aporteCredPDF),c:[26,79,171],b:true});
     }
     if(anticipo > 0) rows.push({l:'(-) Anticipo',v:'- '+fmt(anticipo),c:[26,79,171]});
+    if(d.tienePSA && d.psaMonto > 0){
+      var psaLabel = 'PSA ' + (d.psaTipo==='0km'?'0km':'Patentado');
+      rows.push({l:psaLabel+' (bruto)',v:fmt(d.psaMonto),c:[80,80,80]});
+      rows.push({l:'  (-) Gastos PSA',v:'- '+fmt(d.psaGastos),c:[180,60,60]});
+      rows.push({l:'  Neto PSA',v:'- '+fmt(d.psaNeto),c:[26,120,171],b:true});
+    }
     if(d.tieneBNA && d.bnaMonto > 0){
       rows.push({l:'Credito BNA (bruto)',v:fmt(d.bnaMonto),c:[80,80,80]});
       rows.push({l:'  (-) Gastos fijos BNA',v:'- $ 800.000',c:[180,60,60]});
