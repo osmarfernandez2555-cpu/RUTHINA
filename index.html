@@ -342,7 +342,11 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div class="pr" id="pvneta-row" style="display:none"><span style="font-weight:600">Neto permuta</span><span id="pvneta" style="color:#4ade80;font-weight:700">—</span></div>
       <div class="pr" id="pvmf-row" style="display:none"><span>(-) Credito banco</span><span id="pvmf" style="color:#60a5fa;font-weight:600">—</span></div>
       <div class="pr" id="pvgas-row" style="display:none"><span id="pvgas-label">(-) Gastos (4.2%)</span><span id="pvgas" style="color:#f87171">—</span></div>
-      <div class="pr" id="pvrecibe-row" style="display:none"><span style="font-weight:600">Monto a recibir credito</span><span id="pvrecibe" style="color:#4ade80;font-weight:700">—</span></div>
+      <div class="pr" id="pvgas42-row" style="display:none"><span>(-) Gastos 4.2%</span><span id="pvgas42" style="color:#f87171">—</span></div>
+      <div class="pr" id="pvgassello-row" style="display:none"><span>(-) Sellos 0.7% s/monto</span><span id="pvgassello" style="color:#f87171">—</span></div>
+      <div class="pr" id="pvtotdev-row" style="display:none"><span>Total a devolver</span><span id="pvtotdev" style="color:#aaa">—</span></div>
+      <div class="pr" id="pvgasmg-row" style="display:none"><span>(-) MG 2% s/total devolver</span><span id="pvgasmg" style="color:#f87171">—</span></div>
+      <div class="pr" id="pvrecibe-row" style="display:none"><span style="font-weight:600">Neto a recibir</span><span id="pvrecibe" style="color:#4ade80;font-weight:700">—</span></div>
       <div class="pr" id="pvbna-row" style="display:none"><span>BNA Personal solicitado</span><span id="pvbna-monto" style="color:#60a5fa">—</span></div>
       <div class="pr" id="pvbna-gas-row" style="display:none"><span>(-) Gastos BNA</span><span style="color:#f87171">- $ 800.000</span></div>
       <div class="pr" id="pvbna-rec-row" style="display:none"><span style="font-weight:600">BNA a recibir</span><span id="pvbna-recibe" style="color:#4ade80;font-weight:700">—</span></div>
@@ -874,32 +878,48 @@ function upP(){
     var sello = banco.sello || 0;
     var tnaUsada = tna;  // siempre usa el campo editable del vendedor
 
-    // Calcular gastos y monto real a recibir
-    var gastosPorc = banco.gastos || 0;
-    var gastosFijo = banco.fijo || 0;
-    var gastosARS = banco.personal ? gastosFijo : Math.round(montoFinanciar * gastosPorc) + gastosFijo;
-    var montoRecibe = montoFinanciar - gastosARS;
+    // Calcular cuota para total devolver (usado en MG 2%)
+    var _tmDisp = tnaUsada > 0 ? Math.pow(1+tnaUsada/100,1/12)-1 : 0;
+    var _cuotaDisp = _tmDisp > 0 ? montoFinanciar*_tmDisp/(1-Math.pow(1+_tmDisp,-cuotas)) : 0;
+    var _totalDevolverDisp = _cuotaDisp > 0 ? Math.round(_cuotaDisp * cuotas) : 0;
 
-    // Mostrar filas de gastos
+    // Mostrar fila monto solicitado
     var pvmfRow2 = document.getElementById('pvmf-row');
+    if(pvmfRow2) { pvmfRow2.style.display = 'flex'; document.getElementById('pvmf').textContent = fmtP(montoFinanciar); }
+
+    // Fila resumen gastos (la original - ocultar, reemplazada por detalle)
     var pvgasRow = document.getElementById('pvgas-row');
-    var pvrecibeRow = document.getElementById('pvrecibe-row');
-    if(pvmfRow2) pvmfRow2.style.display = 'flex';
-    document.getElementById('pvmf').textContent = fmtP(montoFinanciar);
-    if(pvgasRow) {
-      pvgasRow.style.display = gastosARS > 0 ? 'flex' : 'none';
-      var gastoPorcDisplay = bancoAporte.gastos !== undefined ? bancoAporte.gastos : 0.042;
-      var totalGastosDisplay = gastosPrendario + gastosSello + gastoTotalMG;
-      var gasLabel = banco.personal
-        ? '(-) Gastos fijos BNA'
-        : totalGastosDisplay === 0
-          ? '(-) Sin gastos (Bancor)'
-          : '(-) Gastos: 4.2%' + (gastosSello>0?' + 0.7% sellos':'') + (gastoTotalMG>0?' + 2% s/total':'');
-      document.getElementById('pvgas-label').textContent = gasLabel;
-      document.getElementById('pvgas').textContent = '- ' + fmtP(gastosPrendario + gastosSello + gastoTotalMG);
+    if(pvgasRow) pvgasRow.style.display = 'none';
+
+    // Desglose detallado
+    var s42 = document.getElementById('pvgas42-row');
+    var sSello = document.getElementById('pvgassello-row');
+    var sTotDev = document.getElementById('pvtotdev-row');
+    var sMG = document.getElementById('pvgasmg-row');
+    var sRecibe = document.getElementById('pvrecibe-row');
+
+    if(banco.personal) {
+      // BNA: solo gasto fijo
+      if(s42) s42.style.display = 'none';
+      if(sSello) sSello.style.display = 'none';
+      if(sTotDev) sTotDev.style.display = 'none';
+      if(sMG) sMG.style.display = 'none';
+      if(pvgasRow) { pvgasRow.style.display = 'flex'; document.getElementById('pvgas-label').textContent = '(-) Gastos fijos BNA'; document.getElementById('pvgas').textContent = '- $ 800.000'; }
+    } else if(gastosPrendario === 0 && gastosSello === 0 && gastoTotalMG === 0) {
+      // Bancor: sin gastos
+      if(s42) s42.style.display = 'none';
+      if(sSello) sSello.style.display = 'none';
+      if(sTotDev) sTotDev.style.display = 'none';
+      if(sMG) sMG.style.display = 'none';
+    } else {
+      // Desglose completo
+      if(s42) { s42.style.display = gastosPrendario>0?'flex':'none'; document.getElementById('pvgas42').textContent = '- '+fmtP(gastosPrendario); }
+      if(sSello) { sSello.style.display = gastosSello>0?'flex':'none'; document.getElementById('pvgassello').textContent = '- '+fmtP(gastosSello); }
+      if(sTotDev) { sTotDev.style.display = _totalDevolverDisp>0?'flex':'none'; document.getElementById('pvtotdev').textContent = fmtP(_totalDevolverDisp); }
+      if(sMG) { sMG.style.display = gastoTotalMG>0?'flex':'none'; document.getElementById('pvgasmg').textContent = '- '+fmtP(gastoTotalMG); }
     }
-    if(pvrecibeRow) {
-      pvrecibeRow.style.display = gastosARS > 0 ? 'flex' : 'none';
+    if(sRecibe) {
+      sRecibe.style.display = (aporteCred > 0 || montoFinanciar > 0) ? 'flex' : 'none';
       document.getElementById('pvrecibe').textContent = fmtP(aporteCred > 0 ? aporteCred : 0);
     }
 
