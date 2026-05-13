@@ -810,9 +810,9 @@ function upP(){
   // MG Group: 2% adicional sobre total a devolver (cuota x cuotas)
   var gastoTotalPorc = bancoAporte.gastoTotal || 0;
   var gastoTotalMG = 0;
-  if(cred && gastoTotalPorc > 0 && montoFinanciar > 0) {
-    var _tm = Math.pow(1+bancoAporte.tna/100,1/12)-1;
-    var _cuota = montoFinanciar*_tm/(1-Math.pow(1+_tm,-cuotas)); // sin sello para total devolver
+  if(cred && gastoTotalPorc > 0 && montoFinanciar > 0 && tna > 0) {
+    var _tm = Math.pow(1+tna/100,1/12)-1;  // usa TNA del campo editable
+    var _cuota = montoFinanciar*_tm/(1-Math.pow(1+_tm,-cuotas));
     var _totalDevolver = Math.round(_cuota * cuotas);
     gastoTotalMG = Math.round(_totalDevolver * gastoTotalPorc);
   }
@@ -872,7 +872,7 @@ function upP(){
     var bancoIdx = parseInt((document.getElementById('banco-sel')||{}).value)||0;
     var banco = BANCOS[bancoIdx] || {tna:0, sello:0, gastos:0, fijo:0};
     var sello = banco.sello || 0;
-    var tnaUsada = tna || banco.tna || 0;
+    var tnaUsada = tna;  // siempre usa el campo editable del vendedor
 
     // Calcular gastos y monto real a recibir
     var gastosPorc = banco.gastos || 0;
@@ -994,8 +994,8 @@ function genPDF(){
     // MG Group: 2% sobre total a devolver
     var gastoTotalPorcPDF = bancoPDF.gastoTotal || 0;
     var gastoTotalMGpdf = 0;
-    if(gastoTotalPorcPDF > 0 && montoFin > 0 && d.cuotas > 0) {
-      var _tmPDF = Math.pow(1+bancoPDF.tna/100,1/12)-1;
+    if(gastoTotalPorcPDF > 0 && montoFin > 0 && d.cuotas > 0 && d.tna > 0) {
+      var _tmPDF = Math.pow(1+d.tna/100,1/12)-1;  // usa TNA del vendedor
       var _cuotaPDF = montoFin*_tmPDF/(1-Math.pow(1+_tmPDF,-d.cuotas));
       gastoTotalMGpdf = Math.round(_cuotaPDF * d.cuotas * gastoTotalPorcPDF);
     }
@@ -1135,7 +1135,7 @@ function genPDF(){
       // Calcular cuota del banco seleccionado
       var bancoSelIdx2 = parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
       var bancoSel2 = BANCOS[bancoSelIdx2]||{tna:d.tna||0,sello:0,gastos:0.042,fijo:0,personal:false,nombre:d.banco||'Banco'};
-      var tnaFinal = d.tna || bancoSel2.tna || 0;
+      var tnaFinal = d.tna || 0;  // usa solo el campo TNA del vendedor
       var selloFinal = bancoSel2.sello || 0;
       var _gasBase2  = bancoSel2.personal ? (bancoSel2.fijo||0) : Math.round(montoFin*(bancoSel2.gastos!==undefined?bancoSel2.gastos:0.042));
       var _gasSello2 = Math.round(montoFin*(bancoSel2.sello||0));
@@ -1143,7 +1143,7 @@ function genPDF(){
       if((bancoSel2.gastoTotal||0) > 0 && montoFin > 0 && tnaFinal > 0){
         var _tm2 = Math.pow(1+tnaFinal/100,1/12)-1;
         var _c2 = montoFin*_tm2/(1-Math.pow(1+_tm2,-d.cuotas));
-        _gastosTot2 = Math.round(_c2*d.cuotas*(bancoSel2.gastoTotal||0));
+        _gastosTot2 = Math.round(_c2*d.cuotas*(bancoSel2.gastoTotal||0));  // tnaFinal = d.tna
       }
       var gastosARS2 = _gasBase2 + _gasSello2 + _gastosTot2;
       var montoRecibe2 = montoFin - gastosARS2;
