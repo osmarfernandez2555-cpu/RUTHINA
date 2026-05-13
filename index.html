@@ -886,7 +886,7 @@ function upP(){
     pvmfRow.style.display = cred && montoFinanciar > 0 ? 'flex' : 'none';
     document.getElementById('pvmf').textContent = fmtP(montoFinanciar);
   }
-  var anticipo = cred ? gn('ban') : 0;
+  var anticipo = gn('ban');  // siempre leer, no solo si hay credito
   var pvantRow = document.getElementById('pvant-row');
   if(pvantRow) {
     pvantRow.style.display = cred && anticipo > 0 ? 'flex' : 'none';
@@ -900,7 +900,7 @@ function upP(){
   var pvtr = document.getElementById('pvtr');
   if(pvtr) {
     pvtr.style.display = transferencia > 0 ? 'flex' : 'none';
-    document.getElementById('pvtrv').textContent = fmtP(transferencia) + ' (' + (porcTransf*100) + '%)';
+    document.getElementById('pvtrv').textContent = fmtP(transferencia) + ' (' + (porcTransf*100).toFixed(0) + '%)';
   }
 
   // ── TOTAL FINAL ────────────────────────────────────
@@ -939,8 +939,23 @@ function upP(){
 
   var aportePermuta   = perm ? (pvNeta > 0 ? pvNeta : 0) : 0;
   var aporteAnticipo  = anticipo;
-  var aportePSA       = psa ? psaNeto : 0;
-  var totalAportes    = aporteCred + aportePermuta + aporteAnticipo + aporteBNA + aportePSA;
+  // Pre-calcular PSA neto para incluir en totalAportes
+  var psa = gc('cpsa');
+  var _psaMontoEarly = 0, _psaGastosEarly = 0, _psaNetoEarly = 0;
+  if(psa) {
+    if(psaTipo === '0km') {
+      _psaMontoEarly = gn('psa-monto-0');
+      var _psaGastoPctE = gn('psa-gasto-0')||14.54;
+      _psaGastosEarly = Math.round(_psaMontoEarly * _psaGastoPctE / 100);
+    } else {
+      _psaMontoEarly = gn('psa-monto-p');
+      var _psaQe = gn('psa-q')||10, _psaIVAe = gn('psa-iva')||4, _psaGeste = gn('psa-gest')||5;
+      _psaGastosEarly = Math.round(_psaMontoEarly * (_psaQe+_psaIVAe+_psaGeste) / 100);
+    }
+    _psaNetoEarly = Math.max(0, _psaMontoEarly - _psaGastosEarly);
+  }
+  var aportePSA    = _psaNetoEarly;
+  var totalAportes = aporteCred + aportePermuta + anticipo + aporteBNA + aportePSA;
 
   // Diferencia que falta pagar hoy en efectivo
   var diferenciaPagar = Math.max(0, valorTotalOp - totalAportes);
@@ -1058,7 +1073,6 @@ function upP(){
   }
 
   // ── CREDITO PSA ────────────────────────────────────
-  var psa = gc('cpsa');
   var psaMonto = 0, psaGastos = 0, psaNeto = 0, psaCuota = 0, psaCuotasN = 0;
   if(psa) {
     if(psaTipo === '0km') {
