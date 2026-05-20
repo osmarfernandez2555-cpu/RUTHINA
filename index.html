@@ -324,6 +324,11 @@ input:checked+.tsl::before{transform:translateX(18px)}
             <input id="psa-gasto-0" type="number" value="14.54" step="0.01" oninput="upP()"
               style="color:#C8102E;font-weight:600">
           </div>
+          <div class="fg" style="grid-column:1/-1">
+            <label style="color:#60a5fa">Cuota manual (opcional) <span style="color:#888;font-weight:400">— sobreescribe el cálculo</span></label>
+            <input id="psa0-cuota-manual" type="number" placeholder="Dejá vacío para calcular automático" oninput="upP()"
+              style="color:#60a5fa;font-weight:600;border-color:#60a5fa55">
+          </div>
         </div>
         <div id="psa-0km-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:4px">
           <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px"><span>Monto solicitado</span><span id="psa0-r-monto" style="color:#CCC">-</span></div>
@@ -352,6 +357,11 @@ input:checked+.tsl::before{transform:translateX(18px)}
               <option value="36">36 cuotas</option>
             </select>
           </div>
+        </div>
+        <div class="fg" style="margin-top:4px">
+          <label style="color:#60a5fa">Cuota manual (opcional) <span style="color:#888;font-weight:400">— sobreescribe el cálculo</span></label>
+          <input id="psap-cuota-manual" type="number" placeholder="Dejá vacío para calcular automático" oninput="upP()"
+            style="color:#60a5fa;font-weight:600;border-color:#60a5fa55">
         </div>
         <div style="font-size:11px;color:#666;margin-bottom:8px;font-weight:600">Gastos (editables):</div>
         <div class="fgr">
@@ -1115,7 +1125,8 @@ function upP(){
       var psaGastoPct = gn('psa-gasto-0')||14.54;
       psaGastos = Math.round(psaMonto * psaGastoPct / 100);
       psaNeto = Math.max(0, psaMonto - psaGastos);
-      psaCuota = psaCuotasN > 0 ? Math.round(psaMonto / psaCuotasN) : 0; // tasa 0%
+      var _psa0manual = gn('psa0-cuota-manual');
+      psaCuota = _psa0manual > 0 ? _psa0manual : (psaCuotasN > 0 ? Math.round(psaMonto / psaCuotasN) : 0);
       // Update mini resumen
       var r0 = document.getElementById('psa-0km-resumen');
       if(r0 && psaMonto > 0) {
@@ -1137,7 +1148,9 @@ function upP(){
       psaGastos = Math.round(psaMonto * totalGastoPct / 100);
       psaNeto = Math.max(0, psaMonto - psaGastos);
       var tmP = Math.pow(1+psaTNAp/100,1/12)-1;
-      psaCuota = tmP > 0 ? Math.round(psaMonto*tmP/(1-Math.pow(1+tmP,-psaCuotasN))) : Math.round(psaMonto/psaCuotasN);
+      var _psapManual = gn('psap-cuota-manual');
+      var _psapAuto = tmP > 0 ? psaMonto*tmP/(1-Math.pow(1+tmP,-psaCuotasN)) : psaMonto/psaCuotasN;
+      psaCuota = _psapManual > 0 ? _psapManual : Math.round(_psapAuto);
       // Update mini resumen
       var rP = document.getElementById('psa-pat-resumen');
       if(rP && psaMonto > 0) {
@@ -1164,7 +1177,8 @@ function upP(){
       document.getElementById('pvpsa-gas-label').textContent = '(-) Gastos PSA';
       document.getElementById('pvpsa-gas').textContent = '- ' + fmtP(psaGastos);
       document.getElementById('pvpsa-neto').textContent = fmtP(psaNeto);
-      document.getElementById('pvpsa-cuota').textContent = fmtP(psaCuota) + ' x ' + psaCuotasN + (psaTipo==='0km'?' (tasa 0%)':'');
+      var _psaManualUsed = psaTipo==='0km' ? gn('psa0-cuota-manual') : gn('psap-cuota-manual');
+      document.getElementById('pvpsa-cuota').textContent = fmtP(psaCuota) + ' x ' + psaCuotasN + (_psaManualUsed>0?' (manual)':(psaTipo==='0km'?' (tasa 0%)':''));
     }
   } else {
     ['pvpsa-row','pvpsa-gas-row','pvpsa-neto-row','pvpsa-cuota-row'].forEach(function(id){
@@ -1228,6 +1242,7 @@ function genPDF(){
       tienePSA:gc('cpsa'),psaTipo:psaTipo,
       psaMonto:psaTipo==='0km'?gn('psa-monto-0'):gn('psa-monto-p'),
       psaGastoPct:psaTipo==='0km'?(gn('psa-gasto-0')||14.54):((gn('psa-q')||10)+(gn('psa-iva')||4)+(gn('psa-gest')||5)),
+      psaCuotaManual:psaTipo==='0km'?gn('psa0-cuota-manual'):gn('psap-cuota-manual'),
       psaTNAp:gn('psa-tna-p')||47.9,
       psaCuotasN:psaTipo==='0km'?(parseInt(gv('psa-cuotas-0'))||24):(parseInt(gv('psa-cuotas-p'))||24),
       tieneCredito:gc('cc'),banco:gv('bba'),cuotas:parseInt(gv('bcu'))||12,tna:gn('btn'),monto:gn('bfi'),anticipo:gn('ban'),adelanto:gn('adelanto'),
@@ -1264,7 +1279,9 @@ function genPDF(){
     if(d.tienePSA && d.psaMonto > 0){
       _psaGastosPDF = Math.round(d.psaMonto * (d.psaGastoPct||14.54) / 100);
       _psaNetoPDF   = Math.max(0, d.psaMonto - _psaGastosPDF);
-      if(d.psaTipo === '0km'){
+      if(d.psaCuotaManual > 0){
+        _psaCuotaPDF = d.psaCuotaManual;
+      } else if(d.psaTipo === '0km'){
         _psaCuotaPDF = d.psaCuotasN > 0 ? Math.round(d.psaMonto / d.psaCuotasN) : 0;
       } else {
         var _tmPSApdf = d.psaTNAp > 0 ? Math.pow(1+d.psaTNAp/100,1/12)-1 : 0;
