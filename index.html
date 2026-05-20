@@ -398,8 +398,14 @@ input:checked+.tsl::before{transform:translateX(18px)}
             <option value="36">36 cuotas</option>
             <option value="48">48 cuotas</option>
             <option value="60">60 cuotas</option>
+            <option value="72">72 cuotas</option>
           </select>
         </div>
+      </div>
+      <div class="fg" style="margin-top:8px">
+        <label>Cuota manual (opcional) <span style="color:#888;font-weight:400">— sobreescribe el cálculo</span></label>
+        <input id="bna-cuota-manual" type="number" placeholder="Dejá vacío para calcular automático" oninput="upP()"
+          style="color:#60a5fa;font-weight:600;border-color:#60a5fa55">
       </div>
       <div id="bna-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:4px">
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px">
@@ -1184,7 +1190,8 @@ function upP(){
   if(bna && bnaMonto > 0) {
     var bnaRecibe = bnaMonto - BNA_GASTOS;
     var bnaTm = Math.pow(1+BNA_TNA/100,1/12)-1;
-    var bnaCuota = bnaMonto * bnaTm / (1-Math.pow(1+bnaTm,-bnaCuotas));
+    var bnaManual = gn('bna-cuota-manual');
+    var bnaCuota = bnaManual > 0 ? bnaManual : bnaMonto * bnaTm / (1-Math.pow(1+bnaTm,-bnaCuotas));
 
     document.getElementById('pvbna-monto').textContent = fmtP(bnaMonto);
     document.getElementById('pvbna-recibe').textContent = fmtP(bnaRecibe > 0 ? bnaRecibe : 0);
@@ -1217,7 +1224,7 @@ function genPDF(){
       modelo:gv('bm'),anio:gv('by'),color:gv('bco'),km:gv('bk'),patente:gv('bpa'),notas:gv('bno'),
       precioLista:gn('bpl'),precioContado:gn('bpc'),
       tienePermuta:gc('cp'),permuModelo:gv('bpm'),permuAnio:gv('bpy'),permuValor:gn('bpv'),permuPos:gn('bppos'),permuPer:gn('bpper'),
-      tieneBNA:gc('cbna'),bnaMonto:gn('bna-monto'),bnaCuotas:parseInt(gv('bna-cuotas'))||12,
+      tieneBNA:gc('cbna'),bnaMonto:gn('bna-monto'),bnaCuotas:parseInt(gv('bna-cuotas'))||12,bnaCuotaManual:gn('bna-cuota-manual'),
       tienePSA:gc('cpsa'),psaTipo:psaTipo,
       psaMonto:psaTipo==='0km'?gn('psa-monto-0'):gn('psa-monto-p'),
       psaGastoPct:psaTipo==='0km'?(gn('psa-gasto-0')||14.54):((gn('psa-q')||10)+(gn('psa-iva')||4)+(gn('psa-gest')||5)),
@@ -1420,8 +1427,11 @@ function genPDF(){
       var gastosARS2 = _gasBase2 + _gasSello2 + _gastosTot2;
       var montoRecibe2 = montoFin - gastosARS2;
       var nombreBanco2 = (bancoSel2.nombre||d.banco||'Banco').split(' (')[0];
+      var cuotaManualPDF = gn('cuota-manual');
       var cuotaFinal = 0;
-      if(tnaFinal > 0){
+      if(cuotaManualPDF > 0){
+        cuotaFinal = cuotaManualPDF;
+      } else if(tnaFinal > 0){
         var tmF = Math.pow(1+tnaFinal/100,1/12)-1;
         cuotaFinal = montoFin*(1+selloFinal)*tmF/(1-Math.pow(1+tmF,-d.cuotas));
       }
@@ -1463,7 +1473,7 @@ function genPDF(){
       y+=10;
       var bnaRec = d.bnaMonto - 800000;
       var bnaTm2 = Math.pow(1+38/100,1/12)-1;
-      var bnaCuotaPDF = d.bnaMonto*bnaTm2/(1-Math.pow(1+bnaTm2,-d.bnaCuotas));
+      var bnaCuotaPDF = d.bnaCuotaManual > 0 ? d.bnaCuotaManual : d.bnaMonto*bnaTm2/(1-Math.pow(1+bnaTm2,-d.bnaCuotas));
       doc.setFillColor(255,248,230);doc.setDrawColor(245,158,11);
       doc.roundedRect(M,y,W-M*2,30,2,2,'FD');
       var byy = y+8;
