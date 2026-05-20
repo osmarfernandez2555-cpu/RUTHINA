@@ -283,6 +283,11 @@ input:checked+.tsl::before{transform:translateX(18px)}
           </select>
         </div>
       </div>
+      <div class="fg" style="margin-top:4px">
+        <label style="color:#60a5fa">Cuota manual (opcional) <span style="color:#888;font-weight:400">— sobreescribe el cálculo automático</span></label>
+        <input id="cuota-manual" type="number" placeholder="Dejá vacío para calcular automático" oninput="upP()"
+          style="color:#60a5fa;font-weight:600;border-color:#60a5fa55">
+      </div>
     </div>
     <div class="seclbl">Credito PSA</div>
     <div class="trow" onclick="tChk('cpsa','sc-psa')">
