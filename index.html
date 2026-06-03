@@ -1495,29 +1495,37 @@ function genPDF(){
     if(d.tieneBNA && d.bnaMonto > 0) {
       if(y > H-80){ doc.addPage(); y=20; }
       y+=8;
-      doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(200,16,46);
-      doc.text('CREDITO PERSONAL BNA',M,y);
-      doc.setDrawColor(15,52,96);doc.line(M,y+1.5,M+doc.getTextWidth('CREDITO PERSONAL BNA'),y+1.5);
+      var _bnaBancoKey = d.bnaBanco || 'bna';
+      var _bnaNombre = BANCOS_PERSONAL && BANCOS_PERSONAL[_bnaBancoKey] ? BANCOS_PERSONAL[_bnaBancoKey].nombre : 'Nacion';
+      var _bnaTitle = 'CREDITO PERSONAL — ' + _bnaNombre.toUpperCase();
+      doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,52,96);
+      doc.text(String(_bnaTitle),M,y);
+      doc.setDrawColor(15,52,96);doc.line(M,y+1.5,M+doc.getTextWidth(String(_bnaTitle)),y+1.5);
       y+=10;
-      var bnaRec = d.bnaMonto - 800000;
-      var bnaTm2 = Math.pow(1+38/100,1/12)-1;
-      var bnaCuotaPDF = d.bnaCuotaManual > 0 ? d.bnaCuotaManual : d.bnaMonto*bnaTm2/(1-Math.pow(1+bnaTm2,-d.bnaCuotas));
-      doc.setFillColor(255,248,230);doc.setDrawColor(245,158,11);
-      doc.roundedRect(M,y,W-M*2,30,2,2,'FD');
+      var _bnaGasFijoPDF = d.bnaGastoFijo || 0;
+      var _bnaGasPorcPDF = d.bnaGastoPorc || 0;
+      var _bnaGastosTotPDF = Math.round(d.bnaMonto * _bnaGasPorcPDF / 100) + _bnaGasFijoPDF;
+      var bnaRec = Math.max(0, d.bnaMonto - _bnaGastosTotPDF);
+      var _bnaTNApdf = d.bnaTNA || 38;
+      var bnaTm2 = _bnaTNApdf > 0 ? Math.pow(1+_bnaTNApdf/100,1/12)-1 : 0;
+      var bnaCuotaPDF = d.bnaCuotaManual > 0 ? d.bnaCuotaManual : (bnaTm2>0 ? d.bnaMonto*bnaTm2/(1-Math.pow(1+bnaTm2,-d.bnaCuotas)) : Math.round(d.bnaMonto/d.bnaCuotas));
+      doc.setFillColor(240,246,255);doc.setDrawColor(200,220,245);
+      doc.roundedRect(M,y,W-M*2,_bnaGastosTotPDF>0?37:30,2,2,'FD');
       var byy = y+8;
-      [[fmt(d.bnaMonto),'Monto solicitado','normal',[60,60,60]],
-       ['- $ 800.000','(-) Gastos fijos BNA','normal',[180,60,60]],
-       [fmt(bnaRec>0?bnaRec:0),'Monto a recibir','bold',[30,150,70]],
-       [fmt(Math.round(bnaCuotaPDF))+' x '+d.bnaCuotas,'Cuota estimada (TNA 38%)','bold',[26,79,171]]
-      ].forEach(function(row){
+      var bnaRows = [[fmt(d.bnaMonto),'Monto solicitado','normal',[60,60,80]]];
+      if(_bnaGasFijoPDF>0) bnaRows.push(['- '+fmt(_bnaGasFijoPDF),'(-) Gasto fijo','normal',[180,60,60]]);
+      if(_bnaGasPorcPDF>0) bnaRows.push(['- '+fmt(Math.round(d.bnaMonto*_bnaGasPorcPDF/100)),'(-) Gasto '+_bnaGasPorcPDF+'%','normal',[180,60,60]]);
+      bnaRows.push([fmt(bnaRec),'Monto a recibir','bold',[30,150,70]]);
+      bnaRows.push([fmt(Math.round(bnaCuotaPDF))+' x '+d.bnaCuotas,'Cuota estimada','bold',[26,79,171]]);
+      bnaRows.forEach(function(row){
         doc.setFont('helvetica',row[2]);doc.setFontSize(9);
         doc.setTextColor(row[3][0],row[3][1],row[3][2]);
         doc.text(row[1]+':',M+5,byy);
-        doc.text(row[0],W-M-5,byy,{align:'right'});
+        doc.text(String(row[0]),W-M-5,byy,{align:'right'});
         byy+=7;
       });
-      doc.setFont('helvetica','italic');doc.setFontSize(7.5);doc.setTextColor(130,100,0);
-      doc.text('* Sujeto a aprobacion crediticia del Banco Nacion Argentina.',M+5,y+28);
+      doc.setFont('helvetica','italic');doc.setFontSize(7.5);doc.setTextColor(100,100,130);
+      doc.text('* Sujeto a aprobacion crediticia.',M+5,byy+2);
       y+=38;
     }
 
