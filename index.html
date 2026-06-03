@@ -385,19 +385,34 @@ input:checked+.tsl::before{transform:translateX(18px)}
       </div>
     </div>
 
-    <div class="seclbl">Credito Personal BNA</div>
+    <div class="seclbl">Credito Personal</div>
     <div class="trow" onclick="tChk('cbna','sc-bna')">
       <div>
-        <div class="trl">Credito Personal BNA</div>
-        <div class="trs">Gasto fijo de $800.000 descontado del monto solicitado</div>
+        <div class="trl">Credito Personal</div>
+        <div class="trs">BNA, Bancor, Galicia, Santander, BBVA, ICBC, Macro, HSBC</div>
       </div>
       <label class="tog" onclick="event.stopPropagation()">
         <input type="checkbox" id="cbna" onchange="onToggleBNA(this.checked)"><span class="tsl"></span>
       </label>
     </div>
     <div id="sc-bna" style="display:none" class="bc">
-      <div style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#92400E">
-        ⚠️ El banco descuenta $800.000 de gastos fijos del monto solicitado. El cliente recibe menos de lo que pide.
+      <!-- Selector banco personal -->
+      <div class="fg">
+        <label>Banco</label>
+        <select id="bna-banco-sel" onchange="onBancoPersonalChange()" style="font-weight:600;font-size:14px">
+          <option value="bna">BNA — Banco Nacion (gasto fijo $800.000)</option>
+          <option value="bancor">Bancor (sin gastos)</option>
+          <option value="galicia">Galicia (gasto 4.2%)</option>
+          <option value="santander">Santander (gasto 4.2%)</option>
+          <option value="bbva">BBVA (gasto 4.2%)</option>
+          <option value="icbc">ICBC (gasto 4.2%)</option>
+          <option value="macro">Macro (gasto 4.2%)</option>
+          <option value="hsbc">HSBC (gasto 4.2%)</option>
+          <option value="otro">Otro banco (personalizado)</option>
+        </select>
+      </div>
+      <div id="bna-banco-info" style="background:#1A3A5C;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#90CAF9">
+        BNA Nacion — Gasto fijo $800.000 descontado del monto
       </div>
       <div class="fgr">
         <div class="fg">
@@ -405,37 +420,40 @@ input:checked+.tsl::before{transform:translateX(18px)}
           <input id="bna-monto" type="number" placeholder="5000000" oninput="upP()">
         </div>
         <div class="fg">
+          <label>TNA % <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label>
+          <input id="bna-tna" type="number" placeholder="38" step="0.1" value="38" oninput="upP()"
+            style="color:#C8102E;font-weight:600">
+        </div>
+        <div class="fg">
           <label>Cuotas</label>
           <select id="bna-cuotas" onchange="upP()">
-            <option value="12">12 cuotas</option>
-            <option value="18">18 cuotas</option>
-            <option value="24">24 cuotas</option>
-            <option value="36">36 cuotas</option>
-            <option value="48">48 cuotas</option>
-            <option value="60">60 cuotas</option>
+            <option value="12">12 cuotas</option><option value="18">18 cuotas</option>
+            <option value="24">24 cuotas</option><option value="36">36 cuotas</option>
+            <option value="48">48 cuotas</option><option value="60">60 cuotas</option>
             <option value="72">72 cuotas</option>
           </select>
         </div>
+        <div class="fg">
+          <label>Gasto fijo (ARS) <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label>
+          <input id="bna-gasto-fijo" type="number" placeholder="0" value="800000" oninput="upP()"
+            style="color:#C8102E;font-weight:600">
+        </div>
+        <div class="fg">
+          <label>Gasto % <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label>
+          <input id="bna-gasto-porc" type="number" placeholder="0" value="0" step="0.1" oninput="upP()"
+            style="color:#C8102E;font-weight:600">
+        </div>
       </div>
-      <div class="fg" style="margin-top:8px">
-        <label>Cuota manual (opcional) <span style="color:#888;font-weight:400">— sobreescribe el cálculo</span></label>
+      <div class="fg" style="margin-top:4px">
+        <label style="color:#60a5fa">Cuota manual (opcional) <span style="color:#888;font-weight:400">— sobreescribe el cálculo</span></label>
         <input id="bna-cuota-manual" type="number" placeholder="Dejá vacío para calcular automático" oninput="upP()"
           style="color:#60a5fa;font-weight:600;border-color:#60a5fa55">
       </div>
-      <div id="bna-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:4px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px">
-          <span>Monto solicitado</span><span id="bna-r-monto" style="color:#CCC">-</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:4px">
-          <span>(-) Gastos fijos BNA</span><span>- $ 800.000</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#4ade80;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #333">
-          <span style="font-weight:600">Monto a recibir</span><span id="bna-r-recibe" style="font-weight:700">-</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700">
-          <span>Cuota estimada</span><span id="bna-r-cuota">-</span>
-        </div>
-        <div style="font-size:10px;color:#555;margin-top:6px">TNA 38% — Sujeto a aprobacion BNA</div>
+      <div id="bna-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:8px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px"><span>Monto solicitado</span><span id="bna-r-monto" style="color:#CCC">-</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:4px"><span id="bna-r-glabel">(-) Gastos</span><span id="bna-r-gasto">-</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#4ade80;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #333"><span style="font-weight:600">Neto a recibir</span><span id="bna-r-recibe" style="font-weight:700">-</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700"><span>Cuota estimada</span><span id="bna-r-cuota">-</span></div>
       </div>
     </div>
 
