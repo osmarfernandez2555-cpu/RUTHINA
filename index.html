@@ -1099,12 +1099,18 @@ function upP(){
       document.getElementById('pvrecibe').textContent = fmtP(aporteCred > 0 ? aporteCred : 0);
     }
 
-    // Cuota del banco seleccionado
-    if(tnaUsada > 0) {
-      var montoConSello = montoFinanciar * (1 + sello);
+    // Cuota del banco seleccionado — usa manual si está cargado
+    var cuotaManual = gn('cuota-manual');
+    var cuotaFinalDisp = 0;
+    if(cuotaManual > 0) {
+      cuotaFinalDisp = cuotaManual;
+    } else if(tnaUsada > 0) {
+      var montoConSello = montoFinanciar * (1 + selloPorc);
       var tm = Math.pow(1+tnaUsada/100,1/12)-1;
-      var c = montoConSello*tm/(1-Math.pow(1+tm,-cuotas));
-      document.getElementById('pvcu').textContent = fmtP(Math.round(c))+' x '+cuotas+(sello>0?' (c/sellos)':'');
+      cuotaFinalDisp = montoConSello*tm/(1-Math.pow(1+tm,-cuotas));
+    }
+    if(cuotaFinalDisp > 0) {
+      document.getElementById('pvcu').textContent = fmtP(Math.round(cuotaFinalDisp))+' x '+cuotas+(cuotaManual>0?' (manual)':(sello>0?' (c/sellos)':''));
       document.getElementById('pvcu-banco').textContent = banco.nombre ? banco.nombre.split(' (')[0] : '';
       cr.style.display = 'flex';
     }
