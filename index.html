@@ -412,7 +412,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
         </select>
       </div>
       <div id="bna-banco-info" style="background:#1A3A5C;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#90CAF9">
-        BNA Nacion — Gasto fijo $800.000 descontado del monto
+        Selecciona un banco para ver los gastos
       </div>
       <div class="fgr">
         <div class="fg">
@@ -492,10 +492,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div class="pr" id="pvtotdev-row" style="display:none"><span>Total a devolver</span><span id="pvtotdev" style="color:#aaa">—</span></div>
       <div class="pr" id="pvgasmg-row" style="display:none"><span>(-) MG 2% s/total devolver</span><span id="pvgasmg" style="color:#f87171">—</span></div>
       <div class="pr" id="pvrecibe-row" style="display:none"><span style="font-weight:600">Neto a recibir</span><span id="pvrecibe" style="color:#4ade80;font-weight:700">—</span></div>
-      <div class="pr" id="pvbna-row" style="display:none"><span>BNA Personal solicitado</span><span id="pvbna-monto" style="color:#60a5fa">—</span></div>
-      <div class="pr" id="pvbna-gas-row" style="display:none"><span>(-) Gastos BNA</span><span style="color:#f87171">- $ 800.000</span></div>
-      <div class="pr" id="pvbna-rec-row" style="display:none"><span style="font-weight:600">BNA a recibir</span><span id="pvbna-recibe" style="color:#4ade80;font-weight:700">—</span></div>
-      <div class="pr" id="pvbna-cuota-row" style="display:none"><span>Cuota BNA est.</span><span id="pvbna-cuota" style="color:#60a5fa">—</span></div>
+      <div class="pr" id="pvbna-row" style="display:none"><span id="pvbna-banco-label">Credito Personal solicitado</span><span id="pvbna-monto" style="color:#60a5fa">—</span></div>
+      <div class="pr" id="pvbna-gas-row" style="display:none"><span id="pvbna-gas-label">(-) Gastos</span><span id="pvbna-gas-val" style="color:#f87171">—</span></div>
+      <div class="pr" id="pvbna-rec-row" style="display:none"><span style="font-weight:600">Neto a recibir</span><span id="pvbna-recibe" style="color:#4ade80;font-weight:700">—</span></div>
+      <div class="pr" id="pvbna-cuota-row" style="display:none"><span>Cuota est.</span><span id="pvbna-cuota" style="color:#60a5fa">—</span></div>
       <div class="pr" id="pvpsa-row" style="display:none"><span id="pvpsa-label">PSA solicitado</span><span id="pvpsa-monto" style="color:#60a5fa">—</span></div>
       <div class="pr" id="pvpsa-gas-row" style="display:none"><span id="pvpsa-gas-label">(-) Gastos PSA</span><span id="pvpsa-gas" style="color:#f87171">—</span></div>
       <div class="pr" id="pvpsa-neto-row" style="display:none"><span style="font-weight:600">PSA neto a recibir</span><span id="pvpsa-neto" style="color:#4ade80;font-weight:700">—</span></div>
@@ -1101,7 +1101,7 @@ function upP(){
       if(sSello) sSello.style.display = 'none';
       if(sTotDev) sTotDev.style.display = 'none';
       if(sMG) sMG.style.display = 'none';
-      if(pvgasRow) { pvgasRow.style.display = 'flex'; document.getElementById('pvgas-label').textContent = '(-) Gastos fijos BNA'; document.getElementById('pvgas').textContent = '- $ 800.000'; }
+      if(pvgasRow) { pvgasRow.style.display = bnaGastosTotal>0 ? 'flex' : 'none'; document.getElementById('pvgas-label').textContent = '(-) Gastos credito personal'; document.getElementById('pvgas').textContent = '- ' + fmtP(bnaGastosTotal); }
     } else if(gastosPrendario === 0 && gastosSello === 0 && gastoTotalMG === 0) {
       // Bancor: sin gastos
       if(s42) s42.style.display = 'none';
@@ -1239,9 +1239,24 @@ function upP(){
     var bnaManual = gn('bna-cuota-manual');
     var bnaCuota = bnaManual > 0 ? bnaManual : bnaMonto * bnaTm / (1-Math.pow(1+bnaTm,-bnaCuotas));
 
+    var _bnaSelEl = document.getElementById('bna-banco-sel');
+    var _bnaNombreDisp = _bnaSelEl ? _bnaSelEl.options[_bnaSelEl.selectedIndex].text.split(' (')[0] : 'Personal';
+    var _bnaLabelEl = document.getElementById('pvbna-banco-label');
+    if(_bnaLabelEl) _bnaLabelEl.textContent = _bnaNombreDisp + ' solicitado';
     document.getElementById('pvbna-monto').textContent = fmtP(bnaMonto);
+    var _pvbnaGasRow = document.getElementById('pvbna-gas-row');
+    var _pvbnaGasLbl = document.getElementById('pvbna-gas-label');
+    var _pvbnaGasVal = document.getElementById('pvbna-gas-val');
+    if(bnaGastosTotal > 0) {
+      if(_pvbnaGasRow) _pvbnaGasRow.style.display = 'flex';
+      if(_pvbnaGasLbl) _pvbnaGasLbl.textContent = bnaGastoFijo>0 && bnaGastoPorc===0 ? '(-) Gasto fijo' : (bnaGastoPorc>0 ? '(-) Gasto '+bnaGastoPorc+'%' : '(-) Gastos');
+      if(_pvbnaGasVal) _pvbnaGasVal.textContent = '- ' + fmtP(bnaGastosTotal);
+    } else {
+      if(_pvbnaGasRow) _pvbnaGasRow.style.display = 'none';
+    }
     document.getElementById('pvbna-recibe').textContent = fmtP(bnaRecibe > 0 ? bnaRecibe : 0);
-    document.getElementById('pvbna-cuota').textContent = fmtP(Math.round(bnaCuota))+' x '+bnaCuotas;
+    var _bnaManualDisp = gn('bna-cuota-manual');
+    document.getElementById('pvbna-cuota').textContent = fmtP(Math.round(bnaCuota))+' x '+bnaCuotas+(_bnaManualDisp>0?' (manual)':'');
 
     // Mini resumen dentro del formulario
     var bnaRes = document.getElementById('bna-resumen');
@@ -1316,7 +1331,7 @@ function genPDF(){
     }
     var gastosPrenPDFtotal = gastosPrenPDF + gastosSelloPDF + gastoTotalMGpdf;
     var aporteCredPDF   = Math.max(0, montoFin - gastosPrenPDFtotal);
-    // Neto BNA (descuenta $800.000 fijos)
+    // Neto BNA personal (gastos desde campos editables)
     var aporteBNApdf = d.tieneBNA && d.bnaMonto > 0 ? Math.max(0, d.bnaMonto - (Math.round(d.bnaMonto*(d.bnaGastoPorc||0)/100)+(d.bnaGastoFijo||0))) : 0;
     // Calcular PSA aqui para usarlo en totalAportes y en las filas
     var _psaGastosPDF=0, _psaNetoPDF=0, _psaCuotaPDF=0;
@@ -1418,7 +1433,10 @@ function genPDF(){
     }
     if(d.tieneBNA && d.bnaMonto > 0){
       rows.push({l:'Credito BNA (bruto)',v:fmt(d.bnaMonto),c:[80,80,80]});
-      rows.push({l:'  (-) Gastos fijos BNA',v:'- $ 800.000',c:[180,60,60]});
+      if(d.bnaGastoFijo>0||d.bnaGastoPorc>0) {
+        var _bnaGasTotRow = Math.round(d.bnaMonto*(d.bnaGastoPorc||0)/100)+(d.bnaGastoFijo||0);
+        rows.push({l:'  (-) Gastos credito personal',v:'- '+fmt(_bnaGasTotRow),c:[180,60,60]});
+      }
       rows.push({l:'  Neto BNA',v:'- '+fmt(aporteBNApdf),c:[26,120,171],b:true});
     }
     if(transferencia>0) rows.push({l:'(+) Transferencia ('+(porcTransfPDF*100)+'%)',v:fmt(transferencia),c:[180,140,0]});
