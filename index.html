@@ -435,7 +435,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
         </div>
         <div class="fg">
           <label>Gasto fijo (ARS) <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label>
-          <input id="bna-gasto-fijo" type="number" placeholder="0" value="800000" oninput="upP()"
+          <input id="bna-gasto-fijo" type="number" placeholder="0" value="" oninput="upP()"
             style="color:#C8102E;font-weight:600">
         </div>
         <div class="fg">
@@ -827,6 +827,8 @@ function cambiarKey(){
 }
 
 function startApp(){
+  // Load banco personal defaults on start
+  setTimeout(onBancoPersonalChange, 100);
   // Restore saved USD cotizacion
   try {
     var savedUSD = localStorage.getItem('ruthina_usd');
@@ -844,6 +846,33 @@ function startApp(){
 
 // ══ PRESUPUESTO ══════════════════════════════════════
 function tChk(cid,sid){ var c=document.getElementById(cid); c.checked=!c.checked; sSec(sid,c.checked); upP(); }
+
+var BANCOS_PERSONAL = {
+  bna:      {nombre:'BNA Nacion',   tna:38,   gastoFijo:800000, gastoPorc:0,   info:'Gasto fijo $800.000'},
+  bancor:   {nombre:'Bancor',       tna:42,   gastoFijo:0,      gastoPorc:0,   info:'Sin gastos'},
+  galicia:  {nombre:'Galicia',      tna:69,   gastoFijo:0,      gastoPorc:4.2, info:'Gasto 4.2%'},
+  santander:{nombre:'Santander',    tna:55.9, gastoFijo:0,      gastoPorc:4.2, info:'Gasto 4.2%'},
+  bbva:     {nombre:'BBVA',         tna:47.9, gastoFijo:0,      gastoPorc:4.2, info:'Gasto 4.2%'},
+  icbc:     {nombre:'ICBC',         tna:53,   gastoFijo:0,      gastoPorc:4.2, info:'Gasto 4.2%'},
+  macro:    {nombre:'Macro',        tna:55,   gastoFijo:0,      gastoPorc:4.2, info:'Gasto 4.2%'},
+  hsbc:     {nombre:'HSBC',         tna:52,   gastoFijo:0,      gastoPorc:4.2, info:'Gasto 4.2%'},
+  otro:     {nombre:'Otro banco',   tna:0,    gastoFijo:0,      gastoPorc:0,   info:'Completar manualmente'}
+};
+
+function onBancoPersonalChange() {
+  var sel = document.getElementById('bna-banco-sel');
+  if(!sel) return;
+  var b = BANCOS_PERSONAL[sel.value] || BANCOS_PERSONAL.otro;
+  var tnaEl      = document.getElementById('bna-tna');
+  var gasFijoEl  = document.getElementById('bna-gasto-fijo');
+  var gasPorcEl  = document.getElementById('bna-gasto-porc');
+  var infoEl     = document.getElementById('bna-banco-info');
+  if(tnaEl)     tnaEl.value     = b.tna;
+  if(gasFijoEl) gasFijoEl.value = b.gastoFijo;
+  if(gasPorcEl) gasPorcEl.value = b.gastoPorc;
+  if(infoEl)    infoEl.innerHTML = '<strong style="color:#60a5fa">' + b.nombre + '</strong> — ' + b.info;
+  upP();
+}
 
 var psaTipo = '0km';
 
@@ -1000,10 +1029,10 @@ function upP(){
 
   // BNA personal: neto = monto - $800.000 fijos
   // Lee gastos desde los campos editables del formulario
-  var _bnaGF = bna2 ? (parseFloat((document.getElementById('bna-gasto-fijo')||{}).value)||0) : 0;
-  var _bnaGP = bna2 ? (parseFloat((document.getElementById('bna-gasto-porc')||{}).value)||0) : 0;
-  var _bnaGastos = bnaMonto2 > 0 ? (Math.round(bnaMonto2 * _bnaGP / 100) + _bnaGF) : 0;
-  var aporteBNA = bna2 ? Math.max(0, bnaMonto2 - _bnaGastos) : 0;
+  var _bnaGF2 = bna2 ? (parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0) : 0;
+  var _bnaGP2 = bna2 ? (parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0) : 0;
+  var _bnaGastos2 = bnaMonto2 > 0 ? (Math.round(bnaMonto2 * _bnaGP2 / 100) + _bnaGF2) : 0;
+  var aporteBNA = bna2 ? Math.max(0, bnaMonto2 - _bnaGastos2) : 0;
 
   var aportePermuta   = perm ? (pvNeta > 0 ? pvNeta : 0) : 0;
   var adelanto = gn('adelanto');
@@ -1220,14 +1249,17 @@ function upP(){
     var rPb=document.getElementById('psa-pat-resumen'); if(rPb) rPb.style.display='none';
   }
 
-  // ── CREDITO PERSONAL BNA ───────────────────────────
+  // ── CREDITO PERSONAL ───────────────────────────────
   var bna = gc('cbna');
   var bnaMonto = gn('bna-monto');
   var bnaCuotas = parseInt(gv('bna-cuotas'))||12;
-  // BNA_GASTOS se lee de los campos editables (ver bnaGastoFijo/bnaGastoPorc abajo)
-  var BNA_TNA = 38;
+  // Leer SIEMPRE desde los campos editables del DOM
+  var bnaGastoFijo  = bna ? (parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0) : 0;
+  var bnaGastoPorc  = bna ? (parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0) : 0;
+  var bnaTNA        = bna ? (parseFloat((document.getElementById('bna-tna')||{value:'38'}).value)||0) : 0;
+  var bnaGastosTotal = bnaMonto > 0 ? (Math.round(bnaMonto * bnaGastoPorc / 100) + bnaGastoFijo) : 0;
 
-  // Mostrar filas resumen BNA
+  // Mostrar/ocultar filas
   ['pvbna-row','pvbna-gas-row','pvbna-rec-row','pvbna-cuota-row'].forEach(function(id){
     var el = document.getElementById(id);
     if(el) el.style.display = (bna && bnaMonto > 0) ? 'flex' : 'none';
@@ -1235,9 +1267,9 @@ function upP(){
 
   if(bna && bnaMonto > 0) {
     var bnaRecibe = Math.max(0, bnaMonto - bnaGastosTotal);
-    var bnaTm = Math.pow(1+BNA_TNA/100,1/12)-1;
+    var bnaTm = bnaTNA > 0 ? Math.pow(1+bnaTNA/100,1/12)-1 : 0;
     var bnaManual = gn('bna-cuota-manual');
-    var bnaCuota = bnaManual > 0 ? bnaManual : bnaMonto * bnaTm / (1-Math.pow(1+bnaTm,-bnaCuotas));
+    var bnaCuota = bnaManual > 0 ? bnaManual : (bnaTm > 0 ? bnaMonto*bnaTm/(1-Math.pow(1+bnaTm,-bnaCuotas)) : Math.round(bnaMonto/bnaCuotas));
 
     var _bnaSelEl = document.getElementById('bna-banco-sel');
     var _bnaNombreDisp = _bnaSelEl ? _bnaSelEl.options[_bnaSelEl.selectedIndex].text.split(' (')[0] : 'Personal';
