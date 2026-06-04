@@ -999,8 +999,11 @@ function upP(){
   var aporteCred = cred ? Math.max(0, montoFinanciar - gastosPrendario - gastosSello - gastoTotalMG) : 0;
 
   // BNA personal: neto = monto - $800.000 fijos
-  var gastosBNA       = bna2 && bnaMonto2 > 0 ? 800000 : 0;
-  var aporteBNA       = bna2 ? Math.max(0, bnaMonto2 - gastosBNA) : 0;
+  // Lee gastos desde los campos editables del formulario
+  var _bnaGF = bna2 ? (parseFloat((document.getElementById('bna-gasto-fijo')||{}).value)||0) : 0;
+  var _bnaGP = bna2 ? (parseFloat((document.getElementById('bna-gasto-porc')||{}).value)||0) : 0;
+  var _bnaGastos = bnaMonto2 > 0 ? (Math.round(bnaMonto2 * _bnaGP / 100) + _bnaGF) : 0;
+  var aporteBNA = bna2 ? Math.max(0, bnaMonto2 - _bnaGastos) : 0;
 
   var aportePermuta   = perm ? (pvNeta > 0 ? pvNeta : 0) : 0;
   var adelanto = gn('adelanto');
@@ -1221,7 +1224,7 @@ function upP(){
   var bna = gc('cbna');
   var bnaMonto = gn('bna-monto');
   var bnaCuotas = parseInt(gv('bna-cuotas'))||12;
-  var BNA_GASTOS = 800000;
+  // BNA_GASTOS se lee de los campos editables (ver bnaGastoFijo/bnaGastoPorc abajo)
   var BNA_TNA = 38;
 
   // Mostrar filas resumen BNA
@@ -1231,7 +1234,7 @@ function upP(){
   });
 
   if(bna && bnaMonto > 0) {
-    var bnaRecibe = bnaMonto - BNA_GASTOS;
+    var bnaRecibe = Math.max(0, bnaMonto - bnaGastosTotal);
     var bnaTm = Math.pow(1+BNA_TNA/100,1/12)-1;
     var bnaManual = gn('bna-cuota-manual');
     var bnaCuota = bnaManual > 0 ? bnaManual : bnaMonto * bnaTm / (1-Math.pow(1+bnaTm,-bnaCuotas));
@@ -1314,7 +1317,7 @@ function genPDF(){
     var gastosPrenPDFtotal = gastosPrenPDF + gastosSelloPDF + gastoTotalMGpdf;
     var aporteCredPDF   = Math.max(0, montoFin - gastosPrenPDFtotal);
     // Neto BNA (descuenta $800.000 fijos)
-    var aporteBNApdf = d.tieneBNA && d.bnaMonto > 0 ? Math.max(0, d.bnaMonto - 800000) : 0;
+    var aporteBNApdf = d.tieneBNA && d.bnaMonto > 0 ? Math.max(0, d.bnaMonto - (Math.round(d.bnaMonto*(d.bnaGastoPorc||0)/100)+(d.bnaGastoFijo||0))) : 0;
     // Calcular PSA aqui para usarlo en totalAportes y en las filas
     var _psaGastosPDF=0, _psaNetoPDF=0, _psaCuotaPDF=0;
     if(d.tienePSA && d.psaMonto > 0){
