@@ -451,7 +451,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
       </div>
       <div id="bna-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:8px">
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px"><span>Monto solicitado</span><span id="bna-r-monto" style="color:#CCC">-</span></div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:4px"><span id="bna-r-glabel">(-) Gastos</span><span id="bna-r-gasto">-</span></div>
+        <div id="bna-r-gasto-row" style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:4px"><span id="bna-r-glabel">(-) Gastos</span><span id="bna-r-gasto">-</span></div>
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#4ade80;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #333"><span style="font-weight:600">Neto a recibir</span><span id="bna-r-recibe" style="font-weight:700">-</span></div>
         <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700"><span>Cuota estimada</span><span id="bna-r-cuota">-</span></div>
       </div>
@@ -1245,8 +1245,20 @@ function upP(){
     if(bnaRes) {
       bnaRes.style.display = 'block';
       document.getElementById('bna-r-monto').textContent = fmtP(bnaMonto);
+      // Label dinamico segun banco
+      var _bnaGlabel = document.getElementById('bna-r-glabel');
+      var _bnaGasto = document.getElementById('bna-r-gasto');
+      if(_bnaGlabel) {
+        if(bnaGastoFijo > 0 && bnaGastoPorc === 0) _bnaGlabel.textContent = '(-) Gasto fijo';
+        else if(bnaGastoPorc > 0 && bnaGastoFijo === 0) _bnaGlabel.textContent = '(-) Gasto ' + bnaGastoPorc + '%';
+        else if(bnaGastosTotal === 0) _bnaGlabel.textContent = '(-) Sin gastos';
+        else _bnaGlabel.textContent = '(-) Gastos';
+      }
+      var _bnaGastoRow = document.getElementById('bna-r-gasto-row');
+      if(_bnaGastoRow) _bnaGastoRow.style.display = bnaGastosTotal > 0 ? 'flex' : 'none';
+      if(_bnaGasto) _bnaGasto.textContent = bnaGastosTotal > 0 ? '- ' + fmtP(bnaGastosTotal) : '$ 0';
       document.getElementById('bna-r-recibe').textContent = fmtP(bnaRecibe > 0 ? bnaRecibe : 0);
-      document.getElementById('bna-r-cuota').textContent = fmtP(Math.round(bnaCuota))+' x '+bnaCuotas;
+      document.getElementById('bna-r-cuota').textContent = fmtP(Math.round(bnaCuota))+' x '+bnaCuotas+(bnaManual>0?' (manual)':'');
     }
   } else {
     var bnaRes2 = document.getElementById('bna-resumen');
