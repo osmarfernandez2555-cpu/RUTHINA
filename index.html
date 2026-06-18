@@ -12,8 +12,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
 #sc{display:flex;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:var(--bg)}
 .chdr{background:#1A1A1A;padding:8px 14px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:3px solid var(--rojo)}
 .hav{width:40px;height:40px;border-radius:50%;background:var(--rojo);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:white;flex-shrink:0}
-.hin{flex:1;min-width:0}
-.hn{font-size:15px;font-weight:600;color:white}
+.hin{flex:1;min-width:0}.hn{font-size:15px;font-weight:600;color:white}
 .hs{font-size:11.5px;color:#4ade80;display:flex;align-items:center;gap:4px}
 .sd{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -26,16 +25,12 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
 .dsep{text-align:center;margin:10px 0}
 .dsep span{background:rgba(255,255,255,0.75);border-radius:7px;padding:3px 12px;font-size:11.5px;color:var(--text2)}
 .mr{display:flex;margin-bottom:1px;padding:0 4px}
-.mr.out{justify-content:flex-end}
-.mr.in{justify-content:flex-start}
-.mr.gap{margin-top:8px}
+.mr.out{justify-content:flex-end}.mr.in{justify-content:flex-start}.mr.gap{margin-top:8px}
 .bbl{max-width:72%;padding:7px 9px 5px;border-radius:8px;font-size:14px;line-height:1.55;word-wrap:break-word;box-shadow:0 1px 1px rgba(0,0,0,.12)}
 .mr.in .bbl{background:#fff;color:var(--text);border-top-left-radius:0}
 .mr.out .bbl{background:#DCF8C6;color:#111;border-top-right-radius:0}
 .bsndr{font-size:12px;font-weight:600;color:var(--rojo);margin-bottom:3px}
-.bbl strong{font-weight:600}
-.mr.in .bbl strong{color:var(--rojo)}
-.bbl em{font-style:italic;opacity:.85}
+.bbl strong{font-weight:600}.mr.in .bbl strong{color:var(--rojo)}.bbl em{font-style:italic;opacity:.85}
 .bt{font-size:10.5px;opacity:.6;text-align:right;margin-top:2px}
 .mr.out .bt::after{content:' ✓✓';font-size:10px}
 .tbbl{background:#fff;padding:10px 13px;border-radius:8px;border-top-left-radius:0;display:flex;gap:4px;align-items:center;box-shadow:0 1px 1px rgba(0,0,0,.1)}
@@ -50,8 +45,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
 #ci{flex:1;border:none;background:none;font-family:'Inter',sans-serif;font-size:15px;color:var(--text);outline:none;resize:none;max-height:110px;line-height:1.4}
 #ci::placeholder{color:#AAA}
 .sbtn{width:44px;height:44px;border-radius:50%;background:var(--rojo);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
-.sbtn:hover{background:var(--rojo-dark)}
-.sbtn:active{transform:scale(.94)}
+.sbtn:hover{background:var(--rojo-dark)}.sbtn:active{transform:scale(.94)}
 #sb{display:none;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:#F5F5F5}
 .bhdr{background:#1A1A1A;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid var(--rojo)}
 .bbtn{background:none;border:none;color:white;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:14px;padding:4px 0}
@@ -67,8 +61,7 @@ html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
 .fg textarea{resize:vertical;min-height:60px}
 .fgr{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .trow{display:flex;align-items:center;justify-content:space-between;background:#fff;border-radius:12px;padding:12px 14px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.06);cursor:pointer}
-.trl{font-size:14px;font-weight:500;color:var(--text)}
-.trs{font-size:11.5px;color:var(--text2);margin-top:2px}
+.trl{font-size:14px;font-weight:500;color:var(--text)}.trs{font-size:11.5px;color:var(--text2);margin-top:2px}
 .tog{position:relative;width:40px;height:22px;flex-shrink:0}
 .tog input{opacity:0;width:0;height:0}
 .tsl{position:absolute;cursor:pointer;inset:0;background:#CCC;border-radius:22px;transition:.25s}
@@ -81,17 +74,64 @@ input:checked+.tsl::before{transform:translateX(18px)}
 .pr:last-child{border:none}
 .pr.pt{font-size:18px;font-weight:700;color:var(--rojo);margin-top:4px;padding-top:8px;border-top:1px solid #333}
 .bgen{width:100%;padding:14px;background:var(--rojo);color:#fff;border:none;border-radius:12px;font-family:'Inter',sans-serif;font-weight:600;font-size:15px;cursor:pointer;margin-bottom:24px}
-.bgen:hover{background:var(--rojo-dark)}
-.bgen:disabled{background:#CCC;cursor:default}
+.bgen:hover{background:var(--rojo-dark)}.bgen:disabled{background:#CCC;cursor:default}
 .snack{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#1A1A1A;color:#fff;padding:10px 20px;border-radius:22px;font-size:13px;opacity:0;transition:all .3s;z-index:999;white-space:nowrap}
 .snack.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .seclbl{padding:0 4px 8px;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px}
 @media(max-width:600px){.bbl{max-width:86%}.hbtn span{display:none}.fgr{grid-template-columns:1fr}}
+/* ══ COMPARADOR ══════════════════════════════════════════ */
+#comp{display:none;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:#F5F5F5}
+.comp-hdr{background:#1A1A1A;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid #C8102E}
+.comp-scroll{flex:1;overflow-y:auto;padding:14px}
+.comp-scroll::-webkit-scrollbar{width:3px}
+.comp-card{background:#fff;border-radius:12px;border:1px solid #E0E0E0;padding:16px 20px;margin-bottom:14px}
+.comp-stitle{font-size:11px;font-weight:700;color:#667781;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+.comp-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.comp-g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px}
+.comp-label{font-size:12px;color:#667781;font-weight:500;display:block;margin-bottom:4px}
+.comp-plats{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.comp-plat{background:#fff;border-radius:12px;border:1px solid #E0E0E0;padding:16px 18px;display:flex;flex-direction:column}
+.comp-ph{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.comp-pname{font-size:14px;font-weight:700;color:#111}
+.comp-pdom{font-size:11px;color:#999;margin-top:1px}
+.comp-ver{margin-left:auto;height:28px;padding:0 10px;border-radius:8px;border:1.5px solid #E0E0E0;background:#f8f8f8;color:#C8102E;font-size:12px;font-weight:600;text-decoration:none;display:flex;align-items:center;gap:3px;white-space:nowrap}
+.comp-ver:hover{background:#FEF0F2}
+.comp-spinner-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:8px;color:#999;font-size:13px;padding:1.5rem 0}
+.comp-spinner{width:24px;height:24px;border:3px solid #E0E0E0;border-top-color:#C8102E;border-radius:50%;animation:spin .8s linear infinite}
+.comp-prom-val{font-size:22px;font-weight:700;color:#111;margin-bottom:2px}
+.comp-prom-sub{font-size:12px;color:#667781;margin-bottom:10px}
+.comp-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}
+.comp-stat{background:#f8f8f8;border-radius:8px;padding:8px 10px;border:1px solid #f0f0f0}
+.comp-stat-l{font-size:10px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.comp-stat-v{font-size:13px;font-weight:700;color:#111}
+.comp-listings{display:flex;flex-direction:column;gap:5px;max-height:190px;overflow-y:auto}
+.comp-litem{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:#f8f8f8;border-radius:7px;font-size:12px;gap:6px;border:1px solid #f0f0f0}
+.comp-ltitle{color:#444;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.comp-lprice{color:#C8102E;font-weight:700;white-space:nowrap}
+.comp-nota{font-size:11px;color:#999;margin-top:7px}
+.comp-fb-info{font-size:12px;color:#667781;margin-bottom:10px;line-height:1.5}
+.comp-fb-row{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.comp-fb-lbl{font-size:12px;color:#667781;width:90px;flex-shrink:0}
+.comp-fb-inp{height:32px;font-size:13px;padding:0 10px;border:1.5px solid #E0E0E0;border-radius:8px;background:#f8f8f8;color:#111;outline:none;flex:1}
+.comp-fb-inp:focus{border-color:#C8102E;background:#fff}
+.btn-comp-calc{height:34px;padding:0 16px;background:#C8102E;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;margin-top:4px}
+.comp-fb-res{background:#FEF0F2;border-radius:8px;padding:10px 12px;margin-top:8px;border:1px solid #FECACA}
+.comp-fb-res-val{font-size:18px;font-weight:700;color:#C8102E}
+.comp-fb-res-sub{font-size:11px;color:#667781;margin-top:2px}
+.comp-resumen{background:#1A1A1A;border-radius:12px;padding:20px 22px;color:#fff}
+.comp-res-label{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#888;margin-bottom:5px}
+.comp-res-main{font-size:26px;font-weight:700;margin-bottom:14px}
+.comp-res-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.comp-res-mini{background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px}
+.comp-res-mini-l{font-size:10px;color:#888;margin-bottom:3px;text-transform:uppercase;letter-spacing:.5px}
+.comp-res-mini-v{font-size:14px;font-weight:700}
+.comp-pills{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.comp-pill{background:rgba(255,255,255,.1);border-radius:20px;padding:3px 10px;font-size:11px;color:#aaa}
+.comp-err{font-size:12px;color:#C8102E;background:#FEF0F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px}
+@media(max-width:600px){.comp-g2,.comp-g3,.comp-plats{grid-template-columns:1fr}.comp-res-grid{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
-
-<!-- SETUP SCREEN -->
 <div id="setup" style="display:none;position:fixed;inset:0;background:#1A1A1A;z-index:1000;flex-direction:column;align-items:center;justify-content:center;padding:24px">
   <div style="width:100%;max-width:400px">
     <div style="text-align:center;margin-bottom:32px">
@@ -108,8 +148,6 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <div id="key-error" style="display:none;background:#3A1A1A;border:1px solid #C8102E;border-radius:8px;padding:10px 14px;margin-top:12px;font-size:13px;color:#FF6B6B;font-family:Inter,sans-serif;text-align:center"></div>
   </div>
 </div>
-
-<!-- CHAT -->
 <div id="sc">
   <div class="chdr">
     <div class="hav">Ru</div>
@@ -120,6 +158,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <button class="hbtn" onclick="openB()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       <span>Presupuesto</span>
+    </button>
+    <button class="hbtn" onclick="openComp()" style="background:rgba(200,16,46,0.3)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M3 12h3m12 0h3M12 3v3m0 12v3"/></svg>
+      <span>Comparador</span>
     </button>
     <button class="hbtn" onclick="cambiarKey()" title="Cambiar API Key" style="padding:7px 9px">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
@@ -143,7 +185,80 @@ input:checked+.tsl::before{transform:translateX(18px)}
     </button>
   </div>
 </div>
-
+<!-- COMPARADOR -->
+<div id="comp">
+  <div class="comp-hdr">
+    <button class="bbtn" onclick="closeComp()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver
+    </button>
+    <div class="bttl">Comparador de Precios</div>
+    <span id="comp-fecha" style="font-size:11px;color:#666;margin-left:auto"></span>
+  </div>
+  <div class="comp-scroll">
+    <div class="comp-card">
+      <div class="comp-stitle">Datos del vehículo</div>
+      <div class="comp-g2">
+        <div><span class="comp-label">Marca *</span><input id="c-marca" placeholder="ej: Toyota" style="width:100%;height:38px;padding:0 10px;font-size:14px;border:1.5px solid #E0E0E0;border-radius:8px;outline:none"/></div>
+        <div><span class="comp-label">Modelo *</span><input id="c-modelo" placeholder="ej: Corolla" style="width:100%;height:38px;padding:0 10px;font-size:14px;border:1.5px solid #E0E0E0;border-radius:8px;outline:none"/></div>
+      </div>
+      <div class="comp-g3">
+        <div><span class="comp-label">Versión</span><input id="c-version" placeholder="ej: XEI CVT" style="width:100%;height:38px;padding:0 10px;font-size:14px;border:1.5px solid #E0E0E0;border-radius:8px;outline:none"/></div>
+        <div><span class="comp-label">Año</span><input id="c-anio" type="number" placeholder="ej: 2021" style="width:100%;height:38px;padding:0 10px;font-size:14px;border:1.5px solid #E0E0E0;border-radius:8px;outline:none"/></div>
+        <div><span class="comp-label">Moneda</span>
+          <select id="c-moneda" style="width:100%;height:38px;padding:0 10px;font-size:14px;border:1.5px solid #E0E0E0;border-radius:8px;outline:none;background:#fff">
+            <option value="ARS">Pesos (ARS)</option>
+            <option value="USD">Dólares (USD)</option>
+          </select>
+        </div>
+      </div>
+      <button onclick="compBuscar()" id="btn-comp-buscar" style="width:100%;height:44px;background:#1A1A1A;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Buscar precios en ML
+      </button>
+    </div>
+    <div id="comp-plats" style="display:none">
+      <div class="comp-plats">
+        <div class="comp-plat">
+          <div class="comp-ph">
+            <span style="font-size:20px">🟡</span>
+            <div><div class="comp-pname">Mercado Libre</div><div class="comp-pdom">autos.mercadolibre.com.ar</div></div>
+            <a id="comp-ml-link" class="comp-ver" href="#" target="_blank" rel="noopener">Ver ↗</a>
+          </div>
+          <div id="comp-ml-content" style="flex:1">
+            <div class="comp-spinner-wrap"><div class="comp-spinner"></div>Buscando...</div>
+          </div>
+        </div>
+        <div class="comp-plat">
+          <div class="comp-ph">
+            <span style="font-size:20px">🔵</span>
+            <div><div class="comp-pname">Facebook Marketplace</div><div class="comp-pdom">facebook.com/marketplace</div></div>
+            <a id="comp-fb-link" class="comp-ver" href="#" target="_blank" rel="noopener">Ver ↗</a>
+          </div>
+          <p class="comp-fb-info">FB no permite acceso automático. Abrí la búsqueda, revisá los avisos y cargá los datos acá.</p>
+          <div class="comp-fb-row"><span class="comp-fb-lbl">Precio mín:</span><input type="number" class="comp-fb-inp" id="comp-fb-min" placeholder="ej: 12000000"/></div>
+          <div class="comp-fb-row"><span class="comp-fb-lbl">Precio máx:</span><input type="number" class="comp-fb-inp" id="comp-fb-max" placeholder="ej: 16000000"/></div>
+          <div class="comp-fb-row"><span class="comp-fb-lbl">Cant. avisos:</span><input type="number" class="comp-fb-inp" id="comp-fb-cant" placeholder="ej: 8" min="1"/></div>
+          <button class="btn-comp-calc" onclick="compCalcFB()">Calcular promedio FB</button>
+          <div id="comp-fb-res" class="comp-fb-res" style="display:none">
+            <div class="comp-fb-res-val" id="comp-fb-res-val">—</div>
+            <div class="comp-fb-res-sub" id="comp-fb-res-sub"></div>
+          </div>
+        </div>
+      </div>
+      <div id="comp-resumen" class="comp-resumen" style="display:none">
+        <div class="comp-res-label">Precio promedio combinado</div>
+        <div class="comp-res-main" id="comp-res-main">—</div>
+        <div class="comp-res-grid">
+          <div class="comp-res-mini"><div class="comp-res-mini-l">Mercado Libre</div><div class="comp-res-mini-v" id="comp-res-ml">—</div></div>
+          <div class="comp-res-mini"><div class="comp-res-mini-l">Marketplace</div><div class="comp-res-mini-v" id="comp-res-fb">—</div></div>
+          <div class="comp-res-mini"><div class="comp-res-mini-l">Diferencia</div><div class="comp-res-mini-v" id="comp-res-diff">—</div></div>
+        </div>
+        <div class="comp-pills" id="comp-res-pills"></div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- PRESUPUESTO -->
 <div id="sb">
   <div class="bhdr">
@@ -154,24 +269,20 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <div class="bttl">Armar Presupuesto</div>
   </div>
   <div class="bscroll">
-    <!-- COTIZACION USD -->
     <div style="background:#1A1A1A;border-radius:14px;padding:14px;margin-bottom:14px;display:flex;align-items:center;gap:14px;flex-wrap:wrap">
       <div style="display:flex;align-items:center;gap:8px;flex:1">
-        <span style="font-size:22px">💵</span>
+        <span style="font-size:22px">&#x1F4B5;</span>
         <div>
-          <div style="font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px">Cotización USD del día</div>
-          <div style="font-size:10px;color:#555;margin-top:2px">Usada para convertir autos en dólares a pesos</div>
+          <div style="font-size:11px;font-weight:600;color:#888;text-transform:uppercase;letter-spacing:.5px">Cotizaci&#xF3;n USD del d&#xED;a</div>
+          <div style="font-size:10px;color:#555;margin-top:2px">Usada para convertir autos en d&#xF3;lares a pesos</div>
         </div>
       </div>
       <div style="display:flex;align-items:center;gap:8px">
         <span style="color:#4ade80;font-weight:600;font-size:15px">$</span>
-        <input id="usd-hoy" type="number" value="1250" placeholder="1250"
-          style="width:120px;background:#252525;border:1.5px solid #333;border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:16px;font-weight:700;color:#4ade80;outline:none;text-align:center"
-          oninput="onUSDChange()">
+        <input id="usd-hoy" type="number" value="1250" placeholder="1250" style="width:120px;background:#252525;border:1.5px solid #333;border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:16px;font-weight:700;color:#4ade80;outline:none;text-align:center" oninput="onUSDChange()">
         <span style="color:#555;font-size:12px">por USD</span>
       </div>
     </div>
-
     <div class="bc">
       <div class="bct">Cliente</div>
       <div class="fgr">
@@ -191,7 +302,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
       </div>
       <div class="fg"><label>Marca y Modelo *</label><input id="bm" type="text" placeholder="O escribi manualmente..." oninput="upP()"></div>
       <div class="fgr">
-        <div class="fg"><label>Año</label><input id="by" type="text" placeholder="2026"></div>
+        <div class="fg"><label>A&#xF1;o</label><input id="by" type="text" placeholder="2026"></div>
         <div class="fg"><label>Color</label><input id="bco" type="text" placeholder="Blanco"></div>
         <div class="fg"><label>Km</label><input id="bk" type="number" placeholder="0"></div>
         <div class="fg"><label>Patente</label><input id="bpa" type="text" placeholder="AA000BB"></div>
@@ -207,59 +318,35 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <div class="seclbl">Permuta</div>
     <div class="trow" onclick="tChk('cp','sp')">
       <div><div class="trl">Entrega vehiculo en permuta</div><div class="trs">Activa si el cliente permuta su auto</div></div>
-      <label class="tog" onclick="event.stopPropagation()">
-        <input type="checkbox" id="cp" onchange="sSec('sp',this.checked);upP()"><span class="tsl"></span>
-      </label>
+      <label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="cp" onchange="sSec('sp',this.checked);upP()"><span class="tsl"></span></label>
     </div>
     <div id="sp" style="display:none" class="bc">
       <div class="fg"><label>Vehiculo a permutar</label><input id="bpm" type="text" placeholder="Chevrolet Cruze 2019" oninput="upP()"></div>
       <div class="fgr">
-        <div class="fg"><label>Año</label><input id="bpy" type="text" placeholder="2019"></div>
+        <div class="fg"><label>A&#xF1;o</label><input id="bpy" type="text" placeholder="2019"></div>
         <div class="fg"><label>Km</label><input id="bpk" type="number" placeholder="80000"></div>
       </div>
       <div class="fg"><label>Valor tasacion (ARS)</label><input id="bpv" type="number" placeholder="5000000" oninput="upP()"></div>
       <div class="fgr">
-        <div class="fg">
-          <label style="color:#fb923c">(-) Posicion de venta (ARS)</label>
-          <input id="bppos" type="number" placeholder="0" oninput="upP()"
-            style="border-color:#fb923c44">
-          <div style="font-size:10px;color:#666;margin-top:3px">Costo de venta del usado</div>
-        </div>
-        <div class="fg">
-          <label style="color:#fb923c">(-) Peritaje (ARS)</label>
-          <input id="bpper" type="number" placeholder="0" oninput="upP()"
-            style="border-color:#fb923c44">
-          <div style="font-size:10px;color:#666;margin-top:3px">Costo de peritaje</div>
-        </div>
+        <div class="fg"><label style="color:#fb923c">(-) Posicion de venta (ARS)</label><input id="bppos" type="number" placeholder="0" oninput="upP()" style="border-color:#fb923c44"><div style="font-size:10px;color:#666;margin-top:3px">Costo de venta del usado</div></div>
+        <div class="fg"><label style="color:#fb923c">(-) Peritaje (ARS)</label><input id="bpper" type="number" placeholder="0" oninput="upP()" style="border-color:#fb923c44"><div style="font-size:10px;color:#666;margin-top:3px">Costo de peritaje</div></div>
       </div>
       <div id="perm-neta-box" style="display:none;background:#2A1500;border:1px solid #fb923c44;border-radius:8px;padding:10px 12px;margin-top:4px">
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px">
-          <span>Tasacion</span><span id="perm-tasacion">-</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#fb923c;margin-bottom:4px">
-          <span>(-) Posicion de venta</span><span id="perm-pos">-</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:12px;color:#fb923c;margin-bottom:6px">
-          <span>(-) Peritaje</span><span id="perm-per">-</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#4ade80;border-top:1px solid #444;padding-top:6px">
-          <span>Valor neto permuta</span><span id="perm-neta">-</span>
-        </div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px"><span>Tasacion</span><span id="perm-tasacion">-</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#fb923c;margin-bottom:4px"><span>(-) Posicion de venta</span><span id="perm-pos">-</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#fb923c;margin-bottom:6px"><span>(-) Peritaje</span><span id="perm-per">-</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:#4ade80;border-top:1px solid #444;padding-top:6px"><span>Valor neto permuta</span><span id="perm-neta">-</span></div>
       </div>
     </div>
     <div class="seclbl">Financiacion</div>
     <div class="trow" onclick="tChk('cc','sc2')">
       <div><div class="trl">Financia en cuotas</div><div class="trs">Activa si el cliente toma credito</div></div>
-      <label class="tog" onclick="event.stopPropagation()">
-        <input type="checkbox" id="cc" onchange="sSec('sc2',this.checked);upP()"><span class="tsl"></span>
-      </label>
+      <label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="cc" onchange="sSec('sc2',this.checked);upP()"><span class="tsl"></span></label>
     </div>
     <div id="sc2" style="display:none" class="bc">
       <div class="fg">
         <label>Banco / Entidad</label>
-        <select id="banco-sel" onchange="autoFillBanco(this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:13px;color:var(--text);background:#fff;outline:none;margin-bottom:6px">
-          <option value="">-- Seleccionar banco --</option>
-        </select>
+        <select id="banco-sel" onchange="autoFillBanco(this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:13px;color:var(--text);background:#fff;outline:none;margin-bottom:6px"><option value="">-- Seleccionar banco --</option></select>
         <input id="bba" type="text" placeholder="O escribi el banco manualmente">
       </div>
       <div class="fgr">
@@ -268,11 +355,9 @@ input:checked+.tsl::before{transform:translateX(18px)}
         <div class="fg">
           <label>TNA % <span id="tna-hint" style="color:#C8102E;font-size:10px;font-weight:600"></span></label>
           <div style="display:flex;gap:6px;align-items:center">
-            <input id="btn" type="number" placeholder="60" oninput="upP()"
-              style="flex:1;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:15px;font-weight:600;color:#C8102E;outline:none;background:#FEF0F2">
+            <input id="btn" type="number" placeholder="60" oninput="upP()" style="flex:1;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:15px;font-weight:600;color:#C8102E;outline:none;background:#FEF0F2">
             <div style="font-size:11px;color:#999;white-space:nowrap">% anual</div>
           </div>
-          <div style="font-size:10px;color:#999;margin-top:3px">Editá la tasa si cambió desde la lista</div>
         </div>
         <div class="fg"><label>Cuotas</label>
           <select id="bcu" onchange="upP()">
@@ -284,90 +369,42 @@ input:checked+.tsl::before{transform:translateX(18px)}
         </div>
       </div>
       <div class="fg" style="margin-top:4px">
-        <label style="color:#60a5fa">Cuota manual (opcional) <span style="color:#888;font-weight:400">— sobreescribe el cálculo automático</span></label>
-        <input id="cuota-manual" type="number" placeholder="Dejá vacío para calcular automático" oninput="upP()"
-          style="color:#60a5fa;font-weight:600;border-color:#60a5fa55">
+        <label style="color:#60a5fa">Cuota manual (opcional) <span style="color:#888;font-weight:400">&#8212; sobreescribe el c&#xE1;lculo autom&#xE1;tico</span></label>
+        <input id="cuota-manual" type="number" placeholder="Dej&#xE1; vac&#xED;o para calcular autom&#xE1;tico" oninput="upP()" style="color:#60a5fa;font-weight:600;border-color:#60a5fa55">
       </div>
-    </div>
-    <div class="seclbl">Credito PSA</div>
+    </div>    <div class="seclbl">Credito PSA</div>
     <div class="trow" onclick="tChk('cpsa','sc-psa')">
-      <div>
-        <div class="trl">Credito PSA</div>
-        <div class="trs">PSA Prestamos Personales Patentados / 0km</div>
-      </div>
-      <label class="tog" onclick="event.stopPropagation()">
-        <input type="checkbox" id="cpsa" onchange="onTogglePSA(this.checked)"><span class="tsl"></span>
-      </label>
+      <div><div class="trl">Credito PSA</div><div class="trs">PSA Prestamos Personales Patentados / 0km</div></div>
+      <label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="cpsa" onchange="onTogglePSA(this.checked)"><span class="tsl"></span></label>
     </div>
     <div id="sc-psa" style="display:none" class="bc">
-      <!-- Tipo: 0km o Patentado -->
       <div style="display:flex;gap:8px;margin-bottom:14px">
-        <button id="psa-btn-0km" onclick="setPSATipo('0km')"
-          style="flex:1;padding:10px;border-radius:10px;border:2px solid #C8102E;background:#C8102E;color:white;font-family:Inter,sans-serif;font-weight:600;font-size:13px;cursor:pointer">
-          0km
-        </button>
-        <button id="psa-btn-pat" onclick="setPSATipo('pat')"
-          style="flex:1;padding:10px;border-radius:10px;border:2px solid var(--border);background:white;color:var(--text);font-family:Inter,sans-serif;font-weight:600;font-size:13px;cursor:pointer">
-          Patentado
-        </button>
+        <button id="psa-btn-0km" onclick="setPSATipo('0km')" style="flex:1;padding:10px;border-radius:10px;border:2px solid #C8102E;background:#C8102E;color:white;font-family:Inter,sans-serif;font-weight:600;font-size:13px;cursor:pointer">0km</button>
+        <button id="psa-btn-pat" onclick="setPSATipo('pat')" style="flex:1;padding:10px;border-radius:10px;border:2px solid var(--border);background:white;color:var(--text);font-family:Inter,sans-serif;font-weight:600;font-size:13px;cursor:pointer">Patentado</button>
       </div>
-
-      <!-- 0KM -->
       <div id="psa-0km">
-        <div style="background:#E8F5E3;border:1px solid #4ade80;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#166534">
-          ✅ <strong>0km:</strong> Máximo $8.000.000 — Cuotas: 24 o 36 — Tasa 0% — Gasto: 14.54% sobre el monto
-        </div>
+        <div style="background:#E8F5E3;border:1px solid #4ade80;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#166534">&#x2705; <strong>0km:</strong> M&#xE1;ximo $8.000.000 &#x2014; Cuotas: 24 o 36 &#x2014; Tasa 0% &#x2014; Gasto: 14.54% sobre el monto</div>
         <div class="fgr">
           <div class="fg"><label>Monto solicitado (ARS)</label><input id="psa-monto-0" type="number" placeholder="8000000" oninput="upP()"></div>
-          <div class="fg"><label>Cuotas</label>
-            <select id="psa-cuotas-0" onchange="upP()">
-              <option value="24">24 cuotas</option>
-              <option value="36">36 cuotas</option>
-            </select>
-          </div>
-          <div class="fg"><label>Gasto % (editable)</label>
-            <input id="psa-gasto-0" type="number" value="14.54" step="0.01" oninput="upP()"
-              style="color:#C8102E;font-weight:600">
-          </div>
-          <div class="fg" style="grid-column:1/-1">
-            <label style="color:#60a5fa">Cuota manual (opcional) <span style="color:#888;font-weight:400">— sobreescribe el cálculo</span></label>
-            <input id="psa0-cuota-manual" type="number" placeholder="Dejá vacío para calcular automático" oninput="upP()"
-              style="color:#60a5fa;font-weight:600;border-color:#60a5fa55">
-          </div>
+          <div class="fg"><label>Cuotas</label><select id="psa-cuotas-0" onchange="upP()"><option value="24">24 cuotas</option><option value="36">36 cuotas</option></select></div>
+          <div class="fg"><label>Gasto % (editable)</label><input id="psa-gasto-0" type="number" value="14.54" step="0.01" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
+          <div class="fg" style="grid-column:1/-1"><label style="color:#60a5fa">Cuota manual (opcional)</label><input id="psa0-cuota-manual" type="number" placeholder="Dej&#xE1; vac&#xED;o para calcular autom&#xE1;tico" oninput="upP()" style="color:#60a5fa;font-weight:600;border-color:#60a5fa55"></div>
         </div>
         <div id="psa-0km-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:4px">
           <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px"><span>Monto solicitado</span><span id="psa0-r-monto" style="color:#CCC">-</span></div>
           <div style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:4px"><span id="psa0-r-glabel">(-) Gasto 14.54%</span><span id="psa0-r-gasto">-</span></div>
           <div style="display:flex;justify-content:space-between;font-size:12px;color:#4ade80;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #333"><span style="font-weight:600">Neto a recibir</span><span id="psa0-r-neto" style="font-weight:700">-</span></div>
           <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700"><span>Cuota</span><span id="psa0-r-cuota">-</span></div>
-          <div style="font-size:10px;color:#555;margin-top:4px">Tasa 0% — División simple del monto en cuotas</div>
         </div>
       </div>
-
-      <!-- PATENTADO -->
       <div id="psa-pat" style="display:none">
-        <div style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#92400E">
-          ⚠️ <strong>Patentado:</strong> Gastos = Quebranto 10% + IVA 4% + Gestión 5%-10% (editables)
-        </div>
+        <div style="background:#FEF3C7;border:1px solid #F59E0B;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#92400E">&#x26A0;&#xFE0F; <strong>Patentado:</strong> Gastos = Quebranto 10% + IVA 4% + Gesti&#xF3;n 5%-10% (editables)</div>
         <div class="fgr">
           <div class="fg"><label>Monto solicitado (ARS)</label><input id="psa-monto-p" type="number" placeholder="10000000" oninput="upP()"></div>
-          <div class="fg"><label>TNA % (editable)</label>
-            <input id="psa-tna-p" type="number" placeholder="47.9" step="0.1" oninput="upP()"
-              style="color:#C8102E;font-weight:600">
-          </div>
-          <div class="fg"><label>Cuotas</label>
-            <select id="psa-cuotas-p" onchange="upP()">
-              <option value="12">12 cuotas</option>
-              <option value="24">24 cuotas</option>
-              <option value="36">36 cuotas</option>
-            </select>
-          </div>
+          <div class="fg"><label>TNA % (editable)</label><input id="psa-tna-p" type="number" placeholder="47.9" step="0.1" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
+          <div class="fg"><label>Cuotas</label><select id="psa-cuotas-p" onchange="upP()"><option value="12">12 cuotas</option><option value="24">24 cuotas</option><option value="36">36 cuotas</option></select></div>
         </div>
-        <div class="fg" style="margin-top:4px">
-          <label style="color:#60a5fa">Cuota manual (opcional) <span style="color:#888;font-weight:400">— sobreescribe el cálculo</span></label>
-          <input id="psap-cuota-manual" type="number" placeholder="Dejá vacío para calcular automático" oninput="upP()"
-            style="color:#60a5fa;font-weight:600;border-color:#60a5fa55">
-        </div>
+        <div class="fg" style="margin-top:4px"><label style="color:#60a5fa">Cuota manual (opcional)</label><input id="psap-cuota-manual" type="number" placeholder="Dej&#xE1; vac&#xED;o para calcular autom&#xE1;tico" oninput="upP()" style="color:#60a5fa;font-weight:600;border-color:#60a5fa55"></div>
         <div style="font-size:11px;color:#666;margin-bottom:8px;font-weight:600">Gastos (editables):</div>
         <div class="fgr">
           <div class="fg"><label>Quebranto %</label><input id="psa-q" type="number" value="10" step="0.1" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
@@ -383,24 +420,16 @@ input:checked+.tsl::before{transform:translateX(18px)}
           <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700"><span>Cuota estimada</span><span id="psap-r-cuota">-</span></div>
         </div>
       </div>
-    </div>
-
-    <div class="seclbl">Credito Personal</div>
+    </div>    <div class="seclbl">Credito Personal</div>
     <div class="trow" onclick="tChk('cbna','sc-bna')">
-      <div>
-        <div class="trl">Credito Personal</div>
-        <div class="trs">BNA, Bancor, Galicia, Santander, BBVA, ICBC, Macro, HSBC</div>
-      </div>
-      <label class="tog" onclick="event.stopPropagation()">
-        <input type="checkbox" id="cbna" onchange="onToggleBNA(this.checked)"><span class="tsl"></span>
-      </label>
+      <div><div class="trl">Credito Personal</div><div class="trs">BNA, Bancor, Galicia, Santander, BBVA, ICBC, Macro, HSBC</div></div>
+      <label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="cbna" onchange="onToggleBNA(this.checked)"><span class="tsl"></span></label>
     </div>
     <div id="sc-bna" style="display:none" class="bc">
-      <!-- Selector banco personal -->
       <div class="fg">
         <label>Banco</label>
         <select id="bna-banco-sel" onchange="onBancoPersonalChange()" style="font-weight:600;font-size:14px">
-          <option value="bna">BNA — Banco Nacion (gasto fijo $800.000)</option>
+          <option value="bna">BNA &#x2014; Banco Nacion (gasto fijo $800.000)</option>
           <option value="bancor">Bancor (sin gastos)</option>
           <option value="galicia">Galicia (gasto 4.2%)</option>
           <option value="santander">Santander (gasto 4.2%)</option>
@@ -411,44 +440,15 @@ input:checked+.tsl::before{transform:translateX(18px)}
           <option value="otro">Otro banco (personalizado)</option>
         </select>
       </div>
-      <div id="bna-banco-info" style="background:#1A3A5C;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#90CAF9">
-        Selecciona un banco para ver los gastos
-      </div>
+      <div id="bna-banco-info" style="background:#1A3A5C;border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:#90CAF9">Selecciona un banco para ver los gastos</div>
       <div class="fgr">
-        <div class="fg">
-          <label>Monto solicitado (ARS)</label>
-          <input id="bna-monto" type="number" placeholder="5000000" oninput="upP()">
-        </div>
-        <div class="fg">
-          <label>TNA % <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label>
-          <input id="bna-tna" type="number" placeholder="38" step="0.1" value="38" oninput="upP()"
-            style="color:#C8102E;font-weight:600">
-        </div>
-        <div class="fg">
-          <label>Cuotas</label>
-          <select id="bna-cuotas" onchange="upP()">
-            <option value="12">12 cuotas</option><option value="18">18 cuotas</option>
-            <option value="24">24 cuotas</option><option value="36">36 cuotas</option>
-            <option value="48">48 cuotas</option><option value="60">60 cuotas</option>
-            <option value="72">72 cuotas</option>
-          </select>
-        </div>
-        <div class="fg">
-          <label>Gasto fijo (ARS) <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label>
-          <input id="bna-gasto-fijo" type="number" placeholder="0" value="" oninput="upP()"
-            style="color:#C8102E;font-weight:600">
-        </div>
-        <div class="fg">
-          <label>Gasto % <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label>
-          <input id="bna-gasto-porc" type="number" placeholder="0" value="0" step="0.1" oninput="upP()"
-            style="color:#C8102E;font-weight:600">
-        </div>
+        <div class="fg"><label>Monto solicitado (ARS)</label><input id="bna-monto" type="number" placeholder="5000000" oninput="upP()"></div>
+        <div class="fg"><label>TNA % <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label><input id="bna-tna" type="number" placeholder="38" step="0.1" value="38" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
+        <div class="fg"><label>Cuotas</label><select id="bna-cuotas" onchange="upP()"><option value="12">12 cuotas</option><option value="18">18 cuotas</option><option value="24">24 cuotas</option><option value="36">36 cuotas</option><option value="48">48 cuotas</option><option value="60">60 cuotas</option><option value="72">72 cuotas</option></select></div>
+        <div class="fg"><label>Gasto fijo (ARS) <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label><input id="bna-gasto-fijo" type="number" placeholder="0" value="" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
+        <div class="fg"><label>Gasto % <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label><input id="bna-gasto-porc" type="number" placeholder="0" value="0" step="0.1" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
       </div>
-      <div class="fg" style="margin-top:4px">
-        <label style="color:#60a5fa">Cuota manual (opcional) <span style="color:#888;font-weight:400">— sobreescribe el cálculo</span></label>
-        <input id="bna-cuota-manual" type="number" placeholder="Dejá vacío para calcular automático" oninput="upP()"
-          style="color:#60a5fa;font-weight:600;border-color:#60a5fa55">
-      </div>
+      <div class="fg" style="margin-top:4px"><label style="color:#60a5fa">Cuota manual (opcional)</label><input id="bna-cuota-manual" type="number" placeholder="Dej&#xE1; vac&#xED;o para calcular autom&#xE1;tico" oninput="upP()" style="color:#60a5fa;font-weight:600;border-color:#60a5fa55"></div>
       <div id="bna-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:8px">
         <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px"><span>Monto solicitado</span><span id="bna-r-monto" style="color:#CCC">-</span></div>
         <div id="bna-r-gasto-row" style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:4px"><span id="bna-r-glabel">(-) Gastos</span><span id="bna-r-gasto">-</span></div>
@@ -456,147 +456,77 @@ input:checked+.tsl::before{transform:translateX(18px)}
         <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700"><span>Cuota estimada</span><span id="bna-r-cuota">-</span></div>
       </div>
     </div>
-
-    <!-- ADELANTO -->
     <div class="seclbl">Adelanto en efectivo</div>
     <div class="bc" style="border:2px solid #4ade8044">
       <div style="display:flex;align-items:center;gap:12px">
-        <div style="flex:1">
-          <div class="fg" style="margin-bottom:0">
-            <label>Monto adelanto (ARS)</label>
-            <input id="adelanto" type="number" placeholder="0" oninput="upP()"
-              style="border-color:#4ade8088;font-size:15px;font-weight:600;color:#166534">
-          </div>
-        </div>
-        <div style="font-size:28px">💵</div>
+        <div style="flex:1"><div class="fg" style="margin-bottom:0"><label>Monto adelanto (ARS)</label><input id="adelanto" type="number" placeholder="0" oninput="upP()" style="border-color:#4ade8088;font-size:15px;font-weight:600;color:#166534"></div></div>
+        <div style="font-size:28px">&#x1F4B5;</div>
       </div>
-      <div style="font-size:11px;color:#666;margin-top:6px">
-        Si el cliente entrega efectivo en mano. Se suma a la plata total del cliente.
-      </div>
-    </div>
-
-    <div class="prev">
+      <div style="font-size:11px;color:#666;margin-top:6px">Si el cliente entrega efectivo en mano. Se suma a la plata total del cliente.</div>
+    </div>    <div class="prev">
       <div class="plbl">RESUMEN</div>
-      <div class="pr"><span>Vehiculo</span><span id="pvm" style="color:#ccc;text-align:right;max-width:55%">—</span></div>
-      <div class="pr" id="pvp-row" style="display:none"><span id="pvp-label">Precio lista</span><span id="pvp">—</span></div>
-      <div class="pr" id="pvc-row" style="display:none"><span>Precio contado</span><span id="pvc" style="color:#4ade80">—</span></div>
-      <div class="pr" id="pvpr" style="display:none"><span>Tasacion permuta</span><span id="pvpv" style="color:#fb923c">—</span></div>
-      <div class="pr" id="pvpos-row" style="display:none"><span>(-) Posicion venta</span><span id="pvpos" style="color:#f87171">—</span></div>
-      <div class="pr" id="pvper-row" style="display:none"><span>(-) Peritaje</span><span id="pvper" style="color:#f87171">—</span></div>
-      <div class="pr" id="pvneta-row" style="display:none"><span style="font-weight:600">Neto permuta</span><span id="pvneta" style="color:#4ade80;font-weight:700">—</span></div>
-      <div class="pr" id="pvmf-bruto-row" style="display:none"><span>Total solicitado (bruto)</span><span id="pvmf-bruto" style="color:#aaa">—</span></div>
-      <div class="pr" id="pvmf-row" style="display:none"><span>(-) Credito banco (neto)</span><span id="pvmf" style="color:#60a5fa;font-weight:600">—</span></div>
-      <div class="pr" id="pvgas-row" style="display:none"><span id="pvgas-label">(-) Gastos (4.2%)</span><span id="pvgas" style="color:#f87171">—</span></div>
-      <div class="pr" id="pvgas42-row" style="display:none"><span>(-) Gastos 4.2%</span><span id="pvgas42" style="color:#f87171">—</span></div>
-      <div class="pr" id="pvgassello-row" style="display:none"><span>(-) Sellos 0.7% s/monto</span><span id="pvgassello" style="color:#f87171">—</span></div>
-      <div class="pr" id="pvtotdev-row" style="display:none"><span>Total a devolver</span><span id="pvtotdev" style="color:#aaa">—</span></div>
-      <div class="pr" id="pvgasmg-row" style="display:none"><span>(-) MG 2% s/total devolver</span><span id="pvgasmg" style="color:#f87171">—</span></div>
-      <div class="pr" id="pvrecibe-row" style="display:none"><span style="font-weight:600">Neto a recibir</span><span id="pvrecibe" style="color:#4ade80;font-weight:700">—</span></div>
-      <div class="pr" id="pvbna-row" style="display:none"><span id="pvbna-banco-label">Credito Personal solicitado</span><span id="pvbna-monto" style="color:#60a5fa">—</span></div>
-      <div class="pr" id="pvbna-gas-row" style="display:none"><span id="pvbna-gas-label">(-) Gastos</span><span id="pvbna-gas-val" style="color:#f87171">—</span></div>
-      <div class="pr" id="pvbna-rec-row" style="display:none"><span style="font-weight:600">Neto a recibir</span><span id="pvbna-recibe" style="color:#4ade80;font-weight:700">—</span></div>
-      <div class="pr" id="pvbna-cuota-row" style="display:none"><span>Cuota est.</span><span id="pvbna-cuota" style="color:#60a5fa">—</span></div>
-      <div class="pr" id="pvpsa-row" style="display:none"><span id="pvpsa-label">PSA solicitado</span><span id="pvpsa-monto" style="color:#60a5fa">—</span></div>
-      <div class="pr" id="pvpsa-gas-row" style="display:none"><span id="pvpsa-gas-label">(-) Gastos PSA</span><span id="pvpsa-gas" style="color:#f87171">—</span></div>
-      <div class="pr" id="pvpsa-neto-row" style="display:none"><span style="font-weight:600">PSA neto a recibir</span><span id="pvpsa-neto" style="color:#4ade80;font-weight:700">—</span></div>
-      <div class="pr" id="pvpsa-cuota-row" style="display:none"><span>Cuota PSA est.</span><span id="pvpsa-cuota" style="color:#60a5fa">—</span></div>
-      <div class="pr" id="pvadelanto-row" style="display:none"><span>(-) Adelanto efectivo</span><span id="pvadelanto" style="color:#4ade80;font-weight:600">—</span></div>
-      <div class="pr" id="pvant-row" style="display:none"><span>(-) Anticipo</span><span id="pvant" style="color:#60a5fa">—</span></div>
-      <div class="pr" id="pvtr" style="display:none"><span>(+) Transferencia (6%)</span><span id="pvtrv" style="color:#fbbf24">—</span></div>
-      <div class="pr" id="pvtotal-op-row" style="display:none;border-top:1px solid #333;padding-top:6px;margin-top:4px"><span style="font-weight:600">Valor total operacion</span><span id="pvtotal-op" style="color:#fff;font-weight:700">—</span></div>
-      <div class="pr" id="pvplata-row" style="display:none"><span style="font-weight:600">Plata total cliente</span><span id="pvplata" style="color:#aaa;font-weight:600">—</span></div>
-      <div class="pr" id="pvcr" style="display:none"><span>Cuota est. <span id="pvcu-banco" style="font-size:10px;opacity:.7"></span></span><span id="pvcu" style="color:#60a5fa">—</span></div>
-      <div id="tabla-cuotas" style="display:none;margin-top:6px">
-        <div style="font-size:10px;color:#666;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Cuota por banco (sobre monto a financiar)</div>
-        <div id="cuotas-body"></div>
-      </div>
-      <div class="pr pt" id="pvdif-final" style="display:none"><span id="pvt-label">Diferencia</span><span id="pvt" style="font-size:18px;font-weight:800">—</span></div>
+      <div class="pr"><span>Vehiculo</span><span id="pvm" style="color:#ccc;text-align:right;max-width:55%">&#x2014;</span></div>
+      <div class="pr" id="pvp-row" style="display:none"><span id="pvp-label">Precio lista</span><span id="pvp">&#x2014;</span></div>
+      <div class="pr" id="pvc-row" style="display:none"><span>Precio contado</span><span id="pvc" style="color:#4ade80">&#x2014;</span></div>
+      <div class="pr" id="pvpr" style="display:none"><span>Tasacion permuta</span><span id="pvpv" style="color:#fb923c">&#x2014;</span></div>
+      <div class="pr" id="pvpos-row" style="display:none"><span>(-) Posicion venta</span><span id="pvpos" style="color:#f87171">&#x2014;</span></div>
+      <div class="pr" id="pvper-row" style="display:none"><span>(-) Peritaje</span><span id="pvper" style="color:#f87171">&#x2014;</span></div>
+      <div class="pr" id="pvneta-row" style="display:none"><span style="font-weight:600">Neto permuta</span><span id="pvneta" style="color:#4ade80;font-weight:700">&#x2014;</span></div>
+      <div class="pr" id="pvmf-bruto-row" style="display:none"><span>Total solicitado (bruto)</span><span id="pvmf-bruto" style="color:#aaa">&#x2014;</span></div>
+      <div class="pr" id="pvmf-row" style="display:none"><span>(-) Credito banco (neto)</span><span id="pvmf" style="color:#60a5fa;font-weight:600">&#x2014;</span></div>
+      <div class="pr" id="pvgas-row" style="display:none"><span id="pvgas-label">(-) Gastos (4.2%)</span><span id="pvgas" style="color:#f87171">&#x2014;</span></div>
+      <div class="pr" id="pvgas42-row" style="display:none"><span>(-) Gastos 4.2%</span><span id="pvgas42" style="color:#f87171">&#x2014;</span></div>
+      <div class="pr" id="pvgassello-row" style="display:none"><span>(-) Sellos 0.7% s/monto</span><span id="pvgassello" style="color:#f87171">&#x2014;</span></div>
+      <div class="pr" id="pvtotdev-row" style="display:none"><span>Total a devolver</span><span id="pvtotdev" style="color:#aaa">&#x2014;</span></div>
+      <div class="pr" id="pvgasmg-row" style="display:none"><span>(-) MG 2% s/total devolver</span><span id="pvgasmg" style="color:#f87171">&#x2014;</span></div>
+      <div class="pr" id="pvrecibe-row" style="display:none"><span style="font-weight:600">Neto a recibir</span><span id="pvrecibe" style="color:#4ade80;font-weight:700">&#x2014;</span></div>
+      <div class="pr" id="pvbna-row" style="display:none"><span id="pvbna-banco-label">Credito Personal solicitado</span><span id="pvbna-monto" style="color:#60a5fa">&#x2014;</span></div>
+      <div class="pr" id="pvbna-gas-row" style="display:none"><span id="pvbna-gas-label">(-) Gastos</span><span id="pvbna-gas-val" style="color:#f87171">&#x2014;</span></div>
+      <div class="pr" id="pvbna-rec-row" style="display:none"><span style="font-weight:600">Neto a recibir</span><span id="pvbna-recibe" style="color:#4ade80;font-weight:700">&#x2014;</span></div>
+      <div class="pr" id="pvbna-cuota-row" style="display:none"><span>Cuota est.</span><span id="pvbna-cuota" style="color:#60a5fa">&#x2014;</span></div>
+      <div class="pr" id="pvpsa-row" style="display:none"><span id="pvpsa-label">PSA solicitado</span><span id="pvpsa-monto" style="color:#60a5fa">&#x2014;</span></div>
+      <div class="pr" id="pvpsa-gas-row" style="display:none"><span id="pvpsa-gas-label">(-) Gastos PSA</span><span id="pvpsa-gas" style="color:#f87171">&#x2014;</span></div>
+      <div class="pr" id="pvpsa-neto-row" style="display:none"><span style="font-weight:600">PSA neto a recibir</span><span id="pvpsa-neto" style="color:#4ade80;font-weight:700">&#x2014;</span></div>
+      <div class="pr" id="pvpsa-cuota-row" style="display:none"><span>Cuota PSA est.</span><span id="pvpsa-cuota" style="color:#60a5fa">&#x2014;</span></div>
+      <div class="pr" id="pvadelanto-row" style="display:none"><span>(-) Adelanto efectivo</span><span id="pvadelanto" style="color:#4ade80;font-weight:600">&#x2014;</span></div>
+      <div class="pr" id="pvant-row" style="display:none"><span>(-) Anticipo</span><span id="pvant" style="color:#60a5fa">&#x2014;</span></div>
+      <div class="pr" id="pvtr" style="display:none"><span>(+) Transferencia (6%)</span><span id="pvtrv" style="color:#fbbf24">&#x2014;</span></div>
+      <div class="pr" id="pvtotal-op-row" style="display:none;border-top:1px solid #333;padding-top:6px;margin-top:4px"><span style="font-weight:600">Valor total operacion</span><span id="pvtotal-op" style="color:#fff;font-weight:700">&#x2014;</span></div>
+      <div class="pr" id="pvplata-row" style="display:none"><span style="font-weight:600">Plata total cliente</span><span id="pvplata" style="color:#aaa;font-weight:600">&#x2014;</span></div>
+      <div class="pr" id="pvcr" style="display:none"><span>Cuota est. <span id="pvcu-banco" style="font-size:10px;opacity:.7"></span></span><span id="pvcu" style="color:#60a5fa">&#x2014;</span></div>
+      <div id="tabla-cuotas" style="display:none;margin-top:6px"><div style="font-size:10px;color:#666;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">Cuota por banco (sobre monto a financiar)</div><div id="cuotas-body"></div></div>
+      <div class="pr pt" id="pvdif-final" style="display:none"><span id="pvt-label">Diferencia</span><span id="pvt" style="font-size:18px;font-weight:800">&#x2014;</span></div>
     </div>
     <div class="bc">
       <div class="fg"><label>Vigencia</label>
-        <select id="bvi">
-          <option value="24 horas">24 horas</option><option value="48 horas">48 horas</option>
-          <option value="72 horas" selected>72 horas</option><option value="7 dias">7 dias</option>
-        </select>
+        <select id="bvi"><option value="24 horas">24 horas</option><option value="48 horas">48 horas</option><option value="72 horas" selected>72 horas</option><option value="7 dias">7 dias</option></select>
       </div>
     </div>
     <button class="bgen" id="bgen" onclick="genPDF()">Generar PDF del Presupuesto</button>
   </div>
 </div>
-
-<div class="snack" id="snk"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<div class="snack" id="snk"></div><script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-// ══ DATOS ══════════════════════════════════════════════
 var STOCK_DATA = [
-"- RANGER RZR XP AT 1000CC 4 PLAZAS | Año:2014 | KM:4.800 | Color:NEGRO | Contado:$ 20.300,00 USD | Lista:$ 21.300,00 USD | Estado:INGRESADO | Ubicación:POLO 52",
-"- AUDI A3 SPORTBACK 1.4 TFSI STRONIC | Año:2016 | KM:140.000 | Color:BLANCO | Contado:$ 31.000.000,00 ARS | Lista:$ 31.600.000,00 ARS | Estado:INGRESADO | Resp:NATALIA",
-"- CAMPANILI LANCHA VENTURA 140HP 2000 | Año:2000 | Color:BLANCO | Contado:$ 14.400,00 USD | Lista:$ 15.400,00 USD | Estado:INGRESADO | Ubicación:POLO 52",
-"- CHEVROLET CRUZE 5P 1.4 TURBO LT MT | Año:2018 | KM:73.900 | Color:BLANCO | Contado:$ 21.500.000,00 ARS | Lista:$ 22.000.000,00 ARS | Estado:INGRESADO | Resp:JORGE RATTI",
-"- CHEVROLET S10 2.8 TD 4X2 LS MT | Año:2020 | KM:76.000 | Color:GRIS PLATA | Contado:$ 35.000.000,00 ARS | Lista:$ 35.800.000,00 ARS | Estado:INGRESADO | Ubicación:POLO 52",
-"- CHEVROLET TRACKER 1.2T AT | Año:2025 | KM:15.000 | Color:GRIS | Contado:$ 35.500.000,00 ARS | Lista:$ 36.500.000,00 ARS | Estado:INGRESADO | Resp:ANDRES",
-"- CHEVROLET TRACKER LT AT 1.2T | Año:2026 | KM:0 | Color:SHARKSKIN | Contado:DEMO | Estado:INGRESADO | Ubicación:POLO 52 | Nota:DEMO - VEHICULO DE EXPOSICION",
-"- CHRYSLER TOWN & COUNTRY LIMITED 3.6 | Año:2012 | KM:150.000 | Color:GRIS PLATA | Contado:$ 26.000.000,00 ARS | Lista:$ 26.800.000,00 ARS | Estado:INGRESADO | Resp:ABEL | Nota:BLINDADO",
-"- CITROEN BERLINGO MULTISPACE 1.6 HDI XTR | Año:2016 | KM:148.445 | Color:GRIS PLATA | Contado:$ 18.000.000,00 ARS | Lista:$ 18.500.000,00 ARS | Estado:INGRESADO",
-"- CITROEN C3 AIRCROSS T200SHINE 7 MY24 | Año:2024 | KM:38.500 | Color:GRIS BITONO | Contado:$ 30.500.000,00 ARS | Lista:$ 31.500.000,00 ARS | Estado:INGRESADO | Resp:NATALIA MUNIZ",
-"- DODGE RAM 1500 5.7 V8 LARAMIE 4X4 | Año:2015 | KM:99.000 | Color:NEGRO | Contado:$ 33.300,00 USD | Lista:$ 33.800,00 USD | Estado:INGRESADO",
-"- FIAT CRONOS LIKE 1.3 GSE BZ | Año:2026 | KM:0 | Color:GRIS PLATA | Lista:$ 33.207.820,00 ARS | Estado:INGRESADO | Ubicación:POLO 52",
-"- FIAT DUCATO CARGO 2.3 JDT | Año:2011 | KM:130.000 | Color:BLANCO | Contado:$ 17.000.000,00 ARS | Lista:$ 17.800.000,00 ARS | Estado:INGRESADO",
-"- FIAT FIORINO FIRE 1242 MPI 8V | Año:2014 | KM:186.500 | Color:GRIS | Contado:$ 12.500.000,00 ARS | Lista:$ 13.000.000,00 ARS | Estado:INGRESADO",
-"- FIAT GRAND SIENA ATTRACTIVE 1.4N 8V MT | Año:2014 | KM:145.000 | Color:GRIS PLATA | Contado:$ 13.000.000,00 ARS | Lista:$ 13.500.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
-"- FIAT PALIO ATTRACTIVE 5P 1.4 8V | Año:2015 | KM:122.000 | Color:BLANCO | Contado:$ 15.500.000,00 ARS | Lista:$ 16.300.000,00 ARS | Estado:INGRESADO",
-"- FIAT PUNTO SPORTING 1.6 16V | Año:2016 | KM:83.000 | Color:BLANCO | Contado:$ 17.500.000,00 ARS | Lista:$ 18.000.000,00 ARS | Estado:INGRESADO | Resp:FABRICIO",
-"- FORD BRONCO SPORT WILDTRAK 2.0L AT | Año:2021 | KM:66.500 | Color:GRIS OSCURO | Contado:$ 47.900.000,00 ARS | Lista:$ 48.900.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
-"- FORD BRONCO SPORT WILDTRAK 2.0L AT | Año:2022 | KM:73.500 | Color:BLANCO | Contado:$ 55.000.000,00 ARS | Lista:$ 56.000.000,00 ARS | Estado:INGRESADO",
-"- FORD FIESTA 1.6L S PLUS 5P MT | Año:2015 | KM:150.000 | Color:NEGRO | Contado:$ 16.500.000,00 ARS | Lista:$ 17.300.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
-"- FORD FOCUS S 1.6 | Año:2014 | KM:132.000 | Color:GRIS | Contado:$ 16.700.000,00 ARS | Lista:$ 17.200.000,00 ARS | Estado:INGRESADO | Resp:DIEGO",
-"- FORD KA FLY VIRAL 1.0 L | Año:2012 | KM:151.000 | Color:BLANCO | Contado:$ 11.500.000,00 ARS | Lista:$ 12.300.000,00 ARS | Estado:INGRESADO | Resp:LAUREANO",
-"- FORD NUEVA RANGER DC 4X2 XL 2.2D MT | Año:2016 | KM:175.000 | Color:BLANCO | Contado:$ 28.000.000,00 ARS | Lista:$ 28.800.000,00 ARS | Estado:INGRESADO",
-"- FORD RANGER 3.0 TDI DC 4X4 L/23 LTD+ V6 10AT | Año:2024 | KM:39.000 | Color:NARANJA | Contado:$ 71.000.000,00 ARS | Lista:$ 75.000.000,00 ARS | Estado:INGRESADO",
-"- FORD RANGER DC 4X2 XL 2.2D MT | Año:2019 | KM:200.000 | Color:AZUL | Contado:$ 20.300,00 USD | Lista:$ 20.800,00 USD | Estado:INGRESADO | Resp:LUCIANO",
-"- FORD RANGER DC 4X4 XLT AT 3.2L D | Año:2019 | KM:169.000 | Color:GRIS OSCURO | Contado:$ 37.000.000,00 ARS | Lista:$ 38.000.000,00 ARS | Estado:INGRESADO | Resp:ANDRES",
-"- FORD RANGER RAPTOR 2.0L BIT 4X4 10AT | Año:2022 | KM:91.700 | Color:AZUL | Contado:$ 65.000.000,00 ARS | Lista:$ 68.800.000,00 ARS | Estado:INGRESADO",
-"- HONDA HRV LX CVT | Año:2017 | KM:130.000 | Color:BLANCO | Contado:$ 26.000.000,00 ARS | Lista:$ 26.800.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
-"- HYUNDAI H1 2.5 CRDI 12 PASAJEROS | Año:2016 | KM:163.400 | Color:GRIS TOPO | Contado:$ 31.500,00 USD | Lista:$ 32.500,00 USD | Estado:INGRESADO | Resp:LUCIANO",
-"- IVECO DAILY 55C16 PASO 3750 | Año:2013 | KM:220.000 | Contado:$ 75.000,00 USD | Lista:$ 78.000,00 USD | Estado:INGRESADO | Ubicación:POLO 52",
-"- JEEP COMPASS SPORT 1.3T DCT | Año:2022 | KM:65.000 | Color:GRIS | Contado:$ 42.000.000,00 ARS | Lista:$ 43.500.000,00 ARS | Estado:INGRESADO",
-"- JEEP RENEGADE LONGITUDE 1.8 AT | Año:2022 | KM:44.000 | Color:BLANCO | Contado:$ 36.000.000,00 ARS | Lista:$ 37.000.000,00 ARS | Estado:INGRESADO | Resp:NATALIA MUNIZ",
-"- MINI COOPER 1.5 3P S | Año:2019 | KM:50.000 | Color:NEGRO | Contado:$ 35.000.000,00 ARS | Lista:$ 36.000.000,00 ARS | Estado:INGRESADO | Resp:NATALIA MUNIZ",
-"- PEUGEOT 208 ALLURE 1.6 HDI | Año:2015 | KM:140.000 | Color:NEGRO | Contado:$ 16.800.000,00 ARS | Lista:$ 17.500.000,00 ARS | Estado:INGRESADO",
-"- PEUGEOT 3008 ALLURE PLUS 1.6T AT8 | Año:2022 | KM:48.000 | Color:BLANCO | Contado:$ 47.000.000,00 ARS | Lista:$ 48.500.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
-"- RENAULT DUSTER 1.6 PH2 4X2 EXPRESSION | Año:2017 | KM:103.000 | Color:BLANCO | Contado:$ 18.500.000,00 ARS | Lista:$ 19.200.000,00 ARS | Estado:INGRESADO",
-"- RENAULT KANGOO CONFORT 1.6 16V 2P | Año:2012 | KM:163.000 | Color:BLANCO | Contado:$ 14.500.000,00 ARS | Lista:$ 15.200.000,00 ARS | Estado:INGRESADO",
-"- RENAULT KOLEOS BOSE 2.5 CVT 4WD | Año:2018 | KM:100.000 | Color:GRIS PLATA | Contado:$ 32.000.000,00 ARS | Lista:$ 33.000.000,00 ARS | Estado:INGRESADO",
-"- TOYOTA COROLLA CROSS XEI 2.0 | Año:2023 | KM:38.000 | Color:BLANCO | Contado:$ 51.000.000,00 ARS | Lista:$ 53.000.000,00 ARS | Estado:INGRESADO | Resp:LUCIANO",
-"- TOYOTA HILUX DC 4X4 SRV AT 2.8 TDI | Año:2021 | KM:108.000 | Color:PLATA | Contado:$ 52.000.000,00 ARS | Lista:$ 54.000.000,00 ARS | Estado:INGRESADO",
-"- TOYOTA HILUX DC 4X4 SRX AT 2.8 TDI | Año:2022 | KM:76.500 | Color:BLANCO | Contado:$ 60.000.000,00 ARS | Lista:$ 62.000.000,00 ARS | Estado:INGRESADO | Resp:ABEL",
-"- TOYOTA RAV4 2.5 HIBRIDO SPORT | Año:2023 | KM:19.000 | Color:GRIS | Contado:$ 72.000.000,00 ARS | Lista:$ 74.000.000,00 ARS | Estado:INGRESADO",
-"- VOLKSWAGEN AMAROK 2.0 TDI 4X4 HIGHLINE AT | Año:2019 | KM:113.000 | Color:GRIS | Contado:$ 52.000.000,00 ARS | Lista:$ 54.000.000,00 ARS | Estado:INGRESADO",
-"- VOLKSWAGEN POLO TRENDLINE 1.6 MT | Año:2017 | KM:87.000 | Color:BLANCO | Contado:$ 19.000.000,00 ARS | Lista:$ 19.800.000,00 ARS | Estado:INGRESADO",
-"- VOLKSWAGEN VENTO ADVANCE 2.5 AT | Año:2014 | KM:130.000 | Color:NEGRO | Contado:$ 18.000.000,00 ARS | Lista:$ 18.800.000,00 ARS | Estado:INGRESADO",
-"- CITROEN C4 CACTUS VTI 115 FEEL MT | Año:2021 | KM:111.000 | Color:NEGRO | Contado:$ 22.500.000,00 ARS | Lista:$ 23.700.000,00 ARS | Estado:POR INGRESAR",
-"- DOMY K2 C/D 1.5 CABINA DOBLE | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 19.900,00 USD | Lista:$ 20.500,00 USD | Estado:POR INGRESAR | Nota:A PEDIDO",
-"- DOMY VICTORY FURGON V1 1.5 104HP | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 19.900,00 USD | Lista:$ 20.500,00 USD | Estado:POR INGRESAR | Nota:A PEDIDO",
-"- JMC GRAND AVENUE GL AT 4X2 NAFTA 241HP | Año:2026 | KM:0 | Color:AMARILLO (ultimas unidades) | Contado:$ 31.100,00 USD | Lista:$ 31.700,00 USD | Estado:POR INGRESAR | Nota:PRECIO BONIFICADO - anticipo USD 5.000",
-"- JMC GRAND AVENUE GL AT 4X4 DIESEL PUMA 174HP | Año:2026 | KM:0 | Color:NEGRO/GRIS AZULADA | Contado:$ 41.300,00 USD | Lista:$ 41.900,00 USD | Estado:POR INGRESAR | Nota:ULTIMAS UNIDADES DIESEL - consultar stock",
-"- JMC GRAND AVENUE GL MT 4X2 NAFTA 241HP | Año:2026 | KM:0 | Color:Gris Plata/Gris Azulado/Blanca/Negra | Contado:$ 28.300,00 USD | Lista:$ 28.900,00 USD | Estado:POR INGRESAR | Nota:PRECIO BONIFICADO - anticipo USD 5.000",
-"- JMC GRAND AVENUE GL MT 4X4 DIESEL PUMA 174HP | Año:2026 | KM:0 | Color:GRIS AZULADA | Contado:$ 37.500,00 USD | Lista:$ 38.100,00 USD | Estado:POR INGRESAR | Nota:ULTIMAS UNIDADES DIESEL",
-"- JMC GRAND AVENUE PRO DADAO 252HP | Año:2026 | KM:0 | Color:ROJO/NEGRO | Contado:$ 54.200,00 USD | Lista:$ 54.800,00 USD | Estado:POR INGRESAR | Nota:La pickup mas potente de la gama",
-"- JMC GRAND AVENUE SLX AT 4X4 NAFTA 241HP | Año:2026 | KM:0 | Color:BLANCO/NEGRO/GRIS OSCURO | Contado:$ 45.800,00 USD | Lista:$ 46.400,00 USD | Estado:POR INGRESAR",
-"- JMC GRAND AVENUE GL AT 4X4 NAFTA OFF ROAD | Año:2026 | KM:0 | Color:AMARILLO | Contado:$ 44.700,00 USD | Lista:$ 45.300,00 USD | Estado:POR INGRESAR | Nota:Motor 2.3T 250HP suspension elevada neumaticos 285/70R17",
-"- JMC N900 CAMION 4000kg IND.ARG | Año:2025 | KM:0 | Color:BLANCO | Contado:$ 41.500,00 USD | Lista:$ 42.100,00 USD | Estado:POR INGRESAR | Nota:Señar USD 5.000 - garantia 3 años/80.000km",
-"- SHINERAY G03F 1.5 AUT HIBRIDA SUV 7AS | Año:2026 | KM:0 | Color:BLANCO/NEGRO/GRIS/VERDE/CELESTE | Contado:$ 24.200,00 USD | Lista:$ 24.800,00 USD | Estado:POR INGRESAR | Nota:Anticipo USD 5.000",
-"- SHINERAY M7 FURGON MT 2.0 NAFTA | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 23.700,00 USD | Lista:$ 24.300,00 USD | Estado:POR INGRESAR | Nota:Precio lanzamiento. Anticipo USD 5.000",
-"- SHINERAY M7 PASAJEROS 7AS MT 2.0 NAFTA | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 29.300,00 USD | Lista:$ 29.900,00 USD | Estado:POR INGRESAR | Nota:Anticipo USD 5.000",
-"- SHINERAY M7 PASAJEROS 9AS MT 2.0 NAFTA | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 29.400,00 USD | Lista:$ 30.000,00 USD | Estado:POR INGRESAR | Nota:Anticipo USD 5.000",
-"- SHINERAY M7 PASAJEROS 11AS | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 29.700,00 USD | Lista:$ 30.300,00 USD | Estado:POR INGRESAR | Nota:Anticipo USD 5.000",
-"- SHINERAY SWM G03F 1.5 MT NAFTA 108HP | Año:2026 | KM:0 | Color:NEGRO/GRIS METALIZADO | Contado:$ 24.200,00 ARS | Lista:$ 24.800,00 ARS | Estado:POR INGRESAR | Nota:A pedido BSAS",
-"- SHINERAY T30 1.6 C/S - CH/DUAL 2.0T | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 23.600,00 USD | Lista:$ 24.200,00 USD | Estado:POR INGRESAR",
-"- SHINERAY T30 CH BOX REFRIGERADO 1.6 | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 35.600,00 USD | Lista:$ 36.200,00 USD | Estado:POR INGRESAR | Nota:Anticipo USD 5.000",
-"- SHINERAY X30 L EV ELECTRICA 7AS | Año:2026 | KM:0 | Color:BLANCO | Contado:$ 24.600,00 USD | Lista:$ 25.200,00 USD | Estado:POR INGRESAR | Nota:Precio lanzamiento USD 24.000"
+"- RANGER RZR XP AT 1000CC 4 PLAZAS | Año:2014 | KM:4.800 | Color:NEGRO | Contado:$ 20.300,00 USD | Lista:$ 21.300,00 USD",
+"- CHEVROLET CRUZE 5P 1.4 TURBO LT MT | Año:2018 | KM:73.900 | Color:BLANCO | Contado:$ 21.500.000,00 ARS | Lista:$ 22.000.000,00 ARS",
+"- CHEVROLET TRACKER 1.2T AT | Año:2025 | KM:15.000 | Color:GRIS | Contado:$ 35.500.000,00 ARS | Lista:$ 36.500.000,00 ARS",
+"- FORD BRONCO SPORT WILDTRAK 2.0L AT | Año:2022 | KM:73.500 | Color:BLANCO | Contado:$ 55.000.000,00 ARS | Lista:$ 56.000.000,00 ARS",
+"- FORD RANGER 3.0 TDI DC 4X4 L/23 LTD+ V6 10AT | Año:2024 | KM:39.000 | Color:NARANJA | Contado:$ 71.000.000,00 ARS | Lista:$ 75.000.000,00 ARS",
+"- TOYOTA HILUX DC 4X4 SRX AT 2.8 TDI | Año:2022 | KM:76.500 | Color:BLANCO | Contado:$ 60.000.000,00 ARS | Lista:$ 62.000.000,00 ARS",
+"- TOYOTA RAV4 2.5 HIBRIDO SPORT | Año:2023 | KM:19.000 | Color:GRIS | Contado:$ 72.000.000,00 ARS | Lista:$ 74.000.000,00 ARS",
+"- JMC GRAND AVENUE GL AT 4X2 NAFTA 241HP | Año:2026 | KM:0 | Contado:$ 31.100,00 USD | Lista:$ 31.700,00 USD",
+"- JMC GRAND AVENUE GL MT 4X2 NAFTA 241HP | Año:2026 | KM:0 | Contado:$ 28.300,00 USD | Lista:$ 28.900,00 USD",
+"- JMC GRAND AVENUE SLX AT 4X4 NAFTA 241HP | Año:2026 | KM:0 | Contado:$ 45.800,00 USD | Lista:$ 46.400,00 USD",
+"- JMC N900 CAMION 4000kg IND.ARG | Año:2025 | KM:0 | Contado:$ 41.500,00 USD | Lista:$ 42.100,00 USD",
+"- SHINERAY G03F 1.5 AUT HIBRIDA SUV 7AS | Año:2026 | KM:0 | Contado:$ 24.200,00 USD | Lista:$ 24.800,00 USD",
+"- SHINERAY M7 PASAJEROS 7AS MT 2.0 NAFTA | Año:2026 | KM:0 | Contado:$ 29.300,00 USD | Lista:$ 29.900,00 USD",
+"- SHINERAY M7 PASAJEROS 9AS MT 2.0 NAFTA | Año:2026 | KM:0 | Contado:$ 29.400,00 USD | Lista:$ 30.000,00 USD",
+"- SHINERAY T30 1.6 C/S - CH/DUAL 2.0T | Año:2026 | KM:0 | Contado:$ 23.600,00 USD | Lista:$ 24.200,00 USD",
+"- SHINERAY X30 L EV ELECTRICA 7AS | Año:2026 | KM:0 | Contado:$ 24.600,00 USD | Lista:$ 25.200,00 USD"
 ].join("\n");
 
-var FICHAS = "JMC GRAND AVENUE GL: Motor 2.3L GTDI nafta 241HP torque 295lb-ft tanque 80L / Dimensiones 5450x1935x1872mm entre ejes 3270mm caja carga 1546x1595x545mm capacidad remolque 2.9ton / GL TM 4x2 manual 6vel vacio 1825kg carga 925kg / GL TA 4x2 automatica ZF 8vel / GL TA 4x4 automatica ZF 4WD con bloqueo / Seguridad: ABS EBD ESP TCS RMI airbags TPMS ISOFIX / Interior: pantalla 10 CarPlay Android Auto Bluetooth asientos cuero camara HD.\n\nJMC GRAND AVENUE PLUS LX-SLX: Motor nafta JX4G23 2.3L 245HP 400Nm / Motor diesel PUMA JXD23 2.3L 177HP 450Nm / ZF automatica 8vel / Dimensiones 5435x1935x1872mm caja 1546x1594x546mm altura suelo 235mm / 4x4 bloqueo diferencial trasero / Suspension del doble horquilla tras multibrazo Watts / SLX: pantalla ROTATORIA 12 tablero LCD 12.3 asientos electricos 8dir ventilacion calefaccion carga inalambrica freno electronico / LX: pantalla 12 tablero 7 asientos cuero manual / Colores: Gris Oscuro Negro Grafito Blanco Nieve.\n\nJMC N900 CAMION: Motor diesel 2771cc 115HP 285Nm inyeccion Bosch EDC17 con intercooler tanque 83L urea 16L / Dimensiones 5995x2140x2382mm entre ejes 3360mm caja 4100x2050x380mm carga util 4000kg PBV 5995kg / Transmision GETRAG MT 5 marchas / Frenos campana mas motor mas ABS / Garantia 3 años 80000km industria argentina / Chasis para: caja seca volcadora o furgon.\n\nSHINERAY T30 CABINA SIMPLE 1.6: Motor 1298cc nafta 85HP 105Nm manual 5vel traccion trasera / Dimensiones 4930x1720x1995mm caja 2950x1670x370mm carga util 1000kg tanque 40L / Seguridad ABS EBD EPS DRL LED neblineros / Interior AC cierre centralizado radio MP3 USB / Versiones: simple estandar duales produccion nacional box refrigerado / ARGUMENTO: utilitario para laburar todos los dias bajo costo mantenimiento.\n\nSHINERAY T30 CABINA DOBLE DOMY K2 1.5: Motor 1498cc 104HP 138Nm manual 5vel / Dimensiones 4780x1635x1900mm caja 2160x1540x375mm carga 940kg / 5 asientos AC direccion asistida.\n\nSHINERAY T32 FURGON DOMY V1 1.5: Motor 1498cc 104HP manual / Carga interior 2200x1400x1250mm carga 585kg / 2 asientos AC.\n\nSHINERAY M7 PASAJEROS 7AS: Motor 1988cc 136HP 200Nm 5MT traccion trasera / Dimensiones 4890x1700x1995mm tanque 45L / 7 asientos 2+2+3 simil cuero / AC delantero mas trasero independiente pantalla 8 Bluetooth USB camara ABS ESC airbag ISOFIX / Asientos 2da fila deslizables reclinables 3ra fila abatible / ARGUMENTO: por este valor no hay otro 0km que transporte tantas personas.\n\nSHINERAY M7 FURGON: mismo motor M7 / Caja interior 2510x1475x1350mm = 5m3 carga 700kg 2 asientos separador chapa.\n\nSHINERAY M7 11 ASIENTOS: Motor 1.5L 110HP 5MT / 11 asientos 2+3+3+3 Luxury / AC doble pantalla 8 doble airbag ABS ISOFIX asientos cuero.\n\nSHINERAY SWM G03F 1.5 MT NAFTA: Motor 1498cc 108HP 152Nm 5MT traccion delantera / Dimensiones 4605x1815x1825mm tanque 50L llantas aleacion 17 / 7 asientos 2+2+3 maletero 165L o 531L / Seguridad: airbag ABS ESP TCS HSA ISOFIX x2 / Interior: pantalla 10.25 CarPlay Android Auto AC electrico 4 parlantes 2 tweeters eco-cuero / Consumo 16.3/13.3/10km/L / Colores: Gris Oscuro Negro Grafito Blanco Nieve / ARGUMENTO: SUV 7 plazas al precio de un SUV chico.\n\nSHINERAY SWM G03F HEV HIBRIDO: Motor 1.5L hibrido autonomia extendida bateria LFP 8.83kWh / Motor electrico 75kW motor traccion 105kW / Autonomia electrica 51km total 1000km consumo 5.5L/100km / Velocidad max 155km/h carga 3.5h Norma Euro 6E / Traccion delantera freno mano electrico / 5 o 7 asientos / Pantalla HD 10.25 CarPlay Android Auto 6 parlantes / ARGUMENTO: 7 asientos automatico hibrido por un valor muy dificil de encontrar.\n\nGUIA RAPIDA: Trabajo urbano->T30 simple / Frio/alimentos->T30 Box Refrigerado / Reparto->M7 Furgon o T32 / Transporte personas->M7 7/9/11as / Familia->G03F 7 plazas / Ahorro->X30EV o G03F HEV / Pickup nafta->Grand Avenue GL / Pickup diesel->Grand Avenue Puma limitado usar urgencia / Top pickup->Grand Avenue PLUS SLX / Max potencia->DADAO PRO 252HP / Camion liviano->N900 4000kg / Defensa JMC vs competencia: mas potencia por dolar chasis pensado para trabajo excelente alternativa a marcas con sobreprecio";
+var FICHAS = "JMC GRAND AVENUE GL: Motor 2.3L GTDI nafta 241HP torque 295lb-ft tanque 80L / GL TM 4x2 manual 6vel / GL TA 4x2 automatica ZF 8vel / GL TA 4x4 automatica ZF 4WD con bloqueo / Seguridad: ABS EBD ESP TCS RMI airbags TPMS ISOFIX / Interior: pantalla 10 CarPlay Android Auto camara HD.\n\nSHINERAY T30 CABINA SIMPLE 1.6: Motor 1298cc nafta 85HP 105Nm manual 5vel / carga util 1000kg / ARGUMENTO: utilitario para laburar todos los dias bajo costo mantenimiento.\n\nSHINERAY M7 PASAJEROS 7AS: Motor 1988cc 136HP 200Nm 5MT / 7 asientos / AC delantero mas trasero independiente pantalla 8 / ARGUMENTO: por este valor no hay otro 0km que transporte tantas personas.\n\nSHINERAY SWM G03F 1.5 HEV HIBRIDO: Motor 1.5L hibrido autonomia extendida / autonomia electrica 51km total 1000km / 5 o 7 asientos / ARGUMENTO: 7 asientos automatico hibrido por un valor muy dificil de encontrar.";
 
 var API_KEY = '';
 try { API_KEY = localStorage.getItem('ruthina_key') || ''; } catch(e){}
@@ -604,100 +534,23 @@ try { API_KEY = localStorage.getItem('ruthina_key') || ''; } catch(e){}
 const EMPRESA = {nombre:"Tutu Automotores",ciudad:"Cordoba, Argentina",telefono:"+54 351 XXX-XXXX",web:"www.tutuautomotores.com.ar"};
 
 var STOCK_LIST = [
-  {label:'AUDI A3 SPORTBACK 1.4 TFSI STRONIC 2016',precio:31000000.0,moneda:'ARS'},
-  {label:'CAMPANILI LANCHA CAMPANILI VENTURA 140 HP 2000 2000',precio:14400.0,moneda:'USD'},
-  {label:'CHEVROLET CRUZE 5P 1.4 TURBO LT MT 2018',precio:21500000.0,moneda:'ARS'},
-  {label:'CHEVROLET S10 2.8 TD 4X2 LS MT 2020',precio:35000000.0,moneda:'ARS'},
-  {label:'CHEVROLET TRACKER 1.2T AT 2025',precio:35500000.0,moneda:'ARS'},
-  {label:'CHEVROLET TRACKER LT AT 1.2T 2026',precio:0.0,moneda:''},
-  {label:'CHRYSLER TOWN & COUNTRY LIMITED 3.6 2012',precio:26000000.0,moneda:'ARS'},
-  {label:'CITROEN BERLINGO MULTISPACE 1.6 HDI XTR 2016',precio:18000000.0,moneda:'ARS'},
-  {label:'CITROEN C3 AIRCROSS T200SHINE 7 MY24 2024',precio:30500000.0,moneda:'ARS'},
-  {label:'DODGE RAM 1500 5.7 V8 LARAMIE 4X4 2015',precio:33300.0,moneda:'USD'},
-  {label:'FIAT CRONOS LIKE 1.3 GSE BZ 2026',precio:33207820.0,moneda:'ARS'},
-  {label:'FIAT DUCATO CARGO 2.3 JDT 2011',precio:17000000.0,moneda:'ARS'},
-  {label:'FIAT FIORINO FIRE 1242 MPI 8V 2014',precio:12500000.0,moneda:'ARS'},
-  {label:'FIAT GRAND SIENA ATTRACTIVE 1.4N 8V MT 2014',precio:13000000.0,moneda:'ARS'},
-  {label:'FIAT PALIO ATTRACTIVE 5P 1.4 8V 2015',precio:15500000.0,moneda:'ARS'},
-  {label:'FIAT PUNTO SPORTING 1.6 16V 2016',precio:17500000.0,moneda:'ARS'},
-  {label:'FORD BRONCO SPORT WILDTRAK 2.0L AT 2021',precio:47900000.0,moneda:'ARS'},
-  {label:'FORD BRONCO SPORT WILDTRAK 2.0L AT 2022',precio:55000000.0,moneda:'ARS'},
-  {label:'FORD FIESTA 1.6L S PLUS 5P MT 2015',precio:16500000.0,moneda:'ARS'},
-  {label:'FORD FOCUS S 1.6 2014',precio:16700000.0,moneda:'ARS'},
-  {label:'FORD KA FLY VIRAL 1.0 L 2012',precio:11500000.0,moneda:'ARS'},
-  {label:'FORD NUEVA RANGER DC 4X2 XL 2.2D MT 2016',precio:28000000.0,moneda:'ARS'},
-  {label:'FORD RANGER 3.0 TDI DC 4X4 L/23 LTD+ V6 10AT 2024',precio:71000000.0,moneda:'USD'},
-  {label:'FORD RANGER DC 4X2 XL 2.2D MT 2019',precio:20300.0,moneda:'USD'},
-  {label:'FORD RANGER DC 4X4 XLT AT 3.2L D 2019',precio:37000000.0,moneda:'ARS'},
-  {label:'FORD RANGER RAPTOR 2.0L BIT 4X4 10AT 2022',precio:65000000.0,moneda:'USD'},
-  {label:'HONDA HRV LX CVT 2017',precio:26000000.0,moneda:'ARS'},
-  {label:'HYUNDAI H1 2.5 CRDI 12 PAS VGT FULL 2016',precio:31500.0,moneda:'USD'},
-  {label:'IVECO DAILY 55C16 PASO 3750 2013',precio:75000.0,moneda:'USD'},
-  {label:'JAC S2 1.5 CVT LUXURY LV 2026',precio:21900.0,moneda:'USD'},
-  {label:'JAC S2 1.5 CVT LUXURY LV 2026',precio:21900.0,moneda:'USD'},
-  {label:'JAC S4 1.5 CVT FLAGSHIP 2026',precio:29500.0,moneda:'USD'},
-  {label:'JAC S4 1.5 CVT FLAGSHIP 2026',precio:29500.0,moneda:'USD'},
-  {label:'JAC S4 1.5T + CVT LV 2026',precio:27500.0,moneda:'USD'},
-  {label:'JAC S4 1.5T + CVT LV 2026',precio:27500.0,moneda:'USD'},
-  {label:'JEEP COMPASS SPORT 2.4N 4X2 MT6 2021',precio:32000000.0,moneda:'ARS'},
-  {label:'JEEP RENEGADE LONGITUDE 1.8L AT6 AUTOMATICO 2020',precio:21700.0,moneda:'USD'},
-  {label:'JEEP RENEGADE SPORT 1.8 AT6 2023',precio:32000000.0,moneda:'ARS'},
-  {label:'KIA CERATO EX 1.6L 2018',precio:22500000.0,moneda:'ARS'},
-  {label:'KIA SPORTAGE EX 2.0N 4X2 AT 2018',precio:29500000.0,moneda:'ARS'},
-  {label:'LAND ROVER RANGE ROVER EVOQUE SI4 2.0 AT 2012',precio:34000000.0,moneda:'USD'},
-  {label:'NISSAN MURANO XTRONIC V6 3.5L 4X4 CVT 2014',precio:18000.0,moneda:'USD'},
-  {label:'NISSAN NOTE 1.6 SENSE PURE DRIVE 2019',precio:23200000.0,moneda:'ARS'},
-  {label:'PEUGEOT 207 COMPACT XT 1.9D 5P 2010',precio:11000000.0,moneda:'ARS'},
-  {label:'PEUGEOT 208 ALLURE MT 2025',precio:0.0,moneda:'ARS'},
-  {label:'PEUGEOT 208 ALLURE PACK 1.0T AT 2026',precio:36500000.0,moneda:'ARS'},
-  {label:'PEUGEOT BOXER 330M 2.8 HDI 2009',precio:17500000.0,moneda:'ARS'},
-  {label:'RAM RAM RAMPAGE REBEL 2.0 GME AT9 4X4 2024',precio:52500000.0,moneda:'ARS'},
-  {label:'RENAULT DUSTER PH2 PRIVILEGE 2.0 2018',precio:23500000.0,moneda:'ARS'},
-  {label:'RENAULT KANGOO SPORTWAY 1.6 ABCP 2P C/GAS 2010',precio:13500000.0,moneda:'ARS'},
-  {label:'RENAULT KARDIAN ICONIC EDITION 200 EDC 2026',precio:43500000.0,moneda:'ARS'},
-  {label:'RENAULT NUEVO MASTER L3H2 AA 2019',precio:33500.0,moneda:'USD'},
-  {label:'RENAULT SANDERO PH2 STEPWAY 1.6 INTENS MT 2021',precio:23500000.0,moneda:'ARS'},
-  {label:'RENAULT SANDERO STEPWAY INTENS 16 CVT 2025',precio:29500000.0,moneda:'ARS'},
-  {label:'RENAULT SANDERO STEPWAY PH2 1.6 ZEN 2020',precio:21750000.0,moneda:'ARS'},
-  {label:'TOYOTA COROLLA 1.8 SE-G L/08 AUT 2010',precio:15500000.0,moneda:'ARS'},
-  {label:'TOYOTA COROLLA 2.0N XLI CVT  L/23 2023',precio:26000.0,moneda:'USD'},
-  {label:'TOYOTA COROLLA CROSS 2.0 SEG CVT 2021',precio:43500000.0,moneda:'ARS'},
-  {label:'TOYOTA COROLLA CROSS XEI 2.0N CVT 2022',precio:31500.0,moneda:'USD'},
-  {label:'TOYOTA HILUX 4X4 DC CONQUEST 2.8 TDI 6 AT 2023',precio:48300.0,moneda:'USD'},
-  {label:'VOLKSWAGEN AMAROK 2.0L TDI 180 CV 4X4 2013',precio:23900000.0,moneda:'ARS'},
-  {label:'VOLKSWAGEN AMAROK COMFORTLINE 4X4 AT V6 3.0L 258 CV 2022',precio:45000000.0,moneda:'ARS'},
-  {label:'VOLKSWAGEN FOX TRENDLINE 1.6N 5P MT C/GNC 2011',precio:13400000.0,moneda:'ARS'},
-  {label:'VOLKSWAGEN GOL TREND 2019',precio:17000000.0,moneda:''},
-  {label:'VOLKSWAGEN GOLF GTI 2001',precio:11600.0,moneda:'USD'},
-  {label:'VOLKSWAGEN NIVUS HIGHLINE HERO 200 TSI AT 2021',precio:35000000.0,moneda:'ARS'},
-  {label:'VOLKSWAGEN SURAN 1.6 5D TRENDLINE 2018',precio:18000000.0,moneda:'ARS'},
-  {label:'VOLKSWAGEN SURAN 1.6 16V 5D CROSS 2015',precio:17560000.0,moneda:'ARS'},
-  {label:'VOLKSWAGEN T-CROSS 170TSI MT 2023',precio:33000000.0,moneda:'ARS'},
-  {label:'VOLKSWAGEN VOYAGE 1.6 TRENDLINE 4P 2016',precio:17000000.0,moneda:'ARS'},
-  {label:'CITROEN C3 VTI  FEEL AT6 2026',precio:30100000.0,moneda:'ARS'},
-  {label:'CITROEN C4 CACTUS VTI 115 FEEL MT 2021',precio:22500000.0,moneda:'ARS'},
-  {label:'DOMY DOMY 1.5 K2 C/D 2026',precio:19900.0,moneda:'USD'},
-  {label:'DOMY VICTORY FURGON V1 1.5 104HP 2026',precio:19900.0,moneda:'USD'},
-  {label:'JMC GRAND AVENUE GL AT 4X2 NAFTA DC 2.3 CC 241 HP 2026',precio:31100.0,moneda:'USD'},
-  {label:'JMC GRAND AVENUE GL AT 4X4 DIESEL 2.3 MOTOR PUMA 174HP 2026',precio:41300.0,moneda:'USD'},
-  {label:'JMC GRAND AVENUE GL MT 4X2 NAFTA DC 2.3 CC 241 HP 2026',precio:28300.0,moneda:'USD'},
-  {label:'JMC GRAND AVENUE GL MT 4X4 DIESEL 2.3 MOTOR PUMA 174HP 2026',precio:37500.0,moneda:'USD'},
-  {label:'JMC GRAND AVENUE PRO DADAO 2026',precio:54200.0,moneda:'ARS'},
-  {label:'JMC GRAND AVENUE SLX AT 4X4 NAFTA 2.3 CC- 241HP 2026',precio:45800.0,moneda:'USD'},
-  {label:'JMC JMC GRAND AVENUE GL AT 4X4 NAFTA 2026',precio:44700.0,moneda:'USD'},
-  {label:'JMC N900 CAMION 4000 Kgs IND. ARG 2025',precio:41500.0,moneda:'USD'},
-  {label:'SHINERAY G03 F 1.5 AUT HIBRIDA SUV 7AS 2026',precio:24200.0,moneda:'USD'},
-  {label:'SHINERAY M7 - FURGON MT 2.0 NAFTA 2026',precio:23700.0,moneda:'USD'},
-  {label:'SHINERAY M7 PASAJEROS 7AS MT 2.0 NAFTA 2026',precio:29300.0,moneda:'ARS'},
-  {label:'SHINERAY M7 PASAJEROS 9AS MT 2.0 NAFTA 2026',precio:29400.0,moneda:'USD'},
-  {label:'SHINERAY M7 PASAJEROS 11AS 2026',precio:29700.0,moneda:'USD'},
-  {label:'SHINERAY SWM G03F 1.5 MT NAFTA 1.5 108 HP 2026',precio:24200.0,moneda:'ARS'},
-  {label:'SHINERAY T30 1.6 C/S - CH/DUAL 2.0 T 2026',precio:23600.0,moneda:'USD'},
-  {label:'SHINERAY T30 CH BOX REFRIGERADO 1.6 2026',precio:35600.0,moneda:'USD'},
-  {label:'SHINERAY X30 L  EV  ELECTRICA 7AS 2026',precio:24600.0,moneda:'USD'}
+  {label:'CHEVROLET CRUZE 5P 1.4 TURBO LT MT 2018',precio:21500000,moneda:'ARS'},
+  {label:'CHEVROLET TRACKER 1.2T AT 2025',precio:35500000,moneda:'ARS'},
+  {label:'FORD BRONCO SPORT WILDTRAK 2.0L AT 2022',precio:55000000,moneda:'ARS'},
+  {label:'FORD RANGER 3.0 TDI V6 10AT 2024',precio:71000000,moneda:'ARS'},
+  {label:'TOYOTA HILUX DC 4X4 SRX AT 2022',precio:60000000,moneda:'ARS'},
+  {label:'TOYOTA RAV4 2.5 HIBRIDO SPORT 2023',precio:72000000,moneda:'ARS'},
+  {label:'JMC GRAND AVENUE GL AT 4X2 NAFTA 2026',precio:31100,moneda:'USD'},
+  {label:'JMC GRAND AVENUE GL MT 4X2 NAFTA 2026',precio:28300,moneda:'USD'},
+  {label:'JMC GRAND AVENUE SLX AT 4X4 NAFTA 2026',precio:45800,moneda:'USD'},
+  {label:'JMC N900 CAMION 4000KG 2025',precio:41500,moneda:'USD'},
+  {label:'SHINERAY G03F 1.5 HEV HIBRIDA SUV 7AS 2026',precio:24200,moneda:'USD'},
+  {label:'SHINERAY M7 PASAJEROS 7AS 2026',precio:29300,moneda:'USD'},
+  {label:'SHINERAY M7 PASAJEROS 9AS 2026',precio:29400,moneda:'USD'},
+  {label:'SHINERAY T30 1.6 2026',precio:23600,moneda:'USD'},
+  {label:'SHINERAY X30 L EV ELECTRICA 7AS 2026',precio:24600,moneda:'USD'}
 ];
 
-// Bancos: tna_fijo = tasa fija anual, sello = gasto adicional sobre monto
 var BANCOS = [
   {nombre:"-- Seleccionar banco --", tna:0, sello:0, gastos:0, fijo:0},
   {nombre:"BNA Prendario (38% fijo)", tna:38, sello:0, gastos:0.042, fijo:0},
@@ -715,10 +568,9 @@ var BANCOS = [
 ];
 
 function buildSystem() {
-  return "Sos Ruthina, la asistente interna de ventas de Tutu Automotores. Hablas EXCLUSIVAMENTE con los VENDEDORES del equipo, NUNCA con clientes finales. Sos su herramienta de consulta rapida mientras atienden.\n\nREGLAS:\n- Trato de vos a vos con el vendedor, tono directo y agil\n- NUNCA asumas que hablas con un cliente\n- JMC y Shineray son marcas DISTINTAS, no las confundas nunca\n- Cuando des precios indica siempre la moneda (ARS o USD) y si es contado o lista\n- Se conciso. El vendedor necesita la info rapido para cerrar la venta\n- Para armar un presupuesto decile que use el boton Presupuesto arriba a la derecha\n\n== STOCK ACTUAL TUTU ==\n" + STOCK_DATA + "\n\n== FICHAS TECNICAS Y ARGUMENTOS ==\n" + FICHAS;
+  return "Sos Ruthina, la asistente interna de ventas de Tutu Automotores. Hablas EXCLUSIVAMENTE con los VENDEDORES del equipo, NUNCA con clientes finales.\n\nREGLAS:\n- Trato de vos a vos con el vendedor, tono directo y agil\n- NUNCA asumas que hablas con un cliente\n- JMC y Shineray son marcas DISTINTAS, no las confundas nunca\n- Cuando des precios indica siempre la moneda (ARS o USD) y si es contado o lista\n- Se conciso. El vendedor necesita la info rapido para cerrar la venta\n- Para armar un presupuesto decile que use el boton Presupuesto arriba a la derecha\n\n== STOCK ACTUAL TUTU ==\n" + STOCK_DATA + "\n\n== FICHAS TECNICAS Y ARGUMENTOS ==\n" + FICHAS;
 }
 
-// ══ CHAT ══════════════════════════════════════════════
 var chatHistory = [], typing = false, lastFrom = null, firstMsg = true;
 
 async function callClaude(userText) {
@@ -733,7 +585,7 @@ async function callClaude(userText) {
       'anthropic-dangerous-direct-browser-access': 'true'
     },
     body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-6',
       max_tokens: 1024,
       system: buildSystem(),
       messages: messages
@@ -763,10 +615,7 @@ function addBubble(html, from) {
   lastFrom = from;
   var row = document.createElement('div');
   row.className = 'mr ' + (isOut?'out':'in') + (isGap?' gap':'');
-  var txt = isOut ? html : html
-    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-    .replace(/\*(.*?)\*/g,'<em>$1</em>')
-    .replace(/\n/g,'<br>');
+  var txt = isOut ? html : html.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\*(.*?)\*/g,'<em>$1</em>').replace(/\n/g,'<br>');
   var sndr = (!isOut && isGap) ? '<div class="bsndr">Ruthina</div>' : '';
   row.innerHTML = '<div class="bbl">' + sndr + txt + '<div class="bt">' + now + '</div></div>';
   msgs.appendChild(row);
@@ -803,7 +652,6 @@ async function sendMsg() {
   document.getElementById('stxt').textContent = 'En linea';
 }
 
-// ══ SETUP ════════════════════════════════════════════
 function saveKey(){
   var k = document.getElementById('keyInput').value.trim();
   if (!k.startsWith('sk-ant-')) {
@@ -827,24 +675,17 @@ function cambiarKey(){
 }
 
 function startApp(){
-  // Load banco personal defaults on start
   setTimeout(onBancoPersonalChange, 100);
-  // Restore saved USD cotizacion
   try {
     var savedUSD = localStorage.getItem('ruthina_usd');
-    if (savedUSD) {
-      var el = document.getElementById('usd-hoy');
-      if (el) el.value = savedUSD;
-    }
+    if (savedUSD) { var el = document.getElementById('usd-hoy'); if (el) el.value = savedUSD; }
   } catch(e){}
   initStockSelect();
   initBancoSelect();
   setTimeout(function(){
-    addBubble('Hola! Soy <strong>Ruthina</strong>, tu asistente de ventas de Tutu. Tengo cargado el stock completo y las fichas tecnicas de JMC y Shineray. Preguntame lo que necesites!', 'ruthina');
+    addBubble('Hola! Soy <strong>Ruthina</strong>, tu asistente de ventas de Tutu. Tengo cargado el stock y las fichas tecnicas de JMC y Shineray. Preguntame lo que necesites!', 'ruthina');
   }, 300);
 }
-
-// ══ PRESUPUESTO ══════════════════════════════════════
 function tChk(cid,sid){ var c=document.getElementById(cid); c.checked=!c.checked; sSec(sid,c.checked); upP(); }
 
 var BANCOS_PERSONAL = {
@@ -863,42 +704,29 @@ function onBancoPersonalChange() {
   var sel = document.getElementById('bna-banco-sel');
   if(!sel) return;
   var b = BANCOS_PERSONAL[sel.value] || BANCOS_PERSONAL.otro;
-  var tnaEl      = document.getElementById('bna-tna');
-  var gasFijoEl  = document.getElementById('bna-gasto-fijo');
-  var gasPorcEl  = document.getElementById('bna-gasto-porc');
-  var infoEl     = document.getElementById('bna-banco-info');
-  if(tnaEl)     tnaEl.value     = b.tna;
-  if(gasFijoEl) gasFijoEl.value = b.gastoFijo;
-  if(gasPorcEl) gasPorcEl.value = b.gastoPorc;
-  if(infoEl)    infoEl.innerHTML = '<strong style="color:#60a5fa">' + b.nombre + '</strong> — ' + b.info;
+  var tnaEl=document.getElementById('bna-tna'), gasFijoEl=document.getElementById('bna-gasto-fijo'), gasPorcEl=document.getElementById('bna-gasto-porc'), infoEl=document.getElementById('bna-banco-info');
+  if(tnaEl) tnaEl.value=b.tna;
+  if(gasFijoEl) gasFijoEl.value=b.gastoFijo;
+  if(gasPorcEl) gasPorcEl.value=b.gastoPorc;
+  if(infoEl) infoEl.innerHTML='<strong style="color:#60a5fa">'+b.nombre+'</strong> — '+b.info;
   upP();
 }
 
 var psaTipo = '0km';
-
 function setPSATipo(tipo) {
   psaTipo = tipo;
-  document.getElementById('psa-0km').style.display = tipo==='0km' ? 'block' : 'none';
-  document.getElementById('psa-pat').style.display = tipo==='pat' ? 'block' : 'none';
-  document.getElementById('psa-btn-0km').style.background = tipo==='0km' ? '#C8102E' : 'white';
-  document.getElementById('psa-btn-0km').style.color = tipo==='0km' ? 'white' : 'var(--text)';
-  document.getElementById('psa-btn-0km').style.borderColor = tipo==='0km' ? '#C8102E' : 'var(--border)';
-  document.getElementById('psa-btn-pat').style.background = tipo==='pat' ? '#C8102E' : 'white';
-  document.getElementById('psa-btn-pat').style.color = tipo==='pat' ? 'white' : 'var(--text)';
-  document.getElementById('psa-btn-pat').style.borderColor = tipo==='pat' ? '#C8102E' : 'var(--border)';
+  document.getElementById('psa-0km').style.display=tipo==='0km'?'block':'none';
+  document.getElementById('psa-pat').style.display=tipo==='pat'?'block':'none';
+  document.getElementById('psa-btn-0km').style.background=tipo==='0km'?'#C8102E':'white';
+  document.getElementById('psa-btn-0km').style.color=tipo==='0km'?'white':'var(--text)';
+  document.getElementById('psa-btn-0km').style.borderColor=tipo==='0km'?'#C8102E':'var(--border)';
+  document.getElementById('psa-btn-pat').style.background=tipo==='pat'?'#C8102E':'white';
+  document.getElementById('psa-btn-pat').style.color=tipo==='pat'?'white':'var(--text)';
+  document.getElementById('psa-btn-pat').style.borderColor=tipo==='pat'?'#C8102E':'var(--border)';
   upP();
 }
-
-function onTogglePSA(checked) {
-  sSec('sc-psa', checked);
-  upP();
-}
-
-function onToggleBNA(checked) {
-  sSec('sc-bna', checked);
-  // Si activan BNA personal, desactivar financiacion prendaria para evitar confusion
-  upP();
-}
+function onTogglePSA(checked){ sSec('sc-psa',checked); upP(); }
+function onToggleBNA(checked){ sSec('sc-bna',checked); upP(); }
 function sSec(id,v){ var el=document.getElementById(id); if(el) el.style.display=v?'block':'none'; }
 function gv(id){ return (document.getElementById(id)||{}).value ? document.getElementById(id).value.trim() : ''; }
 function gn(id){ return parseFloat((document.getElementById(id)||{}).value)||0; }
@@ -906,413 +734,127 @@ function gc(id){ return (document.getElementById(id)||{}).checked||false; }
 function fmtP(n){ return n ? '$ '+Math.round(n).toLocaleString('es-AR') : '-'; }
 
 function upP(){
-  var price = gn('bpl');   // precio lista
-  var cash  = gn('bpc');   // precio contado
-  var perm  = gc('cp');    // tiene permuta
-  var pv    = gn('bpv');   // valor permuta
-  var cred  = gc('cc');    // tiene credito
-  var tna   = gn('btn');   // TNA %
-  var cuotas= parseInt(gv('bcu'))||12;
-  var fin   = gn('bfi');   // monto a financiar ingresado
+  var price=gn('bpl'), cash=gn('bpc'), perm=gc('cp'), pv=gn('bpv'), cred=gc('cc'), tna=gn('btn'), cuotas=parseInt(gv('bcu'))||12, fin=gn('bfi');
+  document.getElementById('pvm').textContent=gv('bm')||'-';
+  var usaLista=perm||cred, baseCalc=usaLista?price:(cash||price);
+  var pvpRow=document.getElementById('pvp-row');
+  if(pvpRow){ pvpRow.style.display=price>0?'flex':'none'; document.getElementById('pvp').textContent=fmtP(price); }
+  var pvcRow=document.getElementById('pvc-row');
+  if(pvcRow){ pvcRow.style.display=(!usaLista&&cash&&cash!==price)?'flex':'none'; document.getElementById('pvc').textContent=fmtP(cash); }
+  var pos=perm?gn('bppos'):0, per=perm?gn('bpper'):0, pvNeta=pv-pos-per;
+  document.getElementById('pvpr').style.display=perm&&pv?'flex':'none';
+  document.getElementById('pvpv').textContent=fmtP(pv);
+  document.getElementById('pvpos-row').style.display=perm&&pos>0?'flex':'none';
+  document.getElementById('pvpos').textContent='- '+fmtP(pos);
+  document.getElementById('pvper-row').style.display=perm&&per>0?'flex':'none';
+  document.getElementById('pvper').textContent='- '+fmtP(per);
+  document.getElementById('pvneta-row').style.display=perm&&pv&&(pos||per)?'flex':'none';
+  document.getElementById('pvneta').textContent=fmtP(pvNeta>0?pvNeta:0);
+  var permNetaBox=document.getElementById('perm-neta-box');
+  if(permNetaBox){ permNetaBox.style.display=perm&&pv?'block':'none'; document.getElementById('perm-tasacion').textContent=fmtP(pv); document.getElementById('perm-pos').textContent=pos>0?'- '+fmtP(pos):'$ 0'; document.getElementById('perm-per').textContent=per>0?'- '+fmtP(per):'$ 0'; document.getElementById('perm-neta').textContent=fmtP(pvNeta>0?pvNeta:0); }
+  var montoFinanciar=cred?fin:0;
+  var pvmfRow=document.getElementById('pvmf-row');
+  if(pvmfRow){ pvmfRow.style.display=cred&&montoFinanciar>0?'flex':'none'; document.getElementById('pvmf').textContent=fmtP(montoFinanciar); }
+  var anticipo=gn('ban'), pvantRow=document.getElementById('pvant-row');
+  if(pvantRow){ pvantRow.style.display=anticipo>0?'flex':'none'; if(anticipo>0) document.getElementById('pvant').textContent=fmtP(anticipo); }
+  var adelanto=gn('adelanto'), pvadelRow=document.getElementById('pvadelanto-row');
+  if(pvadelRow){ pvadelRow.style.display=adelanto>0?'flex':'none'; if(adelanto>0) document.getElementById('pvadelanto').textContent=fmtP(adelanto); }
+  var baseTransf=usaLista?price:(cash||price);
+  var porcTransf=baseTransf>20000000?0.05:0.06;
+  var transferencia=baseTransf>0?Math.round(baseTransf*porcTransf):0;
+  var pvtr=document.getElementById('pvtr');
+  if(pvtr){ pvtr.style.display=transferencia>0?'flex':'none'; document.getElementById('pvtrv').textContent=fmtP(transferencia)+' ('+(porcTransf*100).toFixed(0)+'%)'; }
+  var precioBase=usaLista?price:(cash||price);
+  var valorTotalOp=precioBase+transferencia;
+  var bna2=gc('cbna'), bnaMonto2=bna2?gn('bna-monto'):0;
+  var bancoIdxAporte=parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
+  var bancoAporte=BANCOS[bancoIdxAporte]||{gastos:0.042,fijo:0};
+  var gastosPorc=bancoAporte.gastos!==undefined?bancoAporte.gastos:0.042;
+  var selloPorc=bancoAporte.sello||0;
+  var gastosPrendario=cred&&montoFinanciar>0?Math.round(montoFinanciar*gastosPorc):0;
+  var gastosSello=cred&&montoFinanciar>0?Math.round(montoFinanciar*selloPorc):0;
+  var gastoTotalPorc=bancoAporte.gastoTotal||0, gastoTotalMG=0;
+  if(cred&&gastoTotalPorc>0&&montoFinanciar>0&&tna>0){ var _tm=Math.pow(1+tna/100,1/12)-1; var _cuota=montoFinanciar*_tm/(1-Math.pow(1+_tm,-cuotas)); gastoTotalMG=Math.round(_cuota*cuotas*gastoTotalPorc); }
+  var aporteCred=cred?Math.max(0,montoFinanciar-gastosPrendario-gastosSello-gastoTotalMG):0;
+  var _bnaGF2=bna2?(parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0):0;
+  var _bnaGP2=bna2?(parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0):0;
+  var _bnaGastos2=bnaMonto2>0?(Math.round(bnaMonto2*_bnaGP2/100)+_bnaGF2):0;
+  var aporteBNA=bna2?Math.max(0,bnaMonto2-_bnaGastos2):0;
+  var aportePermuta=perm?(pvNeta>0?pvNeta:0):0;
+  var psa=gc('cpsa'), _psaMontoEarly=0, _psaGastosEarly=0, _psaNetoEarly=0;
+  if(psa){ if(psaTipo==='0km'){ _psaMontoEarly=gn('psa-monto-0'); var _psaGastoPctE=gn('psa-gasto-0')||14.54; _psaGastosEarly=Math.round(_psaMontoEarly*_psaGastoPctE/100); } else { _psaMontoEarly=gn('psa-monto-p'); var _psaQe=gn('psa-q')||10,_psaIVAe=gn('psa-iva')||4,_psaGeste=gn('psa-gest')||5; _psaGastosEarly=Math.round(_psaMontoEarly*(_psaQe+_psaIVAe+_psaGeste)/100); } _psaNetoEarly=Math.max(0,_psaMontoEarly-_psaGastosEarly); }
+  var aportePSA=_psaNetoEarly;
+  var totalAportes=aporteCred+aportePermuta+anticipo+adelanto+aporteBNA+aportePSA;
+  var pvTotalOpRow=document.getElementById('pvtotal-op-row');
+  if(pvTotalOpRow) pvTotalOpRow.style.display=precioBase>0?'flex':'none';
+  if(precioBase>0) document.getElementById('pvtotal-op').textContent=fmtP(valorTotalOp);
+  var pvPlataRow=document.getElementById('pvplata-row');
+  if(pvPlataRow) pvPlataRow.style.display=totalAportes>0?'flex':'none';
+  if(totalAportes>0) document.getElementById('pvplata').textContent=fmtP(totalAportes);
+  var diferencia_final=valorTotalOp-totalAportes;
+  var pvDifFinal=document.getElementById('pvdif-final'), pvtEl=document.getElementById('pvt'), pvtLabel=document.getElementById('pvt-label');
+  if(precioBase>0){
+    if(pvDifFinal) pvDifFinal.style.display='flex';
+    if(diferencia_final>0){ if(pvtLabel) pvtLabel.textContent='Falta al cliente'; if(pvtEl){ pvtEl.textContent=fmtP(diferencia_final); pvtEl.style.color='#EF4444'; } }
+    else if(diferencia_final<0){ if(pvtLabel) pvtLabel.textContent='Le sobra al cliente'; if(pvtEl){ pvtEl.textContent=fmtP(Math.abs(diferencia_final)); pvtEl.style.color='#22c55e'; } }
+    else{ if(pvtLabel) pvtLabel.textContent='Cubierto exacto'; if(pvtEl){ pvtEl.textContent='$ 0'; pvtEl.style.color='#22c55e'; } }
+  } else { if(pvDifFinal) pvDifFinal.style.display='none'; }
 
-  document.getElementById('pvm').textContent = gv('bm') || '-';
-
-  // ── LOGICA DE PRECIOS ─────────────────────────────
-  // Solo contado (sin permuta, sin credito): muestra precio contado
-  // Con permuta o credito: usa precio LISTA como base
-  var usaLista = perm || cred;
-  var baseCalc = usaLista ? price : (cash || price);
-
-  // Fila precio lista: siempre visible si hay precio
-  var pvpRow = document.getElementById('pvp-row');
-  var pvpLabel = document.getElementById('pvp-label');
-  if(pvpRow) {
-    pvpRow.style.display = price > 0 ? 'flex' : 'none';
-    document.getElementById('pvp').textContent = fmtP(price);
-  }
-
-  // Fila precio contado: solo si NO es permuta/credito y hay precio contado distinto
-  var pvcRow = document.getElementById('pvc-row');
-  if(pvcRow) {
-    pvcRow.style.display = (!usaLista && cash && cash !== price) ? 'flex' : 'none';
-    document.getElementById('pvc').textContent = fmtP(cash);
-  }
-
-  // Permuta con posicion y peritaje
-  var pos  = perm ? gn('bppos') : 0;   // posicion de venta
-  var per  = perm ? gn('bpper') : 0;   // peritaje
-  var pvNeta = pv - pos - per;          // valor neto real de la permuta
-
-  document.getElementById('pvpr').style.display = perm && pv ? 'flex' : 'none';
-  document.getElementById('pvpv').textContent = fmtP(pv);
-
-  document.getElementById('pvpos-row').style.display = perm && pos > 0 ? 'flex' : 'none';
-  document.getElementById('pvpos').textContent = '- ' + fmtP(pos);
-
-  document.getElementById('pvper-row').style.display = perm && per > 0 ? 'flex' : 'none';
-  document.getElementById('pvper').textContent = '- ' + fmtP(per);
-
-  document.getElementById('pvneta-row').style.display = perm && pv && (pos||per) ? 'flex' : 'none';
-  document.getElementById('pvneta').textContent = fmtP(pvNeta > 0 ? pvNeta : 0);
-
-  // Mini box dentro del formulario
-  var permNetaBox = document.getElementById('perm-neta-box');
-  if(permNetaBox) {
-    permNetaBox.style.display = perm && pv ? 'block' : 'none';
-    document.getElementById('perm-tasacion').textContent = fmtP(pv);
-    document.getElementById('perm-pos').textContent = pos > 0 ? '- ' + fmtP(pos) : '$ 0';
-    document.getElementById('perm-per').textContent = per > 0 ? '- ' + fmtP(per) : '$ 0';
-    document.getElementById('perm-neta').textContent = fmtP(pvNeta > 0 ? pvNeta : 0);
-  }
-
-  // Diferencia tras permuta (usa neto real)
-  var diferencia = baseCalc - (perm ? pvNeta : 0);
-
-  // Monto a financiar = lo que el banco presta (ingresado en el campo)
-  var montoFinanciar = cred ? fin : 0;
-  var pvmfRow = document.getElementById('pvmf-row');
-  if(pvmfRow) {
-    pvmfRow.style.display = cred && montoFinanciar > 0 ? 'flex' : 'none';
-    document.getElementById('pvmf').textContent = fmtP(montoFinanciar);
-  }
-  var anticipo = gn('ban');  // siempre leer, no solo si hay credito
-  var pvantRow = document.getElementById('pvant-row');
-  if(pvantRow) {
-    pvantRow.style.display = anticipo > 0 ? 'flex' : 'none';
-    if(anticipo > 0) document.getElementById('pvant').textContent = fmtP(anticipo);
-  }
-  var pvadelRow = document.getElementById('pvadelanto-row');
-  if(pvadelRow) {
-    pvadelRow.style.display = adelanto > 0 ? 'flex' : 'none';
-    if(adelanto > 0) document.getElementById('pvadelanto').textContent = fmtP(adelanto);
-  }
-
-  // Transferencia: 6% del precio lista (si hay permuta/credito) o contado
-  var baseTransf = usaLista ? price : (cash || price);
-  var porcTransf = baseTransf > 20000000 ? 0.05 : 0.06;
-  var transferencia = baseTransf > 0 ? Math.round(baseTransf * porcTransf) : 0;
-  var pvtr = document.getElementById('pvtr');
-  if(pvtr) {
-    pvtr.style.display = transferencia > 0 ? 'flex' : 'none';
-    document.getElementById('pvtrv').textContent = fmtP(transferencia) + ' (' + (porcTransf*100).toFixed(0) + '%)';
-  }
-
-  // ── TOTAL FINAL ────────────────────────────────────
-  // Base: siempre precio lista si hay permuta o credito, sino contado
-  var precioBase = usaLista ? price : (cash || price);
-
-  // Valor total operacion = precio + transferencia
-  var valorTotalOp = precioBase + transferencia;
-
-  // Cuanto aporta NETO cada credito (descontando gastos)
-  var bna2        = gc('cbna');
-  var bnaMonto2   = bna2 ? gn('bna-monto') : 0;
-
-  // Credito prendario: neto = monto - gastos segun banco (Bancor = 0%, resto = 4.2%)
-  var bancoIdxAporte = parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
-  var bancoAporte = BANCOS[bancoIdxAporte] || {gastos:0.042, fijo:0};
-  var gastosPorc = bancoAporte.gastos !== undefined ? bancoAporte.gastos : 0.042;
-  var selloPorc    = bancoAporte.sello || 0;
-  var gastosPrendario = cred && montoFinanciar > 0 ? Math.round(montoFinanciar * gastosPorc) : 0;
-  // Sello: se cobra del monto solicitado
-  var gastosSello  = cred && montoFinanciar > 0 ? Math.round(montoFinanciar * selloPorc) : 0;
-  // MG Group: 2% adicional sobre total a devolver (cuota x cuotas)
-  var gastoTotalPorc = bancoAporte.gastoTotal || 0;
-  var gastoTotalMG = 0;
-  if(cred && gastoTotalPorc > 0 && montoFinanciar > 0 && tna > 0) {
-    var _tm = Math.pow(1+tna/100,1/12)-1;  // usa TNA del campo editable
-    var _cuota = montoFinanciar*_tm/(1-Math.pow(1+_tm,-cuotas));
-    var _totalDevolver = Math.round(_cuota * cuotas);
-    gastoTotalMG = Math.round(_totalDevolver * gastoTotalPorc);
-  }
-  var aporteCred = cred ? Math.max(0, montoFinanciar - gastosPrendario - gastosSello - gastoTotalMG) : 0;
-
-  // BNA personal: neto = monto - $800.000 fijos
-  // Lee gastos desde los campos editables del formulario
-  var _bnaGF2 = bna2 ? (parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0) : 0;
-  var _bnaGP2 = bna2 ? (parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0) : 0;
-  var _bnaGastos2 = bnaMonto2 > 0 ? (Math.round(bnaMonto2 * _bnaGP2 / 100) + _bnaGF2) : 0;
-  var aporteBNA = bna2 ? Math.max(0, bnaMonto2 - _bnaGastos2) : 0;
-
-  var aportePermuta   = perm ? (pvNeta > 0 ? pvNeta : 0) : 0;
-  var adelanto = gn('adelanto');
-  var aporteAnticipo  = anticipo;
-  var aporteAdelanto  = adelanto;
-  // Pre-calcular PSA neto para incluir en totalAportes
-  var psa = gc('cpsa');
-  var _psaMontoEarly = 0, _psaGastosEarly = 0, _psaNetoEarly = 0;
-  if(psa) {
-    if(psaTipo === '0km') {
-      _psaMontoEarly = gn('psa-monto-0');
-      var _psaGastoPctE = gn('psa-gasto-0')||14.54;
-      _psaGastosEarly = Math.round(_psaMontoEarly * _psaGastoPctE / 100);
-    } else {
-      _psaMontoEarly = gn('psa-monto-p');
-      var _psaQe = gn('psa-q')||10, _psaIVAe = gn('psa-iva')||4, _psaGeste = gn('psa-gest')||5;
-      _psaGastosEarly = Math.round(_psaMontoEarly * (_psaQe+_psaIVAe+_psaGeste) / 100);
-    }
-    _psaNetoEarly = Math.max(0, _psaMontoEarly - _psaGastosEarly);
-  }
-  var aportePSA    = _psaNetoEarly;
-  var totalAportes = aporteCred + aportePermuta + anticipo + adelanto + aporteBNA + aportePSA;
-
-  // Diferencia que falta pagar hoy en efectivo
-  var diferenciaPagar = Math.max(0, valorTotalOp - totalAportes);
-
-  // Valor total operacion
-  var pvTotalOpRow = document.getElementById('pvtotal-op-row');
-  if(pvTotalOpRow) pvTotalOpRow.style.display = precioBase > 0 ? 'flex' : 'none';
-  if(precioBase > 0) document.getElementById('pvtotal-op').textContent = fmtP(valorTotalOp);
-
-  // Plata total que pone el cliente (suma de todos los aportes netos)
-  var pvPlataRow = document.getElementById('pvplata-row');
-  var hayAportes = totalAportes > 0;
-  if(pvPlataRow) pvPlataRow.style.display = hayAportes ? 'flex' : 'none';
-  if(hayAportes) document.getElementById('pvplata').textContent = fmtP(totalAportes);
-
-  // Diferencia = valorTotalOp - totalAportes
-  // positivo (falta) = ROJO, cero o negativo (sobra/justo) = VERDE
-  var diferencia_final = valorTotalOp - totalAportes;
-  var pvDifFinal = document.getElementById('pvdif-final');
-  var pvtEl = document.getElementById('pvt');
-  var pvtLabel = document.getElementById('pvt-label');
-
-  if(precioBase > 0) {
-    if(pvDifFinal) pvDifFinal.style.display = 'flex';
-    if(diferencia_final > 0) {
-      // Falta plata - ROJO
-      if(pvtLabel) pvtLabel.textContent = 'Falta al cliente';
-      if(pvtEl) { pvtEl.textContent = fmtP(diferencia_final); pvtEl.style.color = '#EF4444'; }
-    } else if(diferencia_final < 0) {
-      // Sobra plata - VERDE
-      if(pvtLabel) pvtLabel.textContent = 'Le sobra al cliente';
-      if(pvtEl) { pvtEl.textContent = fmtP(Math.abs(diferencia_final)); pvtEl.style.color = '#22c55e'; }
-    } else {
-      // Exacto - VERDE
-      if(pvtLabel) pvtLabel.textContent = 'Cubierto exacto';
-      if(pvtEl) { pvtEl.textContent = '$ 0'; pvtEl.style.color = '#22c55e'; }
-    }
+  // PSA
+  var psaMonto=0,psaGastos=0,psaNeto=0,psaCuota=0,psaCuotasN=0;
+  if(psa){
+    if(psaTipo==='0km'){ psaMonto=gn('psa-monto-0'); psaCuotasN=parseInt(gv('psa-cuotas-0'))||24; var psaGastoPct=gn('psa-gasto-0')||14.54; psaGastos=Math.round(psaMonto*psaGastoPct/100); psaNeto=Math.max(0,psaMonto-psaGastos); var _psa0manual=gn('psa0-cuota-manual'); psaCuota=_psa0manual>0?_psa0manual:(psaCuotasN>0?Math.round(psaMonto/psaCuotasN):0); var r0=document.getElementById('psa-0km-resumen'); if(r0&&psaMonto>0){ r0.style.display='block'; document.getElementById('psa0-r-monto').textContent=fmtP(psaMonto); document.getElementById('psa0-r-glabel').textContent='(-) Gasto '+psaGastoPct+'%'; document.getElementById('psa0-r-gasto').textContent='- '+fmtP(psaGastos); document.getElementById('psa0-r-neto').textContent=fmtP(psaNeto); document.getElementById('psa0-r-cuota').textContent=fmtP(psaCuota)+' x '+psaCuotasN+' (tasa 0%)'; } else if(r0) r0.style.display='none'; }
+    else{ psaMonto=gn('psa-monto-p'); var psaTNAp=gn('psa-tna-p')||47.9; psaCuotasN=parseInt(gv('psa-cuotas-p'))||24; var psaQ=gn('psa-q')||10,psaIVA=gn('psa-iva')||4,psaGest=gn('psa-gest')||5; var totalGastoPct=psaQ+psaIVA+psaGest; psaGastos=Math.round(psaMonto*totalGastoPct/100); psaNeto=Math.max(0,psaMonto-psaGastos); var tmP=Math.pow(1+psaTNAp/100,1/12)-1; var _psapManual=gn('psap-cuota-manual'); var _psapAuto=tmP>0?psaMonto*tmP/(1-Math.pow(1+tmP,-psaCuotasN)):psaMonto/psaCuotasN; psaCuota=_psapManual>0?_psapManual:Math.round(_psapAuto); var rP=document.getElementById('psa-pat-resumen'); if(rP&&psaMonto>0){ rP.style.display='block'; document.getElementById('psap-r-monto').textContent=fmtP(psaMonto); document.getElementById('psap-q-lbl').textContent='(-) Quebranto '+psaQ+'%'; document.getElementById('psap-r-q').textContent='- '+fmtP(Math.round(psaMonto*psaQ/100)); document.getElementById('psap-iva-lbl').textContent='(-) IVA '+psaIVA+'%'; document.getElementById('psap-r-iva').textContent='- '+fmtP(Math.round(psaMonto*psaIVA/100)); document.getElementById('psap-g-lbl').textContent='(-) Gestion '+psaGest+'%'; document.getElementById('psap-r-g').textContent='- '+fmtP(Math.round(psaMonto*psaGest/100)); document.getElementById('psap-r-neto').textContent=fmtP(psaNeto); document.getElementById('psap-r-cuota').textContent=fmtP(psaCuota)+' x '+psaCuotasN; } else if(rP) rP.style.display='none'; }
+    ['pvpsa-row','pvpsa-gas-row','pvpsa-neto-row','pvpsa-cuota-row'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display=psaMonto>0?'flex':'none'; });
+    if(psaMonto>0){ document.getElementById('pvpsa-label').textContent='PSA '+(psaTipo==='0km'?'0km':'Patentado')+' solicitado'; document.getElementById('pvpsa-monto').textContent=fmtP(psaMonto); document.getElementById('pvpsa-gas-label').textContent='(-) Gastos PSA'; document.getElementById('pvpsa-gas').textContent='- '+fmtP(psaGastos); document.getElementById('pvpsa-neto').textContent=fmtP(psaNeto); var _psaManualUsed=psaTipo==='0km'?gn('psa0-cuota-manual'):gn('psap-cuota-manual'); document.getElementById('pvpsa-cuota').textContent=fmtP(psaCuota)+' x '+psaCuotasN+(_psaManualUsed>0?' (manual)':(psaTipo==='0km'?' (tasa 0%)':'')); }
   } else {
-    if(pvDifFinal) pvDifFinal.style.display = 'none';
-  }
-
-  // ── CUOTAS + GASTOS ────────────────────────────────
-  var cr = document.getElementById('pvcr');
-  if(cred && montoFinanciar && cuotas) {
-    var bancoIdx = parseInt((document.getElementById('banco-sel')||{}).value)||0;
-    var banco = BANCOS[bancoIdx] || {tna:0, sello:0, gastos:0, fijo:0};
-    var sello = banco.sello || 0;
-    var tnaUsada = tna;  // siempre usa el campo editable del vendedor
-
-    // Calcular cuota para total devolver (usado en MG 2%)
-    var _tmDisp = tnaUsada > 0 ? Math.pow(1+tnaUsada/100,1/12)-1 : 0;
-    var _cuotaDisp = _tmDisp > 0 ? montoFinanciar*_tmDisp/(1-Math.pow(1+_tmDisp,-cuotas)) : 0;
-    var _totalDevolverDisp = _cuotaDisp > 0 ? Math.round(_cuotaDisp * cuotas) : 0;
-
-    // Mostrar fila monto solicitado
-    var pvmfRow2 = document.getElementById('pvmf-row');
-    if(pvmfRow2) { pvmfRow2.style.display = 'flex'; document.getElementById('pvmf').textContent = fmtP(montoFinanciar); }
-
-    // Fila resumen gastos (la original - ocultar, reemplazada por detalle)
-    var pvgasRow = document.getElementById('pvgas-row');
-    if(pvgasRow) pvgasRow.style.display = 'none';
-
-    // Desglose detallado
-    var s42 = document.getElementById('pvgas42-row');
-    var sSello = document.getElementById('pvgassello-row');
-    var sTotDev = document.getElementById('pvtotdev-row');
-    var sMG = document.getElementById('pvgasmg-row');
-    var sRecibe = document.getElementById('pvrecibe-row');
-
-    if(banco.personal) {
-      // BNA: solo gasto fijo
-      if(s42) s42.style.display = 'none';
-      if(sSello) sSello.style.display = 'none';
-      if(sTotDev) sTotDev.style.display = 'none';
-      if(sMG) sMG.style.display = 'none';
-      if(pvgasRow) { pvgasRow.style.display = bnaGastosTotal>0 ? 'flex' : 'none'; document.getElementById('pvgas-label').textContent = '(-) Gastos credito personal'; document.getElementById('pvgas').textContent = '- ' + fmtP(bnaGastosTotal); }
-    } else if(gastosPrendario === 0 && gastosSello === 0 && gastoTotalMG === 0) {
-      // Bancor: sin gastos
-      if(s42) s42.style.display = 'none';
-      if(sSello) sSello.style.display = 'none';
-      if(sTotDev) sTotDev.style.display = 'none';
-      if(sMG) sMG.style.display = 'none';
-    } else {
-      // Desglose completo
-      if(s42) { s42.style.display = gastosPrendario>0?'flex':'none'; document.getElementById('pvgas42').textContent = '- '+fmtP(gastosPrendario); }
-      if(sSello) { sSello.style.display = gastosSello>0?'flex':'none'; document.getElementById('pvgassello').textContent = '- '+fmtP(gastosSello); }
-      if(sTotDev) { sTotDev.style.display = _totalDevolverDisp>0?'flex':'none'; document.getElementById('pvtotdev').textContent = fmtP(_totalDevolverDisp); }
-      if(sMG) { sMG.style.display = gastoTotalMG>0?'flex':'none'; document.getElementById('pvgasmg').textContent = '- '+fmtP(gastoTotalMG); }
-    }
-    if(sRecibe) {
-      sRecibe.style.display = (aporteCred > 0 || montoFinanciar > 0) ? 'flex' : 'none';
-      document.getElementById('pvrecibe').textContent = fmtP(aporteCred > 0 ? aporteCred : 0);
-    }
-
-    // Cuota del banco seleccionado — usa manual si está cargado
-    var cuotaManual = gn('cuota-manual');
-    var cuotaFinalDisp = 0;
-    if(cuotaManual > 0) {
-      cuotaFinalDisp = cuotaManual;
-    } else if(tnaUsada > 0) {
-      var montoConSello = montoFinanciar * (1 + selloPorc);
-      var tm = Math.pow(1+tnaUsada/100,1/12)-1;
-      cuotaFinalDisp = montoConSello*tm/(1-Math.pow(1+tm,-cuotas));
-    }
-    if(cuotaFinalDisp > 0) {
-      document.getElementById('pvcu').textContent = fmtP(Math.round(cuotaFinalDisp))+' x '+cuotas+(cuotaManual>0?' (manual)':(sello>0?' (c/sellos)':''));
-      document.getElementById('pvcu-banco').textContent = banco.nombre ? banco.nombre.split(' (')[0] : '';
-      cr.style.display = 'flex';
-    }
-
-    // Solo mostrar banco seleccionado - ocultar tabla general
-    var tabla = document.getElementById('tabla-cuotas');
-    if(tabla) tabla.style.display = 'none';
-  } else {
-    if(cr) cr.style.display = 'none';
-    var tabla2 = document.getElementById('tabla-cuotas');
-    if(tabla2) tabla2.style.display = 'none';
-    ['pvmf-row','pvgas-row','pvrecibe-row'].forEach(function(id){
-      var el = document.getElementById(id); if(el) el.style.display='none';
-    });
-  }
-
-  // ── CREDITO PSA ────────────────────────────────────
-  var psaMonto = 0, psaGastos = 0, psaNeto = 0, psaCuota = 0, psaCuotasN = 0;
-  if(psa) {
-    if(psaTipo === '0km') {
-      psaMonto = gn('psa-monto-0');
-      psaCuotasN = parseInt(gv('psa-cuotas-0'))||24;
-      var psaGastoPct = gn('psa-gasto-0')||14.54;
-      psaGastos = Math.round(psaMonto * psaGastoPct / 100);
-      psaNeto = Math.max(0, psaMonto - psaGastos);
-      var _psa0manual = gn('psa0-cuota-manual');
-      psaCuota = _psa0manual > 0 ? _psa0manual : (psaCuotasN > 0 ? Math.round(psaMonto / psaCuotasN) : 0);
-      // Update mini resumen
-      var r0 = document.getElementById('psa-0km-resumen');
-      if(r0 && psaMonto > 0) {
-        r0.style.display = 'block';
-        document.getElementById('psa0-r-monto').textContent = fmtP(psaMonto);
-        document.getElementById('psa0-r-glabel').textContent = '(-) Gasto ' + psaGastoPct + '%';
-        document.getElementById('psa0-r-gasto').textContent = '- ' + fmtP(psaGastos);
-        document.getElementById('psa0-r-neto').textContent = fmtP(psaNeto);
-        document.getElementById('psa0-r-cuota').textContent = fmtP(psaCuota) + ' x ' + psaCuotasN + ' (tasa 0%)';
-      } else if(r0) r0.style.display = 'none';
-    } else {
-      psaMonto = gn('psa-monto-p');
-      var psaTNAp = gn('psa-tna-p')||47.9;
-      psaCuotasN = parseInt(gv('psa-cuotas-p'))||24;
-      var psaQ = gn('psa-q')||10;
-      var psaIVA = gn('psa-iva')||4;
-      var psaGest = gn('psa-gest')||5;
-      var totalGastoPct = psaQ + psaIVA + psaGest;
-      psaGastos = Math.round(psaMonto * totalGastoPct / 100);
-      psaNeto = Math.max(0, psaMonto - psaGastos);
-      var tmP = Math.pow(1+psaTNAp/100,1/12)-1;
-      var _psapManual = gn('psap-cuota-manual');
-      var _psapAuto = tmP > 0 ? psaMonto*tmP/(1-Math.pow(1+tmP,-psaCuotasN)) : psaMonto/psaCuotasN;
-      psaCuota = _psapManual > 0 ? _psapManual : Math.round(_psapAuto);
-      // Update mini resumen
-      var rP = document.getElementById('psa-pat-resumen');
-      if(rP && psaMonto > 0) {
-        rP.style.display = 'block';
-        document.getElementById('psap-r-monto').textContent = fmtP(psaMonto);
-        document.getElementById('psap-q-lbl').textContent = '(-) Quebranto ' + psaQ + '%';
-        document.getElementById('psap-r-q').textContent = '- ' + fmtP(Math.round(psaMonto*psaQ/100));
-        document.getElementById('psap-iva-lbl').textContent = '(-) IVA ' + psaIVA + '%';
-        document.getElementById('psap-r-iva').textContent = '- ' + fmtP(Math.round(psaMonto*psaIVA/100));
-        document.getElementById('psap-g-lbl').textContent = '(-) Gestion ' + psaGest + '%';
-        document.getElementById('psap-r-g').textContent = '- ' + fmtP(Math.round(psaMonto*psaGest/100));
-        document.getElementById('psap-r-neto').textContent = fmtP(psaNeto);
-        document.getElementById('psap-r-cuota').textContent = fmtP(psaCuota) + ' x ' + psaCuotasN;
-      } else if(rP) rP.style.display = 'none';
-    }
-    // Preview rows
-    ['pvpsa-row','pvpsa-gas-row','pvpsa-neto-row','pvpsa-cuota-row'].forEach(function(id){
-      var el = document.getElementById(id);
-      if(el) el.style.display = psaMonto > 0 ? 'flex' : 'none';
-    });
-    if(psaMonto > 0) {
-      document.getElementById('pvpsa-label').textContent = 'PSA ' + (psaTipo==='0km'?'0km':'Patentado') + ' solicitado';
-      document.getElementById('pvpsa-monto').textContent = fmtP(psaMonto);
-      document.getElementById('pvpsa-gas-label').textContent = '(-) Gastos PSA';
-      document.getElementById('pvpsa-gas').textContent = '- ' + fmtP(psaGastos);
-      document.getElementById('pvpsa-neto').textContent = fmtP(psaNeto);
-      var _psaManualUsed = psaTipo==='0km' ? gn('psa0-cuota-manual') : gn('psap-cuota-manual');
-      document.getElementById('pvpsa-cuota').textContent = fmtP(psaCuota) + ' x ' + psaCuotasN + (_psaManualUsed>0?' (manual)':(psaTipo==='0km'?' (tasa 0%)':''));
-    }
-  } else {
-    ['pvpsa-row','pvpsa-gas-row','pvpsa-neto-row','pvpsa-cuota-row'].forEach(function(id){
-      var el = document.getElementById(id); if(el) el.style.display='none';
-    });
+    ['pvpsa-row','pvpsa-gas-row','pvpsa-neto-row','pvpsa-cuota-row'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
     var r0b=document.getElementById('psa-0km-resumen'); if(r0b) r0b.style.display='none';
     var rPb=document.getElementById('psa-pat-resumen'); if(rPb) rPb.style.display='none';
   }
 
-  // ── CREDITO PERSONAL ───────────────────────────────
-  var bna = gc('cbna');
-  var bnaMonto = gn('bna-monto');
-  var bnaCuotas = parseInt(gv('bna-cuotas'))||12;
-  // Leer SIEMPRE desde los campos editables del DOM
-  var bnaGastoFijo  = bna ? (parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0) : 0;
-  var bnaGastoPorc  = bna ? (parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0) : 0;
-  var bnaTNA        = bna ? (parseFloat((document.getElementById('bna-tna')||{value:'38'}).value)||0) : 0;
-  var bnaGastosTotal = bnaMonto > 0 ? (Math.round(bnaMonto * bnaGastoPorc / 100) + bnaGastoFijo) : 0;
+  // BNA personal
+  var bna=gc('cbna'), bnaMonto=gn('bna-monto'), bnaCuotas=parseInt(gv('bna-cuotas'))||12;
+  var bnaGastoFijo=bna?(parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0):0;
+  var bnaGastoPorc=bna?(parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0):0;
+  var bnaTNA=bna?(parseFloat((document.getElementById('bna-tna')||{value:'38'}).value)||0):0;
+  var bnaGastosTotal=bnaMonto>0?(Math.round(bnaMonto*bnaGastoPorc/100)+bnaGastoFijo):0;
+  ['pvbna-row','pvbna-gas-row','pvbna-rec-row','pvbna-cuota-row'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display=(bna&&bnaMonto>0)?'flex':'none'; });
+  if(bna&&bnaMonto>0){
+    var bnaRecibe=Math.max(0,bnaMonto-bnaGastosTotal);
+    var bnaTm=bnaTNA>0?Math.pow(1+bnaTNA/100,1/12)-1:0;
+    var bnaManual=gn('bna-cuota-manual');
+    var bnaCuota=bnaManual>0?bnaManual:(bnaTm>0?bnaMonto*bnaTm/(1-Math.pow(1+bnaTm,-bnaCuotas)):Math.round(bnaMonto/bnaCuotas));
+    var _bnaSelEl=document.getElementById('bna-banco-sel');
+    var _bnaNombreDisp=_bnaSelEl?_bnaSelEl.options[_bnaSelEl.selectedIndex].text.split(' (')[0]:'Personal';
+    var _bnaLabelEl=document.getElementById('pvbna-banco-label');
+    if(_bnaLabelEl) _bnaLabelEl.textContent=_bnaNombreDisp+' solicitado';
+    document.getElementById('pvbna-monto').textContent=fmtP(bnaMonto);
+    var _pvbnaGasRow=document.getElementById('pvbna-gas-row'), _pvbnaGasLbl=document.getElementById('pvbna-gas-label'), _pvbnaGasVal=document.getElementById('pvbna-gas-val');
+    if(bnaGastosTotal>0){ if(_pvbnaGasRow) _pvbnaGasRow.style.display='flex'; if(_pvbnaGasLbl) _pvbnaGasLbl.textContent=bnaGastoFijo>0&&bnaGastoPorc===0?'(-) Gasto fijo':(bnaGastoPorc>0?'(-) Gasto '+bnaGastoPorc+'%':'(-) Gastos'); if(_pvbnaGasVal) _pvbnaGasVal.textContent='- '+fmtP(bnaGastosTotal); } else { if(_pvbnaGasRow) _pvbnaGasRow.style.display='none'; }
+    document.getElementById('pvbna-recibe').textContent=fmtP(bnaRecibe>0?bnaRecibe:0);
+    var _bnaManualDisp=gn('bna-cuota-manual');
+    document.getElementById('pvbna-cuota').textContent=fmtP(Math.round(bnaCuota))+' x '+bnaCuotas+(_bnaManualDisp>0?' (manual)':'');
+    var bnaRes=document.getElementById('bna-resumen');
+    if(bnaRes){ bnaRes.style.display='block'; document.getElementById('bna-r-monto').textContent=fmtP(bnaMonto); var _bnaGlabel=document.getElementById('bna-r-glabel'), _bnaGasto=document.getElementById('bna-r-gasto'); if(_bnaGlabel){ if(bnaGastoFijo>0&&bnaGastoPorc===0) _bnaGlabel.textContent='(-) Gasto fijo'; else if(bnaGastoPorc>0&&bnaGastoFijo===0) _bnaGlabel.textContent='(-) Gasto '+bnaGastoPorc+'%'; else if(bnaGastosTotal===0) _bnaGlabel.textContent='(-) Sin gastos'; else _bnaGlabel.textContent='(-) Gastos'; } var _bnaGastoRow=document.getElementById('bna-r-gasto-row'); if(_bnaGastoRow) _bnaGastoRow.style.display=bnaGastosTotal>0?'flex':'none'; if(_bnaGasto) _bnaGasto.textContent=bnaGastosTotal>0?'- '+fmtP(bnaGastosTotal):'$ 0'; document.getElementById('bna-r-recibe').textContent=fmtP(bnaRecibe>0?bnaRecibe:0); document.getElementById('bna-r-cuota').textContent=fmtP(Math.round(bnaCuota))+' x '+bnaCuotas+(bnaManual>0?' (manual)':''); }
+  } else { var bnaRes2=document.getElementById('bna-resumen'); if(bnaRes2) bnaRes2.style.display='none'; }
 
-  // Mostrar/ocultar filas
-  ['pvbna-row','pvbna-gas-row','pvbna-rec-row','pvbna-cuota-row'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.style.display = (bna && bnaMonto > 0) ? 'flex' : 'none';
-  });
-
-  if(bna && bnaMonto > 0) {
-    var bnaRecibe = Math.max(0, bnaMonto - bnaGastosTotal);
-    var bnaTm = bnaTNA > 0 ? Math.pow(1+bnaTNA/100,1/12)-1 : 0;
-    var bnaManual = gn('bna-cuota-manual');
-    var bnaCuota = bnaManual > 0 ? bnaManual : (bnaTm > 0 ? bnaMonto*bnaTm/(1-Math.pow(1+bnaTm,-bnaCuotas)) : Math.round(bnaMonto/bnaCuotas));
-
-    var _bnaSelEl = document.getElementById('bna-banco-sel');
-    var _bnaNombreDisp = _bnaSelEl ? _bnaSelEl.options[_bnaSelEl.selectedIndex].text.split(' (')[0] : 'Personal';
-    var _bnaLabelEl = document.getElementById('pvbna-banco-label');
-    if(_bnaLabelEl) _bnaLabelEl.textContent = _bnaNombreDisp + ' solicitado';
-    document.getElementById('pvbna-monto').textContent = fmtP(bnaMonto);
-    var _pvbnaGasRow = document.getElementById('pvbna-gas-row');
-    var _pvbnaGasLbl = document.getElementById('pvbna-gas-label');
-    var _pvbnaGasVal = document.getElementById('pvbna-gas-val');
-    if(bnaGastosTotal > 0) {
-      if(_pvbnaGasRow) _pvbnaGasRow.style.display = 'flex';
-      if(_pvbnaGasLbl) _pvbnaGasLbl.textContent = bnaGastoFijo>0 && bnaGastoPorc===0 ? '(-) Gasto fijo' : (bnaGastoPorc>0 ? '(-) Gasto '+bnaGastoPorc+'%' : '(-) Gastos');
-      if(_pvbnaGasVal) _pvbnaGasVal.textContent = '- ' + fmtP(bnaGastosTotal);
-    } else {
-      if(_pvbnaGasRow) _pvbnaGasRow.style.display = 'none';
-    }
-    document.getElementById('pvbna-recibe').textContent = fmtP(bnaRecibe > 0 ? bnaRecibe : 0);
-    var _bnaManualDisp = gn('bna-cuota-manual');
-    document.getElementById('pvbna-cuota').textContent = fmtP(Math.round(bnaCuota))+' x '+bnaCuotas+(_bnaManualDisp>0?' (manual)':'');
-
-    // Mini resumen dentro del formulario
-    var bnaRes = document.getElementById('bna-resumen');
-    if(bnaRes) {
-      bnaRes.style.display = 'block';
-      document.getElementById('bna-r-monto').textContent = fmtP(bnaMonto);
-      // Label dinamico segun banco
-      var _bnaGlabel = document.getElementById('bna-r-glabel');
-      var _bnaGasto = document.getElementById('bna-r-gasto');
-      if(_bnaGlabel) {
-        if(bnaGastoFijo > 0 && bnaGastoPorc === 0) _bnaGlabel.textContent = '(-) Gasto fijo';
-        else if(bnaGastoPorc > 0 && bnaGastoFijo === 0) _bnaGlabel.textContent = '(-) Gasto ' + bnaGastoPorc + '%';
-        else if(bnaGastosTotal === 0) _bnaGlabel.textContent = '(-) Sin gastos';
-        else _bnaGlabel.textContent = '(-) Gastos';
-      }
-      var _bnaGastoRow = document.getElementById('bna-r-gasto-row');
-      if(_bnaGastoRow) _bnaGastoRow.style.display = bnaGastosTotal > 0 ? 'flex' : 'none';
-      if(_bnaGasto) _bnaGasto.textContent = bnaGastosTotal > 0 ? '- ' + fmtP(bnaGastosTotal) : '$ 0';
-      document.getElementById('bna-r-recibe').textContent = fmtP(bnaRecibe > 0 ? bnaRecibe : 0);
-      document.getElementById('bna-r-cuota').textContent = fmtP(Math.round(bnaCuota))+' x '+bnaCuotas+(bnaManual>0?' (manual)':'');
-    }
+  // Credito prendario cuota
+  var cr=document.getElementById('pvcr');
+  if(cred&&montoFinanciar&&cuotas){
+    var bancoIdx=parseInt((document.getElementById('banco-sel')||{}).value)||0;
+    var banco=BANCOS[bancoIdx]||{tna:0,sello:0,gastos:0,fijo:0};
+    var sello=banco.sello||0, tnaUsada=tna;
+    var cuotaManual=gn('cuota-manual'), cuotaFinalDisp=0;
+    if(cuotaManual>0){ cuotaFinalDisp=cuotaManual; } else if(tnaUsada>0){ var montoConSello=montoFinanciar*(1+selloPorc); var tm=Math.pow(1+tnaUsada/100,1/12)-1; cuotaFinalDisp=montoConSello*tm/(1-Math.pow(1+tm,-cuotas)); }
+    if(cuotaFinalDisp>0){ document.getElementById('pvcu').textContent=fmtP(Math.round(cuotaFinalDisp))+' x '+cuotas+(cuotaManual>0?' (manual)':(sello>0?' (c/sellos)':'')); document.getElementById('pvcu-banco').textContent=banco.nombre?banco.nombre.split(' (')[0]:''; cr.style.display='flex'; }
+    var tabla2=document.getElementById('tabla-cuotas'); if(tabla2) tabla2.style.display='none';
+    ['pvgas42-row','pvgassello-row','pvtotdev-row','pvgasmg-row'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
+    var sRecibe=document.getElementById('pvrecibe-row');
+    if(sRecibe){ sRecibe.style.display=(aporteCred>0||montoFinanciar>0)?'flex':'none'; document.getElementById('pvrecibe').textContent=fmtP(aporteCred>0?aporteCred:0); }
   } else {
-    var bnaRes2 = document.getElementById('bna-resumen');
-    if(bnaRes2) bnaRes2.style.display = 'none';
+    if(cr) cr.style.display='none';
+    ['pvmf-row','pvgas-row','pvrecibe-row'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
   }
 }
 
@@ -1323,303 +865,73 @@ function genPDF(){
   try{
     var jsPDF=window.jspdf.jsPDF;
     var doc=new jsPDF({unit:'mm',format:'a4'});
-    var W=210,H=297,M=18,y=20,E=EMPRESA;
-    var d={
-      cliente:gv('bc'),telefono:gv('bf'),dni:gv('bd'),vendedor:gv('bv'),
-      modelo:gv('bm'),anio:gv('by'),color:gv('bco'),km:gv('bk'),patente:gv('bpa'),notas:gv('bno'),
-      precioLista:gn('bpl'),precioContado:gn('bpc'),
-      tienePermuta:gc('cp'),permuModelo:gv('bpm'),permuAnio:gv('bpy'),permuValor:gn('bpv'),permuPos:gn('bppos'),permuPer:gn('bpper'),
-      tieneBNA:gc('cbna'),bnaMonto:gn('bna-monto'),bnaCuotas:parseInt(gv('bna-cuotas'))||12,bnaCuotaManual:gn('bna-cuota-manual'),
-      tienePSA:gc('cpsa'),psaTipo:psaTipo,
-      psaMonto:psaTipo==='0km'?gn('psa-monto-0'):gn('psa-monto-p'),
-      psaGastoPct:psaTipo==='0km'?(gn('psa-gasto-0')||14.54):((gn('psa-q')||10)+(gn('psa-iva')||4)+(gn('psa-gest')||5)),
-      psaCuotaManual:psaTipo==='0km'?gn('psa0-cuota-manual'):gn('psap-cuota-manual'),
-      psaTNAp:gn('psa-tna-p')||47.9,
-      psaCuotasN:psaTipo==='0km'?(parseInt(gv('psa-cuotas-0'))||24):(parseInt(gv('psa-cuotas-p'))||24),
-      tieneCredito:gc('cc'),banco:gv('bba'),cuotas:parseInt(gv('bcu'))||12,tna:gn('btn'),monto:gn('bfi'),anticipo:gn('ban'),adelanto:gn('adelanto'),
-      vigencia:gv('bvi'),fecha:new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'})
-    };
-    var usaLista = d.tienePermuta || d.tieneCredito;
-    var baseCalc = usaLista ? d.precioLista : (d.precioContado || d.precioLista);
-    var pvNeta = d.permuValor - (d.permuPos||0) - (d.permuPer||0);
-    var montoFin = d.tieneCredito ? (d.monto || 0) : 0;
-    var anticipo = d.anticipo || 0;
-    var adelanto = d.adelanto || 0;
-    var aportePermuta = d.tienePermuta ? Math.max(0, pvNeta) : 0;
-    // Neto credito prendario (gastos segun banco - Bancor = 0%)
-    var bancoSelPDF = parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
-    var bancoPDF = BANCOS[bancoSelPDF] || {gastos:0.042};
-    var gastosPorcPDF  = bancoPDF.gastos !== undefined ? bancoPDF.gastos : 0.042;
-    var sellosPorcPDF  = bancoPDF.sello || 0;
-    var gastosPrenPDF  = montoFin > 0 ? Math.round(montoFin * gastosPorcPDF) : 0;
-    var gastosSelloPDF = montoFin > 0 ? Math.round(montoFin * sellosPorcPDF) : 0;
-    // MG Group: 2% sobre total a devolver
-    var gastoTotalPorcPDF = bancoPDF.gastoTotal || 0;
-    var gastoTotalMGpdf = 0;
-    if(gastoTotalPorcPDF > 0 && montoFin > 0 && d.cuotas > 0 && d.tna > 0) {
-      var _tmPDF = Math.pow(1+d.tna/100,1/12)-1;  // usa TNA del vendedor
-      var _cuotaPDF = montoFin*_tmPDF/(1-Math.pow(1+_tmPDF,-d.cuotas));
-      gastoTotalMGpdf = Math.round(_cuotaPDF * d.cuotas * gastoTotalPorcPDF);
-    }
-    var gastosPrenPDFtotal = gastosPrenPDF + gastosSelloPDF + gastoTotalMGpdf;
-    var aporteCredPDF   = Math.max(0, montoFin - gastosPrenPDFtotal);
-    // Neto BNA personal (gastos desde campos editables)
-    var aporteBNApdf = d.tieneBNA && d.bnaMonto > 0 ? Math.max(0, d.bnaMonto - (Math.round(d.bnaMonto*(d.bnaGastoPorc||0)/100)+(d.bnaGastoFijo||0))) : 0;
-    // Calcular PSA aqui para usarlo en totalAportes y en las filas
-    var _psaGastosPDF=0, _psaNetoPDF=0, _psaCuotaPDF=0;
-    if(d.tienePSA && d.psaMonto > 0){
-      _psaGastosPDF = Math.round(d.psaMonto * (d.psaGastoPct||14.54) / 100);
-      _psaNetoPDF   = Math.max(0, d.psaMonto - _psaGastosPDF);
-      if(d.psaCuotaManual > 0){
-        _psaCuotaPDF = d.psaCuotaManual;
-      } else if(d.psaTipo === '0km'){
-        _psaCuotaPDF = d.psaCuotasN > 0 ? Math.round(d.psaMonto / d.psaCuotasN) : 0;
-      } else {
-        var _tmPSApdf = d.psaTNAp > 0 ? Math.pow(1+d.psaTNAp/100,1/12)-1 : 0;
-        _psaCuotaPDF  = _tmPSApdf > 0
-          ? Math.round(d.psaMonto*_tmPSApdf/(1-Math.pow(1+_tmPSApdf,-d.psaCuotasN)))
-          : (d.psaCuotasN > 0 ? Math.round(d.psaMonto/d.psaCuotasN) : 0);
-      }
-    }
-    var aportePSApdf = _psaNetoPDF;
-    var totalAportesPDF = aporteCredPDF + anticipo + adelanto + aportePermuta + aporteBNApdf + aportePSApdf;
-    var cuotaEst=0; // handled in bank table below
+    var W=210,M=18,y=20,E=EMPRESA;
+    var d={cliente:gv('bc'),vendedor:gv('bv'),modelo:gv('bm'),anio:gv('by'),color:gv('bco'),km:gv('bk'),patente:gv('bpa'),notas:gv('bno'),precioLista:gn('bpl'),precioContado:gn('bpc'),tienePermuta:gc('cp'),permuModelo:gv('bpm'),permuValor:gn('bpv'),permuPos:gn('bppos'),permuPer:gn('bpper'),tieneCredito:gc('cc'),banco:gv('bba'),cuotas:parseInt(gv('bcu'))||12,tna:gn('btn'),monto:gn('bfi'),anticipo:gn('ban'),adelanto:gn('adelanto'),vigencia:gv('bvi'),fecha:new Date().toLocaleDateString('es-AR',{day:'2-digit',month:'long',year:'numeric'})};
+    var usaLista=d.tienePermuta||d.tieneCredito;
+    var pvNeta=d.permuValor-(d.permuPos||0)-(d.permuPer||0);
+    var montoFin=d.tieneCredito?(d.monto||0):0;
+    var aportePermuta=d.tienePermuta?Math.max(0,pvNeta):0;
+    var bancoSelPDF=parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
+    var bancoPDF=BANCOS[bancoSelPDF]||{gastos:0.042};
+    var gastosPorcPDF=bancoPDF.gastos!==undefined?bancoPDF.gastos:0.042;
+    var gastosPrenPDF=montoFin>0?Math.round(montoFin*gastosPorcPDF):0;
+    var aporteCredPDF=Math.max(0,montoFin-gastosPrenPDF);
+    var totalAportesPDF=aporteCredPDF+(d.anticipo||0)+(d.adelanto||0)+aportePermuta;
+    var precioBase=usaLista?d.precioLista:(d.precioContado||d.precioLista);
+    var porcTransf=precioBase>20000000?0.05:0.06;
+    var transferencia=Math.round(precioBase*porcTransf);
+    var valorTotalOpPDF=precioBase+transferencia;
     var fmt=function(n){return n?'$ '+Math.round(n).toLocaleString('es-AR'):'-';};
-    var tx=function(doc,str,x,y,opts){var s=String(str||'');if(s)opts?doc.text(s,x,y,opts):doc.text(s,x,y);};
-    // ── HEADER azul Tutu ──
-    // Fondo azul oscuro
     doc.setFillColor(15,52,96);doc.rect(0,0,W,56,'F');
-    // Franja azul brillante abajo
     doc.setFillColor(30,100,200);doc.rect(0,52,W,4,'F');
-    // Logo Tutu PNG — integrado en header azul
-    try {
-      var _la = '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';
-      var _lb = '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jrAIUh1l4HPX0E1NThpleYiMz8jbNeCd/YFgawNHKuro6SGmbG6aCWCQh8mVn5NhB39O+yD8+Lp/9dYr9ab/AArcaOaOmg2r311XVBwH9ImDxGG3JLbAWv09i0nh2k/6Fhv1iT71t9G5sVkdI3Eqeliiy+LsZXvc5xNiHXPCyCO02hOHV5fW4bXVVO2Zzy51PM6OJ7wfG8VwuN9+rksbSDRvEsOp5qynxurlNO0ybKZrZGPa3iDc8upfWEYPjmEiSmooaWtpC974zJMYpWBxvlO8e9feNQ6R4hE+kkpKKkimGV8nhBkcGHjYAno6kE50ZxI1dJTVJFjNHG8gcA4jeB1XutosDBMPbS08FM03bDGyMHgTlaBfv4rPQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERAREQEREBERB//2Q==';
-      // Fondo blanco redondeado para el logo JPEG
-      doc.setFillColor(255,255,255);
-      doc.roundedRect(M, 3, 44, 44, 5, 5, 'F');
-      doc.addImage('data:image/jpeg;base64,' + _la + _lb, 'JPEG', M+1, 4, 42, 42);
-    } catch(e2) {
-      doc.setFillColor(255,255,255);doc.roundedRect(M,6,40,40,4,4,'F');
-      doc.setTextColor(15,52,96);doc.setFont('helvetica','bold');doc.setFontSize(14);doc.text('TUTU',M+20,30,{align:'center'});
-    }
-    // Nombre empresa — derecha del logo (logo ocupa M a M+46)
     doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(255,255,255);
-    doc.text('TUTU AUTOMOTORES', M+52, 20);
+    doc.text('TUTU AUTOMOTORES',M+5,22);
     doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(160,200,255);
-    doc.text('Presupuesto Oficial de Venta', M+52, 30);
+    doc.text('Presupuesto Oficial de Venta',M+5,32);
     doc.setFontSize(8);doc.setTextColor(120,170,230);
-    doc.text(String(E.ciudad+' — '+E.web), M+52, 38);
+    doc.text(E.ciudad+' — '+E.web,M+5,40);
     var presNum='PRES-'+Date.now().toString().slice(-6);
-    var usdHoyPdf = parseFloat((document.getElementById('usd-hoy')||{value:'1250'}).value)||1250;
-    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(160,200,255);doc.text('N° '+presNum,W-M,16,{align:'right'});doc.text(String(d.fecha),W-M,25,{align:'right'});doc.text('USD: $'+usdHoyPdf.toLocaleString('es-AR')+' | Vigencia: '+String(d.vigencia),W-M,34,{align:'right'});
+    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(160,200,255);
+    doc.text('N° '+presNum,W-M,16,{align:'right'});doc.text(String(d.fecha),W-M,25,{align:'right'});doc.text('Vigencia: '+String(d.vigencia),W-M,34,{align:'right'});
     y=70;doc.setFillColor(240,246,255);doc.rect(0,y-6,W,14,'F');
     doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(15,52,96);doc.text('PRESUPUESTO DE VENTA',M,y+2);
-    if(d.vendedor && d.vendedor.length>0){doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text('Asesor: '+String(d.vendedor),W-M,y+2,{align:'right'});}
+    if(d.vendedor) doc.text('Asesor: '+String(d.vendedor),W-M,y+2,{align:'right'});
     y+=18;
-    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,52,96);doc.text('CLIENTE',M,y);doc.setDrawColor(15,52,96);doc.line(M,y+1.5,M+doc.getTextWidth('CLIENTE'),y+1.5);y+=8;
-    doc.setFillColor(248,252,255);doc.setDrawColor(200,220,245);doc.roundedRect(M,y,W-M*2,20,2,2,'FD');
+    doc.setFillColor(248,252,255);doc.setDrawColor(200,220,245);doc.roundedRect(M,y,W-M*2,22,2,2,'FD');
     doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(20,20,20);doc.text(d.cliente||'Cliente',M+5,y+8);
-    doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(100,100,100);
-    var ci=[d.telefono,d.dni?'DNI: '+d.dni:''].filter(Boolean).join(' - ');if(ci && ci.length>0)doc.text(String(ci),M+5,y+16);
-    y+=30;
-    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,52,96);doc.text('VEHICULO',M,y);doc.setDrawColor(15,52,96);doc.line(M,y+1.5,M+doc.getTextWidth('VEHICULO'),y+1.5);y+=8;
+    y+=32;
     doc.setFillColor(248,252,255);doc.setDrawColor(200,220,245);doc.roundedRect(M,y,W-M*2,d.notas?32:22,2,2,'FD');
     doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(15,52,96);
     doc.text((d.modelo||'Vehiculo')+(d.anio?' '+d.anio:''),M+5,y+10);
-    var vi=[d.color?'Color: '+d.color:'',d.km?'KM: '+Number(d.km).toLocaleString('es-AR'):'',d.patente?'Pat: '+d.patente:''].filter(Boolean).join(' - ');
-    if(vi && vi.length > 0){doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(100,100,100);doc.text(String(vi),M+5,y+18);}
-    if(d.notas && d.notas.length>0){doc.setFontSize(9);doc.setTextColor(120,120,120);doc.text(String(d.notas),M+5,y+27,{maxWidth:W-M*2-10});}
     y+=d.notas?42:32;
-    doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,52,96);doc.text('PRECIOS',M,y);doc.setDrawColor(15,52,96);doc.line(M,y+1.5,M+doc.getTextWidth('PRECIOS'),y+1.5);y+=10;
-    var precioBasePDF = usaLista ? d.precioLista : (d.precioContado || d.precioLista);
-    var porcTransfPDF = precioBasePDF > 20000000 ? 0.05 : 0.06;
-    var transferencia = Math.round(precioBasePDF * porcTransfPDF);
-    var valorTotalOpPDF = precioBasePDF + transferencia;
-    var diferenciaPagarPDF = Math.max(0, valorTotalOpPDF - totalAportesPDF);
-    var hayDescuentoPDF = totalAportesPDF > 0;
-
     var rows=[];
     if(d.precioLista) rows.push({l:'Precio de lista',v:fmt(d.precioLista),c:[60,60,60]});
-    if(!usaLista && d.precioContado && d.precioContado!==d.precioLista) rows.push({l:'Precio contado',v:fmt(d.precioContado),c:[30,122,74],b:true});
-    if(d.tienePermuta && d.permuValor){
-      rows.push({l:'Tasacion: '+(d.permuModelo||'')+(d.permuAnio?' '+d.permuAnio:''),v:fmt(d.permuValor),c:[180,100,0]});
-      if(d.permuPos>0) rows.push({l:'  (-) Posicion de venta',v:'- '+fmt(d.permuPos),c:[200,80,60]});
-      if(d.permuPer>0) rows.push({l:'  (-) Peritaje',v:'- '+fmt(d.permuPer),c:[200,80,60]});
-      rows.push({l:'  (-) Neto permuta',v:'- '+fmt(aportePermuta),c:[30,150,80],b:true});
-    }
-    if(d.tieneCredito && montoFin){
-      rows.push({l:'Total solicitado (bruto)',v:fmt(montoFin),c:[100,100,100]});
-      if(gastosPrenPDF>0) if(gastosPrenPDF>0) rows.push({l:'  (-) Gastos 4.2%',v:'- '+fmt(gastosPrenPDF),c:[180,60,60]});
-      if(gastosSelloPDF>0) rows.push({l:'  (-) Sellos 0.7% s/monto',v:'- '+fmt(gastosSelloPDF),c:[180,60,60]});
-      if(gastoTotalMGpdf>0) rows.push({l:'  (-) MG 2% s/total devolver',v:'- '+fmt(gastoTotalMGpdf),c:[180,60,60]});
-      rows.push({l:'  Neto credito banco',v:'- '+fmt(aporteCredPDF),c:[26,79,171],b:true});
-    }
-    if(anticipo > 0) rows.push({l:'(-) Anticipo',v:'- '+fmt(anticipo),c:[26,79,171]});
-    if(adelanto > 0) rows.push({l:'(-) Adelanto efectivo',v:'- '+fmt(adelanto),c:[30,140,60],b:true});
-    if(d.tienePSA && d.psaMonto > 0){
-      var psaLabel = 'PSA ' + (d.psaTipo==='0km'?'0km':'Patentado');
-      rows.push({l:psaLabel+' (bruto)',v:fmt(d.psaMonto),c:[80,80,80]});
-      rows.push({l:'  (-) Gastos PSA ('+d.psaGastoPct+'%)',v:'- '+fmt(_psaGastosPDF),c:[180,60,60]});
-      rows.push({l:'  Neto PSA',v:'- '+fmt(_psaNetoPDF),c:[26,120,171],b:true});
-    }
-    if(d.tieneBNA && d.bnaMonto > 0){
-      rows.push({l:'Credito BNA (bruto)',v:fmt(d.bnaMonto),c:[80,80,80]});
-      if(d.bnaGastoFijo>0||d.bnaGastoPorc>0) {
-        var _bnaGasTotRow = Math.round(d.bnaMonto*(d.bnaGastoPorc||0)/100)+(d.bnaGastoFijo||0);
-        rows.push({l:'  (-) Gastos credito personal',v:'- '+fmt(_bnaGasTotRow),c:[180,60,60]});
-      }
-      rows.push({l:'  Neto BNA',v:'- '+fmt(aporteBNApdf),c:[26,120,171],b:true});
-    }
-    if(transferencia>0) rows.push({l:'(+) Transferencia ('+(porcTransfPDF*100)+'%)',v:fmt(transferencia),c:[180,140,0]});
+    if(!usaLista&&d.precioContado&&d.precioContado!==d.precioLista) rows.push({l:'Precio contado',v:fmt(d.precioContado),c:[30,122,74],b:true});
+    if(d.tienePermuta&&d.permuValor){ rows.push({l:'Tasacion: '+(d.permuModelo||''),v:fmt(d.permuValor),c:[180,100,0]}); rows.push({l:'  Neto permuta',v:'- '+fmt(aportePermuta),c:[30,150,80],b:true}); }
+    if(d.tieneCredito&&montoFin){ rows.push({l:'Credito banco',v:'- '+fmt(aporteCredPDF),c:[26,79,171],b:true}); }
+    if(d.anticipo>0) rows.push({l:'(-) Anticipo',v:'- '+fmt(d.anticipo),c:[26,79,171]});
+    if(d.adelanto>0) rows.push({l:'(-) Adelanto efectivo',v:'- '+fmt(d.adelanto),c:[30,140,60],b:true});
+    if(transferencia>0) rows.push({l:'(+) Transferencia ('+(porcTransf*100)+'%)',v:fmt(transferencia),c:[180,140,0]});
     rows.push({l:'VALOR TOTAL OPERACION',v:fmt(valorTotalOpPDF),c:[80,80,80],b:true});
-    var diferencia_final_pdf = valorTotalOpPDF - totalAportesPDF;
-    if(totalAportesPDF > 0) rows.push({l:'PLATA TOTAL CLIENTE',v:fmt(totalAportesPDF),c:[80,80,150],b:true});
-    var labelFinal, totalFinal, colorFinal;
-    if(totalAportesPDF === 0){
-      // Sin credito ni permuta — mostrar total directo
-      labelFinal = 'TOTAL A PAGAR'; totalFinal = valorTotalOpPDF; colorFinal = [15,52,96];
-    } else if(diferencia_final_pdf > 0){
-      labelFinal = 'FALTA AL CLIENTE'; totalFinal = diferencia_final_pdf; colorFinal = [200,16,46];
-    } else if(diferencia_final_pdf < 0){
-      labelFinal = 'LE SOBRA AL CLIENTE'; totalFinal = Math.abs(diferencia_final_pdf); colorFinal = [30,140,60];
-    } else {
-      labelFinal = 'CUBIERTO EXACTO'; totalFinal = 0; colorFinal = [30,140,60];
-    }
+    var diferencia_final_pdf=valorTotalOpPDF-totalAportesPDF;
+    var labelFinal,totalFinal,colorFinal;
+    if(totalAportesPDF===0){ labelFinal='TOTAL A PAGAR';totalFinal=valorTotalOpPDF;colorFinal=[15,52,96]; }
+    else if(diferencia_final_pdf>0){ labelFinal='FALTA AL CLIENTE';totalFinal=diferencia_final_pdf;colorFinal=[200,16,46]; }
+    else if(diferencia_final_pdf<0){ labelFinal='LE SOBRA AL CLIENTE';totalFinal=Math.abs(diferencia_final_pdf);colorFinal=[30,140,60]; }
+    else{ labelFinal='CUBIERTO EXACTO';totalFinal=0;colorFinal=[30,140,60]; }
     rows.push({l:labelFinal,v:fmt(totalFinal),c:colorFinal,b:true,big:true});
     rows.forEach(function(r){
-      var lbl = String(r.l || '');
-      var val = String(r.v || '');
-      if(!lbl) return;
-      // Add new page if too close to bottom
-      if(y > H-70){ doc.addPage(); y=20; }
-      if(r.big){
-        doc.setFillColor(15,52,96);
-        doc.rect(M,y-5,W-M*2,12,'F');
-        doc.setFont('helvetica','bold');
-        doc.setFontSize(12);
-        doc.setTextColor(255,255,255);
-        doc.text(lbl,M+5,y+3);
-        doc.setTextColor(200,16,46);
-        if(val && val !== '-') doc.text(val,W-M-5,y+3,{align:'right'});
-        y+=14;
-      } else {
-        doc.setFont('helvetica', r.b?'bold':'normal');
-        doc.setFontSize(11);
-        doc.setTextColor(r.c[0], r.c[1], r.c[2]);
-        doc.text(lbl, M+3, y);
-        if(val && val !== '-') doc.text(val, W-M-3, y, {align:'right'});
-        doc.setDrawColor(230,228,224);
-        doc.line(M,y+2,W-M,y+2);
-        y+=9;
-      }
+      var lbl=String(r.l||''),val=String(r.v||''); if(!lbl) return;
+      if(y>230){ doc.addPage(); y=20; }
+      if(r.big){ doc.setFillColor(15,52,96);doc.rect(M,y-5,W-M*2,12,'F');doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(255,255,255);doc.text(lbl,M+5,y+3);if(val&&val!=='-'){doc.setTextColor(255,180,180);doc.text(val,W-M-5,y+3,{align:'right'});}y+=14; }
+      else{ doc.setFont('helvetica',r.b?'bold':'normal');doc.setFontSize(11);doc.setTextColor(r.c[0],r.c[1],r.c[2]);doc.text(lbl,M+3,y);if(val&&val!=='-') doc.text(val,W-M-3,y,{align:'right'});doc.setDrawColor(230,228,224);doc.line(M,y+2,W-M,y+2);y+=9; }
     });
-    if(d.tieneCredito && montoFin){
-      if(y > H-80){ doc.addPage(); y=20; }
-      y+=8;
-      doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(26,79,171);
-      doc.text('FINANCIACION',M,y);
-      doc.setDrawColor(15,52,96);doc.line(M,y+1.5,M+doc.getTextWidth('FINANCIACION'),y+1.5);
-      y+=10;
-
-      // Calcular cuota del banco seleccionado
-      var bancoSelIdx2 = parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
-      var bancoSel2 = BANCOS[bancoSelIdx2]||{tna:d.tna||0,sello:0,gastos:0.042,fijo:0,personal:false,nombre:d.banco||'Banco'};
-      var tnaFinal = d.tna || 0;  // usa solo el campo TNA del vendedor
-      var selloFinal = bancoSel2.sello || 0;
-      var _gasBase2  = bancoSel2.personal ? (bancoSel2.fijo||0) : Math.round(montoFin*(bancoSel2.gastos!==undefined?bancoSel2.gastos:0.042));
-      var _gasSello2 = Math.round(montoFin*(bancoSel2.sello||0));
-      var _gastosTot2 = 0;
-      if((bancoSel2.gastoTotal||0) > 0 && montoFin > 0 && tnaFinal > 0){
-        var _tm2 = Math.pow(1+tnaFinal/100,1/12)-1;
-        var _c2 = montoFin*_tm2/(1-Math.pow(1+_tm2,-d.cuotas));
-        _gastosTot2 = Math.round(_c2*d.cuotas*(bancoSel2.gastoTotal||0));  // tnaFinal = d.tna
-      }
-      var gastosARS2 = _gasBase2 + _gasSello2 + _gastosTot2;
-      var montoRecibe2 = montoFin - gastosARS2;
-      var nombreBanco2 = (bancoSel2.nombre||d.banco||'Banco').split(' (')[0];
-      var cuotaManualPDF = gn('cuota-manual');
-      var cuotaFinal = 0;
-      if(cuotaManualPDF > 0){
-        cuotaFinal = cuotaManualPDF;
-      } else if(tnaFinal > 0){
-        var tmF = Math.pow(1+tnaFinal/100,1/12)-1;
-        cuotaFinal = montoFin*(1+selloFinal)*tmF/(1-Math.pow(1+tmF,-d.cuotas));
-      }
-
-      // Caja banco seleccionado
-      doc.setFillColor(232,238,250);doc.setDrawColor(180,200,240);
-      doc.roundedRect(M,y,W-M*2,gastosARS2>0?38:28,2,2,'FD');
-      doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(26,79,171);
-      doc.text(String(nombreBanco2||'Banco'),M+5,y+9);
-      var cyF=y+17;
-      doc.setFont('helvetica','normal');doc.setFontSize(9);
-      doc.setTextColor(60,60,60);doc.text('Monto solicitado:',M+5,cyF);
-      doc.setFont('helvetica','bold');doc.text(fmt(montoFin),M+70,cyF); cyF+=7;
-      if(gastosARS2>0){
-        doc.setFont('helvetica','normal');doc.setTextColor(180,60,60);
-        doc.text('(-) Gastos:',M+5,cyF);
-        doc.setFont('helvetica','bold');doc.text('- '+fmt(gastosARS2),M+70,cyF); cyF+=7;
-        doc.setFont('helvetica','bold');doc.setTextColor(30,140,60);
-        doc.text('Monto a recibir:',M+5,cyF);
-        doc.text(fmt(montoRecibe2>0?montoRecibe2:0),M+70,cyF);
-      }
-      doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(26,79,171);
-      doc.text(cuotaFinal>0?fmt(Math.round(cuotaFinal))+' x '+d.cuotas:'consultar',W-M-5,y+(gastosARS2>0?22:18),{align:'right'});
-      doc.setFontSize(8);doc.setTextColor(100,100,130);
-      doc.text('Cuota estimada',W-M-5,y+(gastosARS2>0?29:25),{align:'right'});
-      y+=(gastosARS2>0?46:36);
-
-      doc.setFontSize(7.5);doc.setFont('helvetica','italic');doc.setTextColor(130,130,130);
-      doc.text('* Cuota estimada. Sujeta a aprobacion crediticia.',M,y,{maxWidth:W-M*2});
-      y+=10;
-    }
-    // Credito Personal BNA en PDF
-    if(d.tieneBNA && d.bnaMonto > 0) {
-      if(y > H-80){ doc.addPage(); y=20; }
-      y+=8;
-      var _bnaBancoKey = d.bnaBanco || 'bna';
-      var _bnaNombre = BANCOS_PERSONAL && BANCOS_PERSONAL[_bnaBancoKey] ? BANCOS_PERSONAL[_bnaBancoKey].nombre : 'Nacion';
-      var _bnaTitle = 'CREDITO PERSONAL — ' + _bnaNombre.toUpperCase();
-      doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(15,52,96);
-      doc.text(String(_bnaTitle),M,y);
-      doc.setDrawColor(15,52,96);doc.line(M,y+1.5,M+doc.getTextWidth(String(_bnaTitle)),y+1.5);
-      y+=10;
-      var _bnaGasFijoPDF = d.bnaGastoFijo || 0;
-      var _bnaGasPorcPDF = d.bnaGastoPorc || 0;
-      var _bnaGastosTotPDF = Math.round(d.bnaMonto * _bnaGasPorcPDF / 100) + _bnaGasFijoPDF;
-      var bnaRec = Math.max(0, d.bnaMonto - _bnaGastosTotPDF);
-      var _bnaTNApdf = d.bnaTNA || 38;
-      var bnaTm2 = _bnaTNApdf > 0 ? Math.pow(1+_bnaTNApdf/100,1/12)-1 : 0;
-      var bnaCuotaPDF = d.bnaCuotaManual > 0 ? d.bnaCuotaManual : (bnaTm2>0 ? d.bnaMonto*bnaTm2/(1-Math.pow(1+bnaTm2,-d.bnaCuotas)) : Math.round(d.bnaMonto/d.bnaCuotas));
-      doc.setFillColor(240,246,255);doc.setDrawColor(200,220,245);
-      doc.roundedRect(M,y,W-M*2,_bnaGastosTotPDF>0?37:30,2,2,'FD');
-      var byy = y+8;
-      var bnaRows = [[fmt(d.bnaMonto),'Monto solicitado','normal',[60,60,80]]];
-      if(_bnaGasFijoPDF>0) bnaRows.push(['- '+fmt(_bnaGasFijoPDF),'(-) Gasto fijo','normal',[180,60,60]]);
-      if(_bnaGasPorcPDF>0) bnaRows.push(['- '+fmt(Math.round(d.bnaMonto*_bnaGasPorcPDF/100)),'(-) Gasto '+_bnaGasPorcPDF+'%','normal',[180,60,60]]);
-      bnaRows.push([fmt(bnaRec),'Monto a recibir','bold',[30,150,70]]);
-      bnaRows.push([fmt(Math.round(bnaCuotaPDF))+' x '+d.bnaCuotas,'Cuota estimada','bold',[26,79,171]]);
-      bnaRows.forEach(function(row){
-        doc.setFont('helvetica',row[2]);doc.setFontSize(9);
-        doc.setTextColor(row[3][0],row[3][1],row[3][2]);
-        doc.text(row[1]+':',M+5,byy);
-        doc.text(String(row[0]),W-M-5,byy,{align:'right'});
-        byy+=7;
-      });
-      doc.setFont('helvetica','italic');doc.setFontSize(7.5);doc.setTextColor(100,100,130);
-      doc.text('* Sujeto a aprobacion crediticia.',M+5,byy+2);
-      y+=38;
-    }
-
-    if(y > H-55){ doc.addPage(); y=20; }
-    y=Math.max(y,Math.min(y+10,H-55));
+    y=Math.max(y+10,240);
     doc.setFillColor(240,246,255);doc.rect(M,y,W-M*2,12,'F');doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100,100,100);doc.text('Vigencia: '+d.vigencia+' desde la fecha de emision.',M+4,y+8);
     y+=20;doc.setDrawColor(180,180,180);doc.line(M,y,M+55,y);doc.line(W-M-55,y,W-M,y);
     doc.setFontSize(8);doc.setTextColor(150,150,150);doc.text('Firma del cliente',M+4,y+5);doc.text('Asesor de ventas',W-M-4,y+5,{align:'right'});
-    doc.setFillColor(15,52,96);doc.rect(0,H-18,W,18,'F');doc.setFillColor(30,100,200);doc.rect(0,H-18,W,2,'F');
-    doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(150,150,150);
-    doc.text(E.nombre+' - '+E.ciudad+' - '+E.web,W/2,H-8,{align:'center'});
+    doc.setFillColor(15,52,96);doc.rect(0,277,W,20,'F');doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(150,150,150);
+    doc.text(E.nombre+' - '+E.ciudad+' - '+E.web,W/2,287,{align:'center'});
     doc.save('Presupuesto_'+(d.cliente||'Cliente').replace(/\s+/g,'_')+'_Tutu.pdf');
     snkShow('PDF descargado');
   } catch(e){ snkShow('Error: '+e.message); console.error(e); }
@@ -1628,91 +940,82 @@ function genPDF(){
 
 function snkShow(msg){ var s=document.getElementById('snk'); s.textContent=msg; s.classList.add('show'); clearTimeout(window._st); window._st=setTimeout(function(){ s.classList.remove('show'); },3000); }
 
-// ══ STOCK SELECTOR ════════════════════════════════════
-function initStockSelect() {
-  var sel = document.getElementById('stock-sel');
-  if (!sel) return;
-  STOCK_LIST.forEach(function(s) {
-    var opt = document.createElement('option');
-    opt.value = s.label + '|' + s.precio + '|' + s.moneda;
-    opt.textContent = s.label + (s.precio > 0 ? ' — ' + (s.moneda === 'USD' ? 'USD ' + s.precio.toLocaleString('es-AR') : '$ ' + Math.round(s.precio).toLocaleString('es-AR')) : '');
-    sel.appendChild(opt);
-  });
+function initStockSelect(){
+  var sel=document.getElementById('stock-sel'); if(!sel) return;
+  STOCK_LIST.forEach(function(s){ var opt=document.createElement('option'); opt.value=s.label+'|'+s.precio+'|'+s.moneda; opt.textContent=s.label+(s.precio>0?' — '+(s.moneda==='USD'?'USD '+s.precio.toLocaleString('es-AR'):'$ '+Math.round(s.precio).toLocaleString('es-AR')):''); sel.appendChild(opt); });
 }
+function getUSD(){ return parseFloat(document.getElementById('usd-hoy').value)||1250; }
+function onUSDChange(){ var val=getUSD(); try{localStorage.setItem('ruthina_usd',val);}catch(e){} var sel=document.getElementById('stock-sel'); if(sel&&sel.value){ var parts=sel.value.split('|'); if(parts[2]==='USD'){autoFillStock(sel.value);return;} } upP(); }
+function autoFillStock(val){ if(!val) return; var parts=val.split('|'); var label=parts[0],precio=parseFloat(parts[1])||0,moneda=parts[2]||'ARS'; document.getElementById('bm').value=label; if(precio>0){ var precioARS=moneda==='USD'?Math.round(precio*getUSD()):precio; document.getElementById('bpl').value=precioARS; document.getElementById('bpc').value=Math.round(precioARS*0.97); var usdBadge=document.getElementById('usd-badge'); if(usdBadge){ if(moneda==='USD'){usdBadge.textContent='USD '+precio.toLocaleString('es-AR')+' x $ '+getUSD().toLocaleString('es-AR')+' = ARS';usdBadge.style.display='block';}else{usdBadge.style.display='none';} } } upP(); }
+function initBancoSelect(){ var sel=document.getElementById('banco-sel'); if(!sel) return; BANCOS.forEach(function(b,i){ var opt=document.createElement('option'); opt.value=i; opt.textContent=b.nombre; sel.appendChild(opt); }); }
+function autoFillBanco(idx){ if(idx===''||idx==='0') return; var b=BANCOS[parseInt(idx)]; if(!b||b.tna===0) return; document.getElementById('btn').value=b.tna; document.getElementById('bba').value=b.nombre.split(' (')[0]; var hint=document.getElementById('tna-hint'); if(hint){ var parts=[]; if(b.sello>0) parts.push(b.sello*100+'% sellos'); if(b.gastos>0) parts.push(b.gastos*100+'% gastos'); if(b.gastoTotal>0) parts.push(b.gastoTotal*100+'% s/total (MG)'); if(b.fijo>0) parts.push('$800k fijo (BNA)'); hint.textContent=parts.length?'('+parts.join(' + ')+')':\'\'; } upP(); }
 
-function getUSD() {
-  return parseFloat(document.getElementById('usd-hoy').value) || 1250;
-}
-
-function onUSDChange() {
-  var val = getUSD();
-  try { localStorage.setItem('ruthina_usd', val); } catch(e){}
-  // Si hay un auto USD seleccionado, recalcular precio
-  var sel = document.getElementById('stock-sel');
-  if (sel && sel.value) {
-    var parts = sel.value.split('|');
-    if (parts[2] === 'USD') {
-      autoFillStock(sel.value);
-      return; // autoFillStock llama upP()
+// ══ COMPARADOR ══════════════════════════════════════════
+var compMLProm=null,compFBProm=null,compMon='ARS'
+function openComp(){ document.getElementById('sc').style.display='none'; document.getElementById('sb').style.display='none'; document.getElementById('comp').style.display='flex'; var d=new Date(),dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']; document.getElementById('comp-fecha').textContent=dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()]; }
+function closeComp(){ document.getElementById('comp').style.display='none'; document.getElementById('sc').style.display='flex'; }
+function compFmt(n,m){ m=m||compMon; return m==='ARS'?'$ '+Math.round(n).toLocaleString('es-AR'):'USD '+Math.round(n).toLocaleString('es-AR'); }
+async function compBuscar(){
+  var marca=document.getElementById('c-marca').value.trim(), modelo=document.getElementById('c-modelo').value.trim(), version=document.getElementById('c-version').value.trim(), anio=document.getElementById('c-anio').value.trim();
+  compMon=document.getElementById('c-moneda').value;
+  if(!marca||!modelo){alert('Ingresa al menos Marca y Modelo');return}
+  var q=[marca,modelo,version,anio].filter(Boolean).join(' ');
+  var qslug=q.toLowerCase().replace(/\s+/g,'-');
+  document.getElementById('comp-ml-link').href='https://autos.mercadolibre.com.ar/'+encodeURIComponent(qslug)+'_NoIndex_True';
+  document.getElementById('comp-fb-link').href='https://www.facebook.com/marketplace/cordoba/search/?query='+encodeURIComponent(q)+'&category_id=vehicles';
+  document.getElementById('comp-plats').style.display='block';
+  document.getElementById('comp-resumen').style.display='none';
+  document.getElementById('comp-ml-content').innerHTML='<div class="comp-spinner-wrap"><div class="comp-spinner"></div>Buscando en Mercado Libre...</div>';
+  compMLProm=null;
+  var btn=document.getElementById('btn-comp-buscar');
+  btn.disabled=true; btn.textContent='Buscando...';
+  try{
+    var sys='Sos un asistente de Tutu Automotores Cordoba Argentina. Busca precios reales de autos usados en Mercado Libre Argentina y devuelve SOLO JSON valido sin texto extra ni markdown. Formato: {"promedio":12500000,"minimo":10000000,"maximo":15000000,"cantidad":6,"moneda":"ARS","listings":[{"titulo":"Toyota Corolla XEI 2021","precio":13000000}],"nota":"Datos de MercadoLibre Argentina"} Si no hay resultados: {"error":"Sin resultados"} SOLO JSON.';
+    var resp=await fetch('/api/buscar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,tools:[{type:'web_search_20250305',name:'web_search'}],system:sys,messages:[{role:'user',content:'Busca en Mercado Libre Argentina autos usados: '+q+'. Moneda: '+compMon+'. Trae 4 a 8 avisos reales.'}]})});
+    var data=await resp.json();
+    if(data.error) throw new Error(data.error.message||data.error);
+    var texto='';
+    if(data.content) for(var b of data.content) if(b.type==='text') texto+=b.text;
+    texto=texto.replace(/```json|```/g,'').trim();
+    var match=texto.match(/\{[\s\S]*\}/);
+    if(!match) throw new Error('Respuesta invalida');
+    var r=JSON.parse(match[0]);
+    if(r.error){ document.getElementById('comp-ml-content').innerHTML='<div class="comp-err">'+r.error+'</div>'; }
+    else{
+      compMLProm=r.promedio;
+      var m=r.moneda||compMon;
+      var h2='<div class="comp-prom-val">'+compFmt(r.promedio,m)+'</div><div class="comp-prom-sub">Promedio de '+(r.cantidad||(r.listings&&r.listings.length)||'?')+' avisos en ML</div><div class="comp-stats"><div class="comp-stat"><div class="comp-stat-l">Minimo</div><div class="comp-stat-v">'+compFmt(r.minimo,m)+'</div></div><div class="comp-stat"><div class="comp-stat-l">Maximo</div><div class="comp-stat-v">'+compFmt(r.maximo,m)+'</div></div><div class="comp-stat"><div class="comp-stat-l">Avisos</div><div class="comp-stat-v">'+(r.cantidad||(r.listings&&r.listings.length)||'?')+'</div></div></div>';
+      if(r.listings&&r.listings.length){h2+='<div class="comp-listings">';for(var l of r.listings) h2+='<div class="comp-litem"><span class="comp-ltitle">'+l.titulo+'</span><span class="comp-lprice">'+compFmt(l.precio,l.moneda||m)+'</span></div>';h2+='</div>';}
+      if(r.nota) h2+='<div class="comp-nota">'+r.nota+'</div>';
+      document.getElementById('comp-ml-content').innerHTML=h2;
+      compActualizarResumen();
     }
-  }
-  upP();
+  }catch(e){ document.getElementById('comp-ml-content').innerHTML='<div class="comp-err">Error: '+e.message+'</div>'; }
+  btn.disabled=false; btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Buscar precios en ML';
+}
+function compCalcFB(){
+  var min=parseFloat(document.getElementById('comp-fb-min').value)||0, max=parseFloat(document.getElementById('comp-fb-max').value)||0, cant=parseInt(document.getElementById('comp-fb-cant').value)||0;
+  if(!min&&!max){alert('Ingresa al menos un precio');return}
+  var vals=[min,max].filter(v=>v>0);
+  compFBProm=vals.reduce((a,b)=>a+b,0)/vals.length;
+  document.getElementById('comp-fb-res-val').textContent=compFmt(compFBProm);
+  document.getElementById('comp-fb-res-sub').textContent=cant?cant+' avisos vistos':'';
+  document.getElementById('comp-fb-res').style.display='block';
+  compActualizarResumen();
+}
+function compActualizarResumen(){
+  var sec=document.getElementById('comp-resumen');
+  if(!compMLProm&&!compFBProm){sec.style.display='none';return}
+  sec.style.display='block';
+  var vals=[compMLProm,compFBProm].filter(v=>v!==null);
+  var prom=vals.reduce((a,b)=>a+b,0)/vals.length;
+  document.getElementById('comp-res-main').textContent=compFmt(prom);
+  document.getElementById('comp-res-ml').textContent=compMLProm?compFmt(compMLProm):'Pendiente';
+  document.getElementById('comp-res-fb').textContent=compFBProm?compFmt(compFBProm):'Pendiente';
+  if(compMLProm&&compFBProm){ var diff=Math.abs(compMLProm-compFBProm); var pct=((diff/Math.min(compMLProm,compFBProm))*100).toFixed(1); document.getElementById('comp-res-diff').textContent=compFmt(diff)+' ('+pct+'%)'; document.getElementById('comp-res-pills').innerHTML='<span class="comp-pill">'+(compMLProm>compFBProm?'ML mas alto':'FB mas alto')+'</span><span class="comp-pill">2 fuentes</span>'; }
+  else{ document.getElementById('comp-res-diff').textContent='&#8212;'; document.getElementById('comp-res-pills').innerHTML='<span class="comp-pill">Falta cargar FB Marketplace</span>'; }
 }
 
-function autoFillStock(val) {
-  if (!val) return;
-  var parts = val.split('|');
-  var label = parts[0], precio = parseFloat(parts[1])||0, moneda = parts[2]||'ARS';
-  document.getElementById('bm').value = label;
-  if (precio > 0) {
-    var precioARS = moneda === 'USD' ? Math.round(precio * getUSD()) : precio;
-    document.getElementById('bpl').value = precioARS;
-    document.getElementById('bpc').value = Math.round(precioARS * 0.97);
-    // Show USD badge if applicable
-    var usdBadge = document.getElementById('usd-badge');
-    if (usdBadge) {
-      if (moneda === 'USD') {
-        usdBadge.textContent = 'USD ' + precio.toLocaleString('es-AR') + ' x $ ' + getUSD().toLocaleString('es-AR') + ' = ARS';
-        usdBadge.style.display = 'block';
-      } else {
-        usdBadge.style.display = 'none';
-      }
-    }
-  }
-  upP();
-}
-
-// ══ BANCO SELECTOR ═════════════════════════════════════
-function initBancoSelect() {
-  var sel = document.getElementById('banco-sel');
-  if (!sel) return;
-  BANCOS.forEach(function(b, i) {
-    var opt = document.createElement('option');
-    opt.value = i;
-    opt.textContent = b.nombre;
-    sel.appendChild(opt);
-  });
-}
-
-function autoFillBanco(idx) {
-  if (idx === '' || idx === '0') return;
-  var b = BANCOS[parseInt(idx)];
-  if (!b || b.tna === 0) return;
-  document.getElementById('btn').value = b.tna;
-  document.getElementById('bba').value = b.nombre.split(' (')[0];
-  var hint = document.getElementById('tna-hint');
-  if (hint) {
-    var parts = [];
-    if (b.sello > 0) parts.push(b.sello*100 + '% sellos');
-    if (b.gastos > 0) parts.push(b.gastos*100 + '% gastos');
-    if (b.gastoTotal > 0) parts.push(b.gastoTotal*100 + '% s/total (MG)');
-    if (b.fijo > 0) parts.push('$800k fijo (BNA)');
-    hint.textContent = parts.length ? '(' + parts.join(' + ') + ')' : '';
-  }
-  upP();
-}
-
-// ══ INIT ════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', function(){
   try { API_KEY = localStorage.getItem('ruthina_key') || ''; } catch(e){ API_KEY=''; }
   if (!API_KEY) {
