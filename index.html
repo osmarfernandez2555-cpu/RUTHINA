@@ -111,6 +111,11 @@ input:checked+.tsl::before{transform:translateX(18px)}
 .match-empty{text-align:center;padding:3rem 1rem;color:#94a3b8}
 .match-empty-icon{font-size:40px;margin-bottom:12px}
 .match-err{font-size:12px;color:#C8102E;background:#FEF0F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px}
+.cliente-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#FFF9F0;border-radius:8px;border:1px solid #FDE68A;margin-bottom:6px;gap:8px;flex-wrap:wrap}
+.cliente-nombre{font-size:13px;font-weight:700;color:#92400E}
+.cliente-tel{font-size:12px;color:#667781}
+.cliente-fecha{font-size:11px;color:#94a3b8;margin-left:auto}
+.btn-cliente-ok{height:28px;padding:0 10px;background:#166534;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer}
 @media(max-width:600px){.match-g2{grid-template-columns:1fr}.match-item-grid{grid-template-columns:1fr 1fr}}
 
 /* ══ COMPARADOR ══════════════════════════════════════════ */
@@ -250,6 +255,11 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <button class="btn-match-buscar" id="btn-match-buscar" onclick="matchBuscar()">
         🔍 Buscar en todo el stock
       </button>
+    </div>
+    <!-- Clientes esperando -->
+    <div id="match-clientes-section" style="display:none" class="match-card">
+      <div class="match-stitle" style="color:#92400E">👤 Clientes esperando este auto</div>
+      <div id="match-clientes-list"></div>
     </div>
     <div id="match-results" class="match-results"></div>
   </div>
@@ -1127,7 +1137,44 @@ async function matchBuscar(){
     document.getElementById('match-results').innerHTML='<div class="match-err">Error: '+e.message+'</div>';
   }
   
+  // Buscar clientes esperando ese auto
+  try {
+    var cparams = new URLSearchParams();
+    if(modelo) cparams.append('modelo', modelo);
+    if(anio) cparams.append('anio', anio);
+    var cresp = await fetch(RAILWAY_URL+'/api/clientes?'+cparams.toString());
+    var clientes = await cresp.json();
+    var csec = document.getElementById('match-clientes-section');
+    var clist = document.getElementById('match-clientes-list');
+    if(clientes.length > 0){
+      csec.style.display='block';
+      clist.innerHTML = clientes.map(function(c){
+        var fecha = new Date(c.created_at).toLocaleDateString('es-AR');
+        return '<div class="cliente-item">'+
+          '<div>'+
+            '<div class="cliente-nombre">👤 '+c.nombre+'</div>'+
+            '<div class="cliente-tel">'+(c.telefono?'📞 '+c.telefono:'Sin teléfono')+(c.asesor?' · Asesor: '+c.asesor:'')+'</div>'+
+            (c.notas?'<div style="font-size:11px;color:#667781;margin-top:2px">'+c.notas+'</div>':'')+
+          '</div>'+
+          '<span class="cliente-fecha">'+fecha+'</span>'+
+          '<button class="btn-cliente-ok" onclick="marcarClienteEncontrado('+c.id+', this)">✓ Encontrado</button>'+
+        '</div>';
+      }).join('');
+    } else {
+      csec.style.display='none';
+    }
+  } catch(e){ document.getElementById('match-clientes-section').style.display='none'; }
+
   btn.disabled=false; btn.textContent='🔍 Buscar en todo el stock';
+}
+
+async function marcarClienteEncontrado(id, btn){
+  try {
+    await fetch(RAILWAY_URL+'/api/clientes/'+id, {method:'PATCH', headers:{'Content-Type':'application/json'}, body:JSON.stringify({estado:'Encontrado'})});
+    btn.closest('.cliente-item').style.opacity='0.4';
+    btn.textContent='✓ Listo';
+    btn.disabled=true;
+  } catch(e){ alert('Error: '+e.message); }
 }
 
 // ══ COMPARADOR ══════════════════════════════════════════
