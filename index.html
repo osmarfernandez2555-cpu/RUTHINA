@@ -576,14 +576,9 @@ var chatHistory = [], typing = false, lastFrom = null, firstMsg = true;
 async function callClaude(userText) {
   chatHistory.push({role:'user', content: userText});
   var messages = chatHistory.map(function(m){ return {role:m.role, content:m.content}; });
-  var res = await fetch('https://api.anthropic.com/v1/messages', {
+  var res = await fetch('/api/chat', {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': API_KEY,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-access': 'true'
-    },
+    headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
       max_tokens: 1024,
@@ -597,6 +592,27 @@ async function callClaude(userText) {
   }
   var data = await res.json();
   var reply = data.content && data.content[0] ? data.content[0].text : 'No pude responder.';
+
+  // Procesar comandos de stock
+  var guardarMatch = reply.match(/\[GUARDAR_STOCK:(\{[\s\S]*?\})\]/);
+  var eliminarMatch = reply.match(/\[ELIMINAR_STOCK:(\{[\s\S]*?\})\]/);
+
+  if (guardarMatch) {
+    try {
+      var nuevoAuto = JSON.parse(guardarMatch[1]);
+      await fetch('/api/stock', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(nuevoAuto)});
+    } catch(e) { console.error('Error guardando stock:', e); }
+    reply = reply.replace(/\[GUARDAR_STOCK:[\s\S]*?\]/g, '').trim();
+  }
+
+  if (eliminarMatch) {
+    try {
+      var target = JSON.parse(eliminarMatch[1]);
+      await fetch('/api/stock', {method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify(target)});
+    } catch(e) { console.error('Error eliminando stock:', e); }
+    reply = reply.replace(/\[ELIMINAR_STOCK:[\s\S]*?\]/g, '').trim();
+  }
+
   chatHistory.push({role:'assistant', content: reply});
   if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
   return reply;
@@ -653,14 +669,7 @@ async function sendMsg() {
 }
 
 function saveKey(){
-  var k = document.getElementById('keyInput').value.trim();
-  if (!k.startsWith('sk-ant-')) {
-    var err = document.getElementById('key-error');
-    err.textContent = 'La key debe empezar con sk-ant-api03-...';
-    err.style.display = 'block'; return;
-  }
-  API_KEY = k;
-  try { localStorage.setItem('ruthina_key', k); } catch(e){}
+  // Ya no necesita API key en el browser - se maneja en Railway
   document.getElementById('setup').style.display = 'none';
   startApp();
 }
@@ -1019,13 +1028,8 @@ function compActualizarResumen(){
 }
 
 window.addEventListener('DOMContentLoaded', function(){
-  try { API_KEY = localStorage.getItem('ruthina_key') || ''; } catch(e){ API_KEY=''; }
-  if (!API_KEY) {
-    document.getElementById('setup').style.display = 'flex';
-    setTimeout(function(){ var ki=document.getElementById('keyInput'); if(ki) ki.focus(); }, 200);
-  } else {
-    startApp();
-  }
+  // API key está en Railway, no se necesita en el browser
+  startApp();
 });
 </script>
 </body>
