@@ -79,6 +79,40 @@ input:checked+.tsl::before{transform:translateX(18px)}
 .snack.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .seclbl{padding:0 4px 8px;font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px}
 @media(max-width:600px){.bbl{max-width:86%}.hbtn span{display:none}.fgr{grid-template-columns:1fr}}
+
+/* ══ MATCH ══════════════════════════════════════════════ */
+#match{display:none;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:#F5F5F5}
+.match-hdr{background:#1A1A1A;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid #C8102E}
+.match-scroll{flex:1;overflow-y:auto;padding:14px}
+.match-scroll::-webkit-scrollbar{width:3px}
+.match-card{background:#fff;border-radius:12px;border:1px solid #E0E0E0;padding:16px 20px;margin-bottom:14px}
+.match-stitle{font-size:11px;font-weight:700;color:#667781;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+.match-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.match-label{font-size:12px;color:#667781;font-weight:500;display:block;margin-bottom:4px}
+.match-input{width:100%;height:38px;padding:0 10px;font-size:14px;border:1.5px solid #E0E0E0;border-radius:8px;outline:none;font-family:'Inter',sans-serif}
+.match-input:focus{border-color:#C8102E}
+.btn-match-buscar{width:100%;height:44px;background:#1A1A1A;color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px;font-family:'Inter',sans-serif}
+.btn-match-buscar:hover{background:#333}
+.btn-match-buscar:disabled{background:#94a3b8;cursor:not-allowed}
+.match-results{margin-top:4px}
+.match-count{font-size:12px;color:#667781;margin-bottom:10px;padding:0 2px}
+.match-item{background:#fff;border-radius:12px;border:1px solid #E0E0E0;padding:14px 16px;margin-bottom:10px;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.match-item-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;flex-wrap:wrap;gap:6px}
+.match-item-title{font-size:15px;font-weight:700;color:#1A1A1A}
+.match-item-precio{font-size:16px;font-weight:700;color:#C8102E}
+.match-item-ubicacion{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.match-item-ubicacion.tutu{background:#E8F5E3;color:#166534}
+.match-item-ubicacion.externa{background:#FEF3C7;color:#92400E}
+.match-item-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
+.match-item-dato{background:#F8F8F8;border-radius:8px;padding:7px 10px}
+.match-item-dato-label{font-size:10px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.match-item-dato-val{font-size:13px;font-weight:600;color:#1A1A1A}
+.match-notas{font-size:12px;color:#667781;margin-top:8px;padding-top:8px;border-top:1px solid #F0F0F0}
+.match-empty{text-align:center;padding:3rem 1rem;color:#94a3b8}
+.match-empty-icon{font-size:40px;margin-bottom:12px}
+.match-err{font-size:12px;color:#C8102E;background:#FEF0F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px}
+@media(max-width:600px){.match-g2{grid-template-columns:1fr}.match-item-grid{grid-template-columns:1fr 1fr}}
+
 /* ══ COMPARADOR ══════════════════════════════════════════ */
 #comp{display:none;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:#F5F5F5}
 .comp-hdr{background:#1A1A1A;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid #C8102E}
@@ -159,6 +193,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       <span>Presupuesto</span>
     </button>
+    <button class="hbtn" onclick="openMatch()" style="background:rgba(200,16,46,0.2)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/><line x1="11" y1="8" x2="11" y2="14"/></svg>
+      <span>Match</span>
+    </button>
     <button class="hbtn" onclick="openComp()" style="background:rgba(200,16,46,0.3)">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M3 12h3m12 0h3M12 3v3m0 12v3"/></svg>
       <span>Comparador</span>
@@ -185,6 +223,38 @@ input:checked+.tsl::before{transform:translateX(18px)}
     </button>
   </div>
 </div>
+
+<!-- MATCH -->
+<div id="match">
+  <div class="match-hdr">
+    <button class="bbtn" onclick="closeMatch()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Volver
+    </button>
+    <div class="bttl">Match de Stock</div>
+    <span style="font-size:11px;color:#666;margin-left:auto" id="match-fecha"></span>
+  </div>
+  <div class="match-scroll">
+    <div class="match-card">
+      <div class="match-stitle">Buscar vehículo</div>
+      <div class="match-g2">
+        <div>
+          <span class="match-label">Modelo</span>
+          <input id="match-modelo" class="match-input" placeholder="ej: Gol Trend, Hilux, Ranger..." onkeydown="if(event.key==='Enter')matchBuscar()"/>
+        </div>
+        <div>
+          <span class="match-label">Año</span>
+          <input id="match-anio" class="match-input" type="number" placeholder="ej: 2021" onkeydown="if(event.key==='Enter')matchBuscar()"/>
+        </div>
+      </div>
+      <button class="btn-match-buscar" id="btn-match-buscar" onclick="matchBuscar()">
+        🔍 Buscar en todo el stock
+      </button>
+    </div>
+    <div id="match-results" class="match-results"></div>
+  </div>
+</div>
+
 <!-- COMPARADOR -->
 <div id="comp">
   <div class="comp-hdr">
@@ -959,9 +1029,110 @@ function autoFillStock(val){ if(!val) return; var parts=val.split('|'); var labe
 function initBancoSelect(){ var sel=document.getElementById('banco-sel'); if(!sel) return; BANCOS.forEach(function(b,i){ var opt=document.createElement('option'); opt.value=i; opt.textContent=b.nombre; sel.appendChild(opt); }); }
 function autoFillBanco(idx){ if(idx===''||idx==='0') return; var b=BANCOS[parseInt(idx)]; if(!b||b.tna===0) return; document.getElementById('btn').value=b.tna; document.getElementById('bba').value=b.nombre.split(' (')[0]; var hint=document.getElementById('tna-hint'); if(hint){ var parts=[]; if(b.sello>0) parts.push(b.sello*100+'% sellos'); if(b.gastos>0) parts.push(b.gastos*100+'% gastos'); if(b.gastoTotal>0) parts.push(b.gastoTotal*100+'% s/total (MG)'); if(b.fijo>0) parts.push('$800k fijo (BNA)'); hint.textContent=parts.length?'('+parts.join(' + ')+')':''; } upP(); }
 
+
+// ══ MATCH ══════════════════════════════════════════════
+var RAILWAY_URL = 'https://compara-conejo-production.up.railway.app';
+
+function openMatch(){
+  document.getElementById('sc').style.display='none';
+  document.getElementById('sb').style.display='none';
+  document.getElementById('comp').style.display='none';
+  document.getElementById('match').style.display='flex';
+  var d=new Date(),dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  document.getElementById('match-fecha').textContent=dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()];
+  document.getElementById('match-modelo').focus();
+}
+
+function closeMatch(){
+  document.getElementById('match').style.display='none';
+  document.getElementById('sc').style.display='flex';
+}
+
+function fmtMatch(n,moneda){
+  if(!n) return '-';
+  moneda = moneda || 'ARS';
+  var num = parseFloat(String(n).replace(/[^0-9.]/g,''));
+  if(isNaN(num)) return String(n);
+  return moneda==='USD' ? 'USD '+num.toLocaleString('es-AR') : '$ '+Math.round(num).toLocaleString('es-AR');
+}
+
+async function matchBuscar(){
+  var modelo = document.getElementById('match-modelo').value.trim();
+  var anio = document.getElementById('match-anio').value.trim();
+  if(!modelo && !anio){ alert('Ingresá al menos modelo o año'); return; }
+  
+  var btn = document.getElementById('btn-match-buscar');
+  btn.disabled=true; btn.textContent='Buscando...';
+  document.getElementById('match-results').innerHTML='';
+  
+  try {
+    var params = new URLSearchParams();
+    if(modelo) params.append('modelo', modelo);
+    if(anio) params.append('anio', anio);
+    
+    var resp = await fetch(RAILWAY_URL+'/api/match?'+params.toString());
+    var data = await resp.json();
+    
+    if(data.error){ 
+      document.getElementById('match-results').innerHTML='<div class="match-err">'+data.error+'</div>';
+      return;
+    }
+    
+    var resultDiv = document.getElementById('match-results');
+    
+    if(!data.length){
+      resultDiv.innerHTML='<div class="match-empty"><div class="match-empty-icon">🔍</div><div style="font-size:15px;font-weight:600;color:#475569;margin-bottom:4px">Sin resultados</div><div style="font-size:13px">No encontramos '+[modelo,anio].filter(Boolean).join(' ')+'<br>en el stock actual</div></div>';
+      return;
+    }
+    
+    // Agrupar por ubicacion
+    var tutu = data.filter(a => !a.ubicacion || a.ubicacion.toLowerCase().includes('tutu'));
+    var externa = data.filter(a => a.ubicacion && !a.ubicacion.toLowerCase().includes('tutu'));
+    
+    var html2 = '<div class="match-count">'+data.length+' resultado'+( data.length!==1?'s':'')+' encontrado'+( data.length!==1?'s':'')+'</div>';
+    
+    function renderAuto(a){
+      var esTutu = !a.ubicacion || a.ubicacion.toLowerCase().includes('tutu');
+      var ubicLabel = a.ubicacion || 'Tutu Automotores';
+      return '<div class="match-item">'+
+        '<div class="match-item-header">'+
+          '<div>'+
+            '<div class="match-item-title">'+[a.marca,a.modelo,a.version].filter(Boolean).join(' ')+(a.anio?' '+a.anio:'')+'</div>'+
+          '</div>'+
+          '<span class="match-item-ubicacion '+(esTutu?'tutu':'externa')+'">'+
+            (esTutu?'🏢 ':'📍 ')+ubicLabel+
+          '</span>'+
+        '</div>'+
+        '<div class="match-item-precio">'+fmtMatch(a.precio, a.moneda)+'</div>'+
+        '<div class="match-item-grid">'+
+          '<div class="match-item-dato"><div class="match-item-dato-label">KM</div><div class="match-item-dato-val">'+(a.km?Number(a.km).toLocaleString('es-AR')+' km':'0 km')+'</div></div>'+
+          '<div class="match-item-dato"><div class="match-item-dato-label">Color</div><div class="match-item-dato-val">'+(a.color||'-')+'</div></div>'+
+          '<div class="match-item-dato"><div class="match-item-dato-label">Estado</div><div class="match-item-dato-val">'+(a.estado||'Disponible')+'</div></div>'+
+        '</div>'+
+        (a.notas?'<div class="match-notas">📝 '+a.notas+'</div>':'')+
+      '</div>';
+    }
+    
+    if(tutu.length){
+      html2 += '<div style="font-size:11px;font-weight:700;color:#166534;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px;padding:0 2px">🏢 Tutu Automotores ('+tutu.length+')</div>';
+      tutu.forEach(a => html2+=renderAuto(a));
+    }
+    if(externa.length){
+      html2 += '<div style="font-size:11px;font-weight:700;color:#92400E;text-transform:uppercase;letter-spacing:.6px;margin:14px 0 8px;padding:0 2px">📍 Otras agencias ('+externa.length+')</div>';
+      externa.forEach(a => html2+=renderAuto(a));
+    }
+    
+    resultDiv.innerHTML = html2;
+  } catch(e){
+    document.getElementById('match-results').innerHTML='<div class="match-err">Error: '+e.message+'</div>';
+  }
+  
+  btn.disabled=false; btn.textContent='🔍 Buscar en todo el stock';
+}
+
 // ══ COMPARADOR ══════════════════════════════════════════
 var compMLProm=null,compFBProm=null,compMon='ARS'
-function openComp(){ document.getElementById('sc').style.display='none'; document.getElementById('sb').style.display='none'; document.getElementById('comp').style.display='flex'; var d=new Date(),dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']; document.getElementById('comp-fecha').textContent=dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()]; }
+function openComp(){ document.getElementById('sc').style.display='none'; document.getElementById('sb').style.display='none'; document.getElementById('match').style.display='none'; document.getElementById('comp').style.display='flex'; var d=new Date(),dias=['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'],meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre']; document.getElementById('comp-fecha').textContent=dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()]; }
 function closeComp(){ document.getElementById('comp').style.display='none'; document.getElementById('sc').style.display='flex'; }
 function compFmt(n,m){ m=m||compMon; return m==='ARS'?'$ '+Math.round(n).toLocaleString('es-AR'):'USD '+Math.round(n).toLocaleString('es-AR'); }
 async function compBuscar(){
