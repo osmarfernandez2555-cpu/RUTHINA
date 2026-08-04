@@ -576,7 +576,7 @@ var chatHistory = [], typing = false, lastFrom = null, firstMsg = true;
 async function callClaude(userText) {
   chatHistory.push({role:'user', content: userText});
   var messages = chatHistory.map(function(m){ return {role:m.role, content:m.content}; });
-  var res = await fetch('/api/chat', {
+  var res = await fetch('https://compara-conejo-production.up.railway.app/api/chat', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify({
@@ -600,7 +600,7 @@ async function callClaude(userText) {
   if (guardarMatch) {
     try {
       var nuevoAuto = JSON.parse(guardarMatch[1]);
-      await fetch('/api/stock', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(nuevoAuto)});
+      await fetch('https://compara-conejo-production.up.railway.app/api/stock', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(nuevoAuto)});
     } catch(e) { console.error('Error guardando stock:', e); }
     reply = reply.replace(/\[GUARDAR_STOCK:[\s\S]*?\]/g, '').trim();
   }
@@ -608,7 +608,7 @@ async function callClaude(userText) {
   if (eliminarMatch) {
     try {
       var target = JSON.parse(eliminarMatch[1]);
-      await fetch('/api/stock', {method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify(target)});
+      await fetch('https://compara-conejo-production.up.railway.app/api/stock', {method:'DELETE', headers:{'Content-Type':'application/json'}, body:JSON.stringify(target)});
     } catch(e) { console.error('Error eliminando stock:', e); }
     reply = reply.replace(/\[ELIMINAR_STOCK:[\s\S]*?\]/g, '').trim();
   }
@@ -980,7 +980,7 @@ async function compBuscar(){
   btn.disabled=true; btn.textContent='Buscando...';
   try{
     var sys='Sos un asistente de Tutu Automotores Cordoba Argentina. Busca precios reales de autos usados en Mercado Libre Argentina y devuelve SOLO JSON valido sin texto extra ni markdown. Formato: {"promedio":12500000,"minimo":10000000,"maximo":15000000,"cantidad":6,"moneda":"ARS","listings":[{"titulo":"Toyota Corolla XEI 2021","precio":13000000}],"nota":"Datos de MercadoLibre Argentina"} Si no hay resultados: {"error":"Sin resultados"} SOLO JSON.';
-    var resp=await fetch('/api/buscar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,tools:[{type:'web_search_20250305',name:'web_search'}],system:sys,messages:[{role:'user',content:'Busca en Mercado Libre Argentina autos usados: '+q+'. Moneda: '+compMon+'. Trae 4 a 8 avisos reales.'}]})});
+    var resp=await fetch('https://compara-conejo-production.up.railway.app/api/buscar',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,tools:[{type:'web_search_20250305',name:'web_search'}],system:sys,messages:[{role:'user',content:'Busca en Mercado Libre Argentina autos usados: '+q+'. Moneda: '+compMon+'. Trae 4 a 8 avisos reales.'}]})});
     var rawText=await resp.text();
     var data; try{ data=JSON.parse(rawText); } catch(e){ throw new Error('Servidor error: '+rawText.substring(0,120)); }
     if(data.error) throw new Error(data.error.message||JSON.stringify(data.error));
