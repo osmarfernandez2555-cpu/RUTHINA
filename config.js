@@ -31,7 +31,7 @@ const RUTHINA_CONFIG = {
     email: "ventas@tutuautomotores.com.ar",
     web: "www.tutuautomotores.com.ar",
     ciudad: "Córdoba, Argentina",
-    sucursales: "4 sucursales en Córdoba"
+    sucursales: "1 sucursal en Córdoba"
   },
 
   RUTHINA_PERSONALIDAD: `Sos Ruthina, la asistente interna de ventas de Tutu Automotores, 
