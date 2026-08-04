@@ -258,6 +258,13 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <textarea id="match-bulk-texto" class="match-bulk-area" placeholder="Nombre&#9;Teléfono&#9;Vehículo que busca&#10;Juan Pérez&#9;351-1234&#9;Gol Trend 2013&#10;María Gómez&#9;351-5678&#9;Shineray M7..."></textarea>
       <button class="btn-match-cargar" id="btn-match-cargar" onclick="matchCargarLista()">📥 Parsear y guardar lista</button>
       <div id="match-bulk-result" style="display:none"></div>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px solid #E0E0E0">
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:6px">⚙️ Migración única — pasá todo el stock al sistema</div>
+        <button onclick="migrarStock()" id="btn-migrar" style="width:100%;height:36px;background:#1e40af;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">
+          🚀 Migrar stock hardcodeado a la base de datos
+        </button>
+        <div id="migrar-result" style="display:none;margin-top:6px"></div>
+      </div>
     </div>
     <div class="match-card">
       <div class="match-stitle">Buscar vehículo</div>
@@ -1085,6 +1092,22 @@ function fmtMatch(n,moneda){
   return moneda==='USD' ? 'USD '+num.toLocaleString('es-AR') : '$ '+Math.round(num).toLocaleString('es-AR');
 }
 
+
+
+async function migrarStock(){
+  if(!confirm('¿Migrás todo el stock a la base de datos? Solo hacelo una vez.')) return;
+  var btn = document.getElementById('btn-migrar');
+  var res = document.getElementById('migrar-result');
+  btn.disabled=true; btn.textContent='Migrando...';
+  try {
+    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/migrar-stock', {method:'POST', headers:{'Content-Type':'application/json'}});
+    var data = await resp.json();
+    if(data.error){ res.innerHTML='<div class="match-err">'+data.error+'</div>'; }
+    else{ res.innerHTML='<div class="match-bulk-result">✅ Migrados: <strong>'+data.guardados+'</strong> · Ya existían: '+data.saltados+(data.errores?' · Errores: '+data.errores:'')+'</div>'; btn.style.display='none'; }
+    res.style.display='block';
+  } catch(e){ res.innerHTML='<div class="match-err">Error: '+e.message+'</div>'; res.style.display='block'; }
+  btn.disabled=false; if(btn.style.display!='none') btn.textContent='🚀 Migrar stock hardcodeado a la base de datos';
+}
 
 async function matchCargarLista(){
   var texto = document.getElementById('match-bulk-texto').value.trim();
