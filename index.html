@@ -110,6 +110,18 @@ input:checked+.tsl::before{transform:translateX(18px)}
 .match-notas{font-size:12px;color:#667781;margin-top:8px;padding-top:8px;border-top:1px solid #F0F0F0}
 .match-empty{text-align:center;padding:3rem 1rem;color:#94a3b8}
 .match-empty-icon{font-size:40px;margin-bottom:12px}
+
+.match-bulk-area{width:100%;min-height:100px;padding:10px;font-size:13px;border:1.5px solid #E0E0E0;border-radius:8px;font-family:'Inter',sans-serif;resize:vertical;outline:none;margin-bottom:8px}
+.match-bulk-area:focus{border-color:#C8102E}
+.btn-match-cargar{width:100%;height:40px;background:#92400E;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;margin-bottom:6px}
+.btn-match-cargar:hover{background:#78350F}
+.btn-match-cargar:disabled{background:#94a3b8;cursor:not-allowed}
+.match-bulk-result{background:#F0FDF4;border:1px solid #86EFAC;border-radius:8px;padding:10px 12px;font-size:13px;color:#166534;margin-top:6px}
+.match-bulk-match{background:#FEF9C3;border:1px solid #FDE047;border-radius:8px;padding:10px 12px;margin-top:8px}
+.match-bulk-match-title{font-size:12px;font-weight:700;color:#854D0E;margin-bottom:6px}
+.match-bulk-match-item{font-size:12px;color:#78350F;padding:4px 0;border-bottom:1px solid #FDE047}
+.match-bulk-match-item:last-child{border:none}
+
 .match-err{font-size:12px;color:#C8102E;background:#FEF0F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px}
 .cliente-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#FFF9F0;border-radius:8px;border:1px solid #FDE68A;margin-bottom:6px;gap:8px;flex-wrap:wrap}
 .cliente-nombre{font-size:13px;font-weight:700;color:#92400E}
@@ -240,6 +252,13 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <span style="font-size:11px;color:#666;margin-left:auto" id="match-fecha"></span>
   </div>
   <div class="match-scroll">
+    <div class="match-card">
+      <div class="match-stitle" style="color:#92400E">📋 Cargar lista de clientes</div>
+      <div style="font-size:12px;color:#667781;margin-bottom:8px">Pegá una lista de clientes (de Excel, PDF, WhatsApp, lo que sea). Ruthina la parsea y guarda todos automáticamente.</div>
+      <textarea id="match-bulk-texto" class="match-bulk-area" placeholder="Nombre&#9;Teléfono&#9;Vehículo que busca&#10;Juan Pérez&#9;351-1234&#9;Gol Trend 2013&#10;María Gómez&#9;351-5678&#9;Shineray M7..."></textarea>
+      <button class="btn-match-cargar" id="btn-match-cargar" onclick="matchCargarLista()">📥 Parsear y guardar lista</button>
+      <div id="match-bulk-result" style="display:none"></div>
+    </div>
     <div class="match-card">
       <div class="match-stitle">Buscar vehículo</div>
       <div class="match-g2">
@@ -1064,6 +1083,47 @@ function fmtMatch(n,moneda){
   var num = parseFloat(String(n).replace(/[^0-9.]/g,''));
   if(isNaN(num)) return String(n);
   return moneda==='USD' ? 'USD '+num.toLocaleString('es-AR') : '$ '+Math.round(num).toLocaleString('es-AR');
+}
+
+
+async function matchCargarLista(){
+  var texto = document.getElementById('match-bulk-texto').value.trim();
+  if(!texto){ alert('Pegá la lista primero'); return; }
+  var btn = document.getElementById('btn-match-cargar');
+  var resDiv = document.getElementById('match-bulk-result');
+  btn.disabled=true; btn.textContent='Procesando...';
+  resDiv.style.display='none';
+  try {
+    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/clientes/bulk', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({texto: texto})
+    });
+    var data = await resp.json();
+    if(data.error){ resDiv.innerHTML='<div class="match-err">'+data.error+'</div>'; resDiv.style.display='block'; return; }
+    
+    var html2 = '<div class="match-bulk-result">✅ Guardados: <strong>'+data.guardados+'</strong> clientes'+(data.errores?' · Errores: '+data.errores:'')+'</div>';
+    
+    if(data.matches && data.matches.length > 0){
+      html2 += '<div class="match-bulk-match"><div class="match-bulk-match-title">🎯 ¡MATCHES ENCONTRADOS! ('+data.matches.length+')</div>';
+      data.matches.forEach(function(m){
+        html2 += '<div class="match-bulk-match-item"><strong>'+m.cliente+'</strong> busca '+m.busca+' → ';
+        m.autos.forEach(function(a){ html2 += a.marca+' '+a.modelo+' '+a.anio+' '+a.precio+' '+a.moneda+' ('+( a.ubicacion||'Tutu')+') '; });
+        html2 += '</div>';
+      });
+      html2 += '</div>';
+    } else {
+      html2 += '<div style="font-size:12px;color:#667781;margin-top:6px">Sin matches en stock por ahora.</div>';
+    }
+    
+    resDiv.innerHTML = html2;
+    resDiv.style.display = 'block';
+    document.getElementById('match-bulk-texto').value = '';
+  } catch(e){
+    resDiv.innerHTML='<div class="match-err">Error: '+e.message+'</div>';
+    resDiv.style.display='block';
+  }
+  btn.disabled=false; btn.textContent='📥 Parsear y guardar lista';
 }
 
 async function matchBuscar(){
