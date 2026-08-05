@@ -1426,15 +1426,21 @@ async function matchBuscar(){
     var clist = document.getElementById('match-clientes-list');
     if(clientes.length > 0){
       csec.style.display='block';
-      clist.innerHTML = clientes.map(function(c){
-        var fecha = new Date(c.created_at).toLocaleDateString('es-AR');
+      // Deduplicar por nombre+telefono
+      var vistos = {};
+      var clientesUnicos = clientes.filter(function(c){
+        var key = (c.nombre+c.telefono).toLowerCase();
+        if(vistos[key]) return false;
+        vistos[key] = true;
+        return true;
+      });
+      clist.innerHTML = clientesUnicos.map(function(c){
         return '<div class="cliente-item">'+
-          '<div>'+
-            '<div class="cliente-nombre">👤 '+c.nombre+'</div>'+
-            '<div class="cliente-tel">'+(c.telefono?'📞 '+c.telefono:'Sin teléfono')+(c.asesor?' · Asesor: '+c.asesor:'')+'</div>'+
-            (c.notas?'<div style="font-size:11px;color:#667781;margin-top:2px">'+c.notas+'</div>':'')+
+          '<div style="flex:1">'+
+            '<div class="cliente-nombre">👤 <strong>'+c.nombre+'</strong></div>'+
+            '<div class="cliente-tel" style="margin-top:3px">'+(c.telefono?'📞 '+c.telefono:'Sin teléfono')+'</div>'+
+            '<div style="font-size:12px;color:#92400E;margin-top:3px;font-weight:600">🔍 Busca: '+(c.modelo||'No especificado')+'</div>'+
           '</div>'+
-          '<span class="cliente-fecha">'+fecha+'</span>'+
           '<button class="btn-cliente-ok" onclick="marcarClienteEncontrado('+c.id+', this)">✓ Encontrado</button>'+
         '</div>';
       }).join('');
