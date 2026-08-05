@@ -1355,6 +1355,7 @@ async function matchBuscar(){
     
     if(data.error){ 
       document.getElementById('match-results').innerHTML='<div class="match-err">'+data.error+'</div>';
+      btn.disabled=false; btn.textContent='🔍 Buscar en todo el stock';
       return;
     }
     
@@ -1362,6 +1363,7 @@ async function matchBuscar(){
     
     if(!data.length){
       resultDiv.innerHTML='<div class="match-empty"><div class="match-empty-icon">🔍</div><div style="font-size:15px;font-weight:600;color:#475569;margin-bottom:4px">Sin resultados</div><div style="font-size:13px">No encontramos '+[modelo,anio].filter(Boolean).join(' ')+'<br>en el stock actual</div></div>';
+      btn.disabled=false; btn.textContent='🔍 Buscar en todo el stock';
       return;
     }
     
