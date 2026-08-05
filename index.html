@@ -122,6 +122,26 @@ input:checked+.tsl::before{transform:translateX(18px)}
 .match-bulk-match-item{font-size:12px;color:#78350F;padding:4px 0;border-bottom:1px solid #FDE047}
 .match-bulk-match-item:last-child{border:none}
 
+
+/* ══ CARGAR STOCK ════════════════════════════════════════ */
+.stock-upload-area{border:2px dashed #E0E0E0;border-radius:12px;padding:20px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:10px;background:#FAFAFA}
+.stock-upload-area:hover,.stock-upload-area.drag{border-color:#C8102E;background:#FEF0F2}
+.stock-upload-icon{font-size:32px;margin-bottom:8px}
+.stock-upload-text{font-size:13px;color:#667781;margin-bottom:4px}
+.stock-upload-sub{font-size:11px;color:#94a3b8}
+#stock-file-input{display:none}
+.stock-tabs{display:flex;gap:0;margin-bottom:12px;border:1.5px solid #E0E0E0;border-radius:8px;overflow:hidden}
+.stock-tab{flex:1;padding:8px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;background:#f8f8f8;color:#667781;border:none;font-family:'Inter',sans-serif;transition:all .15s}
+.stock-tab.active{background:#1A1A1A;color:#fff}
+.stock-panel{display:none}
+.stock-panel.active{display:block}
+.stock-ubicacion-row{display:flex;gap:8px;margin-bottom:10px}
+.stock-ubic-label{font-size:12px;color:#667781;font-weight:500;display:block;margin-bottom:4px}
+.stock-processing{background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:12px;font-size:13px;color:#1E40AF;display:none;margin-top:8px}
+.stock-processing-bar{height:4px;background:#BFDBFE;border-radius:2px;margin-top:8px;overflow:hidden}
+.stock-processing-fill{height:100%;background:#1E40AF;border-radius:2px;animation:loading 1.5s ease-in-out infinite}
+@keyframes loading{0%{width:0%}50%{width:70%}100%{width:100%}}
+
 .match-err{font-size:12px;color:#C8102E;background:#FEF0F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px}
 .cliente-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#FFF9F0;border-radius:8px;border:1px solid #FDE68A;margin-bottom:6px;gap:8px;flex-wrap:wrap}
 .cliente-nombre{font-size:13px;font-weight:700;color:#92400E}
@@ -252,19 +272,79 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <span style="font-size:11px;color:#666;margin-left:auto" id="match-fecha"></span>
   </div>
   <div class="match-scroll">
+    <!-- CARGAR STOCK -->
     <div class="match-card">
-      <div class="match-stitle" style="color:#92400E">📋 Cargar lista de clientes</div>
-      <div style="font-size:12px;color:#667781;margin-bottom:8px">Pegá una lista de clientes (de Excel, PDF, WhatsApp, lo que sea). Ruthina la parsea y guarda todos automáticamente.</div>
-      <textarea id="match-bulk-texto" class="match-bulk-area" placeholder="Nombre&#9;Teléfono&#9;Vehículo que busca&#10;Juan Pérez&#9;351-1234&#9;Gol Trend 2013&#10;María Gómez&#9;351-5678&#9;Shineray M7..."></textarea>
-      <button class="btn-match-cargar" id="btn-match-cargar" onclick="matchCargarLista()">📥 Parsear y guardar lista</button>
-      <div id="match-bulk-result" style="display:none"></div>
+      <div class="match-stitle" style="color:#1e40af">📦 Cargar Stock</div>
+
+      <!-- Ubicación -->
+      <div class="stock-ubicacion-row">
+        <div style="flex:2">
+          <span class="stock-ubic-label">Agencia / Ubicación</span>
+          <input id="stock-ubicacion" class="match-input" placeholder="ej: Tutu Automotores, Agencia López..." value="Tutu Automotores"/>
+        </div>
+        <div style="flex:1">
+          <span class="stock-ubic-label">Moneda por defecto</span>
+          <select id="stock-moneda-default" class="match-input" style="height:38px">
+            <option value="ARS">Pesos (ARS)</option>
+            <option value="USD">Dólares (USD)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="stock-tabs">
+        <button class="stock-tab active" onclick="stockTab('texto')">📋 Pegar lista</button>
+        <button class="stock-tab" onclick="stockTab('pdf')">📄 Subir PDF</button>
+      </div>
+
+      <!-- Panel texto -->
+      <div id="stock-panel-texto" class="stock-panel active">
+        <textarea id="stock-texto" class="match-bulk-area" style="min-height:120px" placeholder="Pegá acá cualquier lista de autos:&#10;&#10;Ford Fiesta 2015 blanco 225.000km $11.100.000&#10;VW Gol 2011 gris 162.000km $7.900.000&#10;&#10;También acepta formato tabla de Excel, PDF copiado, WhatsApp, etc."></textarea>
+        <button class="btn-match-cargar" id="btn-stock-texto" onclick="stockCargarTexto()" style="background:#1e40af">
+          📥 Parsear y guardar autos
+        </button>
+      </div>
+
+      <!-- Panel PDF -->
+      <div id="stock-panel-pdf" class="stock-panel">
+        <div class="stock-upload-area" id="stock-drop-area" onclick="document.getElementById('stock-file-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="stockDropPDF(event)">
+          <div class="stock-upload-icon">📄</div>
+          <div class="stock-upload-text"><strong>Clic para seleccionar PDF</strong> o arrastrá el archivo acá</div>
+          <div class="stock-upload-sub">El PDF se procesa con IA y extrae todos los autos automáticamente</div>
+          <div id="stock-file-name" style="margin-top:8px;font-size:12px;color:#C8102E;font-weight:600"></div>
+        </div>
+        <input type="file" id="stock-file-input" accept=".pdf" onchange="stockSeleccionarPDF(this)">
+        <button class="btn-match-cargar" id="btn-stock-pdf" onclick="stockCargarPDF()" style="background:#1e40af;display:none">
+          📥 Procesar PDF y guardar autos
+        </button>
+      </div>
+
+      <!-- Procesando -->
+      <div class="stock-processing" id="stock-processing">
+        <div id="stock-processing-msg">⏳ Procesando con IA...</div>
+        <div class="stock-processing-bar"><div class="stock-processing-fill"></div></div>
+      </div>
+
+      <!-- Resultado -->
+      <div id="stock-resultado" style="display:none;margin-top:8px"></div>
+
+      <!-- Migración -->
       <div style="margin-top:10px;padding-top:10px;border-top:1px solid #E0E0E0">
-        <div style="font-size:11px;color:#94a3b8;margin-bottom:6px">⚙️ Migración única — pasá todo el stock al sistema</div>
-        <button onclick="migrarStock()" id="btn-migrar" style="width:100%;height:36px;background:#1e40af;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">
-          🚀 Migrar stock hardcodeado a la base de datos
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:6px">⚙️ Migración única</div>
+        <button onclick="migrarStock()" id="btn-migrar" style="width:100%;height:34px;background:#374151;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">
+          🚀 Migrar stock base al sistema
         </button>
         <div id="migrar-result" style="display:none;margin-top:6px"></div>
       </div>
+    </div>
+
+    <!-- CARGAR CLIENTES -->
+    <div class="match-card">
+      <div class="match-stitle" style="color:#92400E">👥 Cargar Lista de Clientes</div>
+      <div style="font-size:12px;color:#667781;margin-bottom:8px">Pegá una lista de clientes con lo que buscan. Ruthina la parsea y cruza automáticamente con el stock.</div>
+      <textarea id="match-bulk-texto" class="match-bulk-area" placeholder="Nombre&#9;Teléfono&#9;Vehículo que busca&#10;Juan Pérez&#9;351-1234&#9;Gol Trend 2013&#10;María Gómez&#9;351-5678&#9;Shineray M7..."></textarea>
+      <button class="btn-match-cargar" id="btn-match-cargar" onclick="matchCargarLista()">📥 Parsear y guardar clientes</button>
+      <div id="match-bulk-result" style="display:none"></div>
     </div>
     <div class="match-card">
       <div class="match-stitle">Buscar vehículo</div>
@@ -1093,6 +1173,113 @@ function fmtMatch(n,moneda){
 }
 
 
+
+
+// ══ CARGAR STOCK ════════════════════════════════════════
+var stockPDFData = null;
+
+function stockTab(tab) {
+  document.querySelectorAll('.stock-tab').forEach((t,i) => t.classList.toggle('active', ['texto','pdf'][i]===tab));
+  document.getElementById('stock-panel-texto').classList.toggle('active', tab==='texto');
+  document.getElementById('stock-panel-pdf').classList.toggle('active', tab==='pdf');
+}
+
+function stockSeleccionarPDF(input) {
+  var file = input.files[0];
+  if (!file) return;
+  document.getElementById('stock-file-name').textContent = '📄 ' + file.name;
+  document.getElementById('btn-stock-pdf').style.display = 'block';
+  var reader = new FileReader();
+  reader.onload = function(e) { stockPDFData = e.target.result.split(',')[1]; };
+  reader.readAsDataURL(file);
+}
+
+function stockDropPDF(e) {
+  e.preventDefault();
+  document.getElementById('stock-drop-area').classList.remove('drag');
+  var file = e.dataTransfer.files[0];
+  if (!file || !file.name.endsWith('.pdf')) { alert('Solo se aceptan PDFs'); return; }
+  document.getElementById('stock-file-name').textContent = '📄 ' + file.name;
+  document.getElementById('btn-stock-pdf').style.display = 'block';
+  var reader = new FileReader();
+  reader.onload = function(e2) { stockPDFData = e2.target.result.split(',')[1]; };
+  reader.readAsDataURL(file);
+}
+
+function stockMostrarProcesando(msg) {
+  document.getElementById('stock-processing-msg').textContent = msg || '⏳ Procesando con IA...';
+  document.getElementById('stock-processing').style.display = 'block';
+  document.getElementById('stock-resultado').style.display = 'none';
+}
+
+function stockMostrarResultado(html2) {
+  document.getElementById('stock-processing').style.display = 'none';
+  document.getElementById('stock-resultado').innerHTML = html2;
+  document.getElementById('stock-resultado').style.display = 'block';
+}
+
+async function stockCargarTexto() {
+  var texto = document.getElementById('stock-texto').value.trim();
+  if (!texto) { alert('Pegá una lista primero'); return; }
+  var ubicacion = document.getElementById('stock-ubicacion').value.trim() || 'Tutu Automotores';
+  var moneda = document.getElementById('stock-moneda-default').value;
+  var btn = document.getElementById('btn-stock-texto');
+  btn.disabled = true; btn.textContent = 'Procesando...';
+  stockMostrarProcesando('⏳ Analizando lista con IA...');
+  try {
+    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/stock/bulk', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({texto, ubicacion, moneda})
+    });
+    var data = await resp.json();
+    if (data.error) { stockMostrarResultado('<div class="match-err">'+data.error+'</div>'); return; }
+    var html2 = '<div class="match-bulk-result">✅ Guardados: <strong>'+data.guardados+'</strong> autos';
+    if (data.saltados) html2 += ' · Ya existían: '+data.saltados;
+    if (data.errores) html2 += ' · Errores: '+data.errores;
+    html2 += ' · Ubicación: <strong>'+ubicacion+'</strong></div>';
+    if (data.matches && data.matches.length) {
+      html2 += '<div class="match-bulk-match"><div class="match-bulk-match-title">🎯 ¡'+data.matches.length+' clientes esperan autos de esta lista!</div>';
+      data.matches.forEach(m => { html2 += '<div class="match-bulk-match-item">👤 <strong>'+m.cliente+'</strong> busca '+m.busca+'</div>'; });
+      html2 += '</div>';
+    }
+    stockMostrarResultado(html2);
+    document.getElementById('stock-texto').value = '';
+  } catch(e) { stockMostrarResultado('<div class="match-err">Error: '+e.message+'</div>'); }
+  btn.disabled = false; btn.textContent = '📥 Parsear y guardar autos';
+}
+
+async function stockCargarPDF() {
+  if (!stockPDFData) { alert('Seleccioná un PDF primero'); return; }
+  var ubicacion = document.getElementById('stock-ubicacion').value.trim() || 'Tutu Automotores';
+  var moneda = document.getElementById('stock-moneda-default').value;
+  var btn = document.getElementById('btn-stock-pdf');
+  btn.disabled = true; btn.textContent = 'Procesando PDF...';
+  stockMostrarProcesando('⏳ Leyendo PDF con IA...');
+  try {
+    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/stock/bulk-pdf', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({pdf: stockPDFData, ubicacion, moneda})
+    });
+    var data = await resp.json();
+    if (data.error) { stockMostrarResultado('<div class="match-err">'+data.error+'</div>'); return; }
+    var html2 = '<div class="match-bulk-result">✅ Guardados: <strong>'+data.guardados+'</strong> autos del PDF';
+    if (data.saltados) html2 += ' · Ya existían: '+data.saltados;
+    if (data.errores) html2 += ' · Errores: '+data.errores;
+    html2 += ' · Ubicación: <strong>'+ubicacion+'</strong></div>';
+    if (data.matches && data.matches.length) {
+      html2 += '<div class="match-bulk-match"><div class="match-bulk-match-title">🎯 ¡'+data.matches.length+' clientes esperan autos de este PDF!</div>';
+      data.matches.forEach(m => { html2 += '<div class="match-bulk-match-item">👤 <strong>'+m.cliente+'</strong> busca '+m.busca+'</div>'; });
+      html2 += '</div>';
+    }
+    stockMostrarResultado(html2);
+    stockPDFData = null;
+    document.getElementById('stock-file-name').textContent = '';
+    btn.style.display = 'none';
+  } catch(e) { stockMostrarResultado('<div class="match-err">Error: '+e.message+'</div>'); }
+  btn.disabled = false; btn.textContent = '📥 Procesar PDF y guardar autos';
+}
 
 async function migrarStock(){
   if(!confirm('¿Migrás todo el stock a la base de datos? Solo hacelo una vez.')) return;
