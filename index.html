@@ -142,6 +142,11 @@ input:checked+.tsl::before{transform:translateX(18px)}
 .stock-processing-fill{height:100%;background:#1E40AF;border-radius:2px;animation:loading 1.5s ease-in-out infinite}
 @keyframes loading{0%{width:0%}50%{width:70%}100%{width:100%}}
 
+
+.btn-eliminar-auto{position:absolute;top:10px;right:10px;width:28px;height:28px;border-radius:50%;background:#FEF2F2;border:1.5px solid #FECACA;color:#DC2626;font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;transition:all .15s;font-family:'Inter',sans-serif}
+.btn-eliminar-auto:hover{background:#DC2626;color:#fff;border-color:#DC2626}
+.match-item{position:relative;}
+
 .match-err{font-size:12px;color:#C8102E;background:#FEF0F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px}
 .cliente-item{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#FFF9F0;border-radius:8px;border:1px solid #FDE68A;margin-bottom:6px;gap:8px;flex-wrap:wrap}
 .cliente-nombre{font-size:13px;font-weight:700;color:#92400E}
@@ -1376,7 +1381,8 @@ async function matchBuscar(){
     function renderAuto(a){
       var esTutu = !a.ubicacion || a.ubicacion.toLowerCase().includes('tutu');
       var ubicLabel = a.ubicacion || 'Tutu Automotores';
-      return '<div class="match-item">'+
+      return '<div class="match-item" id="auto-'+a.id+'">'+
+        '<button class="btn-eliminar-auto" onclick="eliminarAuto('+a.id+',this)" title="Eliminar del stock">✕</button>'+
         '<div class="match-item-header">'+
           '<div>'+
             '<div class="match-item-title">'+[a.marca,a.modelo,a.version].filter(Boolean).join(' ')+(a.anio?' '+a.anio:'')+'</div>'+
@@ -1438,6 +1444,27 @@ async function matchBuscar(){
   } catch(e){ document.getElementById('match-clientes-section').style.display='none'; }
 
   btn.disabled=false; btn.textContent='🔍 Buscar en todo el stock';
+}
+
+
+async function eliminarAuto(id, btn) {
+  if (!confirm('¿Eliminás este auto del stock?')) return;
+  btn.textContent = '⏳';
+  btn.disabled = true;
+  try {
+    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/stock/'+id, {method: 'DELETE'});
+    var data = await resp.json();
+    if (data.ok) {
+      var el = document.getElementById('auto-'+id);
+      if (el) { el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.remove(), 300); }
+    } else {
+      btn.textContent = '✕'; btn.disabled = false;
+      alert('Error al eliminar');
+    }
+  } catch(e) {
+    btn.textContent = '✕'; btn.disabled = false;
+    alert('Error: '+e.message);
+  }
 }
 
 async function marcarClienteEncontrado(id, btn){
