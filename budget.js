@@ -2,6 +2,7 @@ const BudgetPDF = {
 
   collect() {
     const g = id => document.getElementById(id)?.value?.trim() || '';
+    const gv = id => document.getElementById(id)?.value || '';
     const gn = id => parseFloat(document.getElementById(id)?.value) || 0;
     const gc = id => document.getElementById(id)?.checked || false;
 
@@ -37,11 +38,16 @@ const BudgetPDF = {
       // Crédito prendario
       tieneCredito: gc('cc'),
       banco: g('bba'),
-      cuotas: parseInt(gv('bcu')) || 12,
+      cuotas: parseInt(document.getElementById('bcu')?.value) || 12,
       tna: gn('btn'),
       monto: gn('bfi'),
       anticipo: gn('ban'),
-      gastos: gn('bna-gasto-porc') || 4.2,
+      gastos: (function(){
+        var bancoIdx = parseInt(document.getElementById('banco-sel')?.value) || 0;
+        var BANCOS = [{gastos:0},{gastos:0.042},{gastos:0},{gastos:0},{gastos:0.042},{gastos:0.042},{gastos:0.042},{gastos:0.042},{gastos:0.042},{gastos:0.042},{gastos:0.042},{gastos:0.042},{gastos:0.042}];
+        var b = BANCOS[bancoIdx] || {gastos:0.042};
+        return (b.gastos * 100) || 4.2;
+      })(),
       cuotaManual: gn('cuota-manual') || 0,
 
       // BNA / Crédito personal 1
@@ -49,7 +55,7 @@ const BudgetPDF = {
       bnaBanco: g('bna-banco') || (document.getElementById('bna-banco-sel')?.options[document.getElementById('bna-banco-sel')?.selectedIndex]?.text?.split(' (')[0] || ''),
       bnaMonto: gn('bna-monto'),
       bnaTNA: gn('bna-tna') || 38,
-      bnaCuotas: parseInt(g('bna-cuotas')) || 12,
+      bnaCuotas: parseInt(document.getElementById('bna-cuotas')?.value) || 12,
       bnaGastoFijo: gn('bna-gasto-fijo') || 0,
       bnaGastoPorc: gn('bna-gasto-porc') || 0,
       bnaCuotaManual: gn('bna-cuota-manual') || 0,
@@ -59,20 +65,20 @@ const BudgetPDF = {
       bna2Banco: g('bna2-banco') || (document.getElementById('bna2-banco-sel')?.options[document.getElementById('bna2-banco-sel')?.selectedIndex]?.text?.split(' (')[0] || ''),
       bna2Monto: gn('bna2-monto'),
       bna2TNA: gn('bna2-tna') || 38,
-      bna2Cuotas: parseInt(g('bna2-cuotas')) || 12,
+      bna2Cuotas: parseInt(document.getElementById('bna2-cuotas')?.value) || 12,
       bna2GastoFijo: gn('bna2-gasto-fijo') || 0,
       bna2GastoPorc: gn('bna2-gasto-porc') || 0,
       bna2CuotaManual: gn('bna2-cuota-manual') || 0,
 
       // PSA
       tienePSA: gc('cpsa'),
-      psaTipo: (document.getElementById('psa-btn-0km')?.style?.background?.includes('C8102E') ? '0km' : 'pat'),
+      psaTipo: (document.getElementById('psa-btn-0km')?.style?.background === 'rgb(200, 16, 46)' ? '0km' : 'pat'),
       psaMonto0: gn('psa-monto-0'),
-      psaCuotas0: parseInt(gv('psa-cuotas-0')) || 24,
+      psaCuotas0: parseInt(document.getElementById('psa-cuotas-0')?.value) || 24,
       psaGasto0: gn('psa-gasto-0') || 14.54,
       psaCuotaManual0: gn('psa0-cuota-manual') || 0,
       psaMontoP: gn('psa-monto-p'),
-      psaCuotasP: parseInt(gv('psa-cuotas-p')) || 24,
+      psaCuotasP: parseInt(document.getElementById('psa-cuotas-p')?.value) || 24,
       psaTNAP: gn('psa-tna-p') || 47.9,
       psaQ: gn('psa-q') || 10,
       psaIVA: gn('psa-iva') || 4,
@@ -98,10 +104,10 @@ const BudgetPDF = {
     const permNeta = d.tienePermuta ? Math.max(0, d.permuValor - (d.permuPos||0) - (d.permuPer||0)) : 0;
 
     // Crédito prendario
-    let cuotaPrendario = 0, aporteCredito = 0;
+    let cuotaPrendario = 0, aporteCredito = 0, gastosCredito = 0;
     if (d.tieneCredito && d.monto) {
-      const gastos = Math.round(d.monto * (d.gastos/100));
-      aporteCredito = Math.max(0, d.monto - gastos);
+      gastosCredito = Math.round(d.monto * (d.gastos/100));
+      aporteCredito = Math.max(0, d.monto - gastosCredito);
       if (d.cuotaManual > 0) {
         cuotaPrendario = d.cuotaManual;
       } else if (d.tna > 0) {
@@ -147,7 +153,7 @@ const BudgetPDF = {
         psaMonto = d.psaMonto0; psaCuotas = d.psaCuotas0;
         psaGastos = Math.round(psaMonto * d.psaGasto0/100);
         aportePSA = Math.max(0, psaMonto - psaGastos);
-        cuotaPSA = d.psaCuotaManual0 > 0 ? d.psaCuotaManual0 : (psaMonto / psaCuotas);
+        cuotaPSA = d.psaCuotaManual0 > 0 ? d.psaCuotaManual0 : (psaCuotas > 0 ? psaMonto/psaCuotas : 0);
       } else {
         psaMonto = d.psaMontoP; psaCuotas = d.psaCuotasP;
         psaGastos = Math.round(psaMonto * (d.psaQ + d.psaIVA + d.psaGest)/100);
@@ -167,13 +173,13 @@ const BudgetPDF = {
     return {
       base, porcTransf, transferencia, valorTotal,
       permNeta,
-      aporteCredito, cuotaPrendario, gastosCredito: d.tieneCredito ? Math.round(d.monto * (d.gastos/100)) : 0,
+      aporteCredito, cuotaPrendario, gastosCredito,
       aporteBNA, cuotaBNA, bnaGastos,
       aporteBNA2, cuotaBNA2, bna2Gastos,
       aportePSA, cuotaPSA, psaGastos, psaMonto, psaCuotas,
       totalAportes, diferencia
     };
-  },
+  }
 
   fmt(n) {
     if (!n && n !== 0) return '—';
