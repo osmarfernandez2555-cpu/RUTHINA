@@ -1006,7 +1006,7 @@ function upP(){
   if(pvtr){ pvtr.style.display=transferencia>0?'flex':'none'; document.getElementById('pvtrv').textContent=fmtP(transferencia)+' ('+(porcTransf*100).toFixed(0)+'%)'; }
   var precioBase=usaLista?price:(cash||price);
   var valorTotalOp=precioBase+transferencia;
-  var bna2=gc('cbna'), bnaMonto2=bna2?gn('bna-monto'):0;
+  var _bnaToggle=gc('cbna'), bnaMonto2=_bnaToggle?gn('bna-monto'):0;
   var bancoIdxAporte=parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
   var bancoAporte=BANCOS[bancoIdxAporte]||{gastos:0.042,fijo:0};
   var gastosPorc=bancoAporte.gastos!==undefined?bancoAporte.gastos:0.042;
@@ -1016,10 +1016,10 @@ function upP(){
   var gastoTotalPorc=bancoAporte.gastoTotal||0, gastoTotalMG=0;
   if(cred&&gastoTotalPorc>0&&montoFinanciar>0&&tna>0){ var _tm=Math.pow(1+tna/100,1/12)-1; var _cuota=montoFinanciar*_tm/(1-Math.pow(1+_tm,-cuotas)); gastoTotalMG=Math.round(_cuota*cuotas*gastoTotalPorc); }
   var aporteCred=cred?Math.max(0,montoFinanciar-gastosPrendario-gastosSello-gastoTotalMG):0;
-  var _bnaGF2=bna2?(parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0):0;
-  var _bnaGP2=bna2?(parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0):0;
+  var _bnaGF2=_bnaToggle?(parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0):0;
+  var _bnaGP2=_bnaToggle?(parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0):0;
   var _bnaGastos2=bnaMonto2>0?(Math.round(bnaMonto2*_bnaGP2/100)+_bnaGF2):0;
-  var aporteBNA=gc('cbna')?Math.max(0,gn('bna-monto')-bnaGastosTotal):0;
+  var aporteBNA=_bnaToggle?Math.max(0,bnaMonto2-_bnaGastos2):0;
   var aportePermuta=perm?(pvNeta>0?pvNeta:0):0;
   var psa=gc('cpsa'), _psaMontoEarly=0, _psaGastosEarly=0, _psaNetoEarly=0;
   if(psa){ if(psaTipo==='0km'){ _psaMontoEarly=gn('psa-monto-0'); var _psaGastoPctE=gn('psa-gasto-0')||14.54; _psaGastosEarly=Math.round(_psaMontoEarly*_psaGastoPctE/100); } else { _psaMontoEarly=gn('psa-monto-p'); var _psaQe=gn('psa-q')||10,_psaIVAe=gn('psa-iva')||4,_psaGeste=gn('psa-gest')||5; _psaGastosEarly=Math.round(_psaMontoEarly*(_psaQe+_psaIVAe+_psaGeste)/100); } _psaNetoEarly=Math.max(0,_psaMontoEarly-_psaGastosEarly); }
@@ -1065,7 +1065,7 @@ function upP(){
   var bna2GastoPorc=bna2?(parseFloat((document.getElementById('bna2-gasto-porc')||{value:'0'}).value)||0):0;
   var bna2TNA=bna2?(parseFloat((document.getElementById('bna2-tna')||{value:'38'}).value)||0):0;
   var bna2GastosTotal=bna2Monto>0?(Math.round(bna2Monto*bna2GastoPorc/100)+bna2GastoFijo):0;
-  var aporteBNA2=bna2?Math.max(0,bna2Monto-bna2GastosTotal):0;
+  var aporteBNA2=gc('cbna2')?Math.max(0,bna2Monto-bna2GastosTotal):0;
   ['pvbna-row','pvbna-gas-row','pvbna-rec-row','pvbna-cuota-row'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display=(bna&&bnaMonto>0)?'flex':'none'; });
   // BNA2 display
   ['pvbna2-row','pvbna2-gas-row','pvbna2-rec-row','pvbna2-cuota-row'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display=(bna2&&bna2Monto>0)?'flex':'none'; });
