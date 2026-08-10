@@ -1019,7 +1019,7 @@ function upP(){
   var _bnaGF2=bna2?(parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0):0;
   var _bnaGP2=bna2?(parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0):0;
   var _bnaGastos2=bnaMonto2>0?(Math.round(bnaMonto2*_bnaGP2/100)+_bnaGF2):0;
-  var aporteBNA=bna2?Math.max(0,bnaMonto2-_bnaGastos2):0;
+  var aporteBNA=gc('cbna')?Math.max(0,gn('bna-monto')-bnaGastosTotal):0;
   var aportePermuta=perm?(pvNeta>0?pvNeta:0):0;
   var psa=gc('cpsa'), _psaMontoEarly=0, _psaGastosEarly=0, _psaNetoEarly=0;
   if(psa){ if(psaTipo==='0km'){ _psaMontoEarly=gn('psa-monto-0'); var _psaGastoPctE=gn('psa-gasto-0')||14.54; _psaGastosEarly=Math.round(_psaMontoEarly*_psaGastoPctE/100); } else { _psaMontoEarly=gn('psa-monto-p'); var _psaQe=gn('psa-q')||10,_psaIVAe=gn('psa-iva')||4,_psaGeste=gn('psa-gest')||5; _psaGastosEarly=Math.round(_psaMontoEarly*(_psaQe+_psaIVAe+_psaGeste)/100); } _psaNetoEarly=Math.max(0,_psaMontoEarly-_psaGastosEarly); }
@@ -1151,7 +1151,19 @@ function genPDF(){
     var gastosPorcPDF=bancoPDF.gastos!==undefined?bancoPDF.gastos:0.042;
     var gastosPrenPDF=montoFin>0?Math.round(montoFin*gastosPorcPDF):0;
     var aporteCredPDF=Math.max(0,montoFin-gastosPrenPDF);
-    var totalAportesPDF=aporteCredPDF+(d.anticipo||0)+(d.adelanto||0)+aportePermuta;
+    // BNA1 en PDF
+    var _bnaGF_pdf=gc('cbna')?(parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0):0;
+    var _bnaGP_pdf=gc('cbna')?(parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0):0;
+    var _bnaMonto_pdf=gc('cbna')?gn('bna-monto'):0;
+    var _bnaGastos_pdf=_bnaMonto_pdf>0?(Math.round(_bnaMonto_pdf*_bnaGP_pdf/100)+_bnaGF_pdf):0;
+    var _aporteBNA_pdf=_bnaMonto_pdf>0?Math.max(0,_bnaMonto_pdf-_bnaGastos_pdf):0;
+    // BNA2 en PDF
+    var _bna2GF_pdf=gc('cbna2')?(parseFloat((document.getElementById('bna2-gasto-fijo')||{value:'0'}).value)||0):0;
+    var _bna2GP_pdf=gc('cbna2')?(parseFloat((document.getElementById('bna2-gasto-porc')||{value:'0'}).value)||0):0;
+    var _bna2Monto_pdf=gc('cbna2')?gn('bna2-monto'):0;
+    var _bna2Gastos_pdf=_bna2Monto_pdf>0?(Math.round(_bna2Monto_pdf*_bna2GP_pdf/100)+_bna2GF_pdf):0;
+    var _aporteBNA2_pdf=_bna2Monto_pdf>0?Math.max(0,_bna2Monto_pdf-_bna2Gastos_pdf):0;
+    var totalAportesPDF=aporteCredPDF+(d.anticipo||0)+(d.adelanto||0)+aportePermuta+_aporteBNA_pdf+_aporteBNA2_pdf;
     var precioBase=usaLista?d.precioLista:(d.precioContado||d.precioLista);
     var porcTransf=precioBase>20000000?0.05:0.06;
     var transferencia=Math.round(precioBase*porcTransf);
