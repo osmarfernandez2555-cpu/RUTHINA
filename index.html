@@ -647,6 +647,42 @@ input:checked+.tsl::before{transform:translateX(18px)}
         <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700"><span>Cuota estimada</span><span id="bna-r-cuota">-</span></div>
       </div>
     </div>
+    <div class="seclbl">Crédito Personal 2</div>
+    <div class="trow" onclick="tChk('cbna2','sc-bna2')">
+      <div><div class="trl">Segundo Crédito Personal</div><div class="trs">Agregá un segundo banco o entidad financiera</div></div>
+      <label class="tog" onclick="event.stopPropagation()"><input type="checkbox" id="cbna2" onchange="onToggleBNA2(this.checked)"><span class="tsl"></span></label>
+    </div>
+    <div id="sc-bna2" style="display:none" class="bc">
+      <div class="fg">
+        <label>Banco / Entidad</label>
+        <select id="bna2-banco-sel" onchange="autoFillBNA2(this.value)" style="width:100%;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:13px;color:var(--text);background:#fff;outline:none;margin-bottom:6px">
+          <option value="">-- Seleccionar banco --</option>
+          <option value="bna">BNA — Banco Nacion (gasto fijo $800.000)</option>
+          <option value="bancor">Bancor (sin gastos)</option>
+          <option value="galicia">Galicia (gasto 4.2%)</option>
+          <option value="santander">Santander (gasto 4.2%)</option>
+          <option value="bbva">BBVA (gasto 4.2%)</option>
+          <option value="icbc">ICBC (gasto 4.2%)</option>
+          <option value="macro">Macro (gasto 4.2%)</option>
+          <option value="otro">Otro banco (personalizado)</option>
+        </select>
+        <input id="bna2-banco" type="text" placeholder="O escribí el banco manualmente">
+      </div>
+      <div class="fgr">
+        <div class="fg"><label>Monto solicitado (ARS)</label><input id="bna2-monto" type="number" placeholder="5000000" oninput="upP()"></div>
+        <div class="fg"><label>TNA % <span style="font-size:10px;color:#888;font-weight:400">(editable)</span></label><input id="bna2-tna" type="number" placeholder="38" step="0.1" value="38" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
+        <div class="fg"><label>Cuotas</label><select id="bna2-cuotas" onchange="upP()"><option value="12">12 cuotas</option><option value="18">18 cuotas</option><option value="24">24 cuotas</option><option value="36">36 cuotas</option><option value="48">48 cuotas</option><option value="60">60 cuotas</option><option value="72">72 cuotas</option></select></div>
+        <div class="fg"><label>Gasto fijo (ARS)</label><input id="bna2-gasto-fijo" type="number" placeholder="0" value="" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
+        <div class="fg"><label>Gasto %</label><input id="bna2-gasto-porc" type="number" placeholder="0" value="0" step="0.1" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
+      </div>
+      <div class="fg" style="margin-top:4px"><label style="color:#60a5fa">Cuota manual (opcional)</label><input id="bna2-cuota-manual" type="number" placeholder="Dejá vacío para calcular automático" oninput="upP()" style="color:#60a5fa;font-weight:600;border-color:#60a5fa55"></div>
+      <div id="bna2-resumen" style="display:none;background:#1A1A1A;border-radius:8px;padding:12px;margin-top:8px">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#888;margin-bottom:4px"><span>Monto solicitado</span><span id="bna2-r-monto" style="color:#CCC">-</span></div>
+        <div id="bna2-r-gasto-row" style="display:flex;justify-content:space-between;font-size:12px;color:#f87171;margin-bottom:4px"><span id="bna2-r-glabel">(-) Gastos</span><span id="bna2-r-gasto">-</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:#4ade80;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #333"><span style="font-weight:600">Neto a recibir</span><span id="bna2-r-recibe" style="font-weight:700">-</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:#60a5fa;font-weight:700"><span>Cuota estimada</span><span id="bna2-r-cuota">-</span></div>
+      </div>
+    </div>
     <div class="seclbl">Adelanto en efectivo</div>
     <div class="bc" style="border:2px solid #4ade8044">
       <div style="display:flex;align-items:center;gap:12px">
@@ -675,6 +711,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div class="pr" id="pvbna-gas-row" style="display:none"><span id="pvbna-gas-label">(-) Gastos</span><span id="pvbna-gas-val" style="color:#f87171">&#x2014;</span></div>
       <div class="pr" id="pvbna-rec-row" style="display:none"><span style="font-weight:600">Neto a recibir</span><span id="pvbna-recibe" style="color:#4ade80;font-weight:700">&#x2014;</span></div>
       <div class="pr" id="pvbna-cuota-row" style="display:none"><span>Cuota est.</span><span id="pvbna-cuota" style="color:#60a5fa">&#x2014;</span></div>
+      <div class="pr" id="pvbna2-row" style="display:none"><span id="pvbna2-banco-label">Crédito Personal 2</span><span id="pvbna2-monto" style="color:#60a5fa">&#x2014;</span></div>
+      <div class="pr" id="pvbna2-gas-row" style="display:none"><span id="pvbna2-gas-label">(-) Gastos</span><span id="pvbna2-gas-val" style="color:#f87171">&#x2014;</span></div>
+      <div class="pr" id="pvbna2-rec-row" style="display:none"><span style="font-weight:600">Neto a recibir</span><span id="pvbna2-recibe" style="color:#4ade80;font-weight:700">&#x2014;</span></div>
+      <div class="pr" id="pvbna2-cuota-row" style="display:none"><span>Cuota est. 2</span><span id="pvbna2-cuota" style="color:#60a5fa">&#x2014;</span></div>
       <div class="pr" id="pvpsa-row" style="display:none"><span id="pvpsa-label">PSA solicitado</span><span id="pvpsa-monto" style="color:#60a5fa">&#x2014;</span></div>
       <div class="pr" id="pvpsa-gas-row" style="display:none"><span id="pvpsa-gas-label">(-) Gastos PSA</span><span id="pvpsa-gas" style="color:#f87171">&#x2014;</span></div>
       <div class="pr" id="pvpsa-neto-row" style="display:none"><span style="font-weight:600">PSA neto a recibir</span><span id="pvpsa-neto" style="color:#4ade80;font-weight:700">&#x2014;</span></div>
@@ -984,7 +1024,7 @@ function upP(){
   var psa=gc('cpsa'), _psaMontoEarly=0, _psaGastosEarly=0, _psaNetoEarly=0;
   if(psa){ if(psaTipo==='0km'){ _psaMontoEarly=gn('psa-monto-0'); var _psaGastoPctE=gn('psa-gasto-0')||14.54; _psaGastosEarly=Math.round(_psaMontoEarly*_psaGastoPctE/100); } else { _psaMontoEarly=gn('psa-monto-p'); var _psaQe=gn('psa-q')||10,_psaIVAe=gn('psa-iva')||4,_psaGeste=gn('psa-gest')||5; _psaGastosEarly=Math.round(_psaMontoEarly*(_psaQe+_psaIVAe+_psaGeste)/100); } _psaNetoEarly=Math.max(0,_psaMontoEarly-_psaGastosEarly); }
   var aportePSA=_psaNetoEarly;
-  var totalAportes=aporteCred+aportePermuta+anticipo+adelanto+aporteBNA+aportePSA;
+  var totalAportes=aporteCred+aportePermuta+anticipo+adelanto+aporteBNA+aporteBNA2+aportePSA;
   var pvTotalOpRow=document.getElementById('pvtotal-op-row');
   if(pvTotalOpRow) pvTotalOpRow.style.display=precioBase>0?'flex':'none';
   if(precioBase>0) document.getElementById('pvtotal-op').textContent=fmtP(valorTotalOp);
@@ -1013,13 +1053,48 @@ function upP(){
     var rPb=document.getElementById('psa-pat-resumen'); if(rPb) rPb.style.display='none';
   }
 
-  // BNA personal
+  // BNA personal 1
   var bna=gc('cbna'), bnaMonto=gn('bna-monto'), bnaCuotas=parseInt(gv('bna-cuotas'))||12;
   var bnaGastoFijo=bna?(parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0):0;
   var bnaGastoPorc=bna?(parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0):0;
   var bnaTNA=bna?(parseFloat((document.getElementById('bna-tna')||{value:'38'}).value)||0):0;
   var bnaGastosTotal=bnaMonto>0?(Math.round(bnaMonto*bnaGastoPorc/100)+bnaGastoFijo):0;
+  // BNA personal 2
+  var bna2=gc('cbna2'), bna2Monto=bna2?gn('bna2-monto'):0, bna2Cuotas=parseInt(gv('bna2-cuotas'))||12;
+  var bna2GastoFijo=bna2?(parseFloat((document.getElementById('bna2-gasto-fijo')||{value:'0'}).value)||0):0;
+  var bna2GastoPorc=bna2?(parseFloat((document.getElementById('bna2-gasto-porc')||{value:'0'}).value)||0):0;
+  var bna2TNA=bna2?(parseFloat((document.getElementById('bna2-tna')||{value:'38'}).value)||0):0;
+  var bna2GastosTotal=bna2Monto>0?(Math.round(bna2Monto*bna2GastoPorc/100)+bna2GastoFijo):0;
+  var aporteBNA2=bna2?Math.max(0,bna2Monto-bna2GastosTotal):0;
   ['pvbna-row','pvbna-gas-row','pvbna-rec-row','pvbna-cuota-row'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display=(bna&&bnaMonto>0)?'flex':'none'; });
+  // BNA2 display
+  ['pvbna2-row','pvbna2-gas-row','pvbna2-rec-row','pvbna2-cuota-row'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display=(bna2&&bna2Monto>0)?'flex':'none'; });
+  if(bna2&&bna2Monto>0){
+    var bna2Recibe=Math.max(0,bna2Monto-bna2GastosTotal);
+    var bna2Tm=bna2TNA>0?Math.pow(1+bna2TNA/100,1/12)-1:0;
+    var bna2Manual=gn('bna2-cuota-manual');
+    var bna2Cuota=bna2Manual>0?bna2Manual:(bna2Tm>0?bna2Monto*bna2Tm/(1-Math.pow(1+bna2Tm,-bna2Cuotas)):Math.round(bna2Monto/bna2Cuotas));
+    var _bna2SelEl=document.getElementById('bna2-banco-sel');
+    var _bna2Nombre=_bna2SelEl?_bna2SelEl.options[_bna2SelEl.selectedIndex].text.split(' (')[0]:'Personal 2';
+    var _pvbna2Lbl=document.getElementById('pvbna2-banco-label');
+    if(_pvbna2Lbl) _pvbna2Lbl.textContent=_bna2Nombre+' solicitado';
+    var _pvbna2Monto=document.getElementById('pvbna2-monto'); if(_pvbna2Monto) _pvbna2Monto.textContent=fmtP(bna2Monto);
+    var _pvbna2GasRow=document.getElementById('pvbna2-gas-row'); if(_pvbna2GasRow) _pvbna2GasRow.style.display=bna2GastosTotal>0?'flex':'none';
+    var _pvbna2Gas=document.getElementById('pvbna2-gas-val'); if(_pvbna2Gas) _pvbna2Gas.textContent=bna2GastosTotal>0?'- '+fmtP(bna2GastosTotal):'$ 0';
+    var _pvbna2Rec=document.getElementById('pvbna2-recibe'); if(_pvbna2Rec) _pvbna2Rec.textContent=fmtP(bna2Recibe>0?bna2Recibe:0);
+    var _pvbna2Cuota=document.getElementById('pvbna2-cuota'); if(_pvbna2Cuota) _pvbna2Cuota.textContent=fmtP(Math.round(bna2Cuota))+' x '+bna2Cuotas+(bna2Manual>0?' (manual)':'');
+    var _bna2Res=document.getElementById('bna2-resumen');
+    if(_bna2Res){
+      _bna2Res.style.display='block';
+      var _b2rm=document.getElementById('bna2-r-monto'); if(_b2rm) _b2rm.textContent=fmtP(bna2Monto);
+      var _b2rg=document.getElementById('bna2-r-gasto-row'); if(_b2rg) _b2rg.style.display=bna2GastosTotal>0?'flex':'none';
+      var _b2rv=document.getElementById('bna2-r-gasto'); if(_b2rv) _b2rv.textContent=bna2GastosTotal>0?'- '+fmtP(bna2GastosTotal):'$ 0';
+      var _b2rr=document.getElementById('bna2-r-recibe'); if(_b2rr) _b2rr.textContent=fmtP(bna2Recibe>0?bna2Recibe:0);
+      var _b2rc=document.getElementById('bna2-r-cuota'); if(_b2rc) _b2rc.textContent=fmtP(Math.round(bna2Cuota))+' x '+bna2Cuotas+(bna2Manual>0?' (manual)':'');
+    }
+  } else {
+    var _bna2ResH=document.getElementById('bna2-resumen'); if(_bna2ResH) _bna2ResH.style.display='none';
+  }
   if(bna&&bnaMonto>0){
     var bnaRecibe=Math.max(0,bnaMonto-bnaGastosTotal);
     var bnaTm=bnaTNA>0?Math.pow(1+bnaTNA/100,1/12)-1:0;
@@ -1554,6 +1629,35 @@ window.addEventListener('DOMContentLoaded', function(){
   // API key está en Railway, no se necesita en el browser
   startApp();
 });
+
+// ══ CRÉDITO PERSONAL 2 ══════════════════════════════════
+var BANCOS_PERSONAL2 = {
+  bna:      {nombre:'BNA Nacion',   tna:38,   gastoFijo:800000, gastoPorc:0},
+  bancor:   {nombre:'Bancor',       tna:42,   gastoFijo:0,      gastoPorc:0},
+  galicia:  {nombre:'Galicia',      tna:69,   gastoFijo:0,      gastoPorc:4.2},
+  santander:{nombre:'Santander',    tna:55.9, gastoFijo:0,      gastoPorc:4.2},
+  bbva:     {nombre:'BBVA',         tna:47.9, gastoFijo:0,      gastoPorc:4.2},
+  icbc:     {nombre:'ICBC',         tna:53,   gastoFijo:0,      gastoPorc:4.2},
+  macro:    {nombre:'Macro',        tna:55,   gastoFijo:0,      gastoPorc:4.2},
+  otro:     {nombre:'Otro banco',   tna:0,    gastoFijo:0,      gastoPorc:0}
+}
+
+function onToggleBNA2(checked){ sSec('sc-bna2', checked); upP(); }
+
+function autoFillBNA2(val) {
+  if (!val) return;
+  var b = BANCOS_PERSONAL2[val] || BANCOS_PERSONAL2.otro;
+  var tnaEl = document.getElementById('bna2-tna');
+  var gasFijoEl = document.getElementById('bna2-gasto-fijo');
+  var gasPorcEl = document.getElementById('bna2-gasto-porc');
+  var bancoEl = document.getElementById('bna2-banco');
+  if (tnaEl) tnaEl.value = b.tna;
+  if (gasFijoEl) gasFijoEl.value = b.gastoFijo;
+  if (gasPorcEl) gasPorcEl.value = b.gastoPorc;
+  if (bancoEl) bancoEl.value = b.nombre;
+  upP();
+}
+
 </script>
 </body>
 </html>
