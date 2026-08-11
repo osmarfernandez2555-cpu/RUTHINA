@@ -231,6 +231,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div class="hn">Ruthina</div>
       <div class="hs"><div class="sd"></div><span id="stxt">En línea</span></div>
     </div>
+    <button class="hbtn" onclick="openWApp()" style="background:rgba(37,211,102,0.2)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span>WApp</span>
+    </button>
     <button class="hbtn" onclick="openB()">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
       <span>Presupuesto</span>
@@ -1670,6 +1674,72 @@ function autoFillBNA2(val) {
   upP();
 }
 
+
+// ── WAPP SENDER ──────────────────────────────────────────────────────────────
+var wappAuth = false;
+
+function openWApp() {
+  document.getElementById('wapp-overlay').style.display = 'flex';
+  if (wappAuth) {
+    mostrarWAppFrame();
+  } else {
+    document.getElementById('wapp-login').style.display = 'flex';
+    document.getElementById('wapp-frame-wrap').style.display = 'none';
+    document.getElementById('wapp-pass').value = '';
+    document.getElementById('wapp-error').textContent = '';
+    setTimeout(function(){ document.getElementById('wapp-pass').focus(); }, 100);
+  }
+}
+
+function checkWAppPass() {
+  var pass = document.getElementById('wapp-pass').value;
+  if (pass === 'Tutu2026') {
+    wappAuth = true;
+    mostrarWAppFrame();
+  } else {
+    document.getElementById('wapp-error').textContent = 'Contraseña incorrecta';
+    document.getElementById('wapp-pass').value = '';
+    document.getElementById('wapp-pass').focus();
+  }
+}
+
+function mostrarWAppFrame() {
+  document.getElementById('wapp-login').style.display = 'none';
+  document.getElementById('wapp-frame-wrap').style.display = 'block';
+  var iframe = document.getElementById('wapp-iframe');
+  if (!iframe.src || iframe.src === window.location.href) {
+    iframe.src = 'https://tutu-wapp-production.up.railway.app';
+  }
+}
+
+function closeWApp() {
+  document.getElementById('wapp-overlay').style.display = 'none';
+}
+
+document.getElementById('wapp-pass').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkWAppPass();
+});
+// ─────────────────────────────────────────────────────────────────────────────
 </script>
+
+<!-- MODAL WAPP SENDER -->
+<div id="wapp-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+  <!-- Pantalla de contraseña -->
+  <div id="wapp-login" style="background:#1a1a2e;border:1px solid rgba(37,211,102,0.4);border-radius:16px;padding:32px 28px;width:320px;display:flex;flex-direction:column;gap:16px;text-align:center">
+    <div style="font-size:32px">💬</div>
+    <div style="font-size:18px;font-weight:800;color:#25d366;letter-spacing:1px">TUTU WApp</div>
+    <div style="font-size:12px;color:#aaa">Ingresá la contraseña para acceder</div>
+    <input type="password" id="wapp-pass" placeholder="Contraseña..." style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:15px;padding:11px 14px;outline:none;width:100%;box-sizing:border-box" />
+    <div id="wapp-error" style="color:#e74c3c;font-size:12px;min-height:16px"></div>
+    <button onclick="checkWAppPass()" style="background:#25d366;color:#000;border:none;border-radius:8px;font-size:15px;font-weight:800;padding:12px;cursor:pointer;width:100%">INGRESAR</button>
+    <button onclick="closeWApp()" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:8px;font-size:13px;padding:8px;cursor:pointer">Cancelar</button>
+  </div>
+  <!-- Iframe del WApp Sender -->
+  <div id="wapp-frame-wrap" style="display:none;width:95vw;height:92vh;background:#fff;border-radius:12px;overflow:hidden;position:relative">
+    <button onclick="closeWApp()" style="position:absolute;top:10px;right:10px;z-index:10;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px">✕ Cerrar</button>
+    <iframe id="wapp-iframe" src="" style="width:100%;height:100%;border:none"></iframe>
+  </div>
+</div>
+
 </body>
 </html>
