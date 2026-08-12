@@ -231,6 +231,14 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div class="hn">Ruthina</div>
       <div class="hs"><div class="sd"></div><span id="stxt">En línea</span></div>
     </div>
+    <button class="hbtn" onclick="abrirProforma()" style="background:rgba(200,16,46,0.2)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span>Proforma</span>
+    </button>
+    <button class="hbtn" onclick="abrirTransfDirecto()" style="background:rgba(26,109,212,0.2)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <span>Transferencias</span>
+    </button>
     <button class="hbtn" onclick="openWApp()" style="background:rgba(37,211,102,0.2)">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       <span>WApp</span>
@@ -1675,6 +1683,74 @@ function autoFillBNA2(val) {
 }
 
 
+// ── TRANSFERENCIAS ───────────────────────────────────────────────────────────
+var transfAuth = false;
+
+function abrirProforma() {
+  document.getElementById('proforma-overlay').style.display = 'flex';
+  var iframe = document.getElementById('proforma-iframe');
+  if (!iframe.src || iframe.src === window.location.href) {
+    iframe.src = 'proforma.html';
+  }
+}
+
+function closeProforma() {
+  document.getElementById('proforma-overlay').style.display = 'none';
+}
+
+function abrirTransfDirecto() {
+  document.getElementById('transf-overlay').style.display = 'flex';
+  document.getElementById('transf-login').style.display = 'none';
+  document.getElementById('transf-frame-wrap').style.display = 'block';
+  var iframe = document.getElementById('transf-iframe');
+  if (!iframe.src || iframe.src === window.location.href) {
+    iframe.src = 'https://tutu-transferencias-production.up.railway.app';
+  }
+}
+
+function openTransferencias() {
+  document.getElementById('transf-overlay').style.display = 'flex';
+  if (transfAuth) {
+    mostrarTransfFrame();
+  } else {
+    document.getElementById('transf-login').style.display = 'flex';
+    document.getElementById('transf-frame-wrap').style.display = 'none';
+    document.getElementById('transf-pass').value = '';
+    document.getElementById('transf-error').textContent = '';
+    setTimeout(function(){ document.getElementById('transf-pass').focus(); }, 100);
+  }
+}
+
+function checkTransfPass() {
+  var pass = document.getElementById('transf-pass').value;
+  if (pass === 'Tutu2026') {
+    transfAuth = true;
+    mostrarTransfFrame();
+  } else {
+    document.getElementById('transf-error').textContent = 'Contraseña incorrecta';
+    document.getElementById('transf-pass').value = '';
+    document.getElementById('transf-pass').focus();
+  }
+}
+
+function mostrarTransfFrame() {
+  document.getElementById('transf-login').style.display = 'none';
+  document.getElementById('transf-frame-wrap').style.display = 'block';
+  var iframe = document.getElementById('transf-iframe');
+  if (!iframe.src || iframe.src === window.location.href) {
+    iframe.src = 'https://tutu-transferencias-production.up.railway.app';
+  }
+}
+
+function closeTransferencias() {
+  document.getElementById('transf-overlay').style.display = 'none';
+}
+
+document.getElementById('transf-pass').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkTransfPass();
+});
+// ─────────────────────────────────────────────────────────────────────────────
+
 // ── WAPP SENDER ──────────────────────────────────────────────────────────────
 var wappAuth = false;
 
@@ -1721,6 +1797,31 @@ document.getElementById('wapp-pass').addEventListener('keydown', function(e) {
 });
 // ─────────────────────────────────────────────────────────────────────────────
 </script>
+
+<!-- MODAL PROFORMA -->
+<div id="proforma-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+  <div id="proforma-frame-wrap" style="width:95vw;height:92vh;background:#fff;border-radius:12px;overflow:hidden;position:relative">
+    <button onclick="closeProforma()" style="position:absolute;top:10px;right:10px;z-index:10;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px">✕ Cerrar</button>
+    <iframe id="proforma-iframe" src="" style="width:100%;height:100%;border:none"></iframe>
+  </div>
+</div>
+
+<!-- MODAL TRANSFERENCIAS -->
+<div id="transf-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+  <div id="transf-login" style="background:#1a1a2e;border:1px solid rgba(26,109,212,0.4);border-radius:16px;padding:32px 28px;width:320px;display:flex;flex-direction:column;gap:16px;text-align:center">
+    <div style="font-size:32px">🚗</div>
+    <div style="font-size:18px;font-weight:800;color:#1a6dd4;letter-spacing:1px">TRANSFERENCIAS</div>
+    <div style="font-size:12px;color:#aaa">Ingresá la contraseña para acceder</div>
+    <input type="password" id="transf-pass" placeholder="Contraseña..." style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;color:#fff;font-size:15px;padding:11px 14px;outline:none;width:100%;box-sizing:border-box" />
+    <div id="transf-error" style="color:#e74c3c;font-size:12px;min-height:16px"></div>
+    <button onclick="checkTransfPass()" style="background:#1a6dd4;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:800;padding:12px;cursor:pointer;width:100%">INGRESAR</button>
+    <button onclick="closeTransferencias()" style="background:transparent;border:1px solid rgba(255,255,255,0.15);color:#aaa;border-radius:8px;font-size:13px;padding:8px;cursor:pointer">Cancelar</button>
+  </div>
+  <div id="transf-frame-wrap" style="display:none;width:95vw;height:92vh;background:#f4f5f7;border-radius:12px;overflow:hidden;position:relative">
+    <button onclick="closeTransferencias()" style="position:absolute;top:10px;right:10px;z-index:10;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px">✕ Cerrar</button>
+    <iframe id="transf-iframe" src="" style="width:100%;height:100%;border:none"></iframe>
+  </div>
+</div>
 
 <!-- MODAL WAPP SENDER -->
 <div id="wapp-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
