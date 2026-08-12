@@ -1207,7 +1207,43 @@ function genPDF(){
     if(d.precioLista) rows.push({l:'Precio de lista',v:fmt(d.precioLista),c:[60,60,60]});
     if(!usaLista&&d.precioContado&&d.precioContado!==d.precioLista) rows.push({l:'Precio contado',v:fmt(d.precioContado),c:[30,122,74],b:true});
     if(d.tienePermuta&&d.permuValor){ rows.push({l:'Tasacion: '+(d.permuModelo||''),v:fmt(d.permuValor),c:[180,100,0]}); rows.push({l:'  Neto permuta',v:'- '+fmt(aportePermuta),c:[30,150,80],b:true}); }
-    if(d.tieneCredito&&montoFin){ rows.push({l:'Credito banco',v:'- '+fmt(aporteCredPDF),c:[26,79,171],b:true}); }
+    // Crédito prendario
+    if(d.tieneCredito&&montoFin){
+      var _credLabel=d.bancoNombre?d.bancoNombre:'Crédito banco';
+      rows.push({l:_credLabel+' (solicitado)',v:fmt(montoFin),c:[26,79,171]});
+      if(gastosPrendario>0||gastosSello>0) rows.push({l:'  (-) Gastos',v:'- '+fmt(gastosPrendario+gastosSello),c:[180,60,60]});
+      rows.push({l:'  Neto crédito',v:'- '+fmt(aporteCredPDF),c:[26,79,171],b:true});
+      // Cuota prendario
+      var _cuotaManual=gn('cuota-manual');
+      var _cuotasN=parseInt((document.getElementById('cuotas')||{value:'60'}).value)||60;
+      var _tasaAnual=parseFloat((document.getElementById('tasa-anual')||{value:'0'}).value)||0;
+      if(_cuotaManual>0){ rows.push({l:'  Cuota est.',v:'$ '+Math.round(_cuotaManual).toLocaleString('es-AR')+' × '+_cuotasN+' (manual)',c:[100,140,200]}); }
+      else if(_tasaAnual>0&&montoFin>0){ var _tasaMens=_tasaAnual/12/100; var _cuotaCalc=montoFin*(_tasaMens*Math.pow(1+_tasaMens,_cuotasN))/(Math.pow(1+_tasaMens,_cuotasN)-1); rows.push({l:'  Cuota est.',v:'$ '+Math.round(_cuotaCalc).toLocaleString('es-AR')+' × '+_cuotasN,c:[100,140,200]}); }
+    }
+    // BNA crédito personal
+    if(_bnaMonto_pdf>0){
+      var _bnaNombre=gc('cbna')?(document.getElementById('bna-banco')||{value:'BNA'}).value||'BNA':'BNA';
+      rows.push({l:_bnaNombre+' solicitado',v:fmt(_bnaMonto_pdf),c:[26,120,171]});
+      if(_bnaGastos_pdf>0) rows.push({l:'  (-) Gasto fijo',v:'- '+fmt(_bnaGastos_pdf),c:[180,60,60]});
+      rows.push({l:'  Neto a recibir',v:fmt(_aporteBNA_pdf),c:[26,120,171],b:true});
+      var _bnaCuotasN=parseInt((document.getElementById('bna-cuotas')||{value:'60'}).value)||60;
+      var _bnaCuotaManual=gn('bna-cuota-manual');
+      var _bnaCuotaDisplay=document.getElementById('bna-r-cuota');
+      if(_bnaCuotaManual>0){ rows.push({l:'  Cuota est.',v:'$ '+Math.round(_bnaCuotaManual).toLocaleString('es-AR')+' × '+_bnaCuotasN+' (manual)',c:[100,160,210]}); }
+      else if(_bnaCuotaDisplay&&_bnaCuotaDisplay.textContent&&_bnaCuotaDisplay.textContent!=='-'){ rows.push({l:'  Cuota est.',v:_bnaCuotaDisplay.textContent,c:[100,160,210]}); }
+    }
+    // BNA2 segundo crédito
+    if(_bna2Monto_pdf>0){
+      var _bna2Nombre=gc('cbna2')?(document.getElementById('bna2-banco')||{value:'Galicia'}).value||'Galicia':'Galicia';
+      rows.push({l:_bna2Nombre+' solicitado',v:fmt(_bna2Monto_pdf),c:[26,140,130]});
+      if(_bna2Gastos_pdf>0) rows.push({l:'  (-) Gastos',v:'- '+fmt(_bna2Gastos_pdf),c:[180,60,60]});
+      rows.push({l:'  Neto a recibir',v:fmt(_aporteBNA2_pdf),c:[26,140,130],b:true});
+      var _bna2CuotasN=parseInt((document.getElementById('bna2-cuotas')||{value:'60'}).value)||60;
+      var _bna2CuotaManual=gn('bna2-cuota-manual');
+      var _bna2CuotaDisplay=document.getElementById('bna2-r-cuota');
+      if(_bna2CuotaManual>0){ rows.push({l:'  Cuota est.',v:'$ '+Math.round(_bna2CuotaManual).toLocaleString('es-AR')+' × '+_bna2CuotasN+' (manual)',c:[100,180,160]}); }
+      else if(_bna2CuotaDisplay&&_bna2CuotaDisplay.textContent&&_bna2CuotaDisplay.textContent!=='-'){ rows.push({l:'  Cuota est.',v:_bna2CuotaDisplay.textContent,c:[100,180,160]}); }
+    }
     if(d.anticipo>0) rows.push({l:'(-) Anticipo',v:'- '+fmt(d.anticipo),c:[26,79,171]});
     if(d.adelanto>0) rows.push({l:'(-) Adelanto efectivo',v:'- '+fmt(d.adelanto),c:[30,140,60],b:true});
     if(transferencia>0) rows.push({l:'(+) Transferencia ('+(porcTransf*100)+'%)',v:fmt(transferencia),c:[180,140,0]});
@@ -1746,7 +1782,8 @@ function closeTransferencias() {
   document.getElementById('transf-overlay').style.display = 'none';
 }
 
-document.getElementById('transf-pass').addEventListener('keydown', function(e) {
+var _transfPassEl = document.getElementById('transf-pass');
+if (_transfPassEl) _transfPassEl.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') checkTransfPass();
 });
 // ─────────────────────────────────────────────────────────────────────────────
@@ -1792,7 +1829,8 @@ function closeWApp() {
   document.getElementById('wapp-overlay').style.display = 'none';
 }
 
-document.getElementById('wapp-pass').addEventListener('keydown', function(e) {
+var _wappPassEl = document.getElementById('wapp-pass');
+if (_wappPassEl) _wappPassEl.addEventListener('keydown', function(e) {
   if (e.key === 'Enter') checkWAppPass();
 });
 // ─────────────────────────────────────────────────────────────────────────────
