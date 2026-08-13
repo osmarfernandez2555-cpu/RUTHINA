@@ -363,6 +363,27 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <button class="btn-match-cargar" id="btn-match-cargar" onclick="matchCargarLista()">📥 Parsear y guardar clientes</button>
       <div id="match-bulk-result" style="display:none"></div>
     </div>
+
+    <!-- PANEL DE CLIENTES CON MATCHES -->
+    <div class="match-card" id="panel-clientes-match">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="match-stitle" style="color:#c8102e;margin-bottom:0">👥 Clientes cargados</div>
+        <button onclick="cargarPanelClientes()" style="background:#c8102e;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">🔄 Actualizar</button>
+      </div>
+      <div id="clientes-match-lista" style="display:flex;flex-direction:column;gap:8px">
+        <div style="color:#666;font-size:13px;text-align:center;padding:20px">Hacé click en Actualizar para ver los clientes</div>
+      </div>
+    </div>
+
+    <!-- DETALLE DE MATCHES DE UN CLIENTE -->
+    <div class="match-card" id="panel-detalle-cliente" style="display:none">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <button onclick="volverPanelClientes()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">← Volver</button>
+        <div class="match-stitle" style="margin-bottom:0" id="detalle-cliente-titulo">Matches del cliente</div>
+      </div>
+      <div id="detalle-matches-lista"></div>
+    </div>
+
     <div class="match-card">
       <div class="match-stitle">Buscar vehículo</div>
       <div class="match-g2">
@@ -1457,7 +1478,121 @@ async function migrarStock(){
   btn.disabled=false; if(btn.style.display!='none') btn.textContent='🚀 Migrar stock hardcodeado a la base de datos';
 }
 
-async function matchCargarLista(){
+async // ── PANEL DE CLIENTES CON MATCHES ────────────────────────────────────────────
+async function cargarPanelClientes() {
+  var lista = document.getElementById('clientes-match-lista');
+  lista.innerHTML = '<div style="color:#666;font-size:13px;text-align:center;padding:20px">Cargando...</div>';
+  
+  try {
+    var resp = await fetch(RAILWAY_URL + '/api/clientes?limit=200');
+    var clientes = await resp.json();
+    
+    if (!clientes.length) {
+      lista.innerHTML = '<div style="color:#666;font-size:13px;text-align:center;padding:20px">No hay clientes cargados aún</div>';
+      return;
+    }
+
+    // Para cada cliente buscar cuantos matches tiene
+    var html = '';
+    for (var c of clientes) {
+      var busqueda = c.vehiculo || c.modelo || '';
+      var anio = c.anio || '';
+      var params = new URLSearchParams();
+      if (busqueda) params.append('modelo', busqueda);
+      if (anio) params.append('anio', anio);
+      
+      var matchCount = 0;
+      try {
+        var mr = await fetch(RAILWAY_URL + '/api/match?' + params.toString());
+        var md = await mr.json();
+        matchCount = Array.isArray(md) ? md.length : 0;
+      } catch(e) {}
+
+      var colorBadge = matchCount > 0 ? '#16a34a' : '#666';
+      var bgBadge = matchCount > 0 ? '#dcfce7' : '#f3f4f6';
+      
+      html += '<div onclick="verMatchesCliente(' + JSON.stringify(JSON.stringify(c)).slice(1,-1) + ',' + matchCount + ')" style="display:flex;align-items:center;justify-content:space-between;background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px;cursor:pointer;transition:border 0.2s" onmouseover="this.style.borderColor='#c8102e'" onmouseout="this.style.borderColor='rgba(255,255,255,0.08)'">'
+        + '<div>'
+        + '<div style="font-size:14px;font-weight:700;color:#fff">' + (c.nombre || 'Sin nombre') + '</div>'
+        + '<div style="font-size:12px;color:#aaa;margin-top:2px">' + busqueda + (anio ? ' · ' + anio : '') + '</div>'
+        + (c.telefono ? '<div style="font-size:11px;color:#666;margin-top:1px">📞 ' + c.telefono + '</div>' : '')
+        + '</div>'
+        + '<div style="background:' + bgBadge + ';color:' + colorBadge + ';border-radius:20px;padding:4px 12px;font-size:13px;font-weight:800;min-width:40px;text-align:center">'
+        + matchCount + (matchCount === 1 ? ' match' : ' matches')
+        + '</div>'
+        + '</div>';
+    }
+    
+    lista.innerHTML = html || '<div style="color:#666;font-size:13px;text-align:center;padding:20px">Sin clientes</div>';
+    
+  } catch(e) {
+    lista.innerHTML = '<div style="color:#e74c3c;font-size:13px;text-align:center;padding:20px">Error: ' + e.message + '</div>';
+  }
+}
+
+var _clienteActual = null;
+
+async function verMatchesCliente(clienteJson, matchCount) {
+  _clienteActual = JSON.parse(clienteJson);
+  var c = _clienteActual;
+  
+  document.getElementById('panel-clientes-match').style.display = 'none';
+  document.getElementById('panel-detalle-cliente').style.display = 'block';
+  document.getElementById('detalle-cliente-titulo').textContent = (c.nombre || 'Cliente') + ' — ' + matchCount + ' matches';
+  
+  var lista = document.getElementById('detalle-matches-lista');
+  lista.innerHTML = '<div style="color:#666;font-size:13px;text-align:center;padding:20px">Buscando matches...</div>';
+  
+  var busqueda = c.vehiculo || c.modelo || '';
+  var anio = c.anio || '';
+  var params = new URLSearchParams();
+  if (busqueda) params.append('modelo', busqueda);
+  if (anio) params.append('anio', anio);
+  
+  try {
+    var resp = await fetch(RAILWAY_URL + '/api/match?' + params.toString());
+    var autos = await resp.json();
+    
+    if (!autos.length) {
+      lista.innerHTML = '<div style="color:#666;font-size:13px;text-align:center;padding:20px">No hay matches para este cliente</div>';
+      return;
+    }
+    
+    var html = '<div style="margin-bottom:10px;font-size:12px;color:#aaa">Busca: <strong style="color:#fff">' + busqueda + (anio ? ' ' + anio : '') + '</strong></div>';
+    html += '<div style="display:flex;flex-direction:column;gap:10px">';
+    
+    autos.forEach(function(a) {
+      html += '<div style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px">'
+        + '<div style="display:flex;justify-content:space-between;align-items:flex-start">'
+        + '<div>'
+        + '<div style="font-size:14px;font-weight:700;color:#fff">' + (a.nombre || a.modelo || 'Auto') + '</div>'
+        + '<div style="font-size:12px;color:#aaa;margin-top:2px">'
+        + (a.anio ? '📅 ' + a.anio + '  ' : '')
+        + (a.km ? '🛣️ ' + a.km + '  ' : '')
+        + (a.ubicacion ? '📍 ' + a.ubicacion : '')
+        + '</div>'
+        + '</div>'
+        + '<div style="font-size:15px;font-weight:800;color:#c8102e">' + (a.precio || '-') + '</div>'
+        + '</div>'
+        + (a.url ? '<a href="' + a.url + '" target="_blank" style="display:inline-block;margin-top:8px;font-size:11px;color:#60a5fa;text-decoration:none">Ver ficha →</a>' : '')
+        + '</div>';
+    });
+    
+    html += '</div>';
+    lista.innerHTML = html;
+    
+  } catch(e) {
+    lista.innerHTML = '<div style="color:#e74c3c;font-size:13px">Error: ' + e.message + '</div>';
+  }
+}
+
+function volverPanelClientes() {
+  document.getElementById('panel-detalle-cliente').style.display = 'none';
+  document.getElementById('panel-clientes-match').style.display = 'block';
+}
+// ── FIN PANEL CLIENTES ────────────────────────────────────────────────────────
+
+function matchCargarLista(){
   var texto = document.getElementById('match-bulk-texto').value.trim();
   if(!texto){ alert('Pegá la lista primero'); return; }
   var btn = document.getElementById('btn-match-cargar');
