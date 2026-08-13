@@ -368,7 +368,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <div class="match-card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <div class="match-stitle" style="color:#c8102e;margin-bottom:0">Clientes cargados</div>
-        <button id="btn-actualizar-clientes" onclick="cargarPanelClientes()" style="background:#c8102e;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Actualizar</button>
+        <div style="display:flex;gap:8px">
+          <button id="btn-actualizar-clientes" onclick="cargarPanelClientes()" style="background:#c8102e;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Actualizar</button>
+          <button id="btn-toggle-clientes" onclick="toggleListaClientes()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Ocultar</button>
+        </div>
       </div>
       <div id="clientes-match-lista" style="display:flex;flex-direction:column;gap:6px">
         <div style="color:#666;font-size:13px;text-align:center;padding:20px">Click en Actualizar para ver los clientes</div>
@@ -1978,6 +1981,17 @@ async function verMatchesCliente(idx, matchCount) {
 function volverPanelClientes() {
   document.getElementById('panel-detalle-cliente').style.display = 'none';
   document.getElementById('clientes-match-lista').scrollIntoView({ behavior: 'smooth' });
+}
+function toggleListaClientes() {
+  var lista = document.getElementById('clientes-match-lista');
+  var btn = document.getElementById('btn-toggle-clientes');
+  if (lista.style.display === 'none') {
+    lista.style.display = 'flex';
+    btn.textContent = 'Ocultar';
+  } else {
+    lista.style.display = 'none';
+    btn.textContent = 'Ver lista';
+  }
 }
 // FIN PANEL CLIENTES MATCHES
 </script>
