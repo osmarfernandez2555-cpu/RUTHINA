@@ -397,6 +397,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
         <button onclick="document.getElementById('panel-dashboard-vendedores').style.display='none';document.getElementById('panel-clientes-match').style.display='block'" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Volver</button>
         <div class="match-stitle" style="margin-bottom:0;color:#7c3aed">Dashboard por Vendedor</div>
+        <button onclick="abrirGestionVendedores()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Gestionar vendedores</button>
       </div>
       <div id="dashboard-vendedores-lista"></div>
     </div>
@@ -2030,6 +2031,65 @@ function toggleListaClientes() {
 }
 // FIN PANEL CLIENTES MATCHES
 
+// GESTION DE VENDEDORES
+function abrirGestionVendedores() {
+  document.getElementById('modal-vendedores').style.display = 'flex';
+  renderListaVendedores();
+}
+
+function renderListaVendedores() {
+  var lista = document.getElementById('lista-vendedores-edit');
+  var vendedores = getVendedores();
+  lista.innerHTML = '';
+  vendedores.forEach(function(v, i) {
+    var row = document.createElement('div');
+    row.style.cssText = 'display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:8px;padding:8px 12px';
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.value = v;
+    input.style.cssText = 'flex:1;background:transparent;border:none;color:#fff;font-size:13px;outline:none';
+    var btnGuardar = document.createElement('button');
+    btnGuardar.textContent = 'Guardar';
+    btnGuardar.style.cssText = 'background:#1a6dd4;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer';
+    var btnEliminar = document.createElement('button');
+    btnEliminar.textContent = 'Eliminar';
+    btnEliminar.style.cssText = 'background:#dc2626;color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer';
+    row.appendChild(input);
+    row.appendChild(btnGuardar);
+    row.appendChild(btnEliminar);
+    lista.appendChild(row);
+    (function(idx) {
+      btnGuardar.addEventListener('click', function() {
+        var v2 = getVendedores();
+        v2[idx] = input.value.trim();
+        if (v2[idx]) { setVendedores(v2); VENDEDORES = getVendedores(); btnGuardar.textContent = 'Guardado!'; setTimeout(function(){ btnGuardar.textContent = 'Guardar'; }, 1500); }
+      });
+      btnEliminar.addEventListener('click', function() {
+        if (!confirm('Eliminar a ' + v + '?')) return;
+        var v2 = getVendedores();
+        v2.splice(idx, 1);
+        setVendedores(v2); VENDEDORES = getVendedores();
+        renderListaVendedores();
+      });
+    })(i);
+  });
+}
+
+function agregarVendedor() {
+  var input = document.getElementById('nuevo-vendedor-input');
+  var nombre = input.value.trim();
+  if (!nombre) return;
+  var v = getVendedores();
+  if (v.includes(nombre)) { alert('Ya existe ese vendedor'); return; }
+  v.push(nombre);
+  setVendedores(v); VENDEDORES = getVendedores();
+  input.value = '';
+  renderListaVendedores();
+}
+
+var _nvInput = document.getElementById('nuevo-vendedor-input');
+if (_nvInput) _nvInput.addEventListener('keydown', function(e) { if(e.key==='Enter') agregarVendedor(); });
+// FIN GESTION DE VENDEDORES
 // ============================================================
 // FUNCIONES NUEVAS - TALLER, WAPP, TRANSFERENCIAS, DASHBOARD
 // ============================================================
@@ -2108,7 +2168,17 @@ if (_wappEl) _wappEl.addEventListener('keydown', function(e) { if(e.key==='Enter
 // PANEL CLIENTES CON VENDEDOR Y CALIFICACION
 var _clientesCache = [];
 var _vendedorActual = '';
-var VENDEDORES = ['Joaquin','Agustin','Rodrigo','Nahuel','Lucas','Matias'];
+// Vendedores desde localStorage
+function getVendedores() {
+  try {
+    var v = localStorage.getItem('tutu_vendedores');
+    return v ? JSON.parse(v) : ['Joaquin','Agustin','Rodrigo','Nahuel','Lucas','Matias'];
+  } catch(e) { return ['Joaquin','Agustin','Rodrigo','Nahuel','Lucas','Matias']; }
+}
+function setVendedores(lista) {
+  try { localStorage.setItem('tutu_vendedores', JSON.stringify(lista)); } catch(e) {}
+}
+var VENDEDORES = getVendedores();
 var RAILWAY = 'https://compara-conejo-production.up.railway.app';
 
 async function cargarPanelClientes() {
@@ -2401,6 +2471,20 @@ function filtrarCal(btn, cal, ev) {
   <div id="wapp-frame-wrap" style="display:none;width:95vw;height:92vh;background:#fff;border-radius:12px;overflow:hidden;position:relative">
     <button onclick="document.getElementById('wapp-overlay').style.display='none'" style="position:absolute;top:10px;right:10px;z-index:10;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer">X Cerrar</button>
     <iframe id="wapp-iframe" src="" style="width:100%;height:100%;border:none"></iframe>
+  </div>
+</div>
+<!-- MODAL GESTIONAR VENDEDORES -->
+<div id="modal-vendedores" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:10000;align-items:center;justify-content:center">
+  <div style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:16px;padding:24px;width:360px;max-width:95vw">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+      <div style="font-size:16px;font-weight:800;color:#fff">Gestionar Vendedores</div>
+      <button onclick="document.getElementById('modal-vendedores').style.display='none'" style="background:none;border:none;color:#aaa;font-size:18px;cursor:pointer">x</button>
+    </div>
+    <div id="lista-vendedores-edit" style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px;max-height:300px;overflow-y:auto"></div>
+    <div style="display:flex;gap:8px">
+      <input id="nuevo-vendedor-input" type="text" placeholder="Nombre del vendedor..." style="flex:1;background:#0d0d1a;border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:8px;padding:8px 12px;font-size:13px;outline:none"/>
+      <button onclick="agregarVendedor()" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer">Agregar</button>
+    </div>
   </div>
 </div>
 </body>
