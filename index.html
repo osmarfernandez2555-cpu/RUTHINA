@@ -379,6 +379,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
         <div class="match-stitle" style="color:#c8102e;margin-bottom:0">Clientes cargados</div>
         <div style="display:flex;gap:8px">
           <button onclick="verDashboard()" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Dashboard</button>
+          <button onclick="abrirGestionVendedores()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Vendedores</button>
         <button id="btn-actualizar-clientes" onclick="cargarPanelClientes()" style="background:#c8102e;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Actualizar</button>
           <button id="btn-toggle-clientes" onclick="toggleListaClientes()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Ocultar</button>
         </div>
@@ -2052,8 +2053,10 @@ async function verDashboard() {
 
 // GESTION DE VENDEDORES
 function abrirGestionVendedores() {
-  document.getElementById('modal-vendedores').style.display = 'flex';
-  renderListaVendedores();
+  try {
+    document.getElementById('modal-vendedores').style.display = 'flex';
+    renderListaVendedores();
+  } catch(e) { console.error('abrirGestionVendedores error:', e); }
 }
 
 function renderListaVendedores() {
