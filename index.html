@@ -1965,106 +1965,113 @@ async function cargarPanelClientes() {
   var btn = document.getElementById('btn-actualizar-clientes');
   if (btn) { btn.disabled = true; btn.textContent = 'Cargando...'; }
   lista.innerHTML = '';
+  var VENDEDORES = ['Joaquin','Agustin','Rodrigo','Nahuel','Lucas','Matias'];
   try {
     var resp = await fetch(RAILWAY_URL + '/api/clientes?limit=200');
     var clientes = await resp.json();
     _clientesCache = Array.isArray(clientes) ? clientes : [];
     if (!_clientesCache.length) {
-      lista.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:20px">No hay clientes cargados</div>';
+      lista.innerHTML = '<div style="color:#aaa;font-size:13px;text-align:center;padding:20px">No hay clientes</div>';
       if (btn) { btn.disabled = false; btn.textContent = 'Actualizar'; }
       return;
     }
-    var vendedores = ['Joaquin', 'Agustin', 'Rodrigo', 'Nahuel', 'Lucas', 'Matias'];
     var frag = document.createDocumentFragment();
     for (var i = 0; i < _clientesCache.length; i++) {
       var c = _clientesCache[i];
       var busqueda = c.vehiculo || c.modelo || '';
       var anio = c.anio || '';
-      var params = new URLSearchParams();
-      if (busqueda) params.append('modelo', busqueda);
-      if (anio) params.append('anio', anio);
       var matchCount = 0;
       try {
-        var mr = await fetch(RAILWAY_URL + '/api/match?' + params.toString());
+        var pr = new URLSearchParams();
+        if (busqueda) pr.append('modelo', busqueda);
+        if (anio) pr.append('anio', anio);
+        var mr = await fetch(RAILWAY_URL + '/api/match?' + pr.toString());
         var md = await mr.json();
         matchCount = Array.isArray(md) ? md.length : 0;
-      } catch(e2) {}
+      } catch(ex) {}
 
-      var colorBadge = matchCount > 0 ? '#16a34a' : '#888';
-      var bgBadge = matchCount > 0 ? '#dcfce7' : '#f3f4f6';
       var cal = c.calificacion || '';
-      var calColor = cal === 'sirve' ? '#16a34a' : cal === 'no_sirve' ? '#dc2626' : '#888';
-      var calBg = cal === 'sirve' ? '#dcfce7' : cal === 'no_sirve' ? '#fee2e2' : '#f3f4f6';
-      var calLabel = cal === 'sirve' ? '✅ Sirve' : cal === 'no_sirve' ? '❌ No sirve' : '— Sin calificar';
-
       var div = document.createElement('div');
-      div.className = 'cliente-match-row';
-      div.dataset.idx = i;
-      div.dataset.matches = matchCount;
       div.style.cssText = 'background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px;margin-bottom:8px';
 
-      // Opciones de vendedor
-      var vendOptions = '<option value="">Sin asignar</option>';
-      vendedores.forEach(function(v) {
-        vendOptions += '<option value="' + v + '"' + (c.vendedor === v ? ' selected' : '') + '>' + v + '</option>';
-      });
-
-      div.innerHTML = '<div style="display:flex;align-items:center;justify-content:space-between;cursor:pointer" class="cliente-header">'
-        + '<div><div style="font-size:14px;font-weight:700;color:#fff">' + (c.nombre || 'Sin nombre') + '</div>'
-        + '<div style="font-size:12px;color:#aaa;margin-top:2px">' + (busqueda || '-') + (anio ? ' - ' + anio : '') + '</div>'
-        + (c.telefono ? '<div style="font-size:11px;color:#666;margin-top:1px">' + c.telefono + '</div>' : '')
+      // Header clickeable
+      var header = document.createElement('div');
+      header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:10px';
+      var calColor = cal==='sirve'?'#16a34a':cal==='no_sirve'?'#dc2626':'#888';
+      var calBg = cal==='sirve'?'#dcfce7':cal==='no_sirve'?'#fee2e2':'#f3f4f6';
+      var calLabel = cal==='sirve'?'Sirve':cal==='no_sirve'?'No sirve':'Sin calificar';
+      var matchColor = matchCount>0?'#16a34a':'#888';
+      var matchBg = matchCount>0?'#dcfce7':'#f3f4f6';
+      header.innerHTML = '<div>'
+        + '<div style="font-size:14px;font-weight:700;color:#fff">' + (c.nombre||'Sin nombre') + '</div>'
+        + '<div style="font-size:12px;color:#aaa;margin-top:2px">' + (busqueda||'-') + (anio?' - '+anio:'') + '</div>'
+        + (c.telefono?'<div style="font-size:11px;color:#666;margin-top:1px">'+c.telefono+'</div>':'')
         + '</div>'
-        + '<div style="display:flex;align-items:center;gap:8px">'
-        + '<div style="background:' + calBg + ';color:' + calColor + ';border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700">' + calLabel + '</div>'
-        + '<div style="background:' + bgBadge + ';color:' + colorBadge + ';border-radius:20px;padding:4px 10px;font-size:12px;font-weight:800;white-space:nowrap">' + matchCount + ' matches</div>'
-        + '</div></div>'
-        // Acciones: vendedor + calificacion
-        + '<div style="display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap">'
-        + '<select class="sel-vendedor" data-id="' + c.id + '" style="background:#0d0d1a;border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer">' + vendOptions + '</select>'
-        + '<button class="btn-sirve" data-id="' + c.id + '" style="background:' + (cal==='sirve'?'#16a34a':'#333') + ';color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">✅ Sirve</button>'
-        + '<button class="btn-no-sirve" data-id="' + c.id + '" style="background:' + (cal==='no_sirve'?'#dc2626':'#333') + ';color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">❌ No sirve</button>'
+        + '<div style="display:flex;gap:6px;align-items:center">'
+        + '<div style="background:'+calBg+';color:'+calColor+';border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700">'+calLabel+'</div>'
+        + '<div style="background:'+matchBg+';color:'+matchColor+';border-radius:20px;padding:4px 10px;font-size:12px;font-weight:800">'+matchCount+' matches</div>'
         + '</div>';
 
-      // Click para ver matches
-      div.querySelector('.cliente-header').addEventListener('click', (function(idx2, mc) {
-        return function() { verMatchesCliente(idx2, mc); };
-      })(i, matchCount));
+      // Acciones
+      var acciones = document.createElement('div');
+      acciones.style.cssText = 'display:flex;align-items:center;gap:8px;flex-wrap:wrap';
 
-      // Cambio de vendedor
-      div.querySelector('.sel-vendedor').addEventListener('change', (function(cid) {
-        return async function() {
-          await fetch(RAILWAY_URL + '/api/clientes/' + cid, {
-            method: 'PATCH', headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ vendedor: this.value })
-          });
-        };
-      })(c.id));
+      // Select vendedor
+      var sel = document.createElement('select');
+      sel.style.cssText = 'background:#0d0d1a;border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer';
+      var optDef = document.createElement('option');
+      optDef.value = ''; optDef.textContent = 'Sin asignar';
+      sel.appendChild(optDef);
+      VENDEDORES.forEach(function(v) {
+        var opt = document.createElement('option');
+        opt.value = v; opt.textContent = v;
+        if (c.vendedor === v) opt.selected = true;
+        sel.appendChild(opt);
+      });
 
-      // Calificacion sirve
-      div.querySelector('.btn-sirve').addEventListener('click', (function(cid, d) {
-        return async function() {
-          var nueva = d.calificacion === 'sirve' ? '' : 'sirve';
-          await fetch(RAILWAY_URL + '/api/clientes/' + cid, {
-            method: 'PATCH', headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ calificacion: nueva })
-          });
-          cargarPanelClientes();
-        };
-      })(c.id, c));
+      // Botones calificacion
+      var btnSirve = document.createElement('button');
+      btnSirve.textContent = 'Sirve';
+      btnSirve.style.cssText = 'background:' + (cal==='sirve'?'#16a34a':'#333') + ';color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer';
 
-      // Calificacion no sirve
-      div.querySelector('.btn-no-sirve').addEventListener('click', (function(cid, d) {
-        return async function() {
-          var nueva = d.calificacion === 'no_sirve' ? '' : 'no_sirve';
-          await fetch(RAILWAY_URL + '/api/clientes/' + cid, {
-            method: 'PATCH', headers: {'Content-Type':'application/json'},
-            body: JSON.stringify({ calificacion: nueva })
-          });
-          cargarPanelClientes();
-        };
-      })(c.id, c));
+      var btnNoSirve = document.createElement('button');
+      btnNoSirve.textContent = 'No sirve';
+      btnNoSirve.style.cssText = 'background:' + (cal==='no_sirve'?'#dc2626':'#333') + ';color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer';
 
+      acciones.appendChild(sel);
+      acciones.appendChild(btnSirve);
+      acciones.appendChild(btnNoSirve);
+
+      div.appendChild(header);
+      div.appendChild(acciones);
       frag.appendChild(div);
+
+      // Eventos
+      (function(cid, idx2, mc, clienteData) {
+        header.addEventListener('click', function() { verMatchesCliente(idx2, mc); });
+        sel.addEventListener('change', async function() {
+          await fetch(RAILWAY_URL + '/api/clientes/' + cid, {
+            method: 'PATCH', headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({vendedor: this.value})
+          });
+        });
+        btnSirve.addEventListener('click', async function() {
+          var nueva = clienteData.calificacion === 'sirve' ? '' : 'sirve';
+          await fetch(RAILWAY_URL + '/api/clientes/' + cid, {
+            method: 'PATCH', headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({calificacion: nueva})
+          });
+          cargarPanelClientes();
+        });
+        btnNoSirve.addEventListener('click', async function() {
+          var nueva = clienteData.calificacion === 'no_sirve' ? '' : 'no_sirve';
+          await fetch(RAILWAY_URL + '/api/clientes/' + cid, {
+            method: 'PATCH', headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({calificacion: nueva})
+          });
+          cargarPanelClientes();
+        });
+      })(c.id, i, matchCount, c);
     }
     lista.innerHTML = '';
     lista.appendChild(frag);
