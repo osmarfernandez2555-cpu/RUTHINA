@@ -391,7 +391,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <!-- DASHBOARD VENDEDORES -->
     <div class="match-card" id="panel-dashboard-vendedores" style="display:none">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-        <button onclick="document.getElementById('panel-dashboard-vendedores').style.display='none';document.getElementById('panel-clientes-match').style.display='block'" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Volver</button>
+        <button onclick="document.getElementById('panel-dashboard-vendedores').style.display='none';var _pcm2 = document.getElementById('panel-clientes-match'); if(_pcm2) _pcm2.style.display='block'" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Volver</button>
         <div class="match-stitle" style="margin-bottom:0;color:#7c3aed">Dashboard por Vendedor</div>
         <button onclick="abrirGestionVendedores()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Gestionar vendedores</button>
       </div>
@@ -2017,7 +2017,7 @@ function toggleListaClientes() {
 
 
 async function verDashboard() {
-  document.getElementById('panel-clientes-match').style.display = 'none';
+  var _pcm = document.getElementById('panel-clientes-match'); if(_pcm) _pcm.style.display = 'none';
   document.getElementById('panel-dashboard-vendedores').style.display = 'block';
   var lista = document.getElementById('dashboard-vendedores-lista');
   lista.innerHTML = '<div style="color:#aaa;text-align:center;padding:20px">Cargando...</div>';
@@ -2322,7 +2322,7 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
 }
 
 // DASHBOARD VENDEDORES
-async // verDashboard definida abajo
+// verDashboard definida abajo
 
 async function verClientesVendedor(vendedor) {
   _vendedorActual = vendedor;
