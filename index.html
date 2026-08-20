@@ -1981,14 +1981,46 @@ async function verMatchesCliente(idx, matchCount) {
   var anio = c.anio || '';
   var presupuesto = c.presupuesto || '';
   var telefono = c.telefono || '';
+  var tienePermuta = ['si','sí','true','yes'].indexOf(String(c.tiene_permuta || '').toLowerCase()) !== -1;
+  var permMarca = c.permuta_marca || '';
+  var permModelo = c.permuta_modelo || '';
+  var permVersion = c.permuta_version || '';
+  var permAnio = c.permuta_anio || '';
+  var permKm = c.permuta_km || '';
+  var permColor = c.permuta_color || '';
+  var permValor = c.permuta_valor || '';
 
-  var headerHTML = '<div style="background:rgba(200,16,46,0.1);border:1px solid rgba(200,16,46,0.3);border-radius:10px;padding:12px 16px;margin-bottom:12px">'
-    + '<div style="font-size:13px;font-weight:700;color:#c8102e;margin-bottom:6px">Datos del cliente</div>'
-    + '<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#ddd">'
-    + (busqueda ? '<span>🚗 Busca: <strong>' + busqueda + (anio ? ' ' + anio : '') + '</strong></span>' : '')
-    + (presupuesto ? '<span>💰 Presupuesto: <strong>' + presupuesto + '</strong></span>' : '')
-    + (telefono ? '<span>📞 <strong>' + telefono + '</strong></span>' : '')
-    + '</div></div>';
+  function fmtMoneda(v) {
+    if (!v) return '';
+    var n = Number(String(v).replace(/[^\d.]/g, ''));
+    return (n && !isNaN(n)) ? '$ ' + n.toLocaleString('es-AR') : v;
+  }
+
+  var permutaAutoTitulo = [permMarca, permModelo, permVersion].filter(Boolean).join(' ');
+  var permutaHTML = '';
+  if (tienePermuta) {
+    permutaHTML = '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(245,166,35,0.3)">'
+      + '<div style="font-size:11px;font-weight:800;letter-spacing:0.4px;color:#f5a623;margin-bottom:5px">🔄 ENTREGA EN PERMUTA</div>'
+      + '<div style="font-size:14px;font-weight:700;color:#fff">' + (permutaAutoTitulo || 'Vehículo a permutar (sin detalle)') + '</div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#ccc;margin-top:4px">'
+      + (permAnio ? '<span>📅 ' + permAnio + '</span>' : '')
+      + (permKm ? '<span>🛣️ ' + Number(String(permKm).replace(/\D/g,'')).toLocaleString('es-AR') + ' km</span>' : '')
+      + (permColor ? '<span>🎨 ' + permColor + '</span>' : '')
+      + (permValor ? '<span>💵 Estimado: <strong style="color:#4ade80">' + fmtMoneda(permValor) + '</strong></span>' : '')
+      + '</div></div>';
+  } else {
+    permutaHTML = '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);font-size:11px;color:#777">🔄 Sin vehículo en permuta</div>';
+  }
+
+  var headerHTML = '<div style="background:#161629;border:1px solid rgba(245,166,35,0.35);border-left:4px solid #f5a623;border-radius:10px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.2)">'
+    + '<div style="font-size:12px;font-weight:800;letter-spacing:0.5px;color:#f5a623;margin-bottom:8px">DATOS DEL CLIENTE</div>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:#f0f0f0">'
+    + (busqueda ? '<span>🚗 Busca: <strong style="color:#fff">' + busqueda + (anio ? ' ' + anio : '') + '</strong></span>' : '')
+    + (presupuesto ? '<span>💰 Presupuesto: <strong style="color:#4ade80">' + fmtMoneda(presupuesto) + '</strong></span>' : '<span style="color:#888">💰 Presupuesto: sin datos</span>')
+    + (telefono ? '<span>📞 <strong style="color:#60a5fa">' + telefono + '</strong></span>' : '')
+    + '</div>'
+    + permutaHTML
+    + '</div>';
 
   lista.innerHTML = headerHTML + '<div style="color:#aaa;font-size:13px;text-align:center;padding:20px">Buscando matches...</div>';
 
@@ -2284,6 +2316,7 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   var calLabel = cal==='sirve'?'Sirve':cal==='no_sirve'?'No sirve':'Sin calificar';
   var matchColor = matchCount>0?'#16a34a':'#888';
   var matchBg = matchCount>0?'#dcfce7':'#f3f4f6';
+  var tienePermutaPrev = ['si','sí','true','yes'].indexOf(String(c.tiene_permuta || '').toLowerCase()) !== -1;
 
   var header = document.createElement('div');
   header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:10px';
@@ -2291,7 +2324,8 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     + '<div style="font-size:14px;font-weight:700;color:#fff">' + (c.nombre||'Sin nombre') + '</div>'
     + '<div style="font-size:12px;color:#aaa;margin-top:2px">' + (busqueda||'-') + (anio?' - '+anio:'') + '</div>'
     + (c.telefono?'<div style="font-size:11px;color:#aaa;margin-top:1px">&#128222; '+c.telefono+'</div>':'')
-    + (c.presupuesto?'<div style="font-size:11px;color:#aaa;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
+    + (c.presupuesto?'<div style="font-size:11px;color:#4ade80;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
+    + (tienePermutaPrev?'<div style="font-size:11px;color:#f5a623;margin-top:1px">&#128260; Permuta: '+[c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')+'</div>':'')
     + '</div>'
     + '<div style="display:flex;gap:6px;align-items:center">'
     + '<div style="background:'+calBg+';color:'+calColor+';border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700">'+calLabel+'</div>'
