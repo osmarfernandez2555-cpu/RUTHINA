@@ -309,6 +309,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
           <input id="stock-ubicacion" class="match-input" placeholder="ej: Tutu Automotores, Agencia López..." value="Tutu Automotores"/>
         </div>
         <div style="flex:1">
+          <span class="stock-ubic-label">Teléfono contacto</span>
+          <input id="stock-telefono" class="match-input" placeholder="ej: 351-555-1234" value=""/>
+        </div>
+        <div style="flex:1">
           <span class="stock-ubic-label">Moneda por defecto</span>
           <select id="stock-moneda-default" class="match-input" style="height:38px">
             <option value="ARS">Pesos (ARS)</option>
@@ -1448,7 +1452,7 @@ async function stockCargarTexto() {
     var resp = await fetch('https://compara-conejo-production.up.railway.app/api/stock/bulk', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({texto, ubicacion, moneda})
+      body: JSON.stringify({texto, ubicacion, moneda, telefono})
     });
     var data = await resp.json();
     if (data.error) { stockMostrarResultado('<div class="match-err">'+data.error+'</div>'); return; }
@@ -1478,7 +1482,7 @@ async function stockCargarPDF() {
     var resp = await fetch('https://compara-conejo-production.up.railway.app/api/stock/bulk-pdf', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({pdf: stockPDFData, ubicacion, moneda})
+      body: JSON.stringify({pdf: stockPDFData, ubicacion, moneda, telefono})
     });
     var data = await resp.json();
     if (data.error) { stockMostrarResultado('<div class="match-err">'+data.error+'</div>'); return; }
@@ -2013,7 +2017,7 @@ async function verMatchesCliente(idx, matchCount) {
         + (a.km ? '<span>🛣️ ' + Number(a.km).toLocaleString('es-AR') + ' km</span>' : '')
         + (a.color ? '<span>🎨 ' + a.color + '</span>' : '')
         + '<span>📍 <strong style="color:#ddd">' + ubicacion + '</strong></span>'
-        + (tieneTel ? '<span>' + tieneTel + '</span>' : '')
+        + (a.telefono ? '<span>📞 <strong style="color:#60a5fa">' + a.telefono + '</strong></span>' : (tieneTel ? '<span>' + tieneTel + '</span>' : ''))
         + '</div>'
         + (a.notas ? '<div style="font-size:11px;color:#888;margin-top:4px">' + a.notas + '</div>' : '')
         + '</div>';
