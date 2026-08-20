@@ -1968,34 +1968,60 @@ async function verMatchesCliente(idx, matchCount) {
   if (!c) return;
   document.getElementById('panel-detalle-cliente').style.display = 'block';
   document.getElementById('panel-detalle-cliente').scrollIntoView({ behavior: 'smooth' });
-  document.getElementById('detalle-cliente-titulo').textContent = (c.nombre || 'Cliente') + ' - ' + matchCount + ' matches';
+  var titulo = (c.nombre || 'Cliente') + ' — ' + matchCount + ' matches';
+  document.getElementById('detalle-cliente-titulo').textContent = titulo;
   var lista = document.getElementById('detalle-matches-lista');
-  lista.innerHTML = '<div style="color:#666;font-size:13px;text-align:center;padding:20px">Buscando...</div>';
+
+  // Encabezado con datos del cliente
   var busqueda = c.vehiculo || c.modelo || '';
   var anio = c.anio || '';
+  var presupuesto = c.presupuesto || '';
+  var telefono = c.telefono || '';
+
+  var headerHTML = '<div style="background:rgba(200,16,46,0.1);border:1px solid rgba(200,16,46,0.3);border-radius:10px;padding:12px 16px;margin-bottom:12px">'
+    + '<div style="font-size:13px;font-weight:700;color:#c8102e;margin-bottom:6px">Datos del cliente</div>'
+    + '<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#ddd">'
+    + (busqueda ? '<span>🚗 Busca: <strong>' + busqueda + (anio ? ' ' + anio : '') + '</strong></span>' : '')
+    + (presupuesto ? '<span>💰 Presupuesto: <strong>' + presupuesto + '</strong></span>' : '')
+    + (telefono ? '<span>📞 <strong>' + telefono + '</strong></span>' : '')
+    + '</div></div>';
+
+  lista.innerHTML = headerHTML + '<div style="color:#aaa;font-size:13px;text-align:center;padding:20px">Buscando matches...</div>';
+
   var params = new URLSearchParams();
   if (busqueda) params.append('modelo', busqueda);
   if (anio) params.append('anio', anio);
   try {
-    var resp = await fetch(RAILWAY_URL + '/api/match?' + params.toString());
+    var resp = await fetch(RAILWAY + '/api/match?' + params.toString());
     var autos = await resp.json();
     if (!autos.length) {
-      lista.innerHTML = '<div style="color:#666;font-size:13px;text-align:center;padding:20px">No hay matches</div>';
+      lista.innerHTML = headerHTML + '<div style="color:#aaa;font-size:13px;text-align:center;padding:20px">No hay matches</div>';
       return;
     }
-    var html = '<div style="margin-bottom:10px;font-size:12px;color:#aaa">Busca: <strong style="color:#fff">' + busqueda + (anio ? ' ' + anio : '') + '</strong></div>';
+    var autosHTML = '<div style="display:flex;flex-direction:column;gap:10px">';
     autos.forEach(function(a) {
-      html += '<div style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px;margin-bottom:8px">'
-        + '<div style="display:flex;justify-content:space-between;align-items:flex-start">'
-        + '<div><div style="font-size:14px;font-weight:700;color:#fff">' + ([a.marca, a.modelo, a.version].filter(Boolean).join(' ') || a.nombre || 'Auto') + '</div>'
-        + '<div style="font-size:12px;color:#aaa;margin-top:2px">' + (a.anio || '') + (a.km ? '  ' + a.km : '') + (a.ubicacion ? '  ' + a.ubicacion : '') + '</div></div>'
-        + '<div style="font-size:15px;font-weight:800;color:#c8102e">' + (a.precio || '-') + '</div></div>'
-        + (a.url ? '<a href="' + a.url + '" target="_blank" style="display:inline-block;margin-top:8px;font-size:11px;color:#60a5fa;text-decoration:none">Ver ficha</a>' : '')
+      var precio = a.precio ? (a.moneda === 'USD' ? 'USD ' + Number(a.precio).toLocaleString('es-AR') : '$ ' + Number(a.precio).toLocaleString('es-AR')) : '-';
+      var ubicacion = a.ubicacion || 'Tutu Automotores';
+      var tieneTel = ubicacion.toLowerCase().includes('tutu') ? '📞 3515055263' : '';
+      autosHTML += '<div style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px">'
+        + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">'
+        + '<div style="font-size:14px;font-weight:700;color:#fff">' + [a.marca, a.modelo, a.version].filter(Boolean).join(' ') + '</div>'
+        + '<div style="font-size:15px;font-weight:800;color:#c8102e">' + precio + '</div>'
+        + '</div>'
+        + '<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:#aaa">'
+        + (a.anio ? '<span>📅 ' + a.anio + '</span>' : '')
+        + (a.km ? '<span>🛣️ ' + Number(a.km).toLocaleString('es-AR') + ' km</span>' : '')
+        + (a.color ? '<span>🎨 ' + a.color + '</span>' : '')
+        + '<span>📍 <strong style="color:#ddd">' + ubicacion + '</strong></span>'
+        + (tieneTel ? '<span>' + tieneTel + '</span>' : '')
+        + '</div>'
+        + (a.notas ? '<div style="font-size:11px;color:#888;margin-top:4px">' + a.notas + '</div>' : '')
         + '</div>';
     });
-    lista.innerHTML = html;
+    autosHTML += '</div>';
+    lista.innerHTML = headerHTML + autosHTML;
   } catch(e) {
-    lista.innerHTML = '<div style="color:#e74c3c;font-size:13px">Error: ' + e.message + '</div>';
+    lista.innerHTML = headerHTML + '<div style="color:#e74c3c;font-size:13px">Error: ' + e.message + '</div>';
   }
 }
 
@@ -2260,7 +2286,8 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   header.innerHTML = '<div>'
     + '<div style="font-size:14px;font-weight:700;color:#fff">' + (c.nombre||'Sin nombre') + '</div>'
     + '<div style="font-size:12px;color:#aaa;margin-top:2px">' + (busqueda||'-') + (anio?' - '+anio:'') + '</div>'
-    + (c.telefono?'<div style="font-size:11px;color:#666;margin-top:1px">'+c.telefono+'</div>':'')
+    + (c.telefono?'<div style="font-size:11px;color:#aaa;margin-top:1px">&#128222; '+c.telefono+'</div>':'')
+    + (c.presupuesto?'<div style="font-size:11px;color:#aaa;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
     + '</div>'
     + '<div style="display:flex;gap:6px;align-items:center">'
     + '<div style="background:'+calBg+';color:'+calColor+';border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700">'+calLabel+'</div>'
