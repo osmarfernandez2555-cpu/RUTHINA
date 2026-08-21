@@ -1445,6 +1445,7 @@ async function stockCargarTexto() {
   if (!texto) { alert('Pegá una lista primero'); return; }
   var ubicacion = document.getElementById('stock-ubicacion').value.trim() || 'Tutu Automotores';
   var moneda = document.getElementById('stock-moneda-default').value;
+  var telefono = document.getElementById('stock-telefono').value.trim();
   var btn = document.getElementById('btn-stock-texto');
   btn.disabled = true; btn.textContent = 'Procesando...';
   stockMostrarProcesando('⏳ Analizando lista con IA...');
@@ -1475,6 +1476,7 @@ async function stockCargarPDF() {
   if (!stockPDFData) { alert('Seleccioná un PDF primero'); return; }
   var ubicacion = document.getElementById('stock-ubicacion').value.trim() || 'Tutu Automotores';
   var moneda = document.getElementById('stock-moneda-default').value;
+  var telefono = document.getElementById('stock-telefono').value.trim();
   var btn = document.getElementById('btn-stock-pdf');
   btn.disabled = true; btn.textContent = 'Procesando PDF...';
   stockMostrarProcesando('⏳ Leyendo PDF con IA...');
