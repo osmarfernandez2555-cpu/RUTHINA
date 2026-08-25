@@ -1983,6 +1983,7 @@ async function verMatchesCliente(idx, matchCount) {
   var anio = c.anio || '';
   var presupuesto = c.presupuesto || '';
   var telefono = c.telefono || '';
+  var dni = c.dni || '';
   var tienePermuta = ['si','sí','true','yes'].indexOf(String(c.tiene_permuta || '').toLowerCase()) !== -1;
   var permMarca = c.permuta_marca || '';
   var permModelo = c.permuta_modelo || '';
@@ -1991,6 +1992,9 @@ async function verMatchesCliente(idx, matchCount) {
   var permKm = c.permuta_km || '';
   var permColor = c.permuta_color || '';
   var permValor = c.permuta_valor || '';
+  var tieneGarantes = ['si','sí','true','yes'].indexOf(String(c.tiene_garantes || '').toLowerCase()) !== -1;
+  var garanteNombre = c.garante_nombre || '';
+  var garanteDni = c.garante_dni || '';
 
   function fmtMoneda(v) {
     if (!v) return '';
@@ -2002,7 +2006,7 @@ async function verMatchesCliente(idx, matchCount) {
   var permutaHTML = '';
   if (tienePermuta) {
     permutaHTML = '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(245,166,35,0.3)">'
-      + '<div style="font-size:11px;font-weight:800;letter-spacing:0.4px;color:#f5a623;margin-bottom:5px">🔄 ENTREGA EN PERMUTA</div>'
+      + '<div style="font-size:11px;font-weight:800;letter-spacing:0.4px;color:#f5a623;margin-bottom:5px">🔄 PERMUTA: SÍ</div>'
       + '<div style="font-size:14px;font-weight:700;color:#fff">' + (permutaAutoTitulo || 'Vehículo a permutar (sin detalle)') + '</div>'
       + '<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#ccc;margin-top:4px">'
       + (permAnio ? '<span>📅 ' + permAnio + '</span>' : '')
@@ -2011,7 +2015,19 @@ async function verMatchesCliente(idx, matchCount) {
       + (permValor ? '<span>💵 Estimado: <strong style="color:#4ade80">' + fmtMoneda(permValor) + '</strong></span>' : '')
       + '</div></div>';
   } else {
-    permutaHTML = '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);font-size:11px;color:#777">🔄 Sin vehículo en permuta</div>';
+    permutaHTML = '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);font-size:12px;color:#999">🔄 Permuta: <strong style="color:#ccc">No</strong></div>';
+  }
+
+  var garantesHTML = '';
+  if (tieneGarantes) {
+    garantesHTML = '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(96,165,250,0.3)">'
+      + '<div style="font-size:11px;font-weight:800;letter-spacing:0.4px;color:#60a5fa;margin-bottom:5px">👤 GARANTES: SÍ</div>'
+      + '<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#ccc">'
+      + (garanteNombre ? '<span>' + garanteNombre + '</span>' : '<span style="color:#888">Sin nombre cargado</span>')
+      + (garanteDni ? '<span>🪪 DNI: <strong style="color:#fff">' + garanteDni + '</strong></span>' : '')
+      + '</div></div>';
+  } else {
+    garantesHTML = '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);font-size:12px;color:#999">👤 Garantes: <strong style="color:#ccc">No</strong></div>';
   }
 
   var headerHTML = '<div style="background:#161629;border:1px solid rgba(245,166,35,0.35);border-left:4px solid #f5a623;border-radius:10px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.2)">'
@@ -2020,8 +2036,10 @@ async function verMatchesCliente(idx, matchCount) {
     + (busqueda ? '<span>🚗 Busca: <strong style="color:#fff">' + busqueda + (anio ? ' ' + anio : '') + '</strong></span>' : '')
     + (presupuesto ? '<span>💰 Presupuesto: <strong style="color:#4ade80">' + fmtMoneda(presupuesto) + '</strong></span>' : '<span style="color:#888">💰 Presupuesto: sin datos</span>')
     + (telefono ? '<span>📞 <strong style="color:#60a5fa">' + telefono + '</strong></span>' : '')
+    + (dni ? '<span>🪪 DNI: <strong style="color:#fff">' + dni + '</strong></span>' : '<span style="color:#888">🪪 DNI: sin datos</span>')
     + '</div>'
     + permutaHTML
+    + garantesHTML
     + '</div>';
 
   lista.innerHTML = headerHTML + '<div style="color:#aaa;font-size:13px;text-align:center;padding:20px">Buscando matches...</div>';
