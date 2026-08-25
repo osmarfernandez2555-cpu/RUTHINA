@@ -371,8 +371,8 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <!-- CARGAR CLIENTES -->
     <div class="match-card">
       <div class="match-stitle" style="color:#92400E">👥 Cargar Lista de Clientes</div>
-      <div style="font-size:12px;color:#667781;margin-bottom:8px">Pegá una lista de clientes con lo que buscan. Ruthina la parsea y cruza automáticamente con el stock.</div>
-      <textarea id="match-bulk-texto" class="match-bulk-area" placeholder="Nombre&#9;Teléfono&#9;Vehículo que busca&#10;Juan Pérez&#9;351-1234&#9;Gol Trend 2013&#10;María Gómez&#9;351-5678&#9;Shineray M7..."></textarea>
+      <div style="font-size:12px;color:#667781;margin-bottom:8px">Pegá una lista de clientes con lo que buscan. Podés incluir DNI, si tiene auto en permuta (y sus datos) y si tiene garante (y su DNI). Ruthina la parsea y cruza automáticamente con el stock.</div>
+      <textarea id="match-bulk-texto" class="match-bulk-area" placeholder="Nombre&#9;Teléfono&#9;DNI&#9;Vehículo que busca&#10;Juan Pérez&#9;351-1234&#9;30111222&#9;Gol Trend 2013, entrega un Corsa 2015 en parte de pago&#10;María Gómez&#9;351-5678&#9;27333444&#9;Shineray M7, con garante Pedro López DNI 25666777"></textarea>
       <button class="btn-match-cargar" id="btn-match-cargar" onclick="matchCargarLista()">📥 Parsear y guardar clientes</button>
       <div id="match-bulk-result" style="display:none"></div>
     </div>
@@ -1537,6 +1537,17 @@ async function matchCargarLista(){
     if(data.error){ resDiv.innerHTML='<div class="match-err">'+data.error+'</div>'; resDiv.style.display='block'; return; }
     
     var html2 = '<div class="match-bulk-result">✅ Guardados: <strong>'+data.guardados+'</strong> clientes'+(data.errores?' · Errores: '+data.errores:'')+'</div>';
+    if (data.clientes && data.clientes.length > 0) {
+      html2 += '<div style="font-size:11px;color:#667781;margin-top:6px">';
+      data.clientes.forEach(function(cl){
+        var tags = [];
+        if (cl.dni) tags.push('🪪 '+cl.dni);
+        if (['si','sí','true'].indexOf(String(cl.tiene_permuta||'').toLowerCase())!==-1) tags.push('🔄 Permuta');
+        if (['si','sí','true'].indexOf(String(cl.tiene_garantes||'').toLowerCase())!==-1) tags.push('👤 Garante');
+        html2 += '<div>'+cl.nombre+(tags.length?' — '+tags.join(' · '):'')+'</div>';
+      });
+      html2 += '</div>';
+    }
     
     if(data.matches && data.matches.length > 0){
       html2 += '<div class="match-bulk-match"><div class="match-bulk-match-title">🎯 ¡MATCHES ENCONTRADOS! ('+data.matches.length+')</div>';
