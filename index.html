@@ -2362,6 +2362,48 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   div.appendChild(header);
   div.appendChild(acciones);
 
+  // Bancos con monto por banco (siempre visibles)
+  var BANCOS_LEAD = [
+    { key: 'monto_galicia', label: 'Galicia' },
+    { key: 'monto_bancor', label: 'Bancor' },
+    { key: 'monto_nacion', label: 'Nación' },
+    { key: 'monto_santander', label: 'Santander' },
+    { key: 'monto_mg', label: 'MG' }
+  ];
+  var bancosBox = document.createElement('div');
+  bancosBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;margin-top:8px';
+  var bancoInputs = {};
+  BANCOS_LEAD.forEach(function(b) {
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;align-items:center;gap:4px;background:#0d0d1a;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:3px 8px';
+    var lbl = document.createElement('span');
+    lbl.textContent = b.label;
+    lbl.style.cssText = 'font-size:11px;color:#aaa;white-space:nowrap';
+    var inp = document.createElement('input');
+    inp.type = 'number';
+    inp.placeholder = '$';
+    inp.value = c[b.key] || '';
+    inp.style.cssText = 'width:90px;background:transparent;border:none;color:#4ade80;font-size:12px;outline:none';
+    wrap.appendChild(lbl);
+    wrap.appendChild(inp);
+    bancosBox.appendChild(wrap);
+    bancoInputs[b.key] = inp;
+  });
+  div.appendChild(bancosBox);
+
+  (function(cid, inputs) {
+    Object.keys(inputs).forEach(function(key) {
+      inputs[key].addEventListener('change', async function() {
+        var body = {};
+        body[key] = this.value;
+        await fetch(RAILWAY + '/api/clientes/' + cid, {
+          method:'PATCH', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(body)
+        });
+      });
+    });
+  })(c.id, bancoInputs);
+
   (function(cid, i2, mc) {
     header.addEventListener('click', function() { verMatchesCliente(i2, mc); });
     sel.addEventListener('change', async function() {
