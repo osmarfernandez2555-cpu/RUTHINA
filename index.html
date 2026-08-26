@@ -388,6 +388,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
           <button id="btn-toggle-clientes" onclick="toggleListaClientes()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Ocultar</button>
         </div>
       </div>
+      <div id="clientes-filtro-vendedor" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
       <div id="clientes-match-lista" style="display:flex;flex-direction:column;gap:6px">
         <div style="color:#666;font-size:13px;text-align:center;padding:20px">Click en Actualizar para ver los clientes</div>
       </div>
@@ -2327,10 +2328,10 @@ async function cargarPanelClientes() {
     _clientesCache = Array.isArray(clientes) ? clientes : [];
     if (!_clientesCache.length) {
       lista.innerHTML = '<div style="color:#aaa;font-size:13px;text-align:center;padding:20px">No hay clientes cargados</div>';
+      document.getElementById('clientes-filtro-vendedor').innerHTML = '';
       if (btn) { btn.disabled = false; btn.textContent = 'Actualizar'; }
       return;
     }
-    var frag = document.createDocumentFragment();
     for (var i = 0; i < _clientesCache.length; i++) {
       var c = _clientesCache[i];
       var busqueda = c.vehiculo || c.modelo || '';
@@ -2344,16 +2345,60 @@ async function cargarPanelClientes() {
         var md = await mr.json();
         matchCount = Array.isArray(md) ? md.length : 0;
       } catch(ex) {}
-      var cal = c.calificacion || '';
-      var div = crearTarjetaCliente(c, i, matchCount, cal);
-      frag.appendChild(div);
+      c._matchCount = matchCount;
+      c._cal = c.calificacion || '';
     }
-    lista.innerHTML = '';
-    lista.appendChild(frag);
+    renderFiltroVendedores();
+    renderizarClientesFiltrados(_filtroVendedorActual || 'todos');
   } catch(e) {
     lista.innerHTML = '<div style="color:#e74c3c;font-size:13px;text-align:center;padding:20px">Error: ' + e.message + '</div>';
   }
   if (btn) { btn.disabled = false; btn.textContent = 'Actualizar'; }
+}
+
+var _filtroVendedorActual = 'todos';
+
+function renderFiltroVendedores() {
+  var cont = document.getElementById('clientes-filtro-vendedor');
+  if (!cont) return;
+  var sinAsignarCount = _clientesCache.filter(function(c){ return !c.vendedor; }).length;
+  var tabs = [{ key: 'todos', label: 'Todos', count: _clientesCache.length }];
+  tabs.push({ key: 'sin_asignar', label: 'Sin asignar', count: sinAsignarCount });
+  VENDEDORES.forEach(function(v) {
+    var cnt = _clientesCache.filter(function(c){ return c.vendedor === v; }).length;
+    tabs.push({ key: v, label: v, count: cnt });
+  });
+  cont.innerHTML = '';
+  tabs.forEach(function(t) {
+    var activo = (_filtroVendedorActual || 'todos') === t.key;
+    var b = document.createElement('button');
+    b.textContent = t.label + ' (' + t.count + ')';
+    b.style.cssText = 'border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer;border:1px solid '+(activo?'#c8102e':'rgba(255,255,255,0.15)')+';background:'+(activo?'#c8102e':'#1a1a2e')+';color:'+(activo?'#fff':'#ccc');
+    b.onclick = function() { renderizarClientesFiltrados(t.key); };
+    cont.appendChild(b);
+  });
+}
+
+function renderizarClientesFiltrados(filtro) {
+  _filtroVendedorActual = filtro;
+  var lista = document.getElementById('clientes-match-lista');
+  var datos = _clientesCache;
+  if (filtro === 'sin_asignar') datos = _clientesCache.filter(function(c){ return !c.vendedor; });
+  else if (filtro !== 'todos') datos = _clientesCache.filter(function(c){ return c.vendedor === filtro; });
+
+  var frag = document.createDocumentFragment();
+  if (!datos.length) {
+    lista.innerHTML = '<div style="color:#666;font-size:13px;text-align:center;padding:20px">No hay clientes en este filtro</div>';
+  } else {
+    datos.forEach(function(c) {
+      var idx = _clientesCache.indexOf(c);
+      var div = crearTarjetaCliente(c, idx, c._matchCount || 0, c._cal || '');
+      frag.appendChild(div);
+    });
+    lista.innerHTML = '';
+    lista.appendChild(frag);
+  }
+  renderFiltroVendedores();
 }
 
 function crearTarjetaCliente(c, idx, matchCount, cal) {
@@ -2463,6 +2508,8 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
         method:'PATCH', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({vendedor: this.value})
       });
+      c.vendedor = this.value;
+      renderizarClientesFiltrados(_filtroVendedorActual || 'todos');
     });
     btnS.addEventListener('click', async function() {
       var nueva = c.calificacion === 'sirve' ? '' : 'sirve';
