@@ -2096,13 +2096,17 @@ async function verMatchesCliente(idx, matchCount) {
       var ubicacion = a.ubicacion || 'Tutu Automotores';
       var tieneTel = ubicacion.toLowerCase().includes('tutu') ? '📞 3515055263' : '';
       var cargaTxt = tiempoDesdeCarga(a.created_at);
+      var anioBadge = '';
+      if (a._anioExacto === false) {
+        anioBadge = '<span style="background:rgba(245,166,35,0.15);color:#f5a623;border-radius:6px;padding:1px 6px;font-size:10px;font-weight:700;margin-left:6px">año cercano</span>';
+      }
       autosHTML += '<div style="background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px">'
         + '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">'
         + '<div style="font-size:14px;font-weight:700;color:#fff">' + [a.marca, a.modelo, a.version].filter(Boolean).join(' ') + '</div>'
         + '<div style="font-size:15px;font-weight:800;color:#c8102e">' + precio + '</div>'
         + '</div>'
-        + '<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:#aaa">'
-        + (a.anio ? '<span>📅 ' + a.anio + '</span>' : '')
+        + '<div style="display:flex;flex-wrap:wrap;gap:8px;font-size:12px;color:#aaa;align-items:center">'
+        + (a.anio ? '<span>📅 ' + a.anio + anioBadge + '</span>' : '')
         + (a.km ? '<span>🛣️ ' + Number(a.km).toLocaleString('es-AR') + ' km</span>' : '')
         + (a.color ? '<span>🎨 ' + a.color + '</span>' : '')
         + '<span>📍 <strong style="color:#ddd">' + ubicacion + '</strong></span>'
