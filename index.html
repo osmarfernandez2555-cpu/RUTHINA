@@ -2066,7 +2066,10 @@ async function verMatchesCliente(idx, matchCount) {
     + '</div></div>';
 
   var headerHTML = '<div style="background:#161629;border:1px solid rgba(245,166,35,0.35);border-left:4px solid #f5a623;border-radius:10px;padding:14px 16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,0.2)">'
-    + '<div style="font-size:12px;font-weight:800;letter-spacing:0.5px;color:#f5a623;margin-bottom:8px">DATOS DEL CLIENTE</div>'
+    + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">'
+    + '<div style="font-size:12px;font-weight:800;letter-spacing:0.5px;color:#f5a623">DATOS DEL CLIENTE</div>'
+    + (tiempoDesdeCarga(c.created_at) ? '<div style="font-size:11px;color:#777">🕐 Cargado ' + tiempoDesdeCarga(c.created_at) + '</div>' : '')
+    + '</div>'
     + '<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:#f0f0f0">'
     + (busqueda ? '<span>🚗 Busca: <strong style="color:#fff">' + busqueda + (anio ? ' ' + anio : '') + '</strong></span>' : '')
     + (presupuesto ? '<span>💰 Presupuesto: <strong style="color:#4ade80">' + fmtMoneda(presupuesto) + '</strong></span>' : '<span style="color:#888">💰 Presupuesto: sin datos</span>')
@@ -2439,18 +2442,19 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   var matchBg = matchCount>0?'#dcfce7':'#f3f4f6';
   var tienePermutaPrev = ['si','sí','true','yes'].indexOf(String(c.tiene_permuta || '').toLowerCase()) !== -1;
   var tieneGarantesPrev = ['si','sí','true','yes'].indexOf(String(c.tiene_garantes || '').toLowerCase()) !== -1;
+  var cargaClienteTxt = tiempoDesdeCarga(c.created_at);
 
   var header = document.createElement('div');
   header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:10px';
   header.innerHTML = '<div>'
     + '<div style="font-size:14px;font-weight:700;color:#fff">' + (c.nombre||'Sin nombre') + '</div>'
     + '<div style="font-size:12px;color:#aaa;margin-top:2px">' + (busqueda||'-') + (anio?' - '+anio:'') + '</div>'
-    + (c.created_at ? '<div style="font-size:11px;color:#7c8fa0;margin-top:3px">&#128197; Cargado: ' + new Date(c.created_at).toLocaleDateString('es-AR', {day:'2-digit',month:'2-digit',year:'numeric'}) + '</div>' : '')
     + (c.telefono?'<div style="font-size:11px;color:#aaa;margin-top:1px">&#128222; '+c.telefono+'</div>':'')
     + '<div style="font-size:11px;color:'+(c.dni?'#aaa':'#666')+';margin-top:1px">&#127991; DNI: '+(c.dni||'sin datos')+'</div>'
     + (c.presupuesto?'<div style="font-size:11px;color:#4ade80;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
     + '<div style="font-size:11px;color:'+(tienePermutaPrev?'#f5a623':'#666')+';margin-top:1px">&#128260; Permuta: '+(tienePermutaPrev?('Sí — '+([c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')||'sin detalle')):'No')+'</div>'
     + '<div style="font-size:11px;color:'+(tieneGarantesPrev?'#60a5fa':'#666')+';margin-top:1px">&#128100; Garantes: '+(tieneGarantesPrev?('Sí — '+([c.garante_nombre,c.garante_dni].filter(Boolean).join(' DNI ')||'sin detalle')):'No')+'</div>'
+    + (cargaClienteTxt?'<div style="font-size:11px;color:#777;margin-top:1px">&#128337; Cargado '+cargaClienteTxt+'</div>':'')
     + '</div>'
     + '<div style="display:flex;gap:6px;align-items:center">'
     + '<div style="background:'+calBg+';color:'+calColor+';border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700">'+calLabel+'</div>'
