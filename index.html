@@ -208,6 +208,21 @@ input:checked+.tsl::before{transform:translateX(18px)}
 </style>
 </head>
 <body>
+<div id="login-overlay" style="display:none;position:fixed;inset:0;background:#0d0d1a;z-index:2000;flex-direction:column;align-items:center;justify-content:center;padding:24px">
+  <div style="width:100%;max-width:360px">
+    <div style="text-align:center;margin-bottom:28px">
+      <div style="width:64px;height:64px;background:#C8102E;border-radius:16px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:Inter,sans-serif;font-weight:800;font-size:28px;color:white">Ru</div>
+      <div style="font-family:Inter,sans-serif;font-weight:700;font-size:22px;color:white">Ruthina</div>
+      <div style="font-size:13px;color:#888;margin-top:4px">Tutu Automotores</div>
+    </div>
+    <div style="background:#161629;border-radius:14px;padding:20px">
+      <div style="font-size:12px;color:#aaa;font-family:Inter,sans-serif;margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px">Contraseña</div>
+      <input id="loginPassInput" type="password" style="width:100%;background:#0d0d1a;border:1.5px solid #333;border-radius:10px;padding:12px 14px;font-family:Inter,sans-serif;font-size:14px;color:white;outline:none;margin-bottom:12px;box-sizing:border-box" placeholder="Tu contraseña" onkeydown="if(event.key==='Enter')intentarLogin()">
+      <button onclick="intentarLogin()" style="width:100%;background:#c8102e;color:#fff;border:none;border-radius:10px;padding:12px;font-size:14px;font-weight:700;cursor:pointer">Ingresar</button>
+      <div id="loginError" style="display:none;color:#dc2626;font-size:12px;margin-top:10px;text-align:center">Contraseña incorrecta</div>
+    </div>
+  </div>
+</div>
 <div id="setup" style="display:none;position:fixed;inset:0;background:#1A1A1A;z-index:1000;flex-direction:column;align-items:center;justify-content:center;padding:24px">
   <div style="width:100%;max-width:400px">
     <div style="text-align:center;margin-bottom:32px">
@@ -1373,6 +1388,15 @@ function autoFillBanco(idx){ if(idx===''||idx==='0') return; var b=BANCOS[parseI
 var RAILWAY_URL = 'https://compara-conejo-production.up.railway.app';
 
 function openMatch(){
+  if (!SESION) {
+    document.getElementById('login-overlay').style.display = 'flex';
+    document.getElementById('loginPassInput').focus();
+    return;
+  }
+  abrirMatchReal();
+}
+
+function abrirMatchReal(){
   document.getElementById('sc').style.display='none';
   document.getElementById('sb').style.display='none';
   document.getElementById('comp').style.display='none';
@@ -2186,11 +2210,13 @@ function abrirGestionVendedores() {
   } catch(e) { console.error('abrirGestionVendedores error:', e); }
 }
 
-function renderListaVendedores() {
+async function renderListaVendedores() {
   var lista = document.getElementById('lista-vendedores-edit');
-  var vendedores = getVendedores();
+  lista.innerHTML = '<div style="color:#888;font-size:12px">Cargando...</div>';
+  await cargarVendedoresDesdeServidor();
+  var vendedores = VENDEDORES;
   lista.innerHTML = '';
-  vendedores.forEach(function(v, i) {
+  vendedores.forEach(function(v) {
     var row = document.createElement('div');
     row.style.cssText = 'display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.05);border-radius:8px;padding:8px 12px';
     var input = document.createElement('input');
@@ -2207,31 +2233,37 @@ function renderListaVendedores() {
     row.appendChild(btnGuardar);
     row.appendChild(btnEliminar);
     lista.appendChild(row);
-    (function(idx) {
-      btnGuardar.addEventListener('click', function() {
-        var v2 = getVendedores();
-        v2[idx] = input.value.trim();
-        if (v2[idx]) { setVendedores(v2); VENDEDORES = getVendedores(); btnGuardar.textContent = 'Guardado!'; setTimeout(function(){ btnGuardar.textContent = 'Guardar'; }, 1500); }
+    btnGuardar.addEventListener('click', async function() {
+      var nuevoNombre = input.value.trim();
+      if (!nuevoNombre || nuevoNombre === v) return;
+      btnGuardar.textContent = '...';
+      await fetch(RAILWAY + '/api/vendedores/' + encodeURIComponent(v), {
+        method: 'PATCH', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ nombre: nuevoNombre })
       });
-      btnEliminar.addEventListener('click', function() {
-        if (!confirm('Eliminar a ' + v + '?')) return;
-        var v2 = getVendedores();
-        v2.splice(idx, 1);
-        setVendedores(v2); VENDEDORES = getVendedores();
-        renderListaVendedores();
-      });
-    })(i);
+      await cargarVendedoresDesdeServidor();
+      btnGuardar.textContent = 'Guardado!';
+      setTimeout(function(){ renderListaVendedores(); }, 800);
+    });
+    btnEliminar.addEventListener('click', async function() {
+      if (!confirm('¿Eliminar a ' + v + '? Sus leads asignados van a quedar como "Sin asignar".')) return;
+      await fetch(RAILWAY + '/api/vendedores/' + encodeURIComponent(v), { method: 'DELETE' });
+      await cargarVendedoresDesdeServidor();
+      renderListaVendedores();
+    });
   });
 }
 
-function agregarVendedor() {
+async function agregarVendedor() {
   var input = document.getElementById('nuevo-vendedor-input');
   var nombre = input.value.trim();
   if (!nombre) return;
-  var v = getVendedores();
-  if (v.includes(nombre)) { alert('Ya existe ese vendedor'); return; }
-  v.push(nombre);
-  setVendedores(v); VENDEDORES = getVendedores();
+  if (VENDEDORES.some(function(v){ return v.toLowerCase() === nombre.toLowerCase(); })) { alert('Ya existe ese vendedor'); return; }
+  await fetch(RAILWAY + '/api/vendedores', {
+    method: 'POST', headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ nombre: nombre })
+  });
+  await cargarVendedoresDesdeServidor();
   input.value = '';
   renderListaVendedores();
 }
@@ -2317,18 +2349,98 @@ if (_wappEl) _wappEl.addEventListener('keydown', function(e) { if(e.key==='Enter
 // PANEL CLIENTES CON VENDEDOR Y CALIFICACION
 var _clientesCache = [];
 var _vendedorActual = '';
-// Vendedores desde localStorage
-function getVendedores() {
-  try {
-    var v = localStorage.getItem('tutu_vendedores');
-    return v ? JSON.parse(v) : ['Joaquin','Agustin','Rodrigo','Nahuel','Lucas','Matias'];
-  } catch(e) { return ['Joaquin','Agustin','Rodrigo','Nahuel','Lucas','Matias']; }
-}
-function setVendedores(lista) {
-  try { localStorage.setItem('tutu_vendedores', JSON.stringify(lista)); } catch(e) {}
-}
-var VENDEDORES = getVendedores();
 var RAILWAY = 'https://compara-conejo-production.up.railway.app';
+
+// ── Vendedores: ahora compartidos vía servidor (antes vivían en localStorage,
+// lo que hacía que cada dispositivo tuviera una lista distinta) ─────────────
+var VENDEDORES = [];
+async function cargarVendedoresDesdeServidor() {
+  try {
+    var r = await fetch(RAILWAY + '/api/vendedores');
+    var data = await r.json();
+    VENDEDORES = Array.isArray(data) ? data : [];
+  } catch(e) { console.error('Error cargando vendedores:', e.message); }
+  return VENDEDORES;
+}
+
+// ── Sesión / Login ────────────────────────────────────────────
+var SESION = null; // { role: 'admin'|'vendedor', nombre: 'Ariel' }
+var ADMIN_PASS = 'Tutu2026';
+
+function cargarSesion() {
+  try {
+    var s = localStorage.getItem('ruthina_sesion');
+    SESION = s ? JSON.parse(s) : null;
+  } catch(e) { SESION = null; }
+  return SESION;
+}
+function guardarSesion(s) {
+  SESION = s;
+  try { localStorage.setItem('ruthina_sesion', JSON.stringify(s)); } catch(e) {}
+}
+function cerrarSesion() {
+  try { localStorage.removeItem('ruthina_sesion'); } catch(e) {}
+  location.reload();
+}
+
+async function intentarLogin() {
+  var input = document.getElementById('loginPassInput');
+  var pass = (input.value || '').trim();
+  var err = document.getElementById('loginError');
+  err.style.display = 'none';
+  if (!pass) return;
+
+  if (pass === ADMIN_PASS) {
+    guardarSesion({ role: 'admin', nombre: 'Admin' });
+    aplicarSesionUI();
+    document.getElementById('login-overlay').style.display = 'none';
+    input.value = '';
+    abrirMatchReal();
+    return;
+  }
+
+  await cargarVendedoresDesdeServidor();
+  var match = VENDEDORES.find(function(v) { return v.toLowerCase() === pass.toLowerCase(); });
+  if (match) {
+    guardarSesion({ role: 'vendedor', nombre: match });
+    aplicarSesionUI();
+    document.getElementById('login-overlay').style.display = 'none';
+    input.value = '';
+    abrirMatchReal();
+    return;
+  }
+
+  err.style.display = 'block';
+  input.value = '';
+  input.focus();
+}
+
+function aplicarSesionUI() {
+  if (!SESION) return;
+  var esVendedor = SESION.role === 'vendedor';
+  // Ocultar funciones de administrador para vendedores
+  var btnDash = document.querySelector('button[onclick="verDashboard()"]');
+  if (btnDash) btnDash.style.display = esVendedor ? 'none' : '';
+  var btnVend = document.querySelector('button[onclick="abrirGestionVendedores()"]');
+  if (btnVend) btnVend.style.display = esVendedor ? 'none' : '';
+
+  // Indicador de sesión arriba de todo
+  var badge = document.getElementById('sesion-badge');
+  if (!badge) {
+    badge = document.createElement('div');
+    badge.id = 'sesion-badge';
+    badge.style.cssText = 'position:fixed;top:8px;right:8px;z-index:1500;background:#161629;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 12px;font-size:11px;color:#ccc;display:flex;align-items:center;gap:8px;font-family:Inter,sans-serif';
+    document.body.appendChild(badge);
+  }
+  badge.innerHTML = (esVendedor ? '👤 ' : '⭐ ') + SESION.nombre
+    + ' <button onclick="cerrarSesion()" style="background:transparent;border:none;color:#c8102e;font-size:11px;cursor:pointer;font-weight:700;padding:0">Salir</button>';
+}
+
+function verificarSesion() {
+  cargarSesion();
+  if (SESION) aplicarSesionUI();
+}
+verificarSesion();
 
 function tiempoDesdeCarga(fecha) {
   if (!fecha) return '';
@@ -2350,10 +2462,15 @@ async function cargarPanelClientes() {
   var btn = document.getElementById('btn-actualizar-clientes');
   if (btn) { btn.disabled = true; btn.textContent = 'Cargando...'; }
   lista.innerHTML = '';
+  var esVendedor = SESION && SESION.role === 'vendedor';
   try {
-    var resp = await fetch(RAILWAY + '/api/clientes?limit=200');
+    await cargarVendedoresDesdeServidor();
+    var url = RAILWAY + '/api/clientes?limit=200';
+    if (esVendedor) url += '&vendedor=' + encodeURIComponent(SESION.nombre);
+    var resp = await fetch(url);
     var clientes = await resp.json();
     _clientesCache = Array.isArray(clientes) ? clientes : [];
+    if (esVendedor) _filtroVendedorActual = SESION.nombre;
     if (!_clientesCache.length) {
       lista.innerHTML = '<div style="color:#aaa;font-size:13px;text-align:center;padding:20px">No hay clientes cargados</div>';
       document.getElementById('clientes-filtro-vendedor').innerHTML = '';
@@ -2389,6 +2506,18 @@ var _filtroVendedorActual = 'todos';
 function renderFiltroVendedores() {
   var cont = document.getElementById('clientes-filtro-vendedor');
   if (!cont) return;
+  var esVendedor = SESION && SESION.role === 'vendedor';
+  cont.innerHTML = '';
+
+  // Un vendedor solo ve su propia pestaña (fija, no puede cambiarla)
+  if (esVendedor) {
+    var b0 = document.createElement('div');
+    b0.textContent = '👤 ' + SESION.nombre + ' (' + _clientesCache.length + ')';
+    b0.style.cssText = 'border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;border:1px solid #c8102e;background:#c8102e;color:#fff';
+    cont.appendChild(b0);
+    return;
+  }
+
   var sinAsignarCount = _clientesCache.filter(function(c){ return !c.vendedor; }).length;
   var tabs = [{ key: 'todos', label: 'Todos', count: _clientesCache.length }];
   tabs.push({ key: 'sin_asignar', label: 'Sin asignar', count: sinAsignarCount });
@@ -2396,7 +2525,6 @@ function renderFiltroVendedores() {
     var cnt = _clientesCache.filter(function(c){ return c.vendedor === v; }).length;
     tabs.push({ key: v, label: v, count: cnt });
   });
-  cont.innerHTML = '';
   tabs.forEach(function(t) {
     var activo = (_filtroVendedorActual || 'todos') === t.key;
     var b = document.createElement('button');
@@ -2474,6 +2602,12 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     if (c.vendedor === v) opt.selected = true;
     sel.appendChild(opt);
   });
+  if (SESION && SESION.role === 'vendedor') {
+    sel.disabled = true;
+    sel.style.opacity = '0.6';
+    sel.style.cursor = 'not-allowed';
+    sel.title = 'Solo un administrador puede reasignar leads';
+  }
 
   var btnS = document.createElement('button');
   btnS.textContent = 'Sirve';
