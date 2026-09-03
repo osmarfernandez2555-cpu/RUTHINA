@@ -2445,6 +2445,7 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   header.innerHTML = '<div>'
     + '<div style="font-size:14px;font-weight:700;color:#fff">' + (c.nombre||'Sin nombre') + '</div>'
     + '<div style="font-size:12px;color:#aaa;margin-top:2px">' + (busqueda||'-') + (anio?' - '+anio:'') + '</div>'
+    + (c.created_at ? '<div style="font-size:10px;color:#555;margin-top:2px">&#128197; ' + new Date(c.created_at).toLocaleDateString('es-AR', {day:'2-digit',month:'2-digit',year:'numeric'}) + '</div>' : '')
     + (c.telefono?'<div style="font-size:11px;color:#aaa;margin-top:1px">&#128222; '+c.telefono+'</div>':'')
     + '<div style="font-size:11px;color:'+(c.dni?'#aaa':'#666')+';margin-top:1px">&#127991; DNI: '+(c.dni||'sin datos')+'</div>'
     + (c.presupuesto?'<div style="font-size:11px;color:#4ade80;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
