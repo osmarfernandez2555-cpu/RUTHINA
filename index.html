@@ -2483,9 +2483,27 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   btnN.textContent = 'No sirve';
   btnN.style.cssText = 'background:' + (cal==='no_sirve'?'#dc2626':'#333') + ';color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer';
 
+  var btnDel = document.createElement('button');
+  btnDel.textContent = '🗑️ Eliminar';
+  btnDel.style.cssText = 'background:transparent;color:#dc2626;border:1px solid rgba(220,38,38,0.4);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer;margin-left:auto';
+  btnDel.onclick = async function() {
+    if (!confirm('¿Eliminar a ' + (c.nombre||'este cliente') + '? Esta acción no se puede deshacer.')) return;
+    btnDel.disabled = true; btnDel.textContent = 'Eliminando...';
+    try {
+      await fetch(RAILWAY + '/api/clientes/' + c.id, { method: 'DELETE' });
+      var i = _clientesCache.indexOf(c);
+      if (i !== -1) _clientesCache.splice(i, 1);
+      renderizarClientesFiltrados(_filtroVendedorActual || 'todos');
+    } catch(e) {
+      alert('Error al eliminar: ' + e.message);
+      btnDel.disabled = false; btnDel.textContent = '🗑️ Eliminar';
+    }
+  };
+
   acciones.appendChild(sel);
   acciones.appendChild(btnS);
   acciones.appendChild(btnN);
+  acciones.appendChild(btnDel);
   div.appendChild(header);
   div.appendChild(acciones);
 
