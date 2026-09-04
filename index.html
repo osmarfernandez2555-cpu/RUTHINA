@@ -2610,7 +2610,7 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   }
 
   var ESTADOS_LEAD = [
-    { value: '', label: 'Sin estado', color: '#333' },
+    { value: '', label: 'Sin estado', color: '#666' },
     { value: 'nuevo', label: '🟡 Nuevo contacto', color: '#f5a623' },
     { value: 'contactado', label: '🟢 Contactado', color: '#16a34a' },
     { value: 'pendiente', label: '🔴 Pendiente', color: '#dc2626' }
@@ -2620,9 +2620,11 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     return e ? e.color : '#333';
   }
   var estadoRow = document.createElement('div');
-  estadoRow.style.cssText = 'margin-bottom:8px';
+  estadoRow.style.cssText = 'margin-bottom:8px;display:flex;align-items:center;gap:8px';
+  var dotEstado = document.createElement('span');
+  dotEstado.style.cssText = 'display:inline-block;width:12px;height:12px;border-radius:50%;background:' + colorEstadoLead(c.estado_lead||'') + ';box-shadow:0 0 6px ' + colorEstadoLead(c.estado_lead||'') + ';flex-shrink:0';
   var selEstado = document.createElement('select');
-  selEstado.style.cssText = 'background:' + colorEstadoLead(c.estado_lead||'') + ';color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer';
+  selEstado.style.cssText = 'background:#0d0d1a;color:#fff;border:1px solid ' + colorEstadoLead(c.estado_lead||'') + ';border-radius:6px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer';
   ESTADOS_LEAD.forEach(function(es) {
     var opt = document.createElement('option');
     opt.value = es.value; opt.textContent = es.label;
@@ -2630,13 +2632,17 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     selEstado.appendChild(opt);
   });
   selEstado.addEventListener('change', async function() {
-    selEstado.style.background = colorEstadoLead(this.value);
+    var color = colorEstadoLead(this.value);
+    dotEstado.style.background = color;
+    dotEstado.style.boxShadow = '0 0 6px ' + color;
+    selEstado.style.borderColor = color;
     c.estado_lead = this.value;
     await fetch(RAILWAY + '/api/clientes/' + c.id, {
       method:'PATCH', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({estado_lead: this.value})
     });
   });
+  estadoRow.appendChild(dotEstado);
   estadoRow.appendChild(selEstado);
 
   var btnS = document.createElement('button');
