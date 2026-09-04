@@ -2558,8 +2558,26 @@ function renderizarClientesFiltrados(filtro) {
 }
 
 function crearTarjetaCliente(c, idx, matchCount, cal) {
+  var ESTADOS_LEAD = [
+    { value: '', label: 'Sin estado', bg: '#1a1a2e', dot: '#666', claro: false },
+    { value: 'nuevo', label: '⚪ Nuevo contacto', bg: '#f5f5f5', dot: '#ccc', claro: true },
+    { value: 'contactado', label: '🟡 Contactado', bg: '#eab308', dot: '#854d0e', claro: true },
+    { value: 'activo', label: '🔵 Activo/Pendiente', bg: '#1e40af', dot: '#93c5fd', claro: false },
+    { value: 'concretado', label: '🟢 Concretado', bg: '#15803d', dot: '#86efac', claro: false },
+    { value: 'no_responde', label: '🔴 No responde', bg: '#991b1b', dot: '#fca5a5', claro: false }
+  ];
+  function infoEstadoLead(v) {
+    return ESTADOS_LEAD.find(function(x){ return x.value === v; }) || ESTADOS_LEAD[0];
+  }
+  var estadoInfo = infoEstadoLead(c.estado_lead || '');
+  var claro = estadoInfo.claro;
+  var txtMain = claro ? '#111' : '#fff';
+  var txtSub = claro ? '#444' : '#aaa';
+  var txtMuted = claro ? '#777' : '#666';
+  var cardBorder = claro ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.08)';
+
   var div = document.createElement('div');
-  div.style.cssText = 'background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 16px;margin-bottom:8px';
+  div.style.cssText = 'background:'+estadoInfo.bg+';border:1px solid '+cardBorder+';border-radius:10px;padding:12px 16px;margin-bottom:8px;transition:background .2s';
 
   var busqueda = c.vehiculo || c.modelo || '';
   var anio = c.anio || '';
@@ -2575,14 +2593,14 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   var header = document.createElement('div');
   header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;cursor:pointer;margin-bottom:10px';
   header.innerHTML = '<div>'
-    + '<div style="font-size:14px;font-weight:700;color:#fff">' + (c.nombre||'Sin nombre') + '</div>'
-    + '<div style="font-size:12px;color:#aaa;margin-top:2px">' + (busqueda||'-') + (anio?' - '+anio:'') + '</div>'
-    + (c.telefono?'<div style="font-size:11px;color:#aaa;margin-top:1px">&#128222; '+c.telefono+'</div>':'')
-    + '<div style="font-size:11px;color:'+(c.dni?'#aaa':'#666')+';margin-top:1px">&#127991; DNI: '+(c.dni||'sin datos')+'</div>'
-    + (c.presupuesto?'<div style="font-size:11px;color:#4ade80;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
-    + '<div style="font-size:11px;color:'+(tienePermutaPrev?'#f5a623':'#666')+';margin-top:1px">&#128260; Permuta: '+(tienePermutaPrev?('Sí — '+([c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')||'sin detalle')):'No')+'</div>'
-    + '<div style="font-size:11px;color:'+(tieneGarantesPrev?'#60a5fa':'#666')+';margin-top:1px">&#128100; Garantes: '+(tieneGarantesPrev?('Sí — '+([c.garante_nombre,c.garante_dni].filter(Boolean).join(' DNI ')||'sin detalle')):'No')+'</div>'
-    + (cargaClienteTxt?'<div style="font-size:11px;color:#777;margin-top:1px">&#128337; Cargado '+cargaClienteTxt+'</div>':'')
+    + '<div style="font-size:14px;font-weight:700;color:'+txtMain+'">' + (c.nombre||'Sin nombre') + '</div>'
+    + '<div style="font-size:12px;color:'+txtSub+';margin-top:2px">' + (busqueda||'-') + (anio?' - '+anio:'') + '</div>'
+    + (c.telefono?'<div style="font-size:11px;color:'+txtSub+';margin-top:1px">&#128222; '+c.telefono+'</div>':'')
+    + '<div style="font-size:11px;color:'+(c.dni?txtSub:txtMuted)+';margin-top:1px">&#127991; DNI: '+(c.dni||'sin datos')+'</div>'
+    + (c.presupuesto?'<div style="font-size:11px;color:#16a34a;font-weight:700;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
+    + '<div style="font-size:11px;color:'+(tienePermutaPrev?'#f5a623':txtMuted)+';margin-top:1px">&#128260; Permuta: '+(tienePermutaPrev?('Sí — '+([c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')||'sin detalle')):'No')+'</div>'
+    + '<div style="font-size:11px;color:'+(tieneGarantesPrev?'#2563eb':txtMuted)+';margin-top:1px">&#128100; Garantes: '+(tieneGarantesPrev?('Sí — '+([c.garante_nombre,c.garante_dni].filter(Boolean).join(' DNI ')||'sin detalle')):'No')+'</div>'
+    + (cargaClienteTxt?'<div style="font-size:11px;color:'+txtMuted+';margin-top:1px">&#128337; Cargado '+cargaClienteTxt+'</div>':'')
     + '</div>'
     + '<div style="display:flex;gap:6px;align-items:center">'
     + '<div style="background:'+calBg+';color:'+calColor+';border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700">'+calLabel+'</div>'
@@ -2609,22 +2627,12 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     sel.title = 'Solo un administrador puede reasignar leads';
   }
 
-  var ESTADOS_LEAD = [
-    { value: '', label: 'Sin estado', color: '#666' },
-    { value: 'nuevo', label: '🟡 Nuevo contacto', color: '#f5a623' },
-    { value: 'contactado', label: '🟢 Contactado', color: '#16a34a' },
-    { value: 'pendiente', label: '🔴 Pendiente', color: '#dc2626' }
-  ];
-  function colorEstadoLead(v) {
-    var e = ESTADOS_LEAD.find(function(x){ return x.value === v; });
-    return e ? e.color : '#333';
-  }
   var estadoRow = document.createElement('div');
   estadoRow.style.cssText = 'margin-bottom:8px;display:flex;align-items:center;gap:8px';
   var dotEstado = document.createElement('span');
-  dotEstado.style.cssText = 'display:inline-block;width:12px;height:12px;border-radius:50%;background:' + colorEstadoLead(c.estado_lead||'') + ';box-shadow:0 0 6px ' + colorEstadoLead(c.estado_lead||'') + ';flex-shrink:0';
+  dotEstado.style.cssText = 'display:inline-block;width:12px;height:12px;border-radius:50%;background:' + estadoInfo.dot + ';box-shadow:0 0 6px ' + estadoInfo.dot + ';flex-shrink:0;border:1px solid rgba(0,0,0,0.2)';
   var selEstado = document.createElement('select');
-  selEstado.style.cssText = 'background:#0d0d1a;color:#fff;border:1px solid ' + colorEstadoLead(c.estado_lead||'') + ';border-radius:6px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer';
+  selEstado.style.cssText = 'background:#0d0d1a;color:#fff;border:1px solid ' + estadoInfo.dot + ';border-radius:6px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer';
   ESTADOS_LEAD.forEach(function(es) {
     var opt = document.createElement('option');
     opt.value = es.value; opt.textContent = es.label;
@@ -2632,10 +2640,12 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     selEstado.appendChild(opt);
   });
   selEstado.addEventListener('change', async function() {
-    var color = colorEstadoLead(this.value);
-    dotEstado.style.background = color;
-    dotEstado.style.boxShadow = '0 0 6px ' + color;
-    selEstado.style.borderColor = color;
+    var nuevoEstado = infoEstadoLead(this.value);
+    dotEstado.style.background = nuevoEstado.dot;
+    dotEstado.style.boxShadow = '0 0 6px ' + nuevoEstado.dot;
+    selEstado.style.borderColor = nuevoEstado.dot;
+    div.style.background = nuevoEstado.bg;
+    div.style.borderColor = nuevoEstado.claro ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.08)';
     c.estado_lead = this.value;
     await fetch(RAILWAY + '/api/clientes/' + c.id, {
       method:'PATCH', headers:{'Content-Type':'application/json'},
