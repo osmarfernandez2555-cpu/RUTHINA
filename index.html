@@ -1123,25 +1123,7 @@ function upP(){
   // Recalcular totalAportes de forma directa para evitar errores intermedios
   var _tc=gc('cc'), _tf=gn('bfi'), _tp=gc('cp'), _tpv=gn('bpv');
   var _tpos=_tp?gn('bppos'):0, _tper=_tp?gn('bpper'):0, _tpneta=_tpv-_tpos-_tper;
-  // Calcular aporte credito prendario restando gastos (igual que upP)
-  var _tapc = 0;
-  if (_tc && _tf > 0) {
-    var _bancoIdx = parseInt((document.getElementById('banco-sel')||{value:'0'}).value)||0;
-    var _bancoAporte = (typeof BANCOS !== 'undefined' && BANCOS[_bancoIdx]) || {gastos:0,sello:0,fijo:0};
-    var _tna2 = gn('btn');
-    var _cuotas2 = parseInt((document.getElementById('bcu')||{value:'60'}).value)||60;
-    var _gPorc = _bancoAporte.gastos || 0;
-    var _sPorc = _bancoAporte.sello || 0;
-    var _gPrendario = _tc&&_tf>0?Math.round(_tf*_gPorc):0;
-    var _gSello = _tc&&_tf>0?Math.round(_tf*_sPorc):0;
-    var _gMG = 0;
-    if (_tc && (_bancoAporte.gastoTotal||0) > 0 && _tf > 0 && _tna2 > 0) {
-      var _tm2 = Math.pow(1+_tna2/100,1/12)-1;
-      var _cuota2 = _tf*_tm2/(1-Math.pow(1+_tm2,-_cuotas2));
-      _gMG = Math.round(_cuota2*_cuotas2 - _tf);
-    }
-    _tapc = Math.max(0, _tf - _gPrendario - _gSello - _gMG);
-  }
+  var _tapc=_tc?Math.max(0,_tf):0;
   var _tapp=_tp?(_tpneta>0?_tpneta:0):0;
   var _tapbna=gc('cbna')?Math.max(0,gn('bna-monto')-(Math.round(gn('bna-monto')*(parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0)/100)+(parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0))):0;
   var _tapbna2=gc('cbna2')?Math.max(0,gn('bna2-monto')-(Math.round(gn('bna2-monto')*(parseFloat((document.getElementById('bna2-gasto-porc')||{value:'0'}).value)||0)/100)+(parseFloat((document.getElementById('bna2-gasto-fijo')||{value:'0'}).value)||0))):0;
@@ -2627,6 +2609,36 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     sel.title = 'Solo un administrador puede reasignar leads';
   }
 
+  var ESTADOS_LEAD = [
+    { value: '', label: 'Sin estado', color: '#333' },
+    { value: 'nuevo', label: '🟡 Nuevo contacto', color: '#f5a623' },
+    { value: 'contactado', label: '🟢 Contactado', color: '#16a34a' },
+    { value: 'pendiente', label: '🔴 Pendiente', color: '#dc2626' }
+  ];
+  function colorEstadoLead(v) {
+    var e = ESTADOS_LEAD.find(function(x){ return x.value === v; });
+    return e ? e.color : '#333';
+  }
+  var estadoRow = document.createElement('div');
+  estadoRow.style.cssText = 'margin-bottom:8px';
+  var selEstado = document.createElement('select');
+  selEstado.style.cssText = 'background:' + colorEstadoLead(c.estado_lead||'') + ';color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:12px;font-weight:700;cursor:pointer';
+  ESTADOS_LEAD.forEach(function(es) {
+    var opt = document.createElement('option');
+    opt.value = es.value; opt.textContent = es.label;
+    if ((c.estado_lead||'') === es.value) opt.selected = true;
+    selEstado.appendChild(opt);
+  });
+  selEstado.addEventListener('change', async function() {
+    selEstado.style.background = colorEstadoLead(this.value);
+    c.estado_lead = this.value;
+    await fetch(RAILWAY + '/api/clientes/' + c.id, {
+      method:'PATCH', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({estado_lead: this.value})
+    });
+  });
+  estadoRow.appendChild(selEstado);
+
   var btnS = document.createElement('button');
   btnS.textContent = 'Sirve';
   btnS.style.cssText = 'background:' + (cal==='sirve'?'#16a34a':'#333') + ';color:#fff;border:none;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer';
@@ -2657,7 +2669,50 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   acciones.appendChild(btnN);
   acciones.appendChild(btnDel);
   div.appendChild(header);
+  div.appendChild(estadoRow);
   div.appendChild(acciones);
+
+  // Observaciones (desplegable)
+  var obsWrap = document.createElement('div');
+  obsWrap.style.cssText = 'margin-top:8px';
+  var obsToggle = document.createElement('button');
+  var tieneObs = !!(c.observaciones && c.observaciones.trim());
+  obsToggle.textContent = (tieneObs ? '📝 Observaciones ✓' : '📝 Observaciones');
+  obsToggle.style.cssText = 'background:transparent;color:' + (tieneObs?'#f5a623':'#888') + ';border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer';
+  var obsBox = document.createElement('div');
+  obsBox.style.cssText = 'display:none;margin-top:6px';
+  var obsTextarea = document.createElement('textarea');
+  obsTextarea.value = c.observaciones || '';
+  obsTextarea.placeholder = 'Escribí una observación sobre este cliente...';
+  obsTextarea.rows = 3;
+  obsTextarea.style.cssText = 'width:100%;background:#0d0d1a;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 10px;color:#eee;font-size:12px;font-family:inherit;resize:vertical;box-sizing:border-box';
+  var obsGuardado = document.createElement('div');
+  obsGuardado.style.cssText = 'font-size:10px;color:#4ade80;margin-top:3px;display:none';
+  obsGuardado.textContent = 'Guardado ✓';
+  var obsTimeout = null;
+  obsTextarea.addEventListener('input', function() {
+    clearTimeout(obsTimeout);
+    obsGuardado.style.display = 'none';
+    var val = obsTextarea.value;
+    obsTimeout = setTimeout(async function() {
+      c.observaciones = val;
+      await fetch(RAILWAY + '/api/clientes/' + c.id, {
+        method:'PATCH', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({observaciones: val})
+      });
+      obsGuardado.style.display = 'block';
+      obsToggle.textContent = (val.trim() ? '📝 Observaciones ✓' : '📝 Observaciones');
+      obsToggle.style.color = val.trim() ? '#f5a623' : '#888';
+    }, 700);
+  });
+  obsToggle.onclick = function() {
+    obsBox.style.display = obsBox.style.display === 'none' ? 'block' : 'none';
+  };
+  obsBox.appendChild(obsTextarea);
+  obsBox.appendChild(obsGuardado);
+  obsWrap.appendChild(obsToggle);
+  obsWrap.appendChild(obsBox);
+  div.appendChild(obsWrap);
 
   // Bancos con monto por banco (siempre visibles)
   var BANCOS_LEAD = [
