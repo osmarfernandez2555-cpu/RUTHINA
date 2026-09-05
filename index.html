@@ -10,7 +10,7 @@
 :root{--rojo:#C8102E;--rojo-dark:#A00D24;--bg:#E5DDD5;--text:#111;--text2:#667781;--border:#E0E0E0}
 html,body{height:100%;overflow:hidden;font-family:'Inter',sans-serif}
 #sc{display:flex;flex-direction:column;height:100vh;width:100%;background:var(--bg)}
-.chdr{background:linear-gradient(135deg,#0a0a1a 0%,#1a1a2e 50%,#0d1117 100%);padding:10px 24px;display:flex;align-items:center;gap:12px;flex-shrink:0;border-bottom:3px solid var(--rojo);box-shadow:0 2px 20px rgba(200,16,46,0.3)}
+.chdr{background:linear-gradient(135deg,#0a0a1a 0%,#1a1a2e 50%,#0d1117 100%);padding:10px 24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;row-gap:8px;flex-shrink:0;border-bottom:3px solid var(--rojo);box-shadow:0 2px 20px rgba(200,16,46,0.3)}
 .hav{width:40px;height:40px;border-radius:50%;background:var(--rojo);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:white;flex-shrink:0}
 .hin{flex:1;min-width:0}.hn{font-size:15px;font-weight:600;color:white}
 .hs{font-size:11.5px;color:#4ade80;display:flex;align-items:center;gap:4px}
@@ -2424,16 +2424,18 @@ function aplicarSesionUI() {
   var btnVend = document.querySelector('button[onclick="abrirGestionVendedores()"]');
   if (btnVend) btnVend.style.display = esVendedor ? 'none' : '';
 
-  // Indicador de sesión arriba de todo
+  // Indicador de sesión: como parte de la propia barra de herramientas
+  // (antes flotaba encima con position:fixed y tapaba el botón de Comparador)
   var badge = document.getElementById('sesion-badge');
   if (!badge) {
     badge = document.createElement('div');
     badge.id = 'sesion-badge';
-    badge.style.cssText = 'position:fixed;top:8px;right:8px;z-index:1500;background:#161629;border:1px solid rgba(255,255,255,0.15);border-radius:20px;padding:6px 12px;font-size:11px;color:#ccc;display:flex;align-items:center;gap:8px;font-family:Inter,sans-serif';
-    document.body.appendChild(badge);
+    badge.style.cssText = 'flex-shrink:0;background:rgba(255,255,255,0.1);border-radius:20px;padding:6px 12px;font-size:11px;color:#ccc;display:flex;align-items:center;gap:8px;font-family:Inter,sans-serif;white-space:nowrap;margin-left:6px';
+    var header = document.querySelector('.chdr');
+    if (header) header.appendChild(badge);
   }
   badge.innerHTML = (esVendedor ? '👤 ' : '⭐ ') + SESION.nombre
-    + ' <button onclick="cerrarSesion()" style="background:transparent;border:none;color:#c8102e;font-size:11px;cursor:pointer;font-weight:700;padding:0">Salir</button>';
+    + ' <button onclick="cerrarSesion()" style="background:transparent;border:none;color:#ff8a8a;font-size:11px;cursor:pointer;font-weight:700;padding:0">Salir</button>';
 }
 
 function verificarSesion() {
