@@ -2233,22 +2233,20 @@ async function renderListaVendedores() {
     row.appendChild(btnGuardar);
     row.appendChild(btnEliminar);
     lista.appendChild(row);
-    btnGuardar.addEventListener('click', async function() {
+    btnGuardar.addEventListener('click', function() {
       var nuevoNombre = input.value.trim();
       if (!nuevoNombre || nuevoNombre === v) return;
-      btnGuardar.textContent = '...';
-      await fetch(RAILWAY + '/api/vendedores/' + encodeURIComponent(v), {
-        method: 'PATCH', headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({ nombre: nuevoNombre })
-      });
-      await cargarVendedoresDesdeServidor();
+      var idx = VENDEDORES.indexOf(v);
+      if (idx !== -1) VENDEDORES[idx] = nuevoNombre;
+      setVendedores(VENDEDORES);
       btnGuardar.textContent = 'Guardado!';
-      setTimeout(function(){ renderListaVendedores(); }, 800);
+      setTimeout(function(){ renderListaVendedores(); }, 600);
     });
-    btnEliminar.addEventListener('click', async function() {
+    btnEliminar.addEventListener('click', function() {
       if (!confirm('¿Eliminar a ' + v + '? Sus leads asignados van a quedar como "Sin asignar".')) return;
-      await fetch(RAILWAY + '/api/vendedores/' + encodeURIComponent(v), { method: 'DELETE' });
-      await cargarVendedoresDesdeServidor();
+      var idx = VENDEDORES.indexOf(v);
+      if (idx !== -1) VENDEDORES.splice(idx, 1);
+      setVendedores(VENDEDORES);
       renderListaVendedores();
     });
   });
@@ -2259,11 +2257,8 @@ async function agregarVendedor() {
   var nombre = input.value.trim();
   if (!nombre) return;
   if (VENDEDORES.some(function(v){ return v.toLowerCase() === nombre.toLowerCase(); })) { alert('Ya existe ese vendedor'); return; }
-  await fetch(RAILWAY + '/api/vendedores', {
-    method: 'POST', headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ nombre: nombre })
-  });
-  await cargarVendedoresDesdeServidor();
+  VENDEDORES.push(nombre);
+  setVendedores(VENDEDORES);
   input.value = '';
   renderListaVendedores();
 }
@@ -2353,13 +2348,18 @@ var RAILWAY = 'https://compara-conejo-production.up.railway.app';
 
 // ── Vendedores: ahora compartidos vía servidor (antes vivían en localStorage,
 // lo que hacía que cada dispositivo tuviera una lista distinta) ─────────────
-var VENDEDORES = [];
-async function cargarVendedoresDesdeServidor() {
+function getVendedores() {
   try {
-    var r = await fetch(RAILWAY + '/api/vendedores');
-    var data = await r.json();
-    VENDEDORES = Array.isArray(data) ? data : [];
-  } catch(e) { console.error('Error cargando vendedores:', e.message); }
+    var v = localStorage.getItem('tutu_vendedores');
+    return v ? JSON.parse(v) : ['Joaquin','Agustin','Rodrigo','Nahuel','Lucas','Matias'];
+  } catch(e) { return ['Joaquin','Agustin','Rodrigo','Nahuel','Lucas','Matias']; }
+}
+function setVendedores(lista) {
+  try { localStorage.setItem('tutu_vendedores', JSON.stringify(lista)); } catch(e) {}
+}
+var VENDEDORES = getVendedores();
+async function cargarVendedoresDesdeServidor() {
+  VENDEDORES = getVendedores();
   return VENDEDORES;
 }
 
