@@ -2233,33 +2233,44 @@ async function renderListaVendedores() {
     row.appendChild(btnGuardar);
     row.appendChild(btnEliminar);
     lista.appendChild(row);
-    btnGuardar.addEventListener('click', function() {
+    btnGuardar.addEventListener('click', async function() {
       var nuevoNombre = input.value.trim();
       if (!nuevoNombre || nuevoNombre === v) return;
-      var idx = VENDEDORES.indexOf(v);
-      if (idx !== -1) VENDEDORES[idx] = nuevoNombre;
-      setVendedores(VENDEDORES);
+      btnGuardar.textContent = '...';
+      try {
+        await fetch(RAILWAY + '/api/vendedores/' + encodeURIComponent(v), {
+          method: 'PATCH', headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ nombre: nuevoNombre })
+        });
+      } catch(e) {}
+      await cargarVendedoresDesdeServidor();
       btnGuardar.textContent = 'Guardado!';
-      setTimeout(function(){ renderListaVendedores(); }, 600);
+      setTimeout(function(){ renderListaVendedores(); }, 800);
     });
-    btnEliminar.addEventListener('click', function() {
+    btnEliminar.addEventListener('click', async function() {
       if (!confirm('¿Eliminar a ' + v + '? Sus leads asignados van a quedar como "Sin asignar".')) return;
-      var idx = VENDEDORES.indexOf(v);
-      if (idx !== -1) VENDEDORES.splice(idx, 1);
-      setVendedores(VENDEDORES);
+      try {
+        await fetch(RAILWAY + '/api/vendedores/' + encodeURIComponent(v), { method: 'DELETE' });
+      } catch(e) {}
+      await cargarVendedoresDesdeServidor();
       renderListaVendedores();
     });
   });
 }
 
-async function agregarVendedor() {
+async async function agregarVendedor() {
   var input = document.getElementById('nuevo-vendedor-input');
   var nombre = input.value.trim();
   if (!nombre) return;
   if (VENDEDORES.some(function(v){ return v.toLowerCase() === nombre.toLowerCase(); })) { alert('Ya existe ese vendedor'); return; }
-  VENDEDORES.push(nombre);
-  setVendedores(VENDEDORES);
+  try {
+    await fetch(RAILWAY + '/api/vendedores', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ nombre: nombre })
+    });
+  } catch(e) {}
   input.value = '';
+  await cargarVendedoresDesdeServidor();
   renderListaVendedores();
 }
 
@@ -2359,7 +2370,13 @@ function setVendedores(lista) {
 }
 var VENDEDORES = getVendedores();
 async function cargarVendedoresDesdeServidor() {
-  VENDEDORES = getVendedores();
+  try {
+    var r = await fetch(RAILWAY + '/api/vendedores');
+    var data = await r.json();
+    VENDEDORES = Array.isArray(data) ? data : getVendedores();
+  } catch(e) {
+    VENDEDORES = getVendedores(); // fallback localStorage
+  }
   return VENDEDORES;
 }
 
