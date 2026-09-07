@@ -476,15 +476,6 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <span id="comp-fecha" style="font-size:11px;color:#666;margin-left:auto"></span>
   </div>
   <div class="comp-scroll">
-    <!-- INFOAUTO SEARCH -->
-    <div class="comp-card" style="border:1px solid rgba(200,16,46,0.3)">
-      <div class="comp-stitle" style="color:#c8102e">InfoAuto — Precio oficial</div>
-      <div style="display:flex;gap:8px;margin-bottom:12px">
-        <input id="infoauto-query" class="comp-input" placeholder="ej: Renault Clio Xpress 1.2 2013" style="flex:1" onkeydown="if(event.key==='Enter')buscarInfoAuto()"/>
-        <button onclick="buscarInfoAuto()" style="background:#c8102e;color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:700;cursor:pointer">Buscar</button>
-      </div>
-      <div id="infoauto-results" style="display:flex;flex-direction:column;gap:8px;max-height:400px;overflow-y:auto"></div>
-    </div>
     <div class="comp-card">
       <div class="comp-stitle">Datos del vehículo</div>
       <div class="comp-g2">
@@ -2864,65 +2855,6 @@ function filtrarCal(btn, cal, ev) {
   cargarClientesVendedor(_vendedorActual, cal);
 }
 // ============================================================
-
-// ── INFOAUTO ─────────────────────────────────────────────────────────────────
-async function buscarInfoAuto() {
-  var q = document.getElementById('infoauto-query').value.trim();
-  if (!q) return;
-  var results = document.getElementById('infoauto-results');
-  results.innerHTML = '<div style="color:#aaa;text-align:center;padding:16px">Buscando en InfoAuto...</div>';
-  try {
-    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/infoauto/search?q=' + encodeURIComponent(q) + '&pageSize=15');
-    var data = await resp.json();
-    if (data.error) { results.innerHTML = '<div style="color:#e74c3c;padding:10px">Error: ' + data.error + '</div>'; return; }
-    var items = data.data || data.results || data.snapshots || (Array.isArray(data) ? data : []);
-    if (!items.length) { results.innerHTML = '<div style="color:#aaa;text-align:center;padding:16px">Sin resultados para "' + q + '"</div>'; return; }
-    var frag = document.createDocumentFragment();
-    items.forEach(function(item) {
-      var precio = item.price || item.precio || item.average_price || '';
-      var nombre = item.name || item.description || item.model_name || item.codia || '';
-      var anio = item.year || item.anio || '';
-      var div = document.createElement('div');
-      div.style.cssText = 'background:#1a1a2e;border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;cursor:pointer';
-      div.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center">'
-        + '<div style="font-size:13px;font-weight:700;color:#fff">' + nombre + (anio ? ' ' + anio : '') + '</div>'
-        + (precio ? '<div style="font-size:14px;font-weight:800;color:#c8102e">$ ' + Number(precio).toLocaleString("es-AR") + '</div>' : '<div style="font-size:11px;color:#aaa">Ver precio</div>')
-        + '</div>';
-      var itemId = item.id || item.codia || item.code;
-      div.addEventListener('click', (function(id, nm) {
-        return function() { verPrecioInfoAuto(id, nm); };
-      })(itemId, nombre + (anio ? ' ' + anio : '')));
-      frag.appendChild(div);
-    });
-    results.innerHTML = '';
-    results.appendChild(frag);
-  } catch(e) {
-    results.innerHTML = '<div style="color:#e74c3c;padding:10px">Error: ' + e.message + '</div>';
-  }
-}
-
-async function verPrecioInfoAuto(id, nombre) {
-  if (!id) return;
-  var results = document.getElementById('infoauto-results');
-  var loading = document.createElement('div');
-  loading.style.cssText = 'color:#aaa;text-align:center;padding:12px';
-  loading.textContent = 'Cargando precio de ' + nombre + '...';
-  results.insertBefore(loading, results.firstChild);
-  try {
-    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/infoauto/precio/' + id);
-    var data = await resp.json();
-    loading.remove();
-    var precio = data.price || data.precio || data.average_price || data.value || '';
-    var div = document.createElement('div');
-    div.style.cssText = 'background:#0d1f2e;border:2px solid #c8102e;border-radius:10px;padding:16px;text-align:center;margin-bottom:8px';
-    div.innerHTML = '<div style="font-size:13px;color:#aaa;margin-bottom:6px">' + nombre + '</div>'
-      + (precio ? '<div style="font-size:24px;font-weight:800;color:#c8102e">$ ' + Number(precio).toLocaleString("es-AR") + '</div>' : '<pre style="color:#aaa;font-size:10px;text-align:left;overflow:auto">' + JSON.stringify(data,null,2).slice(0,500) + '</pre>');
-    results.insertBefore(div, results.firstChild);
-  } catch(e) {
-    loading.textContent = 'Error: ' + e.message;
-  }
-}
-// ── FIN INFOAUTO ──────────────────────────────────────────────────────────────
 </script>
 
 <!-- MODAL PROFORMA -->
