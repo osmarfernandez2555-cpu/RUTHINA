@@ -2890,28 +2890,32 @@ async function buscarInfoAuto() {
   var results = document.getElementById('infoauto-results');
   results.innerHTML = '<div style="color:#aaa;text-align:center;padding:16px">Buscando en InfoAuto...</div>';
   try {
-    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/infoauto/search?q=' + encodeURIComponent(q) + '&pageSize=15');
+    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/infoauto/search?q=' + encodeURIComponent(q) + '&pageSize=20');
     var data = await resp.json();
     if (data.error) { results.innerHTML = '<div style="color:#e74c3c;padding:10px">❌ ' + data.error + '</div>'; return; }
-    var items = data.data || data.results || data.snapshots || (Array.isArray(data) ? data : []);
+    var items = Array.isArray(data) ? data : [];
     if (!items.length) { results.innerHTML = '<div style="color:#aaa;text-align:center;padding:16px">Sin resultados para "' + q + '"</div>'; return; }
     results.innerHTML = '';
     items.forEach(function(item) {
-      var precio = item.price || item.precio || item.average_price || '';
-      var nombre = item.name || item.description || item.model_name || '';
-      var anio = item.year || item.anio || '';
-      var itemId = item.id || item.codia || item.code;
+      var codia = item.codia;
+      var nombre = (item.brand ? item.brand.name + ' ' : '') + (item.description || '');
+      var anioDesde = item.prices_from || '';
+      var anioHasta = item.prices_to || '';
+      var anioStr = anioDesde ? (anioDesde === anioHasta ? anioDesde : anioDesde + '-' + anioHasta) : '';
+      var foto = item.photo_url || '';
       var div = document.createElement('div');
-      div.style.cssText = 'background:#1a1a2e;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;cursor:pointer;transition:border 0.2s';
+      div.style.cssText = 'background:#1a1a2e;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px 14px;cursor:pointer;display:flex;align-items:center;gap:12px';
       div.onmouseenter = function(){ this.style.borderColor='#c8102e'; };
       div.onmouseleave = function(){ this.style.borderColor='rgba(255,255,255,0.1)'; };
-      div.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center">'
-        + '<div style="font-size:13px;font-weight:700;color:#fff">' + nombre + (anio ? ' <span style="color:#aaa;font-weight:400">' + anio + '</span>' : '') + '</div>'
-        + (precio ? '<div style="font-size:14px;font-weight:800;color:#c8102e">$ ' + Number(precio).toLocaleString("es-AR") + '</div>' : '<div style="font-size:11px;color:#888">Ver precio →</div>')
-        + '</div>';
-      div.addEventListener('click', (function(id, nm) {
-        return function() { verPrecioInfoAuto(id, nm); };
-      })(itemId, nombre + (anio ? ' ' + anio : '')));
+      div.innerHTML = (foto ? '<img src="'+foto+'" style="width:60px;height:40px;object-fit:cover;border-radius:4px;flex-shrink:0" onerror="this.style.display='none'">' : '')
+        + '<div style="flex:1">'
+        + '<div style="font-size:13px;font-weight:700;color:#fff">' + nombre + '</div>'
+        + (anioStr ? '<div style="font-size:11px;color:#888">' + anioStr + '</div>' : '')
+        + '</div>'
+        + '<div style="font-size:11px;color:#c8102e;font-weight:700">Ver precio →</div>';
+      div.addEventListener('click', (function(c, nm) {
+        return function() { verPrecioInfoAuto(c, nm); };
+      })(codia, nombre + (anioStr ? ' ' + anioStr : '')));
       results.appendChild(div);
     });
   } catch(e) {
@@ -2919,24 +2923,38 @@ async function buscarInfoAuto() {
   }
 }
 
-async function verPrecioInfoAuto(id, nombre) {
-  if (!id) return;
+async function verPrecioInfoAuto(codia, nombre) {
+  if (!codia) return;
   var results = document.getElementById('infoauto-results');
   var loading = document.createElement('div');
   loading.style.cssText = 'background:#0d1f2e;border:1px solid #c8102e;border-radius:8px;padding:12px;text-align:center;color:#aaa;font-size:13px';
   loading.textContent = 'Cargando precio de ' + nombre + '...';
   results.insertBefore(loading, results.firstChild);
   try {
-    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/infoauto/precio/' + id);
+    var resp = await fetch('https://compara-conejo-production.up.railway.app/api/infoauto/precio/' + codia);
     var data = await resp.json();
     loading.remove();
-    var precio = data.price || data.precio || data.average_price || data.value || '';
+    // data es un array de precios por anio
     var div = document.createElement('div');
-    div.style.cssText = 'background:#0d1f2e;border:2px solid #c8102e;border-radius:10px;padding:16px;text-align:center;margin-bottom:4px';
-    div.innerHTML = '<div style="font-size:12px;color:#aaa;margin-bottom:6px">' + nombre + '</div>'
-      + (precio
-        ? '<div style="font-size:26px;font-weight:800;color:#c8102e">$ ' + Number(precio).toLocaleString("es-AR") + '</div>'
-        : '<pre style="color:#aaa;font-size:10px;text-align:left;overflow:auto;max-height:200px">' + JSON.stringify(data,null,2) + '</pre>');
+    div.style.cssText = 'background:#0d1f2e;border:2px solid #c8102e;border-radius:10px;padding:16px;margin-bottom:4px';
+    var html = '<div style="font-size:12px;color:#aaa;margin-bottom:10px;text-align:center">' + nombre + '</div>';
+    if (Array.isArray(data) && data.length) {
+      // Mostrar precios por anio, mas reciente primero
+      var sorted = data.slice().sort(function(a,b){ return (b.year||b.anio||0) - (a.year||a.anio||0); });
+      sorted.forEach(function(p) {
+        var anio = p.year || p.anio || '';
+        var precio = p.price || p.average_price || p.value || p.precio || '';
+        if (precio) {
+          html += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.06)">'
+            + '<div style="font-size:13px;color:#aaa">' + anio + '</div>'
+            + '<div style="font-size:16px;font-weight:800;color:#c8102e">$ ' + Number(precio).toLocaleString("es-AR") + '</div>'
+            + '</div>';
+        }
+      });
+    } else {
+      html += '<pre style="color:#aaa;font-size:10px;overflow:auto;max-height:150px">' + JSON.stringify(data,null,2) + '</pre>';
+    }
+    div.innerHTML = html;
     results.insertBefore(div, results.firstChild);
   } catch(e) {
     loading.textContent = '❌ Error: ' + e.message;
