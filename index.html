@@ -2043,8 +2043,8 @@ async function verMatchesCliente(idx, matchCount) {
   var permColor = c.permuta_color || '';
   var permValor = c.permuta_valor || '';
   var tieneGarantes = ['si','sí','true','yes'].indexOf(String(c.tiene_garantes || '').toLowerCase()) !== -1;
-  var garanteNombre = c.garante_nombre || '';
-  var garanteDni = c.garante_dni || '';
+  var garanteNombre = c.nombre_garante || '';
+  var garanteDni = c.dni_garante || '';
 
   function fmtMoneda(v) {
     if (!v) return '';
@@ -2628,7 +2628,7 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     + '<div style="font-size:11px;color:'+(c.dni?txtSub:txtMuted)+';margin-top:1px">&#127991; DNI: '+(c.dni||'sin datos')+'</div>'
     + (c.presupuesto?'<div style="font-size:11px;color:#16a34a;font-weight:700;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
     + '<div style="font-size:11px;color:'+(tienePermutaPrev?'#f5a623':txtMuted)+';margin-top:1px">&#128260; Permuta: '+(tienePermutaPrev?('Sí — '+([c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')||'sin detalle')):'No')+'</div>'
-    + '<div style="font-size:11px;color:'+(tieneGarantesPrev?'#2563eb':txtMuted)+';margin-top:1px">&#128100; Garantes: '+(tieneGarantesPrev?('Sí — '+([c.garante_nombre,c.garante_dni].filter(Boolean).join(' DNI ')||'sin detalle')):'No')+'</div>'
+    + '<div style="font-size:11px;color:'+(tieneGarantesPrev?'#2563eb':txtMuted)+';margin-top:1px">&#128100; Garantes: '+(tieneGarantesPrev?('Sí — '+([c.nombre_garante,c.dni_garante].filter(Boolean).join(' DNI ')||'sin detalle')):'No')+'</div>'
     + (cargaClienteTxt?'<div style="font-size:11px;color:'+txtMuted+';margin-top:1px">&#128337; Cargado '+cargaClienteTxt+'</div>':'')
     + '</div>'
     + '<div style="display:flex;gap:6px;align-items:center">'
