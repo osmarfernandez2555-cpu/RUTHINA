@@ -2589,11 +2589,27 @@ function renderizarClientesFiltrados(filtro) {
 function crearTarjetaCliente(c, idx, matchCount, cal) {
   var ESTADOS_LEAD = [
     { value: '', label: 'Sin estado', bg: '#1a1a2e', dot: '#666', claro: false },
-    { value: 'nuevo', label: '⚪ Nuevo contacto', bg: '#f2f2f2', dot: '#9ca3af', claro: true },
-    { value: 'contactado', label: '🟡 Contactado', bg: '#fde68a', dot: '#ca8a04', claro: true },
-    { value: 'activo', label: '🔵 Activo/Pendiente', bg: '#bfdbfe', dot: '#2563eb', claro: true },
-    { value: 'concretado', label: '🟢 Concretado', bg: '#bbf7d0', dot: '#16a34a', claro: true },
-    { value: 'no_responde', label: '🔴 No responde', bg: '#fecaca', dot: '#dc2626', claro: true }
+    { value: 'nuevo_lead', label: '🔵 Nuevo Lead', bg: '#93c5fd', dot: '#1d4ed8', claro: true },
+    { value: 'en_contacto', label: '🔴 En Contacto', bg: '#fca5a5', dot: '#b91c1c', claro: true },
+    { value: 'visita', label: '🟠 Visita', bg: '#fdba74', dot: '#c2410c', claro: true },
+    { value: 'pendientes', label: '🌸 Pendientes', bg: '#fbcfe8', dot: '#be185d', claro: true },
+    { value: 'señado', label: '🔷 Señado', bg: '#7dd3fc', dot: '#0369a1', claro: true },
+    { value: 'ganados', label: '🟢 Leads Ganados', bg: '#bef264', dot: '#4d7c0f', claro: true },
+    { value: 'perdidos', label: '⚫ Leads Perdidos', bg: '#d1d5db', dot: '#4b5563', claro: true }
+  ];
+  var MOTIVOS_PERDIDA = [
+    'Razón no definida',
+    'PRESUPUESTO INSUFICIENTE',
+    'NO CALIFICA',
+    'FALTA STOCK',
+    'NO TOMAMOS PERMUTA',
+    'NO RESPONDE',
+    'LEAD BASURA',
+    'DUPLICADO RED SOCIAL',
+    'NO ESTA INTERESADO EN CONTINUAR CONSULTA',
+    'COMPRO EN OTRO LADO',
+    'NO QUIERE CONSIGNAR',
+    'NÚMERO INVÁLIDO'
   ];
   function infoEstadoLead(v) {
     return ESTADOS_LEAD.find(function(x){ return x.value === v; }) || ESTADOS_LEAD[0];
@@ -2657,7 +2673,7 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   }
 
   var estadoRow = document.createElement('div');
-  estadoRow.style.cssText = 'margin-bottom:8px;display:flex;align-items:center;gap:8px';
+  estadoRow.style.cssText = 'margin-bottom:8px;display:flex;align-items:center;gap:8px;flex-wrap:wrap';
   var dotEstado = document.createElement('span');
   dotEstado.style.cssText = 'display:inline-block;width:12px;height:12px;border-radius:50%;background:' + estadoInfo.dot + ';box-shadow:0 0 6px ' + estadoInfo.dot + ';flex-shrink:0;border:1px solid rgba(0,0,0,0.2)';
   var selEstado = document.createElement('select');
@@ -2668,6 +2684,25 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     if ((c.estado_lead||'') === es.value) opt.selected = true;
     selEstado.appendChild(opt);
   });
+
+  // Selector de motivo, solo visible cuando el estado es "Leads Perdidos"
+  var selMotivo = document.createElement('select');
+  selMotivo.style.cssText = 'background:#0d0d1a;color:#fff;border:1px solid #4b5563;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer;max-width:220px';
+  MOTIVOS_PERDIDA.forEach(function(m) {
+    var opt = document.createElement('option');
+    opt.value = m; opt.textContent = m;
+    if ((c.motivo_perdida || 'Razón no definida') === m) opt.selected = true;
+    selMotivo.appendChild(opt);
+  });
+  selMotivo.style.display = (c.estado_lead === 'perdidos') ? 'inline-block' : 'none';
+  selMotivo.addEventListener('change', async function() {
+    c.motivo_perdida = this.value;
+    await fetch(RAILWAY + '/api/clientes/' + c.id, {
+      method:'PATCH', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({motivo_perdida: this.value})
+    });
+  });
+
   selEstado.addEventListener('change', async function() {
     var nuevoEstado = infoEstadoLead(this.value);
     dotEstado.style.background = nuevoEstado.dot;
@@ -2676,6 +2711,19 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     div.style.background = nuevoEstado.bg;
     div.style.borderColor = nuevoEstado.claro ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.08)';
     c.estado_lead = this.value;
+    if (this.value === 'perdidos') {
+      selMotivo.style.display = 'inline-block';
+      if (!c.motivo_perdida) {
+        c.motivo_perdida = 'Razón no definida';
+        selMotivo.value = 'Razón no definida';
+        await fetch(RAILWAY + '/api/clientes/' + c.id, {
+          method:'PATCH', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({motivo_perdida: 'Razón no definida'})
+        });
+      }
+    } else {
+      selMotivo.style.display = 'none';
+    }
     await fetch(RAILWAY + '/api/clientes/' + c.id, {
       method:'PATCH', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({estado_lead: this.value})
@@ -2683,6 +2731,7 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   });
   estadoRow.appendChild(dotEstado);
   estadoRow.appendChild(selEstado);
+  estadoRow.appendChild(selMotivo);
 
   var btnS = document.createElement('button');
   btnS.textContent = 'Sirve';
