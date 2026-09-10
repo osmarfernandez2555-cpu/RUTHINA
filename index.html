@@ -2589,13 +2589,13 @@ function renderizarClientesFiltrados(filtro) {
 function crearTarjetaCliente(c, idx, matchCount, cal) {
   var ESTADOS_LEAD = [
     { value: '', label: 'Sin estado', bg: '#1a1a2e', dot: '#666', claro: false },
-    { value: 'nuevo_lead', label: '🔵 Nuevo Lead', bg: '#93c5fd', dot: '#1d4ed8', claro: true },
-    { value: 'en_contacto', label: '🔴 En Contacto', bg: '#fca5a5', dot: '#b91c1c', claro: true },
-    { value: 'visita', label: '🟠 Visita', bg: '#fdba74', dot: '#c2410c', claro: true },
-    { value: 'pendientes', label: '🌸 Pendientes', bg: '#fbcfe8', dot: '#be185d', claro: true },
-    { value: 'señado', label: '🔷 Señado', bg: '#7dd3fc', dot: '#0369a1', claro: true },
-    { value: 'ganados', label: '🟢 Leads Ganados', bg: '#bef264', dot: '#4d7c0f', claro: true },
-    { value: 'perdidos', label: '⚫ Leads Perdidos', bg: '#d1d5db', dot: '#4b5563', claro: true }
+    { value: 'nuevo_lead', label: '🔵 Nuevo Lead', bg: '#1e40af', dot: '#93c5fd', claro: false },
+    { value: 'en_contacto', label: '🔴 En Contacto', bg: '#991b1b', dot: '#fca5a5', claro: false },
+    { value: 'visita', label: '🟠 Visita', bg: '#9a3412', dot: '#fdba74', claro: false },
+    { value: 'pendientes', label: '🌸 Pendientes', bg: '#9d174d', dot: '#fbcfe8', claro: false },
+    { value: 'señado', label: '🔷 Señado', bg: '#075985', dot: '#7dd3fc', claro: false },
+    { value: 'ganados', label: '🟢 Leads Ganados', bg: '#3f6212', dot: '#bef264', claro: false },
+    { value: 'perdidos', label: '⚫ Leads Perdidos', bg: '#374151', dot: '#d1d5db', claro: false }
   ];
   var MOTIVOS_PERDIDA = [
     'Razón no definida',
