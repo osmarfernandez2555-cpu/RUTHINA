@@ -2617,8 +2617,8 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   var estadoInfo = infoEstadoLead(c.estado_lead || '');
   var claro = estadoInfo.claro;
   var txtMain = claro ? '#000' : '#fff';
-  var txtSub = claro ? '#000' : '#aaa';
-  var txtMuted = claro ? '#333' : '#666';
+  var txtSub = claro ? '#000' : '#fff';
+  var txtMuted = claro ? '#333' : '#fff';
   var cardBorder = claro ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.08)';
 
   var div = document.createElement('div');
@@ -2642,9 +2642,9 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     + '<div style="font-size:12px;color:'+txtSub+';margin-top:2px">' + (busqueda||'-') + (anio?' - '+anio:'') + '</div>'
     + (c.telefono?'<div style="font-size:11px;color:'+txtSub+';margin-top:1px">&#128222; '+c.telefono+'</div>':'')
     + '<div style="font-size:11px;color:'+(c.dni?txtSub:txtMuted)+';margin-top:1px">&#127991; DNI: '+(c.dni||'sin datos')+'</div>'
-    + (c.presupuesto?'<div style="font-size:11px;color:#16a34a;font-weight:700;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
-    + '<div style="font-size:11px;color:'+(tienePermutaPrev?'#f5a623':txtMuted)+';margin-top:1px">&#128260; Permuta: '+(tienePermutaPrev?('Sí — '+([c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')||'sin detalle')):'No')+'</div>'
-    + '<div style="font-size:11px;color:'+(tieneGarantesPrev?'#2563eb':txtMuted)+';margin-top:1px">&#128100; Garantes: '+(tieneGarantesPrev?('Sí — '+([c.nombre_garante,c.dni_garante].filter(Boolean).join(' DNI ')||'sin detalle')):'No')+'</div>'
+    + (c.presupuesto?'<div style="font-size:11px;color:'+txtMain+';font-weight:700;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
+    + '<div style="font-size:11px;color:'+txtMain+';margin-top:1px">&#128260; Permuta: '+(tienePermutaPrev?('Sí — '+([c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')||'sin detalle')):'No')+'</div>'
+    + '<div style="font-size:11px;color:'+txtMain+';margin-top:1px">&#128100; Garantes: '+(tieneGarantesPrev?('Sí — '+([c.nombre_garante,c.dni_garante].filter(Boolean).join(' DNI ')||'sin detalle')):'No')+'</div>'
     + (cargaClienteTxt?'<div style="font-size:11px;color:'+txtMuted+';margin-top:1px">&#128337; Cargado '+cargaClienteTxt+'</div>':'')
     + '</div>'
     + '<div style="display:flex;gap:6px;align-items:center">'
