@@ -819,7 +819,13 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div class="pr" id="pvpsa-cuota-row" style="display:none"><span>Cuota PSA est.</span><span id="pvpsa-cuota" style="color:#60a5fa">&#x2014;</span></div>
       <div class="pr" id="pvadelanto-row" style="display:none"><span>(-) Adelanto efectivo</span><span id="pvadelanto" style="color:#4ade80;font-weight:600">&#x2014;</span></div>
       <div class="pr" id="pvant-row" style="display:none"><span>(-) Anticipo</span><span id="pvant" style="color:#60a5fa">&#x2014;</span></div>
-      <div class="pr" id="pvtr" style="display:none"><span>(+) Transferencia (6%)</span><span id="pvtrv" style="color:#fbbf24">&#x2014;</span></div>
+      <div class="pr" id="pvtr" style="display:none"><span id="pvtr-label">(+) Transferencia (6%)</span><span id="pvtrv" style="color:#fbbf24">&#x2014;</span></div>
+      <div class="pr" id="pvtr-manual-row" style="display:none;align-items:center;gap:8px">
+        <label style="display:flex;align-items:center;gap:5px;font-size:11px;color:#aaa;cursor:pointer">
+          <input type="checkbox" id="ctransfmanual" onchange="upP()"> Transferencia manual
+        </label>
+        <input type="number" id="transfmanual-monto" placeholder="Monto $" oninput="upP()" style="display:none;width:110px;background:#0d0d1a;border:1px solid rgba(255,255,255,0.15);color:#fff;border-radius:6px;padding:3px 8px;font-size:11px">
+      </div>
       <div class="pr" id="pvtotal-op-row" style="display:none;border-top:1px solid #333;padding-top:6px;margin-top:4px"><span style="font-weight:600">Valor total operacion</span><span id="pvtotal-op" style="color:#fff;font-weight:700">&#x2014;</span></div>
       <div class="pr" id="pvplata-row" style="display:none"><span style="font-weight:600">Plata total cliente</span><span id="pvplata" style="color:#aaa;font-weight:600">&#x2014;</span></div>
       <div class="pr" id="pvcr" style="display:none"><span>Cuota est. <span id="pvcu-banco" style="font-size:10px;opacity:.7"></span></span><span id="pvcu" style="color:#60a5fa">&#x2014;</span></div>
@@ -1098,10 +1104,27 @@ function upP(){
   var adelanto=gn('adelanto'), pvadelRow=document.getElementById('pvadelanto-row');
   if(pvadelRow){ pvadelRow.style.display=adelanto>0?'flex':'none'; if(adelanto>0) document.getElementById('pvadelanto').textContent=fmtP(adelanto); }
   var baseTransf=usaLista?price:(cash||price);
-  var porcTransf=baseTransf>20000000?0.05:0.06;
-  var transferencia=baseTransf>0?Math.round(baseTransf*porcTransf):0;
+  var porcTransfAuto=baseTransf>20000000?0.05:0.06;
+  var transfManualOn=gc('ctransfmanual');
+  var transfManualInput=document.getElementById('transfmanual-monto');
+  if(transfManualInput) transfManualInput.style.display=transfManualOn?'inline-block':'none';
+  var transfManualMonto=transfManualOn?gn('transfmanual-monto'):0;
+  var porcTransf=porcTransfAuto;
+  var transferencia;
+  if(transfManualOn && transfManualMonto>0){
+    transferencia=Math.round(transfManualMonto);
+  } else {
+    transferencia=baseTransf>0?Math.round(baseTransf*porcTransfAuto):0;
+  }
   var pvtr=document.getElementById('pvtr');
-  if(pvtr){ pvtr.style.display=transferencia>0?'flex':'none'; document.getElementById('pvtrv').textContent=fmtP(transferencia)+' ('+(porcTransf*100).toFixed(0)+'%)'; }
+  var pvtrManualRow=document.getElementById('pvtr-manual-row');
+  if(pvtrManualRow) pvtrManualRow.style.display=baseTransf>0?'flex':'none';
+  if(pvtr){
+    pvtr.style.display=transferencia>0?'flex':'none';
+    var pvtrLabel=document.getElementById('pvtr-label');
+    if(pvtrLabel) pvtrLabel.textContent=(transfManualOn && transfManualMonto>0)?'(+) Transferencia (manual)':'(+) Transferencia ('+(porcTransfAuto*100).toFixed(0)+'%)';
+    document.getElementById('pvtrv').textContent=fmtP(transferencia);
+  }
   var precioBase=usaLista?price:(cash||price);
   var valorTotalOp=precioBase+transferencia;
   var _bnaToggle=gc('cbna'), bnaMonto2=_bnaToggle?gn('bna-monto'):0;
@@ -1142,7 +1165,7 @@ function upP(){
   var _tusaLista=_tperm2||_tcred2;
   var _tprecioBase=_tusaLista?_tprice:(_tcash||_tprice);
   var _tporcTransf=_tprecioBase>20000000?0.05:0.06;
-  var _ttransf=Math.round(_tprecioBase*_tporcTransf);
+  var _ttransf=(gc('ctransfmanual') && gn('transfmanual-monto')>0)?Math.round(gn('transfmanual-monto')):Math.round(_tprecioBase*_tporcTransf);
   var _tvalorOp=_tprecioBase+_ttransf;
   var totalAportesReal=_tapc+_tapp+_tapbna+_tapbna2+_tapant+_tapadel;
   var pvPlataRowFix=document.getElementById('pvplata-row');
@@ -1283,7 +1306,8 @@ function genPDF(){
     var totalAportesPDF=aporteCredPDF+(d.anticipo||0)+(d.adelanto||0)+aportePermuta+_aporteBNA_pdf+_aporteBNA2_pdf;
     var precioBase=usaLista?d.precioLista:(d.precioContado||d.precioLista);
     var porcTransf=precioBase>20000000?0.05:0.06;
-    var transferencia=Math.round(precioBase*porcTransf);
+    var _transfManualPDF=gc('ctransfmanual')?gn('transfmanual-monto'):0;
+    var transferencia=_transfManualPDF>0?Math.round(_transfManualPDF):Math.round(precioBase*porcTransf);
     var valorTotalOpPDF=precioBase+transferencia;
     var fmt=function(n){return n?'$ '+Math.round(n).toLocaleString('es-AR'):'-';};
     doc.setFillColor(15,52,96);doc.rect(0,0,W,56,'F');
@@ -1353,7 +1377,7 @@ function genPDF(){
     }
     if(d.anticipo>0) rows.push({l:'(-) Anticipo',v:'- '+fmt(d.anticipo),c:[26,79,171]});
     if(d.adelanto>0) rows.push({l:'(-) Adelanto efectivo',v:'- '+fmt(d.adelanto),c:[30,140,60],b:true});
-    if(transferencia>0) rows.push({l:'(+) Transferencia ('+(porcTransf*100)+'%)',v:fmt(transferencia),c:[180,140,0]});
+    if(transferencia>0) rows.push({l:_transfManualPDF>0?'(+) Transferencia (manual)':'(+) Transferencia ('+(porcTransf*100)+'%)',v:fmt(transferencia),c:[180,140,0]});
     rows.push({l:'VALOR TOTAL OPERACION',v:fmt(valorTotalOpPDF),c:[80,80,80],b:true});
     var diferencia_final_pdf=valorTotalOpPDF-totalAportesPDF;
     var labelFinal,totalFinal,colorFinal;
