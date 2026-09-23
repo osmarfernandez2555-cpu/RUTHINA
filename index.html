@@ -1338,7 +1338,7 @@ function genPDF(){
     if(d.tienePermuta&&d.permuValor){ rows.push({l:'Tasacion: '+(d.permuModelo||''),v:fmt(d.permuValor),c:[180,100,0]}); rows.push({l:'  Neto permuta',v:'- '+fmt(aportePermuta),c:[30,150,80],b:true}); }
     // Crédito prendario
     if(d.tieneCredito&&montoFin){
-      var _credLabel=d.bancoNombre?d.bancoNombre:'Crédito banco';
+      var _credLabel=d.banco?d.banco:'Crédito banco';
       var _gpdf=_bnaMonto_pdf>0?0:0; // gastos prendario calculados aparte
       var _gastosPDF=montoFin-aporteCredPDF;
       rows.push({l:_credLabel+' (solicitado)',v:fmt(montoFin),c:[26,79,171]});
