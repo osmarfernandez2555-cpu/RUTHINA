@@ -1160,6 +1160,13 @@ function upP(){
   var _tapbna=gc('cbna')?Math.max(0,gn('bna-monto')-(Math.round(gn('bna-monto')*(parseFloat((document.getElementById('bna-gasto-porc')||{value:'0'}).value)||0)/100)+(parseFloat((document.getElementById('bna-gasto-fijo')||{value:'0'}).value)||0))):0;
   var _tapbna2=gc('cbna2')?Math.max(0,gn('bna2-monto')-(Math.round(gn('bna2-monto')*(parseFloat((document.getElementById('bna2-gasto-porc')||{value:'0'}).value)||0)/100)+(parseFloat((document.getElementById('bna2-gasto-fijo')||{value:'0'}).value)||0))):0;
   var _tapant=gn('ban'), _tapadel=gn('adelanto');
+  var _tpsa=gc('cpsa'), _tapPsa=0;
+  if(_tpsa){
+    var _tpsaMonto=0,_tpsaGastos=0;
+    if(psaTipo==='0km'){ _tpsaMonto=gn('psa-monto-0'); var _tpsaGastoPct=gn('psa-gasto-0')||14.54; _tpsaGastos=Math.round(_tpsaMonto*_tpsaGastoPct/100); }
+    else { _tpsaMonto=gn('psa-monto-p'); var _tpsaQ=gn('psa-q')||10,_tpsaIVA=gn('psa-iva')||4,_tpsaGest=gn('psa-gest')||5; _tpsaGastos=Math.round(_tpsaMonto*(_tpsaQ+_tpsaIVA+_tpsaGest)/100); }
+    _tapPsa=Math.max(0,_tpsaMonto-_tpsaGastos);
+  }
   // Recalcular valorTotalOp tambien para evitar depender del scope de upP
   var _tprice=gn('bpl'), _tcash=gn('bpc'), _tcred2=gc('cc'), _tperm2=gc('cp');
   var _tusaLista=_tperm2||_tcred2;
@@ -1167,7 +1174,7 @@ function upP(){
   var _tporcTransf=_tprecioBase>20000000?0.05:0.06;
   var _ttransf=(gc('ctransfmanual') && gn('transfmanual-monto')>0)?Math.round(gn('transfmanual-monto')):Math.round(_tprecioBase*_tporcTransf);
   var _tvalorOp=_tprecioBase+_ttransf;
-  var totalAportesReal=_tapc+_tapp+_tapbna+_tapbna2+_tapant+_tapadel;
+  var totalAportesReal=_tapc+_tapp+_tapbna+_tapbna2+_tapant+_tapadel+_tapPsa;
   var pvPlataRowFix=document.getElementById('pvplata-row');
   if(pvPlataRowFix) pvPlataRowFix.style.display=totalAportesReal>0?'flex':'none';
   if(totalAportesReal>0){ var _ppl=document.getElementById('pvplata'); if(_ppl) _ppl.textContent=fmtP(totalAportesReal); }
@@ -1346,7 +1353,7 @@ function genPDF(){
       rows.push({l:'  Neto crédito',v:'- '+fmt(aporteCredPDF),c:[26,79,171],b:true});
       // Cuota prendario
       var _cuotaManual=gn('cuota-manual');
-      var _cuotasN=parseInt((document.getElementById('cuotas')||{value:'60'}).value)||60;
+      var _cuotasN=d.cuotas||60;
       var _tasaAnual=parseFloat((document.getElementById('tasa-anual')||{value:'0'}).value)||0;
       if(_cuotaManual>0){ rows.push({l:'  Cuota est.',v:'$ '+Math.round(_cuotaManual).toLocaleString('es-AR')+' × '+_cuotasN+' (manual)',c:[100,140,200]}); }
       else if(_tasaAnual>0&&montoFin>0){ var _tasaMens=_tasaAnual/12/100; var _cuotaCalc=montoFin*(_tasaMens*Math.pow(1+_tasaMens,_cuotasN))/(Math.pow(1+_tasaMens,_cuotasN)-1); rows.push({l:'  Cuota est.',v:'$ '+Math.round(_cuotaCalc).toLocaleString('es-AR')+' × '+_cuotasN,c:[100,140,200]}); }
@@ -1388,11 +1395,12 @@ function genPDF(){
     rows.push({l:labelFinal,v:fmt(totalFinal),c:colorFinal,b:true,big:true});
     rows.forEach(function(r){
       var lbl=String(r.l||''),val=String(r.v||''); if(!lbl) return;
-      if(y>230){ doc.addPage(); y=20; }
-      if(r.big){ doc.setFillColor(15,52,96);doc.rect(M,y-5,W-M*2,12,'F');doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(255,255,255);doc.text(lbl,M+5,y+3);if(val&&val!=='-'){doc.setTextColor(255,180,180);doc.text(val,W-M-5,y+3,{align:'right'});}y+=14; }
-      else{ doc.setFont('helvetica',r.b?'bold':'normal');doc.setFontSize(11);doc.setTextColor(r.c[0],r.c[1],r.c[2]);doc.text(lbl,M+3,y);if(val&&val!=='-') doc.text(val,W-M-3,y,{align:'right'});doc.setDrawColor(230,228,224);doc.line(M,y+2,W-M,y+2);y+=9; }
+      if(y>245){ doc.addPage(); y=20; }
+      if(r.big){ doc.setFillColor(15,52,96);doc.rect(M,y-5,W-M*2,11,'F');doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(255,255,255);doc.text(lbl,M+5,y+3);if(val&&val!=='-'){doc.setTextColor(255,180,180);doc.text(val,W-M-5,y+3,{align:'right'});}y+=12; }
+      else{ doc.setFont('helvetica',r.b?'bold':'normal');doc.setFontSize(11);doc.setTextColor(r.c[0],r.c[1],r.c[2]);doc.text(lbl,M+3,y);if(val&&val!=='-') doc.text(val,W-M-3,y,{align:'right'});doc.setDrawColor(230,228,224);doc.line(M,y+2,W-M,y+2);y+=7.5; }
     });
-    y=Math.max(y+10,240);
+    y=Math.max(y+8,235);
+    if(y>250){ doc.addPage(); y=30; }
     doc.setFillColor(240,246,255);doc.rect(M,y,W-M*2,12,'F');doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100,100,100);doc.text('Vigencia: '+d.vigencia+' desde la fecha de emision.',M+4,y+8);
     y+=20;doc.setDrawColor(180,180,180);doc.line(M,y,M+55,y);doc.line(W-M-55,y,W-M,y);
     doc.setFontSize(8);doc.setTextColor(150,150,150);doc.text('Firma del cliente',M+4,y+5);doc.text('Asesor de ventas',W-M-4,y+5,{align:'right'});
