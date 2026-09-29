@@ -403,6 +403,11 @@ input:checked+.tsl::before{transform:translateX(18px)}
           <button id="btn-toggle-clientes" onclick="toggleListaClientes()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Ocultar</button>
         </div>
       </div>
+      <div style="position:relative;margin-bottom:10px">
+        <input id="buscador-clientes" type="text" placeholder="🔍 Buscar por nombre, DNI, teléfono o auto..." oninput="filtrarBusquedaClientes(this.value)"
+          style="width:100%;box-sizing:border-box;background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:9px 34px 9px 12px;font-size:13px;color:#fff;outline:none">
+        <button id="btn-limpiar-busqueda" onclick="document.getElementById('buscador-clientes').value='';filtrarBusquedaClientes('')" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:#888;font-size:16px;cursor:pointer;padding:2px 4px">✕</button>
+      </div>
       <div id="clientes-filtro-vendedor" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
       <div id="clientes-match-lista" style="display:flex;flex-direction:column;gap:6px">
         <div style="color:#666;font-size:13px;text-align:center;padding:20px">Click en Actualizar para ver los clientes</div>
@@ -2603,9 +2608,18 @@ function renderizarClientesFiltrados(filtro) {
   if (filtro === 'sin_asignar') datos = _clientesCache.filter(function(c){ return !c.vendedor; });
   else if (filtro !== 'todos') datos = _clientesCache.filter(function(c){ return c.vendedor === filtro; });
 
+  var q = _busquedaClientesActual;
+  if (q) {
+    datos = datos.filter(function(c) {
+      var campo = [c.nombre, c.dni, c.telefono, c.vehiculo, c.modelo, c.marca].filter(Boolean).join(' ');
+      return normalizarBusqueda(campo).indexOf(q) !== -1;
+    });
+  }
+
   var frag = document.createDocumentFragment();
   if (!datos.length) {
-    lista.innerHTML = '<div style="color:#666;font-size:13px;text-align:center;padding:20px">No hay clientes en este filtro</div>';
+    lista.innerHTML = '<div style="color:#666;font-size:13px;text-align:center;padding:20px">' +
+      (q ? 'Ningún cliente coincide con "' + q + '"' : 'No hay clientes en este filtro') + '</div>';
   } else {
     datos.forEach(function(c) {
       var idx = _clientesCache.indexOf(c);
@@ -2616,6 +2630,21 @@ function renderizarClientesFiltrados(filtro) {
     lista.appendChild(frag);
   }
   renderFiltroVendedores();
+}
+
+var _busquedaClientesActual = '';
+function normalizarBusqueda(s) {
+  return String(s || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+}
+var _busquedaClientesTimeout = null;
+function filtrarBusquedaClientes(texto) {
+  clearTimeout(_busquedaClientesTimeout);
+  _busquedaClientesTimeout = setTimeout(function() {
+    _busquedaClientesActual = normalizarBusqueda(texto);
+    var btnLimpiar = document.getElementById('btn-limpiar-busqueda');
+    if (btnLimpiar) btnLimpiar.style.display = texto ? 'block' : 'none';
+    renderizarClientesFiltrados(_filtroVendedorActual || 'todos');
+  }, 200);
 }
 
 function crearTarjetaCliente(c, idx, matchCount, cal) {
