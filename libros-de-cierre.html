@@ -410,8 +410,11 @@ const COMUN = {
       <div>
         ${H('Valores')}
         <div class="grid">
-          ${C('Precio de lista',I('p_lista','money'))}${C('G. de transferencia',I('p_transf','money'))}
-          ${C('Gastos de crédito',I('p_gcred','money'))}${C('Flete y formulario',I('p_flete','money'))}
+          ${C('Precio de lista',I('p_lista','money'))}
+          ${C('G. de transferencia',O('p_transf'))}<p class="hint" style="margin:-4px 0 0">6% del precio de lista; 5% si supera $ 20.000.001</p>
+          ${C('Gastos de crédito',O('p_gcred'))}<p class="hint" style="margin:-4px 0 0">4,2% del crédito prendario + $ 800.000 si el crédito personal es de Banco Nación</p>
+          ${C('Gastos de prenda',O('p_gprenda'))}<p class="hint" style="margin:-4px 0 0">2% del crédito prendario. Si el banco es MG: 2% de (cuotas × monto de cuota)</p>
+          ${C('Flete y formulario',I('p_flete','money'))}
         </div>
         <h4 class="sub" style="margin-top:16px">Entrega de usado</h4>
         <div class="grid g2">
@@ -420,10 +423,13 @@ const COMUN = {
         </div>
         <div class="grid" style="margin-top:8px">
           ${C('Subtotal c/ toma de usado',I('p_subtotal','money'))}${C('Posición venta usado',I('p_posicion','money'))}
-          ${C('Crédito prendario',I('p_prendario','money'))}${C('Efectivo',I('p_efectivo','money'))}${C('Bonificaciones',I('p_bonif','money'))}
+          <div class="grid g2">${C('Crédito personal',I('p_credper','money'))}${C('Banco',S('p_bancoper',BANCOS_CP))}</div>
+          <div class="grid g2">${C('Crédito prendario',I('p_prendario','money'))}${C('Banco',S('p_bancop',['MG']))}
+            ${C('Cuotas',S('p_cuotas',CUOTAS,true))}${C('Monto de cuota',I('p_montocuota','money'))}</div>
+          ${C('Efectivo',I('p_efectivo','money'))}${C('Bonificaciones',I('p_bonif','money'))}
         </div>
         <div class="rows" style="margin-top:6px">${R('Saldo a cancelar (*)',O('p_saldo'),'','total')}</div>
-        <p class="hint">(Precio de lista + transferencia + gastos de crédito + flete) − (subtotal c/ toma + posición + prendario + efectivo + bonificaciones)</p>
+        <p class="hint">(Precio de lista + transferencia + gastos de crédito + gastos de prenda + flete) − (subtotal c/ toma + posición + crédito personal + crédito prendario + efectivo + bonificaciones)</p>
       </div>
     </div>
     <p class="foot">*Los valores del presente documento quedan sujetos a confirmación del concesionario.</p>`,
@@ -546,7 +552,11 @@ function computeComun(s){
   const up=k=>String(s[k]??'').trim().toUpperCase();
   const c={};
   // PRESUPUESTO  G26 =(G10+G11+G12+G13)-(G21+G22+G23+G24+G25)
-  c.p_saldo=(n('p_lista')+n('p_transf')+n('p_gcred')+n('p_flete'))-(n('p_subtotal')+n('p_posicion')+n('p_prendario')+n('p_efectivo')+n('p_bonif'));
+  const pl=n('p_lista');
+  c.p_transf  = pl>20000001 ? pl*0.05 : pl*0.06;                                    // misma regla que OP.CONT-CRED.PERS!D5
+  c.p_gcred   = n('p_prendario')*0.042 + (up('p_bancoper')==='NACION'?800000:0);    // misma regla que OP. CREDITOS!D6
+  c.p_gprenda = up('p_bancop')==='MG' ? (n('p_cuotas')*n('p_montocuota'))*0.02 : n('p_prendario')*0.02; // OP. CREDITOS!D5
+  c.p_saldo=(pl+c.p_transf+c.p_gcred+c.p_gprenda+n('p_flete'))-(n('p_subtotal')+n('p_posicion')+n('p_credper')+n('p_prendario')+n('p_efectivo')+n('p_bonif'));
 
   // OP.CONT-CRED.PERS
   const av=n('a_valor');
