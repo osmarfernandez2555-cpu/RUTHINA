@@ -383,7 +383,8 @@ const descExtra = p => `${H('Descripción')}<div class="grid g2 stack">${C('Agre
    LIBRO COMÚN
    ====================================================== */
 const BANCOS_CP = ['BANCOR','NACION'];
-const CUOTAS = [12,18,24,36,48];
+const CUOTAS = [12,18,24,36,48,60,72];
+const BANCOS_PREND = ['MG','GALICIA','SANTANDER','BANCOR','BBVA'];
 
 const COMUN = {
   title:'Libro de cierres común',
@@ -424,7 +425,7 @@ const COMUN = {
         <div class="grid" style="margin-top:8px">
           ${C('Subtotal c/ toma de usado',I('p_subtotal','money'))}${C('Posición venta usado',I('p_posicion','money'))}
           <div class="grid g2">${C('Crédito personal',I('p_credper','money'))}${C('Banco',S('p_bancoper',BANCOS_CP))}</div>
-          <div class="grid g2">${C('Crédito prendario',I('p_prendario','money'))}${C('Banco',S('p_bancop',['MG']))}
+          <div class="grid g2">${C('Crédito prendario',I('p_prendario','money'))}${C('Banco',S('p_bancop',BANCOS_PREND))}
             ${C('Cuotas',S('p_cuotas',CUOTAS,true))}${C('Monto de cuota',I('p_montocuota','money'))}</div>
           ${C('Efectivo',I('p_efectivo','money'))}${C('Bonificaciones',I('p_bonif','money'))}
         </div>
@@ -506,7 +507,7 @@ const COMUN = {
       ${R('Seña',I('b_sena','money'))}
       ${R('Efectivo',I('b_ef','money'))}
       ${R('Crédito personal',I('b_credper','money'),MINI('Seleccionar banco',S('b_bancoper',BANCOS_CP)))}
-      ${R('Crédito prendario',I('b_prend','money'),MINI('Seleccionar banco',S('b_bancop',['MG']))+MINI('Seleccionar cuotas',S('b_cuotas',CUOTAS,true))+MINI('Monto de cuota',I('b_montocuota','money')))}
+      ${R('Crédito prendario',I('b_prend','money'),MINI('Seleccionar banco',S('b_bancop',BANCOS_PREND))+MINI('Seleccionar cuotas',S('b_cuotas',CUOTAS,true))+MINI('Monto de cuota',I('b_montocuota','money')))}
       ${R(`<input class="lab-in" data-k="b_otrolab" data-type="text" aria-label="Nombre del concepto">`,I('b_otro','money'),'<span class="hint">Podés renombrar este concepto</span>')}
       ${R('Permuta',I('b_perm','money'))}
       ${R('Bonificaciones',I('b_bonif','money'))}
@@ -643,7 +644,7 @@ const NAC = {
       ${R('Seña',O('n_sena'))}
       ${R('Efectivo',O('n_ef'))}
       ${R('Crédito personal',O('n_credper'),MINI('Seleccionar banco',S('n_bancoper',['NACION','BANCOR'])))}
-      ${R('Crédito prendario',O('n_prend'),MINI('Seleccionar banco',S('n_bancop',['MG']))+MINI('Seleccionar cuotas',S('n_cuotas',CUOTAS,true))+MINI('Monto de cuota',I('n_montocuota','money')))}
+      ${R('Crédito prendario',O('n_prend'),MINI('Seleccionar banco',S('n_bancop',BANCOS_PREND))+MINI('Seleccionar cuotas',S('n_cuotas',CUOTAS,true))+MINI('Monto de cuota',I('n_montocuota','money')))}
       ${R('Permuta',O('n_perm'))}
       ${R(O('n_otrolab','text').replace('class="out text"','class="text"'),O('n_otro'))}
       ${R('Bonificaciones',O('n_bonif'))}
