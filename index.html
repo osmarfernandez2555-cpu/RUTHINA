@@ -416,6 +416,13 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div id="clientes-match-lista" style="display:flex;flex-direction:column;gap:6px">
         <div style="color:#666;font-size:13px;text-align:center;padding:20px">Click en Actualizar para ver los clientes</div>
       </div>
+
+      <div style="margin-top:14px">
+        <div id="toggle-leads-perdidos" onclick="toggleLeadsPerdidos()" style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#888;padding:8px 0;border-top:1px solid rgba(255,255,255,0.08)">
+          <span id="chev-leads-perdidos">▸</span> ❌ Leads perdidos <span id="count-leads-perdidos" style="background:#4b5563;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px"></span>
+        </div>
+        <div id="clientes-perdidos-lista" style="display:none;flex-direction:column;gap:6px;margin-top:6px"></div>
+      </div>
     </div>
 
     <!-- DASHBOARD VENDEDORES -->
@@ -2601,20 +2608,24 @@ function renderFiltroVendedores() {
   var esVendedor = SESION && SESION.role === 'vendedor';
   cont.innerHTML = '';
 
+  // Los "No sirve" quedan en Leads perdidos aparte: no cuentan acá, para que el
+  // número de cada pestaña coincida con lo que realmente se ve en la lista.
+  var activos = _clientesCache.filter(function(c){ return (c._cal || c.calificacion || '') !== 'no_sirve'; });
+
   // Un vendedor solo ve su propia pestaña (fija, no puede cambiarla)
   if (esVendedor) {
     var b0 = document.createElement('div');
-    b0.textContent = '👤 ' + SESION.nombre + ' (' + _clientesCache.length + ')';
+    b0.textContent = '👤 ' + SESION.nombre + ' (' + activos.length + ')';
     b0.style.cssText = 'border-radius:20px;padding:5px 12px;font-size:12px;font-weight:700;border:1px solid #c8102e;background:#c8102e;color:#fff';
     cont.appendChild(b0);
     return;
   }
 
-  var sinAsignarCount = _clientesCache.filter(function(c){ return !c.vendedor; }).length;
-  var tabs = [{ key: 'todos', label: 'Todos', count: _clientesCache.length }];
+  var sinAsignarCount = activos.filter(function(c){ return !c.vendedor; }).length;
+  var tabs = [{ key: 'todos', label: 'Todos', count: activos.length }];
   tabs.push({ key: 'sin_asignar', label: 'Sin asignar', count: sinAsignarCount });
   VENDEDORES.forEach(function(v) {
-    var cnt = _clientesCache.filter(function(c){ return c.vendedor === v; }).length;
+    var cnt = activos.filter(function(c){ return c.vendedor === v; }).length;
     tabs.push({ key: v, label: v, count: cnt });
   });
   tabs.forEach(function(t) {
@@ -2642,12 +2653,16 @@ function renderizarClientesFiltrados(filtro) {
     });
   }
 
+  // Los "No sirve" se sacan de la lista principal y van aparte, en Leads perdidos
+  var datosActivos = datos.filter(function(c) { return (c._cal || c.calificacion || '') !== 'no_sirve'; });
+  var datosPerdidos = datos.filter(function(c) { return (c._cal || c.calificacion || '') === 'no_sirve'; });
+
   var frag = document.createDocumentFragment();
-  if (!datos.length) {
+  if (!datosActivos.length) {
     lista.innerHTML = '<div style="color:#666;font-size:13px;text-align:center;padding:20px">' +
       (q ? 'Ningún cliente coincide con "' + q + '"' : 'No hay clientes en este filtro') + '</div>';
   } else {
-    datos.forEach(function(c) {
+    datosActivos.forEach(function(c) {
       var idx = _clientesCache.indexOf(c);
       var div = crearTarjetaCliente(c, idx, c._matchCount || 0, c._cal || '');
       frag.appendChild(div);
@@ -2655,7 +2670,34 @@ function renderizarClientesFiltrados(filtro) {
     lista.innerHTML = '';
     lista.appendChild(frag);
   }
+
+  var listaPerdidos = document.getElementById('clientes-perdidos-lista');
+  var contador = document.getElementById('count-leads-perdidos');
+  if (contador) contador.textContent = datosPerdidos.length;
+  if (listaPerdidos) {
+    if (!datosPerdidos.length) {
+      listaPerdidos.innerHTML = '<div style="color:#666;font-size:12px;text-align:center;padding:10px">No hay leads perdidos en este filtro</div>';
+    } else {
+      var fragP = document.createDocumentFragment();
+      datosPerdidos.forEach(function(c) {
+        var idx = _clientesCache.indexOf(c);
+        var div = crearTarjetaCliente(c, idx, c._matchCount || 0, c._cal || '');
+        fragP.appendChild(div);
+      });
+      listaPerdidos.innerHTML = '';
+      listaPerdidos.appendChild(fragP);
+    }
+  }
+
   renderFiltroVendedores();
+}
+
+function toggleLeadsPerdidos() {
+  var box = document.getElementById('clientes-perdidos-lista');
+  var chev = document.getElementById('chev-leads-perdidos');
+  var abierto = box.style.display === 'flex';
+  box.style.display = abierto ? 'none' : 'flex';
+  chev.textContent = abierto ? '▸' : '▾';
 }
 
 var _busquedaClientesActual = '';
