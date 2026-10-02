@@ -2895,6 +2895,121 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   obsWrap.appendChild(obsBox);
   div.appendChild(obsWrap);
 
+  // Editar datos del lead (nombre, teléfono, DNI, auto que busca, año, presupuesto, permuta, garantes)
+  var editWrap = document.createElement('div');
+  editWrap.style.cssText = 'margin-top:8px';
+  var editToggle = document.createElement('button');
+  editToggle.textContent = '✏️ Editar datos';
+  editToggle.style.cssText = 'background:transparent;color:#60a5fa;border:1px solid rgba(96,165,250,0.35);border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer';
+  var editBox = document.createElement('div');
+  editBox.style.cssText = 'display:none;margin-top:8px;background:#0d0d1a;border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:10px';
+
+  function campoEdit(label, valor, placeholder) {
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'margin-bottom:8px';
+    var lbl = document.createElement('div');
+    lbl.textContent = label;
+    lbl.style.cssText = 'font-size:10px;color:#888;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px';
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.value = valor || '';
+    input.placeholder = placeholder || '';
+    input.style.cssText = 'width:100%;background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:6px;padding:6px 9px;color:#fff;font-size:12px;box-sizing:border-box';
+    wrap.appendChild(lbl);
+    wrap.appendChild(input);
+    editBox.appendChild(wrap);
+    return input;
+  }
+
+  var inpNombre = campoEdit('Nombre', c.nombre);
+  var inpTelefono = campoEdit('Teléfono', c.telefono, 'ej: 351xxxxxxx');
+  var inpDni = campoEdit('DNI', c.dni);
+  var inpModelo = campoEdit('Auto que busca', c.modelo || c.vehiculo);
+  var inpAnio = campoEdit('Año', c.anio);
+  var inpPresupuesto = campoEdit('Presupuesto', c.presupuesto);
+
+  var permutaRow = document.createElement('label');
+  permutaRow.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:11px;color:#ccc;margin-bottom:6px;cursor:pointer';
+  var chkPermuta = document.createElement('input');
+  chkPermuta.type = 'checkbox';
+  chkPermuta.checked = ['si','sí','true','yes'].indexOf(String(c.tiene_permuta || '').toLowerCase()) !== -1;
+  permutaRow.appendChild(chkPermuta);
+  permutaRow.appendChild(document.createTextNode('Tiene auto en permuta'));
+  editBox.appendChild(permutaRow);
+  var inpAutoPermuta = campoEdit('Auto que entrega (marca, modelo, año, km)', c.auto_permuta);
+  inpAutoPermuta.parentElement.style.display = chkPermuta.checked ? 'block' : 'none';
+  chkPermuta.addEventListener('change', function() {
+    inpAutoPermuta.parentElement.style.display = chkPermuta.checked ? 'block' : 'none';
+  });
+
+  var garanteRow = document.createElement('label');
+  garanteRow.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:11px;color:#ccc;margin-bottom:6px;cursor:pointer';
+  var chkGarante = document.createElement('input');
+  chkGarante.type = 'checkbox';
+  chkGarante.checked = ['si','sí','true','yes'].indexOf(String(c.tiene_garantes || '').toLowerCase()) !== -1;
+  garanteRow.appendChild(chkGarante);
+  garanteRow.appendChild(document.createTextNode('Tiene garante'));
+  editBox.appendChild(garanteRow);
+  var inpNombreGarante = campoEdit('Nombre del garante', c.nombre_garante);
+  var inpDniGarante = campoEdit('DNI del garante', c.dni_garante);
+  var mostrarGarante = chkGarante.checked ? 'block' : 'none';
+  inpNombreGarante.parentElement.style.display = mostrarGarante;
+  inpDniGarante.parentElement.style.display = mostrarGarante;
+  chkGarante.addEventListener('change', function() {
+    var disp = chkGarante.checked ? 'block' : 'none';
+    inpNombreGarante.parentElement.style.display = disp;
+    inpDniGarante.parentElement.style.display = disp;
+  });
+
+  var editBtns = document.createElement('div');
+  editBtns.style.cssText = 'display:flex;gap:8px;align-items:center;margin-top:4px';
+  var btnGuardarEdit = document.createElement('button');
+  btnGuardarEdit.textContent = 'Guardar cambios';
+  btnGuardarEdit.style.cssText = 'background:#1a6dd4;color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer';
+  var editMsg = document.createElement('span');
+  editMsg.style.cssText = 'font-size:11px;color:#4ade80;display:none';
+  editMsg.textContent = 'Guardado ✓';
+  btnGuardarEdit.onclick = async function() {
+    btnGuardarEdit.disabled = true;
+    btnGuardarEdit.textContent = 'Guardando...';
+    var body = {
+      nombre: inpNombre.value.trim(),
+      telefono: inpTelefono.value.trim(),
+      dni: inpDni.value.trim(),
+      modelo: inpModelo.value.trim(),
+      anio: inpAnio.value.trim(),
+      presupuesto: inpPresupuesto.value.trim(),
+      tiene_permuta: chkPermuta.checked ? 'si' : 'no',
+      auto_permuta: chkPermuta.checked ? inpAutoPermuta.value.trim() : '',
+      tiene_garantes: chkGarante.checked ? 'si' : 'no',
+      nombre_garante: chkGarante.checked ? inpNombreGarante.value.trim() : '',
+      dni_garante: chkGarante.checked ? inpDniGarante.value.trim() : ''
+    };
+    try {
+      await fetch(RAILWAY + '/api/clientes/' + c.id, {
+        method: 'PATCH', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify(body)
+      });
+      Object.assign(c, body);
+      editMsg.style.display = 'inline';
+      renderizarClientesFiltrados(_filtroVendedorActual || 'todos');
+    } catch(e) {
+      alert('Error al guardar: ' + e.message);
+      btnGuardarEdit.disabled = false;
+      btnGuardarEdit.textContent = 'Guardar cambios';
+    }
+  };
+  editBtns.appendChild(btnGuardarEdit);
+  editBtns.appendChild(editMsg);
+  editBox.appendChild(editBtns);
+
+  editToggle.onclick = function() {
+    editBox.style.display = editBox.style.display === 'none' ? 'block' : 'none';
+  };
+  editWrap.appendChild(editToggle);
+  editWrap.appendChild(editBox);
+  div.appendChild(editWrap);
+
   // Bancos con monto por banco (siempre visibles)
   var BANCOS_LEAD = [
     { key: 'monto_galicia', label: 'Galicia' },
