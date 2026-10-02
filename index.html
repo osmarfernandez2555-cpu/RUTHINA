@@ -1748,7 +1748,7 @@ async function matchBuscar(){
         return '<div class="cliente-item">'+
           '<div style="flex:1">'+
             '<div class="cliente-nombre">👤 <strong>'+c.nombre+'</strong></div>'+
-            '<div class="cliente-tel" style="margin-top:3px">'+(c.telefono?'📞 '+c.telefono:'Sin teléfono')+'</div>'+
+            '<div class="cliente-tel" style="margin-top:3px">'+(c.telefono?'📞 <a href="'+linkWA(c.telefono)+'" target="_blank" style="color:#25d366;text-decoration:none;font-weight:600" onclick="event.stopPropagation()">'+c.telefono+' ↗</a>':'Sin teléfono')+'</div>'+
             '<div style="font-size:12px;color:#92400E;margin-top:3px;font-weight:600">🔍 Busca: '+(c.modelo||'No especificado')+'</div>'+
           '</div>'+
           '<button class="btn-cliente-ok" onclick="marcarClienteEncontrado('+c.id+', this)">✓ Encontrado</button>'+
@@ -2044,7 +2044,7 @@ async function cargarPanelClientes() {
       var bgBadge = item.matchCount > 0 ? '#dcfce7' : '#f3f4f6';
       div.innerHTML = '<div><div style="font-size:14px;font-weight:700;color:#fff">' + (item.c.nombre || 'Sin nombre') + '</div>'
         + '<div style="font-size:12px;color:#aaa;margin-top:2px">' + (item.busqueda || '-') + (item.anio ? ' - ' + item.anio : '') + '</div>'
-        + (item.c.telefono ? '<div style="font-size:11px;color:#666;margin-top:1px">' + item.c.telefono + '</div>' : '')
+        + (item.c.telefono ? '<div style="font-size:11px;margin-top:1px"><a href="' + linkWA(item.c.telefono) + '" target="_blank" style="color:#25d366;text-decoration:none;font-weight:600" onclick="event.stopPropagation()">📞 ' + item.c.telefono + ' ↗</a></div>' : '')
         + '</div><div style="background:' + bgBadge + ';color:' + colorBadge + ';border-radius:20px;padding:4px 12px;font-size:13px;font-weight:800;white-space:nowrap">'
         + item.matchCount + (item.matchCount === 1 ? ' match' : ' matches') + '</div>';
       div.addEventListener('click', function() {
@@ -2148,7 +2148,7 @@ async function verMatchesCliente(idx, matchCount) {
     + '<div style="display:flex;flex-wrap:wrap;gap:12px;font-size:13px;color:#f0f0f0">'
     + (busqueda ? '<span>🚗 Busca: <strong style="color:#fff">' + busqueda + (anio ? ' ' + anio : '') + '</strong></span>' : '')
     + (presupuesto ? '<span>💰 Presupuesto: <strong style="color:#4ade80">' + fmtMoneda(presupuesto) + '</strong></span>' : '<span style="color:#888">💰 Presupuesto: sin datos</span>')
-    + (telefono ? '<span>📞 <strong style="color:#60a5fa">' + telefono + '</strong></span>' : '')
+    + (telefono ? '<span>📞 <a href="' + linkWA(telefono) + '" target="_blank" style="color:#25d366;text-decoration:none;font-weight:700">' + telefono + ' ↗</a></span>' : '')
     + (dni ? '<span>🪪 DNI: <strong style="color:#fff">' + dni + '</strong></span>' : '<span style="color:#888">🪪 DNI: sin datos</span>')
     + '</div>'
     + permutaHTML
@@ -2420,6 +2420,15 @@ if (_wappEl) _wappEl.addEventListener('keydown', function(e) { if(e.key==='Enter
 var _clientesCache = [];
 var _vendedorActual = '';
 var RAILWAY = 'https://compara-conejo-production.up.railway.app';
+
+// Arma el link de WhatsApp a partir de un teléfono guardado (sin el 54 inicial,
+// como quedan guardados en la base). Si ya viene con 54, no lo duplica.
+function linkWA(tel) {
+  var digitos = String(tel || '').replace(/\D/g, '');
+  if (!digitos) return '';
+  if (digitos.indexOf('54') !== 0) digitos = '54' + digitos;
+  return 'https://wa.me/' + digitos;
+}
 
 // ── Vendedores: ahora compartidos vía servidor (antes vivían en localStorage,
 // lo que hacía que cada dispositivo tuviera una lista distinta) ─────────────
@@ -2718,7 +2727,7 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
   header.innerHTML = '<div>'
     + '<div style="font-size:14px;font-weight:700;color:'+txtMain+'">' + (c.nombre||'Sin nombre') + '</div>'
     + '<div style="font-size:12px;color:'+txtSub+';margin-top:2px">' + (busqueda||'-') + (anio?' - '+anio:'') + '</div>'
-    + (c.telefono?'<div style="font-size:11px;color:'+txtSub+';margin-top:1px">&#128222; '+c.telefono+'</div>':'')
+    + (c.telefono?'<div style="font-size:11px;margin-top:1px">&#128222; <a href="'+linkWA(c.telefono)+'" target="_blank" style="color:#25d366;text-decoration:none;font-weight:700" onclick="event.stopPropagation()">'+c.telefono+' ↗</a></div>':'')
     + '<div style="font-size:11px;color:'+(c.dni?txtSub:txtMuted)+';margin-top:1px">&#127991; DNI: '+(c.dni||'sin datos')+'</div>'
     + (c.presupuesto?'<div style="font-size:11px;color:'+txtMain+';font-weight:700;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
     + '<div style="font-size:11px;color:'+txtMain+';margin-top:1px">&#128260; Permuta: '+(tienePermutaPrev?('Sí — '+([c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')||'sin detalle')):'No')+'</div>'
@@ -2990,7 +2999,7 @@ async function cargarClientesVendedor(vendedor, cal) {
       div.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:center">'
         + '<div><div style="font-size:14px;font-weight:700;color:#fff">' + (c.nombre||'-') + '</div>'
         + '<div style="font-size:12px;color:#aaa">' + (c.modelo||'') + (c.anio?' '+c.anio:'') + '</div>'
-        + (c.telefono?'<div style="font-size:11px;color:#666">'+c.telefono+'</div>':'')
+        + (c.telefono?'<div style="font-size:11px"><a href="'+linkWA(c.telefono)+'" target="_blank" style="color:#25d366;text-decoration:none;font-weight:600">📞 '+c.telefono+' ↗</a></div>':'')
         + '</div>'
         + '<div style="background:'+calBg+';color:'+calColor+';border-radius:12px;padding:3px 10px;font-size:11px;font-weight:700">'+calLabel+'</div>'
         + '</div>';
