@@ -283,6 +283,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
       <span>Libros de cierre</span>
     </button>
+    <button class="hbtn" onclick="abrirResenas()" style="background:rgba(245,166,35,0.22)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span>Reseñas</span>
+    </button>
     <button class="hbtn" onclick="cambiarKey()" title="Cambiar API Key" style="padding:7px 9px">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     </button>
@@ -2383,6 +2387,19 @@ function closeLibrosCierre() {
   document.getElementById('libros-overlay').style.display = 'none';
 }
 
+// RESEÑAS TUTU
+function abrirResenas() {
+  var overlay = document.getElementById('resenas-overlay');
+  overlay.style.display = 'flex';
+  var iframe = document.getElementById('resenas-iframe');
+  if (!iframe.src || iframe.src === window.location.href) {
+    iframe.src = 'resenas-tutu.html';
+  }
+}
+function closeResenas() {
+  document.getElementById('resenas-overlay').style.display = 'none';
+}
+
 // TRANSFERENCIAS
 function abrirTransfDirecto() {
   document.getElementById('transf-overlay').style.display = 'flex';
@@ -3271,6 +3288,14 @@ async function verPrecioInfoAuto(codia, nombre) {
   <div id="libros-frame-wrap" style="width:95vw;height:92vh;background:#fff;border-radius:12px;overflow:hidden;position:relative">
     <button onclick="closeLibrosCierre()" style="position:absolute;top:10px;right:10px;z-index:10;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px">✕ Cerrar</button>
     <iframe id="libros-iframe" src="" style="width:100%;height:100%;border:none"></iframe>
+  </div>
+</div>
+
+<!-- MODAL RESEÑAS TUTU -->
+<div id="resenas-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+  <div id="resenas-frame-wrap" style="width:95vw;height:92vh;background:#fff;border-radius:12px;overflow:hidden;position:relative">
+    <button onclick="closeResenas()" style="position:absolute;top:10px;right:10px;z-index:10;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px">✕ Cerrar</button>
+    <iframe id="resenas-iframe" src="" style="width:100%;height:100%;border:none"></iframe>
   </div>
 </div>
 
