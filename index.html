@@ -287,6 +287,10 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       <span>Reseñas</span>
     </button>
+    <button class="hbtn" onclick="abrirCalculadorCreditos()" style="background:rgba(22,163,74,0.22)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8.01" y2="11"/><line x1="12" y1="11" x2="12.01" y2="11"/><line x1="16" y1="11" x2="16.01" y2="11"/><line x1="8" y1="15" x2="8.01" y2="15"/><line x1="12" y1="15" x2="12.01" y2="15"/><line x1="16" y1="15" x2="16.01" y2="15"/><line x1="8" y1="19" x2="12" y2="19"/></svg>
+      <span>Calculador</span>
+    </button>
     <button class="hbtn" onclick="cambiarKey()" title="Cambiar API Key" style="padding:7px 9px">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
     </button>
@@ -2400,6 +2404,19 @@ function closeResenas() {
   document.getElementById('resenas-overlay').style.display = 'none';
 }
 
+// CALCULADOR DE CRÉDITOS
+function abrirCalculadorCreditos() {
+  var overlay = document.getElementById('creditos-overlay');
+  overlay.style.display = 'flex';
+  var iframe = document.getElementById('creditos-iframe');
+  if (!iframe.src || iframe.src === window.location.href) {
+    iframe.src = 'calculador-creditos.html';
+  }
+}
+function closeCalculadorCreditos() {
+  document.getElementById('creditos-overlay').style.display = 'none';
+}
+
 // TRANSFERENCIAS
 function abrirTransfDirecto() {
   document.getElementById('transf-overlay').style.display = 'flex';
@@ -3296,6 +3313,14 @@ async function verPrecioInfoAuto(codia, nombre) {
   <div id="resenas-frame-wrap" style="width:95vw;height:92vh;background:#fff;border-radius:12px;overflow:hidden;position:relative">
     <button onclick="closeResenas()" style="position:absolute;top:10px;right:10px;z-index:10;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px">✕ Cerrar</button>
     <iframe id="resenas-iframe" src="" style="width:100%;height:100%;border:none"></iframe>
+  </div>
+</div>
+
+<!-- MODAL CALCULADOR DE CRÉDITOS -->
+<div id="creditos-overlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px)">
+  <div id="creditos-frame-wrap" style="width:95vw;height:92vh;background:#fff;border-radius:12px;overflow:hidden;position:relative">
+    <button onclick="closeCalculadorCreditos()" style="position:absolute;top:10px;right:10px;z-index:10;background:rgba(0,0,0,0.6);color:#fff;border:none;border-radius:8px;padding:6px 12px;cursor:pointer;font-size:12px">✕ Cerrar</button>
+    <iframe id="creditos-iframe" src="" style="width:100%;height:100%;border:none"></iframe>
   </div>
 </div>
 
