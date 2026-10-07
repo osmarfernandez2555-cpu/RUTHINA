@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calculador de créditos — Tutu Automotores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EEF1F0; --panel:#FFFFFF; --ink:#16232B; --muted:#5B686D; --line:#D3DAD8;
+  --plate:#F2B705; --plate-ink:#1E1A08; --plate-line:rgba(30,26,8,.28);
+  --good:#0D7A63; --good-bg:#DDF1EA; --off:#9AA5A8; --row-hi:#FFF6D6; --focus:#1F6FEB;
+  --sans:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --cond:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#0F1619; --panel:#172126; --ink:#E6EDEB; --muted:#9AA8AC; --line:#2B383D;
+    --plate:#E0A800; --plate-ink:#1A1604; --good:#45C9A6; --good-bg:#12332B; --off:#5E6C70; --row-hi:#2E2A15; --focus:#6EA8FF;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#0F1619; --panel:#172126; --ink:#E6EDEB; --muted:#9AA8AC; --line:#2B383D;
+  --plate:#E0A800; --plate-ink:#1A1604; --good:#45C9A6; --good-bg:#12332B; --off:#5E6C70; --row-hi:#2E2A15; --focus:#6EA8FF;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 56px}
+header.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+header.top h1{font-family:var(--cond);font-weight:700;font-size:1.75rem;letter-spacing:.01em;margin:0;line-height:1.1}
+header.top p{margin:0;color:var(--muted);font-size:.95rem}
+
+/* placa de datos */
+.plate{background:var(--plate);color:var(--plate-ink);border-radius:14px;padding:18px 20px 16px;display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:0;position:relative;box-shadow:inset 0 0 0 3px var(--plate-line)}
+.plate .f{padding:4px 18px;border-left:2px solid var(--plate-line);min-width:0}
+.plate .f:first-child{border-left:0;padding-left:4px}
+.plate label{display:block;font-weight:600;font-size:.88rem;margin-bottom:2px}
+.plate .in{display:flex;align-items:baseline;gap:4px}
+.plate .in span{font-family:var(--cond);font-weight:600;font-size:2rem}
+.plate input,.plate select{font-family:var(--cond);font-weight:700;font-size:2.6rem;line-height:1.05;color:var(--plate-ink);background:transparent;border:0;border-bottom:2px dashed var(--plate-line);padding:0 2px;width:100%;min-width:0;border-radius:0;font-variant-numeric:tabular-nums}
+.plate select{appearance:none;-webkit-appearance:none;cursor:pointer;background-image:linear-gradient(45deg,transparent 50%,var(--plate-ink) 50%),linear-gradient(135deg,var(--plate-ink) 50%,transparent 50%);background-position:calc(100% - 14px) 55%,calc(100% - 6px) 55%;background-size:8px 8px;background-repeat:no-repeat;padding-right:28px}
+.plate select option{font-size:1rem;color:#000}
+.plate input:focus,.plate select:focus{outline:none;border-bottom-style:solid;border-bottom-color:var(--plate-ink)}
+.plate .hint{font-size:.82rem;margin-top:6px}
+.plate .hint a{color:inherit;font-weight:600}
+.chips{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.chips button{font:600 .85rem var(--sans);border:1.5px solid var(--plate-line);background:transparent;color:var(--plate-ink);border-radius:999px;padding:2px 10px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--plate-ink);color:var(--plate);border-color:var(--plate-ink)}
+
+/* pestañas */
+nav.tabs{display:flex;gap:4px;margin:22px 0 0;border-bottom:2px solid var(--line);overflow-x:auto}
+nav.tabs button{font:600 1rem var(--sans);color:var(--muted);background:none;border:0;padding:10px 14px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--plate)}
+section.view{display:none;padding-top:16px}
+section.view.on{display:block}
+
+.bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.bar p{margin:0;color:var(--muted);font-size:.92rem}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:600 .88rem var(--sans);background:var(--panel);color:var(--muted);border:0;padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+.btn{font:600 .9rem var(--sans);background:var(--panel);color:var(--ink);border:1.5px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer}
+.btn:hover{border-color:var(--ink)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%}
+th,td{padding:9px 12px;text-align:right;white-space:nowrap}
+th{font-size:.8rem;font-weight:600;color:var(--muted);border-bottom:1px solid var(--line);background:var(--panel);position:sticky;top:0}
+th:first-child,td:first-child{text-align:left}
+tbody tr+tr td{border-top:1px solid var(--line)}
+td.money{font-family:var(--cond);font-weight:600;font-size:1.2rem}
+
+/* comparador */
+#tblBancos td.bank{white-space:normal;min-width:180px}
+.bankbtn{font:600 1rem var(--sans);color:var(--ink);background:none;border:0;padding:0;cursor:pointer;text-align:left;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.bankbtn:hover{text-decoration-color:var(--ink)}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;padding:1px 7px;border-radius:999px;margin-left:6px;vertical-align:2px;border:1px solid var(--line);color:var(--muted)}
+.rate{display:inline-flex;align-items:center;gap:2px;border:1.5px solid var(--line);border-radius:7px;padding:2px 6px;background:var(--paper)}
+.rate input{font:600 1rem var(--sans);width:4.2em;border:0;background:transparent;color:var(--ink);text-align:right;font-variant-numeric:tabular-nums}
+.rate input:focus{outline:none}
+.rate:focus-within{border-color:var(--focus)}
+.rate.changed{border-color:var(--plate)}
+tr.off td{color:var(--off)}
+tr.off .bankbtn{color:var(--off)}
+tr.off td.money{font-family:var(--sans);font-size:.88rem;font-weight:500}
+tr.best td{background:var(--row-hi)}
+tr.best td.money{color:var(--ink)}
+.best-mark{display:inline-block;font-size:.72rem;font-weight:700;background:var(--plate);color:var(--plate-ink);padding:1px 7px;border-radius:4px;margin-left:8px;vertical-align:2px}
+.it{font-weight:600}
+
+/* detalle */
+dialog{border:0;padding:0;border-radius:14px;width:min(1040px,96vw);max-height:92vh;background:var(--panel);color:var(--ink);box-shadow:0 30px 80px rgba(0,0,0,.35)}
+dialog::backdrop{background:rgba(10,18,22,.55)}
+.dlg-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;padding:18px 20px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel);z-index:2}
+.dlg-head h2{font-family:var(--cond);font-size:1.7rem;margin:0;line-height:1.1}
+.dlg-head p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+.dlg-actions{display:flex;gap:8px;flex-shrink:0}
+.dlg-body{padding:14px 20px 20px;overflow:auto;max-height:calc(92vh - 90px)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.fact{border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.fact b{display:block;font-family:var(--cond);font-size:1.3rem;font-weight:700;white-space:nowrap}
+.fact small{color:var(--muted);font-size:.8rem}
+.fact.key{background:var(--plate);color:var(--plate-ink);border-color:var(--plate)}
+.fact.key small{color:var(--plate-ink)}
+.sched td{font-size:.92rem;padding:6px 10px}
+.sched th{font-size:.74rem;padding:6px 10px;white-space:normal;vertical-align:bottom}
+.sched tr.total td{font-weight:700;border-top:2px solid var(--ink)}
+.sched tr.past td{color:var(--off)}
+.sched td.strong{font-weight:700}
+.note{color:var(--muted);font-size:.82rem;margin:12px 0 0;max-width:80ch}
+.toggle{display:inline-flex;align-items:center;gap:6px;font-size:.88rem;color:var(--muted);cursor:pointer}
+
+/* proyección */
+.totals{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:14px}
+.tot{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.tot h3{margin:0 0 4px;font-size:.9rem;font-weight:600;color:var(--muted)}
+.tot .big{font-family:var(--cond);font-weight:700;font-size:1.7rem;line-height:1.15}
+.tot .sub{font-size:.9rem}
+h2.sec{font-family:var(--cond);font-size:1.4rem;margin:0}
+
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+
+@media (max-width:760px){
+  .plate{grid-template-columns:1fr 1fr;row-gap:12px}
+  .plate .f:first-child{grid-column:1/-1;padding-left:4px}
+  .plate .f:nth-child(2){border-left:0;padding-left:4px}
+  .plate{padding:16px 14px 14px}
+  .plate .f{padding:4px 10px}
+  .plate input,.plate select{font-size:1.75rem}
+  .plate .in span{font-size:1.5rem}
+  #tblBancos thead{display:none}
+  #tblBancos,#tblBancos tbody{display:block}
+  #tblBancos tr{display:grid;grid-template-columns:auto 1fr;grid-template-areas:"bank bank" "rate money" "rate it";column-gap:12px;row-gap:2px;padding:10px 12px}
+  #tblBancos tbody tr+tr{border-top:1px solid var(--line)}
+  #tblBancos tbody tr+tr td{border-top:0}
+  #tblBancos td{padding:0;min-width:0}
+  #tblBancos td.bank{grid-area:bank;min-width:0;margin-bottom:4px}
+  #tblBancos td:nth-child(2){grid-area:rate;align-self:center;text-align:left}
+  #tblBancos td.money{grid-area:money}
+  #tblBancos td.it{grid-area:it;font-size:.85rem;color:var(--muted)}
+  #tblBancos td.it:not(:empty)::before{content:"Interés total ";font-weight:400}
+  .totals{grid-template-columns:1fr}
+  th,td{padding:8px 8px}
+  #tblBancos td.bank{min-width:150px}
+  dialog{width:100vw;max-height:100vh;height:100%;border-radius:0;margin:0;max-width:none}
+  .dlg-body{max-height:none}
+}
+@media (prefers-reduced-motion:no-preference){
+  tr.best td{transition:background .25s}
+}
+@media print{
+  body{background:#fff;color:#000}
+  body.printing-section .wrap > *:not(.printable){display:none!important}
+  body.printing-dialog .wrap{display:none}
+  dialog{position:static;box-shadow:none;max-height:none;width:100%}
+  .dlg-actions,.toggle,nav.tabs{display:none!important}
+  .dlg-body{max-height:none;overflow:visible}
+  th{position:static}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Calculador de créditos</h1>
+    <p>Tutu Automotores. Tasas de septiembre 2026, sistema francés.</p>
+  </header>
+
+  <div class="plate" role="group" aria-label="Datos del crédito">
+    <div class="f">
+      <label for="monto">Monto del crédito</label>
+      <div class="in"><span>$</span><input id="monto" inputmode="decimal" autocomplete="off" class="num"></div>
+    </div>
+    <div class="f">
+      <label for="cuotas">Cuotas</label>
+      <div class="in"><select id="cuotas" class="num"></select></div>
+      <div class="chips" id="chips"></div>
+    </div>
+    <div class="f">
+      <label for="uva">Valor UVA hoy</label>
+      <div class="in"><span>$</span><input id="uva" inputmode="decimal" autocomplete="off" class="num"></div>
+      <div class="hint">Actualizalo siempre. <a href="https://www.bcra.gob.ar/PublicacionesEstadisticas/Principales_variables_datos.asp" target="_blank" rel="noopener">Ver en BCRA</a></div>
+    </div>
+  </div>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-view="v-calc">Comparador de bancos</button>
+    <button role="tab" aria-selected="false" data-view="v-proy">Proyección fija</button>
+    <button role="tab" aria-selected="false" data-view="v-pyme">Mi Pyme</button>
+  </nav>
+
+  <section class="view on" id="v-calc">
+    <div class="bar">
+      <p id="resumen"></p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <div class="seg" role="group" aria-label="Orden">
+          <button data-orden="excel" aria-pressed="true">Orden del Excel</button>
+          <button data-orden="cuota" aria-pressed="false">Cuota más baja</button>
+        </div>
+        <button class="btn" id="resetTasas" hidden>Restaurar tasas del Excel</button>
+      </div>
+    </div>
+    <div class="card scroll">
+      <table id="tblBancos">
+        <thead><tr><th>Banco</th><th>Tasa (TNA)</th><th>Cuota inicial</th><th>Interés total</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+    <p class="note">Tocá el nombre de un banco para ver su cuadro de cuotas completo. Las tasas se pueden editar y quedan guardadas en este navegador. Interés total = ((cuota inicial − 7.000) × cuotas ÷ monto) − 1, igual que en el Excel.</p>
+  </section>
+
+  <section class="view" id="v-proy">
+    <div class="bar">
+      <div>
+        <h2 class="sec">Proyección fija 118%</h2>
+        <p id="proySub"></p>
+      </div>
+      <button class="btn" data-print>Imprimir</button>
+    </div>
+    <div class="totals" id="proyTot"></div>
+    <div class="card scroll"><table class="sched" id="tblProy"></table></div>
+  </section>
+
+  <section class="view" id="v-pyme">
+    <div class="bar">
+      <div>
+        <h2 class="sec">Mi Pyme</h2>
+        <p id="pymeSub"></p>
+      </div>
+      <button class="btn" data-print>Imprimir</button>
+    </div>
+    <div class="facts" id="pymeFacts"></div>
+    <div class="card scroll"><table class="sched" id="tblPyme"></table></div>
+    <p class="note">La cuota final con IVA no incluye otros impuestos y seguros.</p>
+  </section>
+</div>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <div class="dlg-head">
+    <div><h2 id="dlgTitle"></h2><p id="dlgSub"></p></div>
+    <div class="dlg-actions">
+      <button class="btn" id="dlgPrint">Imprimir</button>
+      <button class="btn" id="dlgClose" aria-label="Cerrar">Cerrar</button>
+    </div>
+  </div>
+  <div class="dlg-body">
+    <div class="facts" id="dlgFacts"></div>
+    <label class="toggle"><input type="checkbox" id="dlgAll"> Mostrar las 118 filas como en la hoja del Excel</label>
+    <div class="scroll" style="margin-top:10px"><table class="sched" id="dlgTbl"></table></div>
+    <p class="note">La cuota final con IVA no incluye otros impuestos y seguros. El importe de la cuota final podrá variar por la incidencia de impuestos (según la situación fiscal del cliente) no contemplados en el presente, o por la variación en el cálculo de intereses según el día de otorgamiento definitivo. Simulación con fines orientativos: las tasas, plazos y demás condiciones pueden ser modificadas y solo tienen validez para el día de emisión de la cotización.</p>
+  </div>
+</dialog>
+<script>
+const IVA = 0.21;
+function amortizar({ capital, n, tem, ifDesde, filas = 118, iva = IVA }) {
+  if (!(tem > 0) || !(n > 0) || !isFinite(capital)) return null;
+  const rows = []; let prev = null;
+  const cuota1 = (tem / (1 - Math.pow(1 + tem, -n))) * capital;
+  for (let k = 1; k <= filas; k++) {
+    const capIni = k === 1 ? capital : prev.saldo;
+    const capInt = capIni * (tem + 1);
+    const interes = capInt - capIni;
+    const ivaAmt = interes * iva;
+    const corta = k > 1 && k >= ifDesde && Math.abs(prev.saldo) < 0.005;
+    const cuotaSin = k === 1 ? cuota1 : (corta ? 0 : prev.cuotaSin);
+    const cuotaCon = cuotaSin + ivaAmt;
+    const amort = cuotaSin - interes;
+    const acum = k === 1 ? amort : (corta ? 0 : amort + prev.acum);
+    const saldo = capInt - cuotaSin;
+    prev = { k, capIni, interes, ivaAmt, capInt, cuotaSin, cuotaCon, amort, acum, saldo };
+    rows.push(prev);
+  }
+  return rows;
+}
+const LINEAS = [
+  { id:'leasing', banco:'LEASING', tasa:0.36, plantilla:'fija', ok:n=>n<=60 },
+  { id:'bancor-uva-22', banco:'BANCOR UVA c/seguro', tasa:0.22, plantilla:'uva', ok:n=>n<=60 },
+  { id:'bancor-uva-27', banco:'BANCOR UVA', tasa:0.27, plantilla:'uva', ok:n=>n<=60 },
+  { id:'bancor-fija-42', banco:'BANCOR FIJA', tasa:0.42, plantilla:'fija', ok:n=>n<=60 },
+  { id:'bancor-fija-47', banco:'BANCOR FIJA', tasa:0.47, plantilla:'fija', ok:n=>n<=60 },
+  { id:'icbc-uva', banco:'ICBC UVA', tasa:0.21, plantilla:'uva', ok:n=>n<=60 },
+  { id:'icbc-fija-12', banco:'ICBC FIJA 12ctas', tasa:0.56, plantilla:'fija', ok:n=>n<=12 },
+  { id:'icbc-fija-24-48', banco:'ICBC FIJA 24,36,48ctas', tasa:0.52, plantilla:'fija', ok:n=>n>24&&n<=48 },
+  { id:'columbia-fija-12', banco:'COLUMBIA FIJA 12ctas', tasa:0.259, plantilla:'uva', ok:n=>n<=12 },
+  { id:'columbia-fija-24', banco:'COLUMBIA FIJA 24ctas', tasa:0.659, plantilla:'fija', ok:n=>n<=24 },
+  { id:'columbia-fija-36-48', banco:'COLUMBIA FIJA 36,48ctas', tasa:0.619, plantilla:'uva', ok:n=>n>=36&&n<=48 },
+  { id:'galicia-us-uva', banco:'GALICIA us. UVA', tasa:0.21, plantilla:'uva', ok:n=>n<=60 },
+  { id:'galicia-0km-uva', banco:'GALICIA 0km UVA', tasa:0.20, plantilla:'fija', ok:n=>n<=60 },
+  { id:'galicia-us-fija', banco:'GALICIA us. FIJA', tasa:0.49, plantilla:'fija', ok:n=>n<=60 },
+  { id:'galicia-0km-fija', banco:'GALICIA 0km FIJA', tasa:0.44, plantilla:'uva', ok:n=>n<=60 },
+  { id:'mg-fija', banco:'MG FIJA', tasa:0.58, plantilla:'fija', ok:n=>n<=60 },
+  { id:'mg-uva', banco:'MG UVA', tasa:0.27, plantilla:'fija', ok:n=>n<=60 },
+  { id:'bna-uva-sueldo', banco:'BNA UVA sueldo', tasa:0.19, plantilla:'fija', ok:n=>n<=60 },
+  { id:'bna-uva-sin', banco:'BNA UVA sin sueldo', tasa:0.25, plantilla:'fija', ok:n=>n<=60 },
+  { id:'bna-fija-sueldo', banco:'BNA FIJA sueldo', tasa:0.36, plantilla:'fija', ok:n=>n<=60 },
+  { id:'bna-fija-sin', banco:'BNA FIJA sin sueldo', tasa:0.46, plantilla:'fija', ok:n=>n<=60 },
+];
+const IF_DESDE = { fija: 60, uva: 98, pyme: 75 };
+function hojaBanco(linea, tasa, { monto, n, uva }) {
+  const tem = tasa / 12;
+  if (linea.plantilla === 'uva') {
+    const capUva = monto / uva;
+    const rows = amortizar({ capital: capUva, n, tem, ifDesde: IF_DESDE.uva });
+    if (!rows) return null;
+    rows.forEach(r => r.pesos = r.cuotaCon * uva);
+    return { tipo: 'uva', tem, capital: capUva, rows, cuotaInicial: rows[0].pesos };
+  }
+  const rows = amortizar({ capital: monto, n, tem, ifDesde: IF_DESDE.fija });
+  if (!rows) return null;
+  return { tipo: 'fija', tem, capital: monto, rows, cuotaInicial: rows[0].cuotaCon };
+}
+function interesTotal(c, n, monto) { return (((c - 7000) * n) / monto) - 1; }
+const RANGO = {
+  'icbc-fija-12':'Solo hasta 12 cuotas', 'icbc-fija-24-48':'Solo de 25 a 48 cuotas',
+  'columbia-fija-12':'Solo hasta 12 cuotas', 'columbia-fija-24':'Solo hasta 24 cuotas',
+  'columbia-fija-36-48':'Solo de 36 a 48 cuotas'
+};
+const DEF = { monto: 23000000, n: 60, uva: 680.08 };
+const KEY = 'tutu-calculador-v1';
+const fmt$ = new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const fmt0 = new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 });
+const fmt4 = new Intl.NumberFormat('es-AR', { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+const fmtPct = v => new Intl.NumberFormat('es-AR', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(v * 100) + '%';
+const fmtTasa = v => new Intl.NumberFormat('es-AR', { maximumFractionDigits: 3 }).format(v * 100);
+const fmtTem = t => new Intl.NumberFormat('es-AR', { maximumFractionDigits: 4 }).format(t * 100) + '%';
+const money = v => '$ ' + fmt$.format(v);
+
+const st = { ...DEF, tasas: {}, orden: 'excel' };
+try { const s = JSON.parse(localStorage.getItem(KEY) || 'null'); if (s) Object.assign(st, s); } catch (e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} };
+const tasaDe = l => (st.tasas[l.id] ?? l.tasa);
+
+function parseNum(str) {
+  if (typeof str === 'number') return str;
+  let s = String(str).replace(/[^\d.,-]/g, '');
+  if (s.includes(',')) s = s.replace(/\./g, '').replace(',', '.');
+  else if ((s.match(/\./g) || []).length > 1 || /\.\d{3}$/.test(s)) s = s.replace(/\./g, '');
+  const v = parseFloat(s);
+  return isFinite(v) ? v : NaN;
+}
+
+const $ = id => document.getElementById(id);
+const elMonto = $('monto'), elN = $('cuotas'), elUva = $('uva');
+for (let i = 1; i <= 72; i++) elN.add(new Option(i, i));
+const CHIPS = [12, 24, 36, 48, 60];
+$('chips').innerHTML = CHIPS.map(c => `<button type="button" data-n="${c}">${c}</button>`).join('');
+
+function paintInputs() {
+  if (document.activeElement !== elMonto) elMonto.value = fmt0.format(st.monto);
+  if (document.activeElement !== elUva) elUva.value = fmt$.format(st.uva);
+  elN.value = st.n;
+  document.querySelectorAll('#chips button').forEach(b => b.setAttribute('aria-pressed', +b.dataset.n === st.n));
+}
+const params = () => ({ monto: st.monto, n: st.n, uva: st.uva });
+
+/* ---------- Comparador ---------- */
+function calcLineas() {
+  return LINEAS.map((l, i) => {
+    const tasa = tasaDe(l);
+    const disponible = l.ok(st.n);
+    const h = disponible ? hojaBanco(l, tasa, params()) : null;
+    const c = h ? h.cuotaInicial : null;
+    return { l, i, tasa, disponible, c, it: c != null ? interesTotal(c, st.n, st.monto) : null };
+  });
+}
+function renderBancos() {
+  let rows = calcLineas();
+  const disp = rows.filter(r => r.c != null && isFinite(r.c));
+  const best = disp.length ? disp.reduce((a, b) => (b.c < a.c ? b : a)) : null;
+  if (st.orden === 'cuota') rows = [...rows].sort((a, b) => (a.c == null) - (b.c == null) || (a.c ?? 0) - (b.c ?? 0) || a.i - b.i);
+  $('tblBancos').tBodies[0].innerHTML = rows.map(r => {
+    const changed = st.tasas[r.l.id] != null && st.tasas[r.l.id] !== r.l.tasa;
+    const cls = [r.c == null ? 'off' : '', best && r === best ? 'best' : ''].join(' ');
+    const cuota = r.c != null ? money(r.c) + (best && r === best ? '<span class="best-mark">Más baja</span>' : '') :
+      (r.disponible ? 'Tasa inválida' : (RANGO[r.l.id] || 'Hasta 60 cuotas'));
+    return `<tr class="${cls}">
+      <td class="bank"><button class="bankbtn" data-open="${r.l.id}">${r.l.banco}</button></td>
+      <td><span class="rate${changed ? ' changed' : ''}"><input data-tasa="${r.l.id}" value="${fmtTasa(r.tasa)}" inputmode="decimal" aria-label="Tasa ${r.l.banco}">%</span></td>
+      <td class="money num">${cuota}</td>
+      <td class="it num">${r.it != null ? fmtPct(r.it) : ''}</td></tr>`;
+  }).join('');
+  $('resumen').textContent = `${disp.length} de ${LINEAS.length} líneas disponibles en ${st.n} cuotas para ${money(st.monto)}.`;
+  $('resetTasas').hidden = !Object.keys(st.tasas).length;
+  document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', b.dataset.orden === st.orden));
+}
+
+/* ---------- Cuadro de cuotas ---------- */
+function schedTable(h, n, todas, uva) {
+  const esUva = h.tipo === 'uva';
+  const cols = esUva
+    ? [['k', 'Cuota'], ['capIni', 'Capital (UVA)'], ['interes', 'Interés'], ['ivaAmt', 'IVA'], ['capInt', 'Capital + interés'], ['cuotaSin', 'Cuota sin IVA (UVA)'], ['cuotaCon', 'Cuota con IVA (UVA)'], ['pesos', '$ hoy'], ['amort', 'Amortización período'], ['acum', 'Capital acumulado'], ['saldo', 'Saldo deuda']]
+    : [['k', 'Cuota'], ['capIni', 'Capital'], ['interes', 'Interés'], ['ivaAmt', 'IVA'], ['capInt', 'Capital + interés'], ['cuotaSin', 'Cuota sin IVA'], ['cuotaCon', 'Cuota con IVA'], ['amort', 'Amortización período'], ['acum', 'Capital acumulado'], ['saldo', 'Saldo deuda']];
+  const strong = esUva ? 'pesos' : 'cuotaCon';
+  const rows = todas ? h.rows : h.rows.slice(0, n);
+  const sumK = ['interes', 'ivaAmt', 'cuotaSin', 'cuotaCon', 'pesos', 'amort'];
+  const tot = {}; sumK.forEach(k => tot[k] = rows.reduce((a, r) => a + (r[k] || 0), 0));
+  const f = (k, v) => k === 'k' ? v : (esUva && k !== 'pesos' ? fmt4.format(v) : fmt$.format(v));
+  const head = '<thead><tr>' + cols.map(c => `<th>${c[1]}</th>`).join('') + '</tr></thead>';
+  const body = rows.map(r => `<tr class="${r.k > n ? 'past' : ''}">` + cols.map(([k]) => `<td class="num${k === strong ? ' strong' : ''}">${f(k, r[k])}</td>`).join('') + '</tr>').join('');
+  const foot = '<tr class="total">' + cols.map(([k], i) => `<td class="num">${i === 0 ? 'TOTAL' : (sumK.includes(k) ? f(k, tot[k]) : '')}</td>`).join('') + '</tr>';
+  return head + '<tbody>' + body + foot + '</tbody>';
+}
+let abierto = null;
+function renderDialog() {
+  if (!abierto) return;
+  const l = LINEAS.find(x => x.id === abierto);
+  const tasa = tasaDe(l);
+  const h = hojaBanco(l, tasa, params());
+  $('dlgTitle').textContent = l.banco;
+  $('dlgSub').textContent = (l.plantilla === 'uva' ? 'Cuotas en UVA, valuadas en pesos al valor UVA de hoy.' : 'Cuotas en pesos.') + (l.ok(st.n) ? '' : ` Atención: en el comparador esta línea no aplica para ${st.n} cuotas (${(RANGO[l.id] || 'hasta 60 cuotas').toLowerCase()}).`);
+  if (!h) { $('dlgFacts').innerHTML = ''; $('dlgTbl').innerHTML = '<tbody><tr><td>Revisá la tasa: tiene que ser mayor a 0.</td></tr></tbody>'; return; }
+  const facts = [['Crédito', money(st.monto)], ['Cuotas', st.n], ['TNA', fmtTasa(tasa) + '%'], ['T.E.M.', fmtTem(h.tem)]];
+  if (h.tipo === 'uva') facts.push(['Valor UVA', money(st.uva)], ['Capital en UVAs', fmt$.format(h.capital)]);
+  facts.push(['Cuota 1 con IVA', money(h.cuotaInicial), 'key']);
+  $('dlgFacts').innerHTML = facts.map(([a, b, k]) => `<div class="fact ${k || ''}"><small>${a}</small><b class="num">${b}</b></div>`).join('');
+  $('dlgTbl').innerHTML = schedTable(h, st.n, $('dlgAll').checked);
+}
+function openDialog(id) { abierto = id; $('dlgAll').checked = false; renderDialog(); $('dlg').showModal(); $('dlg').querySelector('.dlg-body').scrollTop = 0; }
+
+/* ---------- Proyección fija (Columbia FIJA 24ctas, 48 cuotas) ---------- */
+function renderProy() {
+  const l = LINEAS.find(x => x.id === 'columbia-fija-24');
+  const tasa = tasaDe(l);
+  const h = hojaBanco(l, tasa, params());
+  $('proySub').textContent = `Cuotas de COLUMBIA FIJA 24ctas (TNA ${fmtTasa(tasa)}%) con ${st.n} cuotas sobre ${money(st.monto)}.`;
+  if (!h) { $('proyTot').innerHTML = ''; $('tblProy').innerHTML = '<tbody><tr><td>Revisá la tasa de COLUMBIA FIJA 24ctas.</td></tr></tbody>'; return; }
+  const c = h.rows.slice(0, 48).map(r => r.cuotaCon);
+  const sum = k => c.slice(0, k).reduce((a, b) => a + b, 0);
+  $('proyTot').innerHTML = [24, 36, 48].map(k => `<div class="tot"><h3>Total ${k} cuotas</h3>
+    <div class="big num">${money(sum(k))}</div><div class="sub">Intereses anual: <b class="num">${fmtPct(sum(k) / st.monto / (k / 12))}</b></div></div>`).join('');
+  $('tblProy').innerHTML = '<thead><tr><th>Cuota</th><th>Cuota con IVA</th><th>Acumulado</th></tr></thead><tbody>' +
+    c.map((v, i) => `<tr><td class="num">${i + 1}</td><td class="num strong">${fmt$.format(v)}</td><td class="num">${fmt$.format(sum(i + 1))}</td></tr>`).join('') +
+    `<tr class="total"><td>TOTAL</td><td class="num">${fmt$.format(sum(48))}</td><td></td></tr></tbody>`;
+}
+
+/* ---------- Mi Pyme (TNA = GALICIA us. FIJA) ---------- */
+function renderPyme() {
+  const tasa = tasaDe(LINEAS.find(x => x.id === 'galicia-us-fija'));
+  const tem = tasa / 12;
+  const rows = amortizar({ capital: st.monto, n: st.n, tem, ifDesde: IF_DESDE.pyme });
+  $('pymeSub').textContent = `Usa la tasa de GALICIA us. FIJA (${fmtTasa(tasa)}%).`;
+  if (!rows) { $('pymeFacts').innerHTML = ''; $('tblPyme').innerHTML = ''; return; }
+  const h = { tipo: 'fija', rows, tem, cuotaInicial: rows[0].cuotaCon };
+  $('pymeFacts').innerHTML = [['Capital', money(st.monto)], ['Cuotas', st.n], ['TNA', fmtTasa(tasa) + '%'], ['T.E.M.', fmtTem(tem)], ['Cuota 1 con IVA', money(h.cuotaInicial), 'key']]
+    .map(([a, b, k]) => `<div class="fact ${k || ''}"><small>${a}</small><b class="num">${b}</b></div>`).join('');
+  $('tblPyme').innerHTML = schedTable(h, st.n, false);
+}
+
+function renderAll() { paintInputs(); renderBancos(); renderProy(); renderPyme(); renderDialog(); }
+
+/* ---------- Eventos ---------- */
+elMonto.addEventListener('input', () => { const v = parseNum(elMonto.value); if (v > 0) { st.monto = v; save(); renderBancos(); renderProy(); renderPyme(); } });
+elMonto.addEventListener('blur', paintInputs);
+elUva.addEventListener('input', () => { const v = parseNum(elUva.value); if (v > 0) { st.uva = v; save(); renderBancos(); renderProy(); renderPyme(); } });
+elUva.addEventListener('blur', paintInputs);
+elN.addEventListener('change', () => { st.n = +elN.value; save(); renderAll(); });
+$('chips').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.n = +b.dataset.n; save(); renderAll(); });
+document.querySelector('.seg').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; st.orden = b.dataset.orden; save(); renderBancos(); });
+$('tblBancos').addEventListener('click', e => { const b = e.target.closest('[data-open]'); if (b) openDialog(b.dataset.open); });
+$('tblBancos').addEventListener('change', e => {
+  const inp = e.target.closest('[data-tasa]'); if (!inp) return;
+  const l = LINEAS.find(x => x.id === inp.dataset.tasa);
+  const v = parseNum(inp.value);
+  if (!(v > 0)) { renderBancos(); return; }
+  const frac = Math.round(v * 1e6) / 1e8;
+  if (Math.abs(frac - l.tasa) < 1e-12) delete st.tasas[l.id]; else st.tasas[l.id] = frac;
+  save(); renderAll();
+});
+$('tblBancos').addEventListener('keydown', e => { if (e.key === 'Enter' && e.target.matches('[data-tasa]')) e.target.blur(); });
+$('resetTasas').addEventListener('click', () => { st.tasas = {}; save(); renderAll(); });
+document.querySelectorAll('nav.tabs button').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('nav.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+  document.querySelectorAll('section.view').forEach(s => s.classList.toggle('on', s.id === b.dataset.view));
+}));
+$('dlgClose').addEventListener('click', () => $('dlg').close());
+$('dlg').addEventListener('close', () => { abierto = null; });
+$('dlgAll').addEventListener('change', renderDialog);
+$('dlgPrint').addEventListener('click', () => { document.body.classList.add('printing-dialog'); window.print(); document.body.classList.remove('printing-dialog'); });
+document.querySelectorAll('[data-print]').forEach(b => b.addEventListener('click', () => {
+  const s = b.closest('section'); s.classList.add('printable'); document.body.classList.add('printing-section'); window.print(); document.body.classList.remove('printing-section'); s.classList.remove('printable');
+}));
+renderAll();
+</script>
+</body></html>
