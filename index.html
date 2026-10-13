@@ -932,7 +932,144 @@ function buildSystem() {
 
 var chatHistory = [], typing = false, lastFrom = null, firstMsg = true;
 
+// ── Consulta de clientes y autos puntuales desde el chat ─────────────
+// Antes de preguntarle a Claude, busca en la base los clientes (y el stock)
+// del auto que nombra el vendedor y filtra EXACTO: "fiat toro" trae solo
+// gente que busca Fiat Toro, no otros Fiat ni otros autos.
+var CH_API = 'https://compara-conejo-production.up.railway.app';
+var CH_STOP = ('con sin para del las los que una uno unos unas mas menos hasta desde entre usd ars pesos dolares dolar '+
+  'auto autos vehiculo vehiculos busca buscan buscando quiere quieren modelo modelos anio ano permuta cliente clientes '+
+  'contado financiado cuotas credito precio precios presupuesto todos todas todo toda algun alguna otro otra dato datos '+
+  'version tipo color gente tenemos hay decime dame pasame mostrame quien quienes cual cuales cuantos cuantas esta estan '+
+  'interesado interesados interesada lead leads persona personas stock disponible disponibles tiene tienen este esa ese '+
+  'por favor muy mucho poco nuevo nueva usado usada km kms mil millones contacto contactos telefono numero lista listado '+
+  'vendedor vendedores nafta diesel manual automatico automatica quiero necesito saber buscame traeme traer solo solamente '+
+  'cuando donde como sobre puntual puntuales ahora hoy alguien nadie').split(' ');
+var CH_STOPSET = {}; CH_STOP.forEach(function(w){ CH_STOPSET[w]=1; });
+var CH_MARCAS = ('fiat toro cronos argo mobi strada fiorino uno palio siena ford ranger ecosport ka fiesta focus territory maverick bronco '+
+  'chevrolet chevy onix cruze tracker s10 spin prisma corsa agile montana equinox toyota hilux corolla etios yaris sw4 rav4 '+
+  'volkswagen vw amarok gol polo virtus nivus taos tcross t-cross saveiro vento up suran fox renault kangoo sandero logan duster '+
+  'stepway kwid oroch alaskan captur peugeot 208 2008 308 3008 408 partner citroen c3 c4 berlingo cactus nissan frontier kicks '+
+  'versa sentra march honda civic hrv fit wrv jeep renegade compass commander ram 1500 hyundai tucson creta kia sportage '+
+  'mitsubishi l200 outlander suzuki jimny mercedes sprinter iveco daily jmc grand avenue n900 shineray t30 m7 x30 g03f').split(' ');
+
+function chNorm(s){ return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim(); }
+function chTokens(s){ return chNorm(s).split(' ').filter(function(w){ return w && !CH_STOPSET[w]; }); }
+function chLev1(a,b){ // distancia de edición <= 1
+  if(a===b) return true; var la=a.length, lb=b.length; if(Math.abs(la-lb)>1) return false;
+  var i=0,j=0,d=0; while(i<la && j<lb){ if(a[i]===b[j]){i++;j++;continue;} if(++d>1) return false;
+    if(la>lb) i++; else if(lb>la) j++; else {i++;j++;} }
+  return d + (la-i) + (lb-j) <= 1;
+}
+function chWordHit(k, toks){
+  for(var i=0;i<toks.length;i++){ var t=toks[i];
+    if(t===k) return true;
+    if(k.length>=4 && t.length>=4 && chLev1(k,t)) return true;
+    if(k.length>=4 && t.indexOf(k)===0) return true; }
+  return false;
+}
+function chClienteTexto(c){ return [c.vehiculo, c.modelo, c.marca, c.version].filter(Boolean).join(' '); }
+var _chCache = {t:0, data:null};
+async function chTraerClientes(){
+  if(_chCache.data && Date.now()-_chCache.t < 60000) return _chCache.data;
+  var url = CH_API + '/api/clientes?limit=2000';
+  if (typeof SESION!=='undefined' && SESION && SESION.role==='vendedor') url += '&vendedor=' + encodeURIComponent(SESION.nombre);
+  var r = await fetch(url); var d = await r.json();
+  _chCache = {t:Date.now(), data: Array.isArray(d)?d:[]}; return _chCache.data;
+}
+// Saca del mensaje las palabras que son auto (marca/modelo) comparando contra lo que hay cargado
+function chPalabrasAuto(texto, vocab){
+  var q = chTokens(texto).filter(function(w){ return w.length>=2 && !/^(19|20)\d\d$/.test(w) && (!/^\d+$/.test(w) || CH_MARCAS.indexOf(w)>=0); });
+  var out = [];
+  q.forEach(function(w){ if(out.indexOf(w)<0 && chWordHit(w, vocab)) out.push(w); });
+  return out;
+}
+function chCorregir(k, vocab){ // "toroi" -> "toro"
+  if(vocab.indexOf(k)>=0) return k;
+  for(var i=0;i<vocab.length;i++) if(vocab[i].length>=4 && chLev1(k, vocab[i])) return vocab[i];
+  return k;
+}
+async function chContextoConsulta(userText){
+  var n = chNorm(userText);
+  var quiereClientes = /\b(client|interesad|busc|quien|lead|gente|persona|contact|anotad|esperando|espera)/.test(n);
+  var quiereStock = /\b(stock|tenemos|hay|disponib|precio|cuanto|sale|vale|unidad|unidades|ofrec)/.test(n);
+  var anio = (n.match(/\b(19|20)\d\d\b/)||[''])[0];
+  var bloques = [];
+  var clientes = [];
+  if (quiereClientes || quiereStock) {
+    try { clientes = await chTraerClientes(); } catch(e) { bloques.push('[No se pudo leer la base de clientes: '+e.message+']'); }
+  }
+  // Vocabulario de autos: lo que buscan los clientes + stock + marcas/modelos comunes
+  var vocab = CH_MARCAS.slice();
+  clientes.forEach(function(c){ chTokens(chClienteTexto(c)).forEach(function(w){ if(w.length>=2 && vocab.indexOf(w)<0) vocab.push(w); }); });
+  (typeof STOCK_LIST!=='undefined'?STOCK_LIST:[]).forEach(function(s){ chTokens(s.label).forEach(function(w){ if(vocab.indexOf(w)<0) vocab.push(w); }); });
+  var claves = chPalabrasAuto(userText, vocab).map(function(k){ return chCorregir(k, vocab); });
+  if (!claves.length && !(quiereClientes && /\btod/.test(n))) {
+    if (!quiereClientes) return '';
+  }
+  var etiqueta = claves.join(' ') + (anio ? ' ' + anio : '');
+
+  if (quiereClientes || (claves.length && !quiereStock)) {
+    var filtrados = clientes.filter(function(c){
+      var toks = chTokens(chClienteTexto(c));
+      if (!toks.length) return false;
+      for (var i=0;i<claves.length;i++) if(!chWordHit(claves[i], toks)) return false;
+      if (anio && c.anio && String(c.anio).indexOf(anio)<0 && chNorm(chClienteTexto(c)).indexOf(anio)<0) return false;
+      return true;
+    });
+    var perdidos = filtrados.filter(function(c){ return (c.calificacion||'')==='no_sirve'; });
+    var activos = filtrados.filter(function(c){ return (c.calificacion||'')!=='no_sirve'; });
+    var vistos = {}; activos = activos.filter(function(c){ var k=chNorm((c.nombre||'')+(c.telefono||'')); if(vistos[k]) return false; vistos[k]=1; return true; });
+    var titulo = claves.length ? 'CLIENTES QUE BUSCAN: ' + etiqueta.toUpperCase() : 'TODOS LOS CLIENTES CARGADOS';
+    var lineas = activos.slice(0,150).map(function(c){
+      var p = ['Nombre: '+(c.nombre||'-'), 'Tel: '+(c.telefono||'-'), 'Busca: '+(chClienteTexto(c)||'-')+(c.anio?' '+c.anio:'')];
+      if (c.presupuesto) p.push('Presupuesto: '+c.presupuesto);
+      if (c.permuta_marca||c.permuta_modelo) p.push('Permuta: '+[c.permuta_marca,c.permuta_modelo,c.permuta_version,c.permuta_anio].filter(Boolean).join(' ')+(c.permuta_km?' '+c.permuta_km+'km':'')+(c.permuta_valor?' ('+c.permuta_valor+')':''));
+      if (c.vendedor) p.push('Vendedor: '+c.vendedor);
+      if (c.estado) p.push('Estado: '+c.estado);
+      if (c.estado_lead) p.push('Etapa: '+c.estado_lead);
+      if (c.calificacion) p.push('Calificación: '+c.calificacion);
+      if (c.notas) p.push('Notas: '+String(c.notas).slice(0,160));
+      if (c.created_at) p.push('Cargado: '+String(c.created_at).slice(0,10));
+      return '- ' + p.join(' | ');
+    });
+    bloques.push('== ' + titulo + ' (base de clientes, filtrado exacto: ' + activos.length + ' cliente' + (activos.length===1?'':'s') +
+      (perdidos.length ? '; además hay ' + perdidos.length + ' marcado(s) como "no sirve", no listados' : '') +
+      (activos.length>150 ? '; se muestran los primeros 150' : '') + ') ==\n' +
+      (lineas.length ? lineas.join('\n') : '(ninguno)') + '\n== FIN CLIENTES ==');
+  }
+
+  if (claves.length && quiereStock) {
+    try {
+      var pr = new URLSearchParams(); pr.append('modelo', claves.join(' ')); if (anio) pr.append('anio', anio);
+      var mr = await fetch(CH_API + '/api/match?' + pr.toString()); var md = await mr.json();
+      var autos = (Array.isArray(md)?md:[]).filter(function(a){
+        var toks = chTokens([a.marca,a.modelo,a.version].join(' '));
+        for (var i=0;i<claves.length;i++) if(!chWordHit(claves[i], toks)) return false;
+        return true;
+      });
+      bloques.push('== STOCK DE ' + etiqueta.toUpperCase() + ' (stock completo, filtrado exacto: ' + autos.length + ') ==\n' +
+        (autos.length ? autos.slice(0,60).map(function(a){
+          return '- ' + [a.marca,a.modelo,a.version].filter(Boolean).join(' ') + (a.anio?' '+a.anio:'') +
+            ' | Precio: ' + (a.precio||'-') + ' ' + (a.moneda||'') + ' | KM: ' + (a.km||0) +
+            ' | Color: ' + (a.color||'-') + ' | Ubicación: ' + (a.ubicacion||'Tutu Automotores') +
+            (a.telefono?' | Tel: '+a.telefono:'') + (a.notas?' | Notas: '+String(a.notas).slice(0,120):'');
+        }).join('\n') : '(ninguno)') + '\n== FIN STOCK ==');
+    } catch(e) { bloques.push('[No se pudo leer el stock: '+e.message+']'); }
+  }
+  if (!bloques.length) return '';
+  return '\n\n== RESULTADO DE BÚSQUEDA PARA ESTE MENSAJE ==\n' +
+    'El sistema ya buscó en la base lo que pidió el vendedor. Respondé SOLO con lo que está acá abajo.\n' +
+    '- Listá TODOS los clientes/autos de la lista, con nombre, teléfono y lo que busca. No agregues, no inventes ni mezcles otros modelos.\n' +
+    '- Si la lista dice (ninguno), decí claramente que no hay clientes/autos de ese modelo cargados.\n' +
+    '- No digas que no tenés acceso a la base: estos datos SON la base.\n' +
+    bloques.join('\n\n');
+}
+// ─────────────────────────────────────────────────────────────────────
+
 async function callClaude(userText) {
+  var consulta = '';
+  try { consulta = await chContextoConsulta(userText); } catch(e) { console.error('Consulta clientes/stock:', e); }
   chatHistory.push({role:'user', content: userText});
   var messages = chatHistory.map(function(m){ return {role:m.role, content:m.content}; });
   var res = await fetch('https://compara-conejo-production.up.railway.app/api/chat', {
@@ -941,7 +1078,7 @@ async function callClaude(userText) {
     body: JSON.stringify({
       model: 'claude-sonnet-4-6',
       max_tokens: 8000,
-      system: buildSystem(),
+      system: buildSystem() + consulta,
       messages: messages
     })
   });
