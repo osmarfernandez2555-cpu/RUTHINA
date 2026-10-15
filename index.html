@@ -156,12 +156,42 @@ input:checked+.tsl::before{transform:translateX(18px)}
 @media(max-width:600px){.fgr{grid-template-columns:1fr}}
 
 /* ══ MATCH ══════════════════════════════════════════════ */
-#match{display:none;flex-direction:column;height:100vh;max-width:1400px;width:100%;margin:0 auto;background:#F5F5F5}
-.match-hdr{background:#1A1A1A;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid #C8102E}
-.match-scroll{flex:1;overflow-y:auto;padding:14px}
-.match-scroll::-webkit-scrollbar{width:3px}
-.match-card{background:#fff;border-radius:12px;border:1px solid #E0E0E0;padding:16px 20px;margin-bottom:14px}
-.match-stitle{font-size:11px;font-weight:700;color:#667781;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
+#match{display:none;flex-direction:column;height:100vh;height:100dvh;width:100%;background:var(--bg)}
+.mhdr{background:linear-gradient(135deg,#0A0B1A 0%,#161833 55%,#0D1117 100%);padding:10px 20px 0;flex-shrink:0;border-bottom:3px solid var(--rojo);box-shadow:0 2px 12px rgba(0,0,0,.25);position:relative;z-index:5}
+.mhdr-top,.mtabs{max-width:1400px;margin:0 auto}
+.mhdr-top{display:flex;align-items:center;gap:12px;padding-bottom:10px}
+.mback{display:flex;align-items:center;gap:6px;min-height:44px;padding:0 14px 0 10px;border-radius:12px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);color:#fff;font-size:14px;font-weight:500;cursor:pointer;transition:background .15s}
+.mback:hover{background:rgba(255,255,255,.16)}
+.mtitle{flex:1;min-width:0}
+.mt1{font-size:16px;font-weight:600;color:#fff;letter-spacing:.2px}
+.mt2{font-size:12px;color:rgba(255,255,255,.65)}
+.mtabs{display:flex;align-items:center;gap:6px;padding:0 0 10px;overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent 100%)}
+.mtabs::-webkit-scrollbar{display:none}
+.mtab{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;min-height:40px;padding:0 14px;color:#fff;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;flex-shrink:0;transition:background .15s,border-color .15s}
+.mtab svg{width:16px;height:16px;flex-shrink:0}
+.mtab:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.28)}
+.mtab.active{background:var(--rojo);border-color:var(--rojo);font-weight:600}
+.mtab .caret{width:12px;height:12px;opacity:.7;margin-left:-2px}
+.mtab .sm{display:none}
+@media(pointer:coarse){.mtab,.mback{min-height:44px}}
+@media(max-width:700px){.mhdr{padding:8px 12px 0}.mback span{display:none}.mback{padding:0 10px}.mtab .lg{display:none}.mtab .sm{display:inline}.mtab{padding:0 12px}}
+.match-scroll{flex:1;overflow-y:auto;padding:20px 24px 32px;width:100%;max-width:1400px;margin:0 auto}
+.match-scroll::-webkit-scrollbar{width:6px}
+.match-scroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,.18);border-radius:6px}
+@media(max-width:700px){.match-scroll{padding:14px 10px 28px}}
+.match-scroll[data-view="clientes"]>[data-v]:not([data-v="clientes"]),
+.match-scroll[data-view="buscar"]>[data-v]:not([data-v="buscar"]),
+.match-scroll[data-view="stock"]>[data-v]:not([data-v="stock"]),
+.match-scroll[data-view="cargarclientes"]>[data-v]:not([data-v="cargarclientes"]){display:none!important}
+.mbtn{background:var(--ink);color:#fff;border:1px solid var(--ink);border-radius:10px;min-height:36px;padding:0 14px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;transition:background .15s}
+.mbtn:hover{background:#2A2E52}
+.mbtn.pri{background:var(--rojo);border-color:var(--rojo)}.mbtn.pri:hover{background:var(--rojo-dark)}
+.mbtn:disabled{opacity:.6;cursor:default}
+.msearch{width:100%;box-sizing:border-box;background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:10px 38px 10px 14px;font-size:14px;font-family:inherit;color:var(--text);outline:none;transition:border-color .15s,box-shadow .15s}
+.msearch:focus{border-color:var(--rojo);box-shadow:0 0 0 3px rgba(200,16,46,.12)}
+.msearch::placeholder{color:#7C868E}
+.match-card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--line);padding:18px 22px;margin-bottom:14px;box-shadow:0 1px 3px rgba(18,20,42,.04)}
+.match-stitle{font-size:13px;font-weight:700;color:var(--ink);letter-spacing:.3px;margin-bottom:14px}
 .match-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
 .match-label{font-size:12px;color:#667781;font-weight:500;display:block;margin-bottom:4px}
 .match-input{width:100%;height:38px;padding:0 10px;font-size:14px;border:1.5px solid #E0E0E0;border-radius:8px;outline:none;font-family:'Inter',sans-serif}
@@ -379,18 +409,25 @@ input:checked+.tsl::before{transform:translateX(18px)}
 
 <!-- MATCH -->
 <div id="match">
-  <div class="match-hdr">
-    <button class="bbtn" onclick="closeMatch()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-      Volver
-    </button>
-    <div class="bttl">Match de Stock</div>
-    <span style="font-size:11px;color:#666;margin-left:auto" id="match-fecha"></span>
+  <header class="mhdr">
+    <div class="mhdr-top">
+      <button type="button" class="mback" onclick="closeMatch()" aria-label="Volver a Ruthina"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg><span>Volver</span></button>
+      <div class="mtitle"><div class="mt1">Match de Stock</div><div class="mt2" id="match-fecha"></div></div>
+    </div>
+    <nav class="mtabs" role="tablist" aria-label="Secciones de Match">
+      <button type="button" class="mtab active" role="tab" data-tab="clientes" aria-selected="true" onclick="setMatchView('clientes')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Clientes</span></button>
+      <button type="button" class="mtab" role="tab" data-tab="buscar" aria-selected="false" onclick="setMatchView('buscar')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="lg">Buscar vehículo</span><span class="sm">Buscar</span></button>
+      <button type="button" class="mtab" id="btn-mcargar" onclick="toggleMenu('btn-mcargar','menu-mcargar')" aria-haspopup="true" aria-expanded="false" aria-controls="menu-mcargar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg><span>Cargar</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+    </nav>
+  </header>
+  <div id="menu-mcargar" class="menu-flot" role="menu">
+    <button type="button" role="menuitem" onclick="setMatchView('stock')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14M3 13l2-6h14l2 6v4H3z"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg><span>Cargar stock</span></button>
+    <button type="button" role="menuitem" onclick="setMatchView('cargarclientes')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Cargar lista de clientes</span></button>
   </div>
-  <div class="match-scroll">
+  <div class="match-scroll" id="match-scroll" data-view="clientes">
     <!-- CARGAR STOCK -->
-    <div class="match-card">
-      <div class="match-stitle" style="color:#1e40af">📦 Cargar Stock</div>
+    <div class="match-card" data-v="stock">
+      <div class="match-stitle">Cargar Stock</div>
 
       <!-- Ubicación -->
       <div class="stock-ubicacion-row">
@@ -413,29 +450,29 @@ input:checked+.tsl::before{transform:translateX(18px)}
 
       <!-- Tabs -->
       <div class="stock-tabs">
-        <button class="stock-tab active" onclick="stockTab('texto')">📋 Pegar lista</button>
-        <button class="stock-tab" onclick="stockTab('pdf')">📄 Subir PDF</button>
+        <button class="stock-tab active" onclick="stockTab('texto')">Pegar lista</button>
+        <button class="stock-tab" onclick="stockTab('pdf')">Subir PDF</button>
       </div>
 
       <!-- Panel texto -->
       <div id="stock-panel-texto" class="stock-panel active">
         <textarea id="stock-texto" class="match-bulk-area" style="min-height:120px" placeholder="Pegá acá cualquier lista de autos:&#10;&#10;Ford Fiesta 2015 blanco 225.000km $11.100.000&#10;VW Gol 2011 gris 162.000km $7.900.000&#10;&#10;También acepta formato tabla de Excel, PDF copiado, WhatsApp, etc."></textarea>
         <button class="btn-match-cargar" id="btn-stock-texto" onclick="stockCargarTexto()" style="background:#1e40af">
-          📥 Parsear y guardar autos
+          Parsear y guardar autos
         </button>
       </div>
 
       <!-- Panel PDF -->
       <div id="stock-panel-pdf" class="stock-panel">
         <div class="stock-upload-area" id="stock-drop-area" onclick="document.getElementById('stock-file-input').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="stockDropPDF(event)">
-          <div class="stock-upload-icon">📄</div>
+          <div class="stock-upload-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
           <div class="stock-upload-text"><strong>Clic para seleccionar PDF</strong> o arrastrá el archivo acá</div>
           <div class="stock-upload-sub">El PDF se procesa con IA y extrae todos los autos automáticamente</div>
           <div id="stock-file-name" style="margin-top:8px;font-size:12px;color:#C8102E;font-weight:600"></div>
         </div>
         <input type="file" id="stock-file-input" accept=".pdf" onchange="stockSeleccionarPDF(this)">
         <button class="btn-match-cargar" id="btn-stock-pdf" onclick="stockCargarPDF()" style="background:#1e40af;display:none">
-          📥 Procesar PDF y guardar autos
+          Procesar PDF y guardar autos
         </button>
       </div>
 
@@ -450,65 +487,64 @@ input:checked+.tsl::before{transform:translateX(18px)}
 
       <!-- Migración -->
       <div style="margin-top:10px;padding-top:10px;border-top:1px solid #E0E0E0">
-        <div style="font-size:11px;color:#94a3b8;margin-bottom:6px">⚙️ Migración única</div>
+        <div style="font-size:11px;color:#94a3b8;margin-bottom:6px">Migración única</div>
         <button onclick="migrarStock()" id="btn-migrar" style="width:100%;height:34px;background:#374151;color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif">
-          🚀 Migrar stock base al sistema
+          Migrar stock base al sistema
         </button>
         <div id="migrar-result" style="display:none;margin-top:6px"></div>
       </div>
     </div>
 
     <!-- CARGAR CLIENTES -->
-    <div class="match-card">
-      <div class="match-stitle" style="color:#92400E">👥 Cargar Lista de Clientes</div>
+    <div class="match-card" data-v="cargarclientes">
+      <div class="match-stitle">Cargar Lista de Clientes</div>
       <div style="font-size:12px;color:#667781;margin-bottom:8px">Pegá una lista de clientes con lo que buscan. Podés incluir DNI, si tiene auto en permuta (y sus datos) y si tiene garante (y su DNI). Ruthina la parsea y cruza automáticamente con el stock.</div>
       <textarea id="match-bulk-texto" class="match-bulk-area" placeholder="Nombre&#9;Teléfono&#9;DNI&#9;Vehículo que busca&#10;Juan Pérez&#9;351-1234&#9;30111222&#9;Gol Trend de 2013 a 2018, entrega un Corsa 1.4 2015 con 90000 km en parte de pago&#10;María Gómez&#9;351-5678&#9;27333444&#9;Shineray M7, con garante Pedro López DNI 25666777"></textarea>
-      <button class="btn-match-cargar" id="btn-match-cargar" onclick="matchCargarLista()">📥 Parsear y guardar clientes</button>
+      <button class="btn-match-cargar" id="btn-match-cargar" onclick="matchCargarLista()">Parsear y guardar clientes</button>
       <div id="match-bulk-result" style="display:none"></div>
     </div>
 
     <!-- PANEL CLIENTES -->
-    <div class="match-card">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div class="match-stitle" style="color:#c8102e;margin-bottom:0">Clientes cargados</div>
-        <div style="display:flex;gap:8px">
-          <button onclick="verDashboard()" style="background:#7c3aed;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Dashboard</button>
-          <button onclick="abrirGestionVendedores()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Vendedores</button>
-        <button id="btn-actualizar-clientes" onclick="cargarPanelClientes()" style="background:#c8102e;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Actualizar</button>
-          <button id="btn-toggle-clientes" onclick="toggleListaClientes()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer">Ocultar</button>
+    <div class="match-card" data-v="clientes">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+        <div class="match-stitle" style="margin-bottom:0">Clientes cargados</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button onclick="verDashboard()" class="mbtn">Dashboard</button>
+          <button onclick="abrirGestionVendedores()" class="mbtn">Vendedores</button>
+        <button id="btn-actualizar-clientes" onclick="cargarPanelClientes()" class="mbtn pri">Actualizar</button>
+          <button id="btn-toggle-clientes" onclick="toggleListaClientes()" class="mbtn">Ocultar</button>
         </div>
       </div>
       <div style="position:relative;margin-bottom:10px">
-        <input id="buscador-clientes" type="text" placeholder="🔍 Buscar por nombre, DNI, teléfono o auto..." oninput="filtrarBusquedaClientes(this.value)"
-          style="width:100%;box-sizing:border-box;background:#1a1a2e;border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:9px 34px 9px 12px;font-size:13px;color:#fff;outline:none">
-        <button id="btn-limpiar-busqueda" onclick="document.getElementById('buscador-clientes').value='';filtrarBusquedaClientes('')" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:#888;font-size:16px;cursor:pointer;padding:2px 4px">✕</button>
+        <input id="buscador-clientes" type="text" placeholder="Buscar por nombre, DNI, teléfono o auto..." oninput="filtrarBusquedaClientes(this.value)" class="msearch" aria-label="Buscar clientes">
+        <button id="btn-limpiar-busqueda" onclick="document.getElementById('buscador-clientes').value='';filtrarBusquedaClientes('')" style="display:none;position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:#56636D;font-size:18px;cursor:pointer;padding:6px 8px" aria-label="Limpiar búsqueda">✕</button>
       </div>
       <div id="clientes-filtro-vendedor" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px"></div>
       <div id="clientes-match-lista" style="display:flex;flex-direction:column;gap:6px">
-        <div style="color:#666;font-size:13px;text-align:center;padding:20px">Click en Actualizar para ver los clientes</div>
+        <div style="color:#56636D;font-size:13px;text-align:center;padding:20px">Cargando clientes…</div>
       </div>
 
       <div style="margin-top:14px">
-        <div id="toggle-leads-perdidos" onclick="toggleLeadsPerdidos()" style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#888;padding:8px 0;border-top:1px solid rgba(255,255,255,0.08)">
-          <span id="chev-leads-perdidos">▸</span> ❌ Leads perdidos <span id="count-leads-perdidos" style="background:#4b5563;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px"></span>
+        <div id="toggle-leads-perdidos" onclick="toggleLeadsPerdidos()" style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#56636D;padding:10px 0;border-top:1px solid var(--line)">
+          <span id="chev-leads-perdidos">▸</span> Leads perdidos <span id="count-leads-perdidos" style="background:#4b5563;color:#fff;border-radius:10px;padding:1px 8px;font-size:11px"></span>
         </div>
         <div id="clientes-perdidos-lista" style="display:none;flex-direction:column;gap:6px;margin-top:6px"></div>
       </div>
     </div>
 
     <!-- DASHBOARD VENDEDORES -->
-    <div class="match-card" id="panel-dashboard-vendedores" style="display:none">
+    <div class="match-card" id="panel-dashboard-vendedores" data-v="clientes" style="display:none">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-        <button onclick="document.getElementById('panel-dashboard-vendedores').style.display='none';var _pcm2 = document.getElementById('panel-clientes-match'); if(_pcm2) _pcm2.style.display='block'" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Volver</button>
-        <div class="match-stitle" style="margin-bottom:0;color:#7c3aed">Dashboard por Vendedor</div>
-        <button onclick="abrirGestionVendedores()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Gestionar vendedores</button>
+        <button type="button" class="mbtn" onclick="document.getElementById('panel-dashboard-vendedores').style.display='none';var _pcm2 = document.getElementById('panel-clientes-match'); if(_pcm2) _pcm2.style.display='block'">Volver</button>
+        <div class="match-stitle" style="margin-bottom:0">Dashboard por Vendedor</div>
+        <button onclick="abrirGestionVendedores()" class="mbtn">Gestionar vendedores</button>
       </div>
       <div id="dashboard-vendedores-lista"></div>
     </div>
     <!-- CLIENTES POR VENDEDOR -->
-    <div class="match-card" id="panel-clientes-vendedor" style="display:none">
+    <div class="match-card" id="panel-clientes-vendedor" data-v="clientes" style="display:none">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-        <button onclick="document.getElementById('panel-clientes-vendedor').style.display='none';document.getElementById('panel-dashboard-vendedores').style.display='block'" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Volver</button>
+        <button type="button" class="mbtn" onclick="document.getElementById('panel-clientes-vendedor').style.display='none';document.getElementById('panel-dashboard-vendedores').style.display='block'">Volver</button>
         <div class="match-stitle" style="margin-bottom:0" id="titulo-vendedor-detalle">Clientes</div>
       </div>
       <div style="display:flex;gap:8px;margin-bottom:12px" id="filtros-calificacion">
@@ -519,15 +555,15 @@ input:checked+.tsl::before{transform:translateX(18px)}
       <div id="clientes-vendedor-lista"></div>
     </div>
     <!-- DETALLE MATCHES -->
-    <div class="match-card" id="panel-detalle-cliente" style="display:none">
+    <div class="match-card" id="panel-detalle-cliente" data-v="clientes" style="display:none">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
-        <button onclick="volverPanelClientes()" style="background:#333;color:#fff;border:none;border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer">Volver</button>
+        <button type="button" class="mbtn" onclick="volverPanelClientes()">Volver</button>
         <div class="match-stitle" style="margin-bottom:0" id="detalle-cliente-titulo">Matches</div>
       </div>
       <div id="detalle-matches-lista"></div>
     </div>
 
-    <div class="match-card">
+    <div class="match-card" data-v="buscar">
       <div class="match-stitle">Buscar vehículo</div>
       <div class="match-g2">
         <div>
@@ -540,15 +576,15 @@ input:checked+.tsl::before{transform:translateX(18px)}
         </div>
       </div>
       <button class="btn-match-buscar" id="btn-match-buscar" onclick="matchBuscar()">
-        🔍 Buscar en todo el stock
+        Buscar en todo el stock
       </button>
     </div>
     <!-- Clientes esperando -->
-    <div id="match-clientes-section" style="display:none" class="match-card">
-      <div class="match-stitle" style="color:#92400E">👤 Clientes esperando este auto</div>
+    <div id="match-clientes-section" data-v="buscar" style="display:none" class="match-card">
+      <div class="match-stitle">Clientes esperando este auto</div>
       <div id="match-clientes-list"></div>
     </div>
-    <div id="match-results" class="match-results"></div>
+    <div id="match-results" data-v="buscar" class="match-results"></div>
   </div>
 </div>
 
@@ -1534,10 +1570,26 @@ function abrirMatchReal(){
   document.getElementById('match').style.display='flex';
   var d=new Date(),dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'],meses=['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   document.getElementById('match-fecha').textContent=dias[d.getDay()]+' '+d.getDate()+' de '+meses[d.getMonth()];
-  document.getElementById('match-modelo').focus();
+  setMatchView('clientes');
+}
+
+function setMatchView(v){
+  var sc = document.getElementById('match-scroll'); if (!sc) return;
+  sc.setAttribute('data-view', v);
+  document.querySelectorAll('.mtab[data-tab]').forEach(function(t){
+    var on = t.getAttribute('data-tab') === v;
+    t.classList.toggle('active', on); t.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  var cb = document.getElementById('btn-mcargar');
+  if (cb) cb.classList.toggle('active', v === 'stock' || v === 'cargarclientes');
+  cerrarMenus();
+  sc.scrollTop = 0;
+  if (v === 'clientes' && typeof _clientesCache !== 'undefined' && !(_clientesCache && _clientesCache.length) && typeof cargarPanelClientes === 'function') cargarPanelClientes();
+  if (v === 'buscar') { var m = document.getElementById('match-modelo'); if (m && !('ontouchstart' in window)) m.focus(); }
 }
 
 function closeMatch(){
+  cerrarMenus();
   document.getElementById('match').style.display='none';
   document.getElementById('sc').style.display='flex';
 }
@@ -1728,6 +1780,7 @@ async function matchCargarLista(){
 }
 
 async function matchBuscar(){
+  var _ms=document.getElementById('match-scroll'); if(_ms && _ms.getAttribute('data-view')!=='buscar') setMatchView('buscar');
   var modelo = document.getElementById('match-modelo').value.trim();
   var anio = document.getElementById('match-anio').value.trim();
   if(!modelo && !anio){ alert('Ingresá al menos modelo o año'); return; }
@@ -2413,7 +2466,7 @@ if (_nvInput) _nvInput.addEventListener('keydown', function(e) { if(e.key==='Ent
 // ============================================================
 
 // TALLER
-var MENUS = [['btn-herr','menu-herr'],['btn-oper','menu-oper']];
+var MENUS = [['btn-herr','menu-herr'],['btn-oper','menu-oper'],['btn-mcargar','menu-mcargar']];
 function cerrarMenus() {
   MENUS.forEach(function(p){
     var m = document.getElementById(p[1]), b = document.getElementById(p[0]);
@@ -2450,7 +2503,7 @@ function abrirRecepcion0km() {
   document.getElementById('recep-0km-overlay').style.display = 'flex';
 }
 document.addEventListener('click', function(e) {
-  if (!e.target.closest('.menu-flot') && !e.target.closest('.hbtn[aria-haspopup]')) cerrarMenus();
+  if (!e.target.closest('.menu-flot') && !e.target.closest('[aria-haspopup]')) cerrarMenus();
 });
 
 // PROFORMA
