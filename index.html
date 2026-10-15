@@ -16,7 +16,7 @@ button{font-family:inherit}
 
 /* ── Cabecera ── */
 .chdr{background:linear-gradient(135deg,#0A0B1A 0%,#161833 55%,#0D1117 100%);padding:10px 20px 0;flex-shrink:0;border-bottom:3px solid var(--rojo);box-shadow:0 2px 12px rgba(0,0,0,.25);position:relative;z-index:5}
-.chdr-top{display:flex;align-items:center;gap:12px;max-width:1400px;margin:0 auto;padding-bottom:10px}
+.chdr-top{display:flex;align-items:center;gap:12px;padding-bottom:10px}
 .hav{width:44px;height:44px;border-radius:12px;overflow:hidden;flex-shrink:0;background:var(--rojo)}
 .hav img{width:100%;height:100%;object-fit:cover;display:block}
 .hin{flex:1;min-width:0}
@@ -28,7 +28,7 @@ button{font-family:inherit}
 .hreset:hover{background:rgba(255,255,255,.16)}
 
 /* ── Barra de herramientas agrupada ── */
-.tools{display:flex;align-items:center;gap:6px;max-width:1400px;margin:0 auto;padding:0 0 10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+.tools{display:flex;align-items:center;gap:6px;padding:0 0 10px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
   -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent 100%);mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent 100%)}
 .tools::-webkit-scrollbar{display:none}
 .tgroup{display:flex;align-items:center;gap:6px;flex-shrink:0}
@@ -47,13 +47,14 @@ button{font-family:inherit}
 
 /* ── Menú Taller (flotante, fuera de la barra para que no se recorte) ── */
 .menu-flot{display:none;position:fixed;background:var(--ink-2);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:6px;z-index:9999;min-width:220px;box-shadow:0 12px 32px rgba(0,0,0,.5)}
+.menu-flot button svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
 .menu-flot button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:0 14px;background:none;border:none;border-radius:8px;color:#fff;font-size:14px;cursor:pointer;text-align:left}
 .menu-flot button:hover{background:rgba(255,255,255,.1)}
 
 #dbanner{background:#FEF3C7;border-bottom:1px solid #F59E0B;padding:7px 14px;font-size:12px;color:#92400E;display:none;align-items:center;gap:8px;flex-shrink:0}
 
 /* ── Chat ── */
-.msgs{flex:1;overflow-y:auto;padding:18px 16px;display:flex;flex-direction:column;gap:2px;scroll-behavior:smooth;width:100%;max-width:920px;margin:0 auto}
+.msgs{flex:1;overflow-y:auto;padding:18px 24px;display:flex;flex-direction:column;gap:2px;scroll-behavior:smooth;width:100%}
 .msgs::-webkit-scrollbar{width:6px}
 .msgs::-webkit-scrollbar-thumb{background:rgba(0,0,0,.18);border-radius:6px}
 .dsep{text-align:center;margin:6px 0 10px}
@@ -61,7 +62,7 @@ button{font-family:inherit}
 .msgs:has(#welcome:not([hidden])) .dsep{display:none}
 .mr{display:flex;margin-bottom:2px;padding:0 2px}
 .mr.out{justify-content:flex-end}.mr.in{justify-content:flex-start}.mr.gap{margin-top:12px}
-.bbl{max-width:min(720px,82%);padding:9px 13px 6px;border-radius:16px;font-size:15px;line-height:1.55;word-wrap:break-word;overflow-wrap:anywhere}
+.bbl{max-width:min(900px,78%);padding:9px 13px 6px;border-radius:16px;font-size:15px;line-height:1.55;word-wrap:break-word;overflow-wrap:anywhere}
 .mr.in .bbl{background:var(--surface);color:var(--text);border:1px solid var(--line);border-top-left-radius:4px;box-shadow:0 1px 2px rgba(18,20,42,.05)}
 .mr.out .bbl{background:var(--ink);color:#fff;border-top-right-radius:4px}
 .bsndr{font-size:12px;font-weight:600;color:var(--rojo);margin-bottom:3px}
@@ -74,7 +75,7 @@ button{font-family:inherit}
 @keyframes tdot{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
 
 /* ── Bienvenida ── */
-#welcome{margin:auto;width:100%;max-width:760px;padding:8px 0 24px;text-align:center}
+#welcome{margin:auto;width:100%;max-width:900px;padding:8px 0 24px;text-align:center}
 #welcome[hidden]{display:none}
 .w-logo{width:64px;height:64px;border-radius:18px;margin:0 auto 14px;overflow:hidden;box-shadow:0 6px 18px rgba(200,16,46,.25)}
 .w-logo img{width:100%;height:100%;object-fit:cover;display:block}
@@ -94,7 +95,7 @@ button{font-family:inherit}
 /* ── Barra de entrada ── */
 .quick{display:none}
 .qb{display:none}
-.ibar{background:var(--bg);padding:8px 16px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:flex-end;gap:10px;flex-shrink:0;width:100%;max-width:920px;margin:0 auto}
+.ibar{background:var(--bg);padding:8px 24px calc(12px + env(safe-area-inset-bottom));display:flex;align-items:flex-end;gap:10px;flex-shrink:0;width:100%}
 .ibox{flex:1;background:var(--surface);border:1.5px solid var(--line);border-radius:24px;padding:10px 16px;display:flex;align-items:center;transition:border-color .15s,box-shadow .15s}
 .ibox:focus-within{border-color:var(--rojo);box-shadow:0 0 0 3px rgba(200,16,46,.12)}
 #ci{flex:1;border:none;background:none;font-family:'Inter',sans-serif;font-size:16px;color:var(--text);outline:none;resize:none;max-height:120px;line-height:1.4}
@@ -107,7 +108,7 @@ button{font-family:inherit}
   .tools{flex-wrap:wrap;row-gap:8px;overflow:visible;-webkit-mask-image:none;mask-image:none}
   .tgroup{flex-wrap:wrap}
 }
-@media(max-width:1499px){.tglbl{display:none}}
+
 @media(max-width:700px){
   .chdr{padding:8px 12px 0}
   .tglbl{display:none}
@@ -334,22 +335,21 @@ input:checked+.tsl::before{transform:translateX(18px)}
         <button type="button" class="hbtn t-venta" onclick="abrirProforma()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg><span>Proforma</span></button>
         <button type="button" class="hbtn t-venta" onclick="abrirTransfDirecto()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Transferencias</span></button>
       </div>
-      <div class="tgroup" role="group" aria-label="Herramientas">
-        <span class="tglbl">Herramientas</span>
-        <button type="button" class="hbtn t-herr" onclick="abrirCalculadorCreditos()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8.01" y2="11"/><line x1="12" y1="11" x2="12.01" y2="11"/><line x1="16" y1="11" x2="16.01" y2="11"/><line x1="8" y1="15" x2="8.01" y2="15"/><line x1="12" y1="15" x2="12.01" y2="15"/><line x1="16" y1="15" x2="16.01" y2="15"/><line x1="8" y1="19" x2="12" y2="19"/></svg><span>Calculador</span></button>
-        <button type="button" class="hbtn t-herr" onclick="abrirLibrosCierre()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Libros de cierre</span></button>
-        <button type="button" class="hbtn t-herr" onclick="abrirResenas()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Reseñas</span></button>
-      </div>
-      <div class="tgroup" role="group" aria-label="Operación">
-        <span class="tglbl">Operación</span>
-        <button type="button" class="hbtn t-oper" onclick="openWApp()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>WApp</span></button>
-        <button type="button" class="hbtn t-oper" id="btn-taller" onclick="toggleMenuTaller()" aria-haspopup="true" aria-expanded="false" aria-controls="menu-taller"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Taller</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+      <div class="tgroup" role="group" aria-label="Más herramientas">
+        <button type="button" class="hbtn t-herr" id="btn-herr" onclick="toggleMenu('btn-herr','menu-herr')" aria-haspopup="true" aria-expanded="false" aria-controls="menu-herr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8.01" y2="11"/><line x1="12" y1="11" x2="12.01" y2="11"/><line x1="16" y1="11" x2="16.01" y2="11"/><line x1="8" y1="15" x2="8.01" y2="15"/><line x1="12" y1="15" x2="12.01" y2="15"/><line x1="16" y1="15" x2="16.01" y2="15"/><line x1="8" y1="19" x2="12" y2="19"/></svg><span>Herramientas</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button type="button" class="hbtn t-oper" id="btn-oper" onclick="toggleMenu('btn-oper','menu-oper')" aria-haspopup="true" aria-expanded="false" aria-controls="menu-oper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Operación</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
       </div>
     </nav>
   </header>
-  <div id="menu-taller" class="menu-flot" role="menu">
-    <button type="button" role="menuitem" onclick="abrirPresupuestoTaller()">Presupuesto Taller</button>
-    <button type="button" role="menuitem" onclick="abrirRecepcion0km()">Recepción 0KM</button>
+  <div id="menu-herr" class="menu-flot" role="menu">
+    <button type="button" role="menuitem" onclick="cerrarMenus();abrirCalculadorCreditos()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8.01" y2="11"/><line x1="12" y1="11" x2="12.01" y2="11"/><line x1="16" y1="11" x2="16.01" y2="11"/><line x1="8" y1="15" x2="8.01" y2="15"/><line x1="12" y1="15" x2="12.01" y2="15"/><line x1="16" y1="15" x2="16.01" y2="15"/><line x1="8" y1="19" x2="12" y2="19"/></svg><span>Calculador</span></button>
+    <button type="button" role="menuitem" onclick="cerrarMenus();abrirLibrosCierre()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Libros de cierre</span></button>
+    <button type="button" role="menuitem" onclick="cerrarMenus();abrirResenas()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Reseñas</span></button>
+  </div>
+  <div id="menu-oper" class="menu-flot" role="menu">
+    <button type="button" role="menuitem" onclick="cerrarMenus();openWApp()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>WApp</span></button>
+    <button type="button" role="menuitem" onclick="cerrarMenus();abrirPresupuestoTaller()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Presupuesto Taller</span></button>
+    <button type="button" role="menuitem" onclick="cerrarMenus();abrirRecepcion0km()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Recepción 0KM</span></button>
   </div>
   <div id="dbanner"><span>Cargando...</span></div>
   <main class="msgs" id="msgs" role="log" aria-live="polite" aria-label="Conversación con Ruthina"><div class="dsep"><span>Hoy</span></div>
@@ -2413,44 +2413,44 @@ if (_nvInput) _nvInput.addEventListener('keydown', function(e) { if(e.key==='Ent
 // ============================================================
 
 // TALLER
-function toggleMenuTaller() {
-  var m = document.getElementById('menu-taller');
-  var b = document.getElementById('btn-taller');
+var MENUS = [['btn-herr','menu-herr'],['btn-oper','menu-oper']];
+function cerrarMenus() {
+  MENUS.forEach(function(p){
+    var m = document.getElementById(p[1]), b = document.getElementById(p[0]);
+    if (m) m.style.display = 'none';
+    if (b) b.setAttribute('aria-expanded','false');
+  });
+}
+function toggleMenu(btnId, menuId) {
+  var m = document.getElementById(menuId), b = document.getElementById(btnId);
   var abrir = m.style.display !== 'block';
+  cerrarMenus();
   if (abrir) {
     var r = b.getBoundingClientRect();
     m.style.display = 'block';
     m.style.top = (r.bottom + 6) + 'px';
     m.style.left = Math.max(8, Math.min(r.left, window.innerWidth - m.offsetWidth - 8)) + 'px';
-  } else {
-    m.style.display = 'none';
+    b.setAttribute('aria-expanded','true');
   }
-  b.setAttribute('aria-expanded', abrir ? 'true' : 'false');
 }
 document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    var m = document.getElementById('menu-taller');
-    if (m && m.style.display === 'block') { m.style.display = 'none'; document.getElementById('btn-taller').setAttribute('aria-expanded','false'); document.getElementById('btn-taller').focus(); }
-  }
+  if (e.key === 'Escape') cerrarMenus();
 });
 document.addEventListener('DOMContentLoaded', function() {
   var t = document.querySelector('.tools');
-  if (t) t.addEventListener('scroll', function(){ var m=document.getElementById('menu-taller'); if(m) m.style.display='none'; var b=document.getElementById('btn-taller'); if(b) b.setAttribute('aria-expanded','false'); });
+  if (t) t.addEventListener('scroll', cerrarMenus);
+  window.addEventListener('resize', cerrarMenus);
 });
 function abrirPresupuestoTaller() {
-  document.getElementById('menu-taller').style.display = 'none'; document.getElementById('btn-taller').setAttribute('aria-expanded','false');
+  cerrarMenus();
   document.getElementById('pres-taller-overlay').style.display = 'flex';
 }
 function abrirRecepcion0km() {
-  document.getElementById('menu-taller').style.display = 'none'; document.getElementById('btn-taller').setAttribute('aria-expanded','false');
+  cerrarMenus();
   document.getElementById('recep-0km-overlay').style.display = 'flex';
 }
 document.addEventListener('click', function(e) {
-  var btn = document.getElementById('btn-taller');
-  var menu = document.getElementById('menu-taller');
-  if (menu && btn && !btn.contains(e.target) && !menu.contains(e.target)) {
-    menu.style.display = 'none'; btn.setAttribute('aria-expanded','false');
-  }
+  if (!e.target.closest('.menu-flot') && !e.target.closest('.hbtn[aria-haspopup]')) cerrarMenus();
 });
 
 // PROFORMA
