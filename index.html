@@ -424,6 +424,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
   <div id="menu-mcargar" class="menu-flot" role="menu">
     <button type="button" role="menuitem" onclick="setMatchView('stock')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 17h14M3 13l2-6h14l2 6v4H3z"/><circle cx="7.5" cy="17" r="1.5"/><circle cx="16.5" cy="17" r="1.5"/></svg><span>Cargar stock</span></button>
     <button type="button" role="menuitem" onclick="setMatchView('cargarclientes')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Cargar lista de clientes</span></button>
+    <button type="button" role="menuitem" id="btn-stockpdf" style="display:none" onclick="exportarStockPDF()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><polyline points="9 15 12 18 15 15"/></svg><span>Exportar stock completo (PDF)</span></button>
   </div>
   <div class="match-scroll" id="match-scroll" data-view="clientes">
     <!-- CARGAR STOCK -->
@@ -2700,6 +2701,8 @@ function aplicarSesionUI() {
   if (!SESION) return;
   var esVendedor = SESION.role === 'vendedor';
   // Ocultar funciones de administrador para vendedores
+  var bsp = document.getElementById('btn-stockpdf');
+  if (bsp) bsp.style.display = (SESION.role === 'admin') ? '' : 'none';
   var btnDash = document.querySelector('button[onclick="verDashboard()"]');
   if (btnDash) btnDash.style.display = esVendedor ? 'none' : '';
   var btnVend = document.querySelector('button[onclick="abrirGestionVendedores()"]');
@@ -2717,6 +2720,91 @@ function aplicarSesionUI() {
   }
   badge.innerHTML = (esVendedor ? '👤 ' : '⭐ ') + SESION.nombre
     + ' <button onclick="cerrarSesion()" style="background:transparent;border:none;color:#ff8a8a;font-size:11px;cursor:pointer;font-weight:700;padding:0">Salir</button>';
+}
+
+
+// ── Exportar stock completo a PDF (solo admin) ─────────────────
+async function exportarStockPDF() {
+  cerrarMenus();
+  if (!SESION || SESION.role !== 'admin') { alert('Solo disponible para administradores.'); return; }
+  if (!window.jspdf) { alert('No se pudo cargar el generador de PDF. Revisá tu conexión y recargá.'); return; }
+  var btn = document.getElementById('btn-stockpdf');
+  var lbl = btn ? btn.querySelector('span') : null;
+  var orig = lbl ? lbl.textContent : '';
+  if (lbl) lbl.textContent = 'Generando PDF…';
+  try {
+    var r = await fetch(RAILWAY_URL + '/api/stock');
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    var data = await r.json();
+    var autos = Array.isArray(data) ? data : (data.stock || data.autos || []);
+    if (!autos.length) { alert('No hay autos cargados en el sistema.'); return; }
+    autos.sort(function(a,b){
+      return String(a.marca||'').localeCompare(String(b.marca||''),'es') ||
+             String(a.modelo||'').localeCompare(String(b.modelo||''),'es') ||
+             (Number(b.anio)||0) - (Number(a.anio)||0);
+    });
+    var jsPDF = window.jspdf.jsPDF;
+    var doc = new jsPDF({ orientation:'landscape', unit:'mm', format:'a4' });
+    var PW = 297, PH = 210, M = 8;
+    // columnas: [titulo, ancho mm]
+    var cols = [['#',7],['Marca',17],['Modelo',22],['Versión',30],['Año',10],['Km',17],['Color',14],['Precio',22],['Estado',15],['Agencia / Ubic.',24],['Teléfono',21],['Origen',13],['Cargado',16],['Notas',0]];
+    var fijo = cols.reduce(function(t,c){return t+c[1];},0);
+    cols[cols.length-1][1] = PW - 2*M - fijo; // Notas ocupa el resto
+    var fecha = new Date().toLocaleString('es-AR',{timeZone:'America/Argentina/Cordoba'});
+    var pagina = 0;
+    function cabecera(){
+      pagina++;
+      doc.setFillColor(18,20,42); doc.rect(0,0,PW,16,'F');
+      doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(13);
+      doc.text('Tutu Automotores · Stock completo', M, 10.5);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8.5);
+      doc.text(autos.length + ' vehículos · ' + fecha, PW-M, 10.5, {align:'right'});
+      var y = 20, x = M;
+      doc.setFillColor(200,16,46); doc.rect(M,y-4,PW-2*M,6,'F');
+      doc.setTextColor(255,255,255); doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+      cols.forEach(function(c){ doc.text(c[0], x+1, y); x += c[1]; });
+      return y + 8;
+    }
+    var y = cabecera();
+    doc.setFont('helvetica','normal'); doc.setFontSize(7.5);
+    var fmtP = function(a){ if (a.precio == null || a.precio === '') return '-'; var n = Number(a.precio); var m = (a.moneda||'').toUpperCase(); var t = isNaN(n) ? String(a.precio) : n.toLocaleString('es-AR'); return (m === 'USD' ? 'USD ' : (m === 'ARS' ? '$ ' : (m ? m + ' ' : ''))) + t; };
+    var fmtK = function(k){ if (k == null || k === '') return '-'; var n = Number(k); return isNaN(n) ? String(k) : n.toLocaleString('es-AR') + ' km'; };
+    var fmtF = function(f){ if (!f) return '-'; var d = new Date(f); return isNaN(d.getTime()) ? '-' : d.toLocaleDateString('es-AR'); };
+    autos.forEach(function(a, i){
+      var cel = [
+        String(i+1), a.marca||'-', a.modelo||'-', a.version||'-', a.anio!=null?String(a.anio):'-',
+        fmtK(a.km), a.color||'-', fmtP(a), a.estado||'-', a.ubicacion||'-', a.telefono||'-',
+        a.origen||'manual', fmtF(a.created_at), (a.notas||'-')
+      ];
+      var lineas = cel.map(function(t,k){ return doc.splitTextToSize(String(t), cols[k][1]-2); });
+      lineas = lineas.map(function(l){ if (l.length > 8) { l = l.slice(0,8); l[7] = l[7].replace(/.{0,3}$/,'') + '…'; } return l; });
+      var nl = Math.max.apply(null, lineas.map(function(l){return l.length;}));
+      var h = nl*3.2 + 2;
+      if (y + h > PH - 10) { doc.addPage(); y = cabecera(); }
+      if (i % 2 === 0) { doc.setFillColor(243,241,238); doc.rect(M, y-3, PW-2*M, h, 'F'); }
+      doc.setTextColor(18,20,42);
+      var x = M;
+      lineas.forEach(function(l,k){
+        doc.setFont('helvetica', (k===1||k===2||k===7) ? 'bold' : 'normal');
+        doc.text(l, x+1, y);
+        x += cols[k][1];
+      });
+      y += h;
+    });
+    // pie con número de página
+    var tot = doc.getNumberOfPages();
+    for (var p = 1; p <= tot; p++) {
+      doc.setPage(p); doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(120,120,120);
+      doc.text('Página ' + p + ' de ' + tot + ' · Uso interno', PW/2, PH-4, {align:'center'});
+    }
+    var d = new Date();
+    var nom = 'stock-tutu-' + d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0') + '.pdf';
+    doc.save(nom);
+  } catch(e) {
+    alert('No se pudo generar el PDF: ' + e.message);
+  } finally {
+    if (lbl) lbl.textContent = orig;
+  }
 }
 
 function verificarSesion() {
