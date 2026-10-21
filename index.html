@@ -126,7 +126,17 @@ button{font-family:inherit}
 .bbtn{background:none;border:none;color:white;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'Inter',sans-serif;font-size:14px;padding:4px 0}
 .bttl{font-size:15px;font-weight:600;color:white;font-family:'Inter',sans-serif}
 .bscroll{flex:1;overflow-y:auto;padding:14px}
-.bscroll::-webkit-scrollbar{width:3px}
+@supports not selector(::-webkit-scrollbar){.bscroll{scrollbar-color:#9a9a9a #e9e7e4}}
+.bscroll::-webkit-scrollbar{width:14px}
+.bscroll::-webkit-scrollbar-track{background:#e9e7e4}
+.bscroll::-webkit-scrollbar-thumb{background:#9a9a9a;border-radius:8px;border:3px solid #e9e7e4}
+.bscroll::-webkit-scrollbar-thumb:hover{background:#C8102E}
+.tt-seg{display:inline-flex;border:1.5px solid var(--border);border-radius:9px;overflow:hidden;margin:2px 0 6px}
+.tt-seg button{border:none;background:#fff;padding:5px 14px;font-family:Inter,sans-serif;font-size:12px;font-weight:600;color:#56636D;cursor:pointer}
+.tt-seg button.on{background:#C8102E;color:#fff}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chips button{border:1.5px solid #C8102E55;background:#FEF0F2;color:#C8102E;border-radius:14px;padding:3px 10px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif}
+.uva-box{background:#F3F8FF;border:1.5px solid #60a5fa55;border-radius:12px;padding:10px 12px;margin-top:8px}
 .bc{background:#fff;border-radius:14px;padding:14px;margin-bottom:14px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
 .bct{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
 .fg{margin-bottom:10px}
@@ -176,8 +186,12 @@ input:checked+.tsl::before{transform:translateX(18px)}
 @media(pointer:coarse){.mtab,.mback{min-height:44px}}
 @media(max-width:700px){.mhdr{padding:8px 12px 0}.mback span{display:none}.mback{padding:0 10px}.mtab .lg{display:none}.mtab .sm{display:inline}.mtab{padding:0 12px}}
 .match-scroll{flex:1;overflow-y:auto;padding:20px 24px 32px;width:100%;max-width:1400px;margin:0 auto}
-.match-scroll::-webkit-scrollbar{width:6px}
-.match-scroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,.18);border-radius:6px}
+.match-scroll{overflow-y:auto}
+@supports not selector(::-webkit-scrollbar){.match-scroll{scrollbar-color:#9a9a9a #e9e7e4}}
+.match-scroll::-webkit-scrollbar{width:14px}
+.match-scroll::-webkit-scrollbar-track{background:#e9e7e4}
+.match-scroll::-webkit-scrollbar-thumb{background:#9a9a9a;border-radius:8px;border:3px solid #e9e7e4}
+.match-scroll::-webkit-scrollbar-thumb:hover{background:#C8102E}
 @media(max-width:700px){.match-scroll{padding:14px 10px 28px}}
 .match-scroll[data-view="clientes"]>[data-v]:not([data-v="clientes"]),
 .match-scroll[data-view="buscar"]>[data-v]:not([data-v="buscar"]),
@@ -264,7 +278,9 @@ input:checked+.tsl::before{transform:translateX(18px)}
 #comp{display:none;flex-direction:column;height:100vh;max-width:800px;margin:0 auto;background:#F5F5F5}
 .comp-hdr{background:#1A1A1A;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0;border-bottom:3px solid #C8102E}
 .comp-scroll{flex:1;overflow-y:auto;padding:14px}
-.comp-scroll::-webkit-scrollbar{width:3px}
+@supports not selector(::-webkit-scrollbar){.comp-scroll{scrollbar-color:#9a9a9a #e9e7e4}}
+.comp-scroll::-webkit-scrollbar{width:12px}
+.comp-scroll::-webkit-scrollbar-thumb{background:#9a9a9a;border-radius:8px;border:3px solid #e9e7e4}
 .comp-card{background:#fff;border-radius:12px;border:1px solid #E0E0E0;padding:16px 20px;margin-bottom:14px}
 .comp-stitle{font-size:11px;font-weight:700;color:#667781;text-transform:uppercase;letter-spacing:.6px;margin-bottom:12px}
 .comp-g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
@@ -767,11 +783,15 @@ input:checked+.tsl::before{transform:translateX(18px)}
         <div class="fg"><label>Monto a financiar</label><input id="bfi" type="number" placeholder="8000000" oninput="upP()"></div>
         <div class="fg"><label>Anticipo</label><input id="ban" type="number" placeholder="3000000"></div>
         <div class="fg">
-          <label>TNA % <span id="tna-hint" style="color:#C8102E;font-size:10px;font-weight:600"></span></label>
+          <label>Tipo de tasa <span id="tna-hint" style="color:#C8102E;font-size:10px;font-weight:600"></span></label>
+          <div class="tt-seg" role="group" aria-label="Tipo de tasa"><button type="button" id="tt-fijo" class="on" onclick="setTipoTasa('fijo')">Fijo</button><button type="button" id="tt-uva" onclick="setTipoTasa('uva')">UVA</button></div>
+          <input type="hidden" id="btt" value="fijo">
+          <label id="tna-lbl">TNA %</label>
           <div style="display:flex;gap:6px;align-items:center">
             <input id="btn" type="number" placeholder="60" oninput="upP()" style="flex:1;border:1.5px solid var(--border);border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:15px;font-weight:600;color:#C8102E;outline:none;background:#FEF0F2">
             <div style="font-size:11px;color:#999;white-space:nowrap">% anual</div>
           </div>
+          <div class="chips" id="tna-presets" style="display:none"></div>
         </div>
         <div class="fg"><label>Cuotas</label>
           <select id="bcu" onchange="upP()">
@@ -781,6 +801,14 @@ input:checked+.tsl::before{transform:translateX(18px)}
             <option value="72">72 cuotas</option>
           </select>
         </div>
+      </div>
+      <div class="uva-box" id="uva-box" style="display:none">
+        <label style="color:#2563eb">Valor de la UVA hoy ($)</label>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input id="buva" type="number" step="0.01" placeholder="1500.00" oninput="guardarUva();upP()" style="flex:1;border:1.5px solid #60a5fa66;border-radius:10px;padding:9px 12px;font-family:Inter,sans-serif;font-size:15px;font-weight:600;outline:none">
+          <button type="button" onclick="traerUva()" style="border:none;background:#2563eb;color:#fff;border-radius:10px;padding:10px 12px;font-size:12px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;white-space:nowrap">Traer de hoy</button>
+        </div>
+        <div id="uva-info" style="font-size:12px;color:#56636D;margin-top:6px">La cuota inicial se calcula en UVA y se ajusta por inflación mes a mes.</div>
       </div>
       <div class="fg" style="margin-top:4px">
         <label style="color:#60a5fa">Cuota manual (opcional) <span style="color:#888;font-weight:400">&#8212; sobreescribe el c&#xE1;lculo autom&#xE1;tico</span></label>
@@ -1023,8 +1051,8 @@ var BANCOS = [
   {nombre:"Galicia (64% fijo)", tna:64, sello:0, gastos:0.042, fijo:0},
   {nombre:"Galicia (69% fijo)", tna:69, sello:0, gastos:0.042, fijo:0},
   {nombre:"MG Group (58% fijo + 0.7% sellos)", tna:58, sello:0.007, gastos:0.042, fijo:0, gastoTotal:0.02},
-  {nombre:"Leasing (36% fijo - solo empresas)", tna:36, sello:0, gastos:0.042, fijo:0},
-  {nombre:"Credicoop (44% fijo - solo empresas)", tna:44, sello:0, gastos:0.042, fijo:0}
+  {nombre:"Leasing (36% fijo - solo empresas)", label:"Leasing (solo empresas)", tna:36, sello:0, gastos:0.042, fijo:0},
+  {nombre:"Credicoop (44% fijo - solo empresas)", label:"Credicoop (solo empresas)", tna:44, sello:0, gastos:0.042, fijo:0}
 ];
 
 function buildSystem() {
@@ -1395,8 +1423,9 @@ function upP(){
     var banco=BANCOS[bancoIdx]||{tna:0,sello:0,gastos:0,fijo:0};
     var sello=banco.sello||0, tnaUsada=tna;
     var cuotaManual=gn('cuota-manual'), cuotaFinalDisp=0;
-    if(cuotaManual>0){ cuotaFinalDisp=cuotaManual; } else if(tnaUsada>0){ var montoConSello=montoFinanciar*(1+selloPorc); var tm=Math.pow(1+tnaUsada/100,1/12)-1; cuotaFinalDisp=montoConSello*tm/(1-Math.pow(1+tm,-cuotas)); }
-    if(cuotaFinalDisp>0){ document.getElementById('pvcu').textContent=fmtP(Math.round(cuotaFinalDisp))+' x '+cuotas+(cuotaManual>0?' (manual)':(sello>0?' (c/sellos)':'')); document.getElementById('pvcu-banco').textContent=banco.nombre?banco.nombre.split(' (')[0]:''; cr.style.display='flex'; }
+    var _uvaMode=(document.getElementById('btt')||{}).value==='uva', _uv=_uvaMode?calcUVA(montoFinanciar,tnaUsada,cuotas,selloPorc):null; var _uvaInfo=document.getElementById('uva-info'); if(_uvaMode&&_uvaInfo&&_uv) _uvaInfo.textContent='Monto: '+_uv.montoUVA.toLocaleString('es-AR',{maximumFractionDigits:0})+' UVA · cuota inicial: '+_uv.cuotaUVA.toLocaleString('es-AR',{maximumFractionDigits:1})+' UVA';
+    if(cuotaManual>0){ cuotaFinalDisp=cuotaManual; } else if(_uvaMode){ cuotaFinalDisp=_uv?_uv.cuotaARS:0; } else if(tnaUsada>0){ var montoConSello=montoFinanciar*(1+selloPorc); var tm=Math.pow(1+tnaUsada/100,1/12)-1; cuotaFinalDisp=montoConSello*tm/(1-Math.pow(1+tm,-cuotas)); }
+    if(cuotaFinalDisp>0){ document.getElementById('pvcu').textContent=fmtP(Math.round(cuotaFinalDisp))+' x '+cuotas+(cuotaManual>0?' (manual)':(_uvaMode?' (UVA · ajusta por inflación)':(sello>0?' (c/sellos)':''))); document.getElementById('pvcu-banco').textContent=banco.nombre?banco.nombre.split(' (')[0]:''; cr.style.display='flex'; }
     var tabla2=document.getElementById('tabla-cuotas'); if(tabla2) tabla2.style.display='none';
     ['pvgas42-row','pvgassello-row','pvtotdev-row','pvgasmg-row'].forEach(function(id){ var el=document.getElementById(id); if(el) el.style.display='none'; });
     var sRecibe=document.getElementById('pvrecibe-row');
@@ -1482,7 +1511,9 @@ function genPDF(){
       var _cuotaManual=gn('cuota-manual');
       var _cuotasN=d.cuotas||60;
       var _tasaAnual=parseFloat((document.getElementById('tasa-anual')||{value:'0'}).value)||0;
-      if(_cuotaManual>0){ rows.push({l:'  Cuota est.',v:'$ '+Math.round(_cuotaManual).toLocaleString('es-AR')+' × '+_cuotasN+' (manual)',c:[100,140,200]}); }
+      var _uvaPDF=((document.getElementById('btt')||{}).value==='uva')?calcUVA(montoFin,gn('btn'),_cuotasN,0):null;
+      if(_cuotaManual<=0&&_uvaPDF){ rows.push({l:'  Cuota inicial UVA',v:'$ '+Math.round(_uvaPDF.cuotaARS).toLocaleString('es-AR')+' × '+_cuotasN+' (ajusta por inflación)',c:[100,140,200]}); rows.push({l:'  UVA de referencia',v:'$ '+_uvaPDF.valorUVA.toLocaleString('es-AR')+' · '+Math.round(_uvaPDF.montoUVA).toLocaleString('es-AR')+' UVA',c:[100,140,200]}); }
+      else if(_cuotaManual>0){ rows.push({l:'  Cuota est.',v:'$ '+Math.round(_cuotaManual).toLocaleString('es-AR')+' × '+_cuotasN+' (manual)',c:[100,140,200]}); }
       else if(_tasaAnual>0&&montoFin>0){ var _tasaMens=_tasaAnual/12/100; var _cuotaCalc=montoFin*(_tasaMens*Math.pow(1+_tasaMens,_cuotasN))/(Math.pow(1+_tasaMens,_cuotasN)-1); rows.push({l:'  Cuota est.',v:'$ '+Math.round(_cuotaCalc).toLocaleString('es-AR')+' × '+_cuotasN,c:[100,140,200]}); }
     }
     // BNA crédito personal
@@ -1548,8 +1579,41 @@ function initStockSelect(){
 function getUSD(){ return parseFloat(document.getElementById('usd-hoy').value)||1250; }
 function onUSDChange(){ var val=getUSD(); try{localStorage.setItem('ruthina_usd',val);}catch(e){} var sel=document.getElementById('stock-sel'); if(sel&&sel.value){ var parts=sel.value.split('|'); if(parts[2]==='USD'){autoFillStock(sel.value);return;} } upP(); }
 function autoFillStock(val){ if(!val) return; var parts=val.split('|'); var label=parts[0],precio=parseFloat(parts[1])||0,moneda=parts[2]||'ARS'; document.getElementById('bm').value=label; if(precio>0){ var precioARS=moneda==='USD'?Math.round(precio*getUSD()):precio; document.getElementById('bpl').value=precioARS; document.getElementById('bpc').value=Math.round(precioARS*0.97); var usdBadge=document.getElementById('usd-badge'); if(usdBadge){ if(moneda==='USD'){usdBadge.textContent='USD '+precio.toLocaleString('es-AR')+' x $ '+getUSD().toLocaleString('es-AR')+' = ARS';usdBadge.style.display='block';}else{usdBadge.style.display='none';} } } upP(); }
-function initBancoSelect(){ var sel=document.getElementById('banco-sel'); if(!sel) return; BANCOS.forEach(function(b,i){ var opt=document.createElement('option'); opt.value=i; opt.textContent=b.nombre; sel.appendChild(opt); }); }
-function autoFillBanco(idx){ if(idx===''||idx==='0') return; var b=BANCOS[parseInt(idx)]; if(!b||b.tna===0) return; document.getElementById('btn').value=b.tna; document.getElementById('bba').value=b.nombre.split(' (')[0]; var hint=document.getElementById('tna-hint'); if(hint){ var parts=[]; if(b.sello>0) parts.push(b.sello*100+'% sellos'); if(b.gastos>0) parts.push(b.gastos*100+'% gastos'); if(b.gastoTotal>0) parts.push(b.gastoTotal*100+'% s/total (MG)'); if(b.fijo>0) parts.push('$800k fijo (BNA)'); hint.textContent=parts.length?'('+parts.join(' + ')+')':''; } upP(); }
+function bancoLabel(b){ return b.label||b.nombre.split(' (')[0]; }
+function initBancoSelect(){ var sel=document.getElementById('banco-sel'); if(!sel) return; var vistos={}; BANCOS.forEach(function(b,i){ var l=bancoLabel(b); if(i>0&&vistos[l]!==undefined){ b.grupo=vistos[l]; return; } vistos[l]=i; b.grupo=i; if(i===0) return; var opt=document.createElement('option'); opt.value=i; opt.textContent=l; sel.appendChild(opt); }); }
+function autoFillBanco(idx){ if(idx===''||idx==='0') return; var b=BANCOS[parseInt(idx)]; if(!b||b.tna===0) return; var uva=(document.getElementById('btt')||{}).value==='uva'; if(!uva) document.getElementById('btn').value=b.tna; document.getElementById('bba').value=bancoLabel(b); var hint=document.getElementById('tna-hint'); if(hint){ var parts=[]; if(b.sello>0) parts.push(b.sello*100+'% sellos'); if(b.gastos>0) parts.push(b.gastos*100+'% gastos'); if(b.gastoTotal>0) parts.push(b.gastoTotal*100+'% s/total (MG)'); if(b.fijo>0) parts.push('$800k fijo (BNA)'); hint.textContent=parts.length?'('+parts.join(' + ')+')':''; } armarChipsTasa(); upP(); }
+function armarChipsTasa(){ var box=document.getElementById('tna-presets'); if(!box) return; box.innerHTML=''; var uva=(document.getElementById('btt')||{}).value==='uva'; var b=BANCOS[parseInt(document.getElementById('banco-sel').value)||0]; if(uva||!b||!b.grupo){ box.style.display='none'; return; } var tasas=BANCOS.filter(function(x){ return x.grupo===b.grupo&&x.tna>0; }).map(function(x){return x.tna;}); if(tasas.length<2){ box.style.display='none'; return; } tasas.forEach(function(t){ var c=document.createElement('button'); c.type='button'; c.textContent=t+'%'; c.onclick=function(){ document.getElementById('btn').value=t; upP(); }; box.appendChild(c); }); box.style.display='flex'; }
+
+// ── Tasa fija / UVA ──
+var _tnaGuardada={fijo:'',uva:''};
+function setTipoTasa(t){
+  var h=document.getElementById('btt'); if(!h) return; var prev=h.value; if(prev===t) return;
+  var inp=document.getElementById('btn'); _tnaGuardada[prev]=inp.value; h.value=t; inp.value=_tnaGuardada[t]||'';
+  document.getElementById('tt-fijo').classList.toggle('on',t==='fijo'); document.getElementById('tt-uva').classList.toggle('on',t==='uva');
+  document.getElementById('uva-box').style.display=t==='uva'?'block':'none';
+  document.getElementById('tna-lbl').textContent=t==='uva'?'TNA % sobre UVA (ej. 7)':'TNA %';
+  inp.placeholder=t==='uva'?'7':'60';
+  if(t==='fijo'&&!inp.value){ var b=BANCOS[parseInt(document.getElementById('banco-sel').value)||0]; if(b&&b.tna>0) inp.value=b.tna; }
+  if(t==='uva'){ try{ var v=localStorage.getItem('ruthina_uva'); var u=document.getElementById('buva'); if(v&&u&&!u.value) u.value=v; }catch(e){} }
+  armarChipsTasa(); upP();
+}
+function guardarUva(){ try{ var v=document.getElementById('buva').value; if(v) localStorage.setItem('ruthina_uva',v); }catch(e){} }
+async function traerUva(){
+  var info=document.getElementById('uva-info');
+  try{
+    info.textContent='Buscando el valor de hoy…';
+    var r=await fetch('https://api.argentinadatos.com/v1/finanzas/indices/uva'); if(!r.ok) throw new Error('HTTP '+r.status);
+    var arr=await r.json(); var ult=arr[arr.length-1]; if(!ult||!ult.valor) throw new Error('sin datos');
+    document.getElementById('buva').value=ult.valor; guardarUva(); upP();
+    info.textContent='UVA al '+ult.fecha+': $ '+Number(ult.valor).toLocaleString('es-AR');
+  }catch(e){ info.textContent='No pude traerlo automático. Escribilo a mano (lo recuerdo para la próxima).'; }
+}
+function calcUVA(monto,tna,cuotas,sello){
+  var vu=gn('buva'); if(!(vu>0)||!(monto>0)||!(tna>0)||!(cuotas>0)) return null;
+  var mUVA=monto*(1+(sello||0))/vu, tm=tna/100/12;
+  var cUVA=mUVA*tm/(1-Math.pow(1+tm,-cuotas));
+  return {montoUVA:mUVA,cuotaUVA:cUVA,cuotaARS:cUVA*vu,valorUVA:vu};
+}
 
 
 // ══ MATCH ══════════════════════════════════════════════
