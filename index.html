@@ -47,9 +47,9 @@ button{font-family:inherit}
 
 /* ── Menú Taller (flotante, fuera de la barra para que no se recorte) ── */
 .menu-flot{display:none;position:fixed;background:var(--ink-2);border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:6px;z-index:9999;min-width:220px;box-shadow:0 12px 32px rgba(0,0,0,.5)}
-.menu-flot button svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
-.menu-flot button{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:0 14px;background:none;border:none;border-radius:8px;color:#fff;font-size:14px;cursor:pointer;text-align:left}
-.menu-flot button:hover{background:rgba(255,255,255,.1)}
+.menu-flot button svg,.menu-flot a.menu-link svg{width:16px;height:16px;flex-shrink:0;opacity:.85}
+.menu-flot button,.menu-flot a.menu-link{display:flex;align-items:center;gap:10px;width:100%;min-height:44px;padding:0 14px;background:none;border:none;border-radius:8px;color:#fff;font-size:14px;cursor:pointer;text-align:left;text-decoration:none;font-family:inherit;box-sizing:border-box}
+.menu-flot button:hover,.menu-flot a.menu-link:hover{background:rgba(255,255,255,.1)}
 
 #dbanner{background:#FEF3C7;border-bottom:1px solid #F59E0B;padding:7px 14px;font-size:12px;color:#92400E;display:none;align-items:center;gap:8px;flex-shrink:0}
 
@@ -392,6 +392,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <button type="button" role="menuitem" onclick="cerrarMenus();abrirLibrosCierre()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Libros de cierre</span></button>
     <button type="button" role="menuitem" onclick="cerrarMenus();abrirResenas()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Reseñas</span></button>
     <button type="button" role="menuitem" onclick="cerrarMenus();abrirConsultaBancos()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10m4 11V10m6 11V10m4 11V10M2 10l10-7 10 7z"/></svg><span>Calificar por banco</span></button>
+    <a role="menuitem" class="menu-link" href="https://www.nosis.com/es" target="_blank" rel="noopener noreferrer" onclick="cerrarMenus()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span>Nosis</span></a>
   </div>
   <div id="menu-oper" class="menu-flot" role="menu">
     <button type="button" role="menuitem" onclick="cerrarMenus();openWApp()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>WApp</span></button>
