@@ -382,7 +382,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
         <button type="button" class="hbtn t-venta" onclick="abrirTransfDirecto()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Transferencias</span></button>
       </div>
       <div class="tgroup" role="group" aria-label="Más herramientas">
-        <button type="button" class="hbtn t-herr" id="btn-herr" onclick="toggleMenu('btn-herr','menu-herr')" aria-haspopup="true" aria-expanded="false" aria-controls="menu-herr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8.01" y2="11"/><line x1="12" y1="11" x2="12.01" y2="11"/><line x1="16" y1="11" x2="16.01" y2="11"/><line x1="8" y1="15" x2="8.01" y2="15"/><line x1="12" y1="15" x2="12.01" y2="15"/><line x1="16" y1="15" x2="16.01" y2="15"/><line x1="8" y1="19" x2="12" y2="19"/></svg><span>Herramientas</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+        <button type="button" class="hbtn t-herr" id="btn-herr" onclick="toggleMenu('btn-herr','menu-herr')" aria-haspopup="true" aria-expanded="false" aria-controls="menu-herr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8.01" y2="11"/><line x1="12" y1="11" x2="12.01" y2="11"/><line x1="16" y1="11" x2="16.01" y2="11"/><line x1="8" y1="15" x2="8.01" y2="15"/><line x1="12" y1="15" x2="12.01" y2="15"/><line x1="16" y1="15" x2="16.01" y2="15"/><line x1="8" y1="19" x2="12" y2="19"/></svg><span>Herramientas</span><span id="kq-badge-herr" class="kq-badge" style="display:none"></span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
         <button type="button" class="hbtn t-oper" id="btn-oper" onclick="toggleMenu('btn-oper','menu-oper')" aria-haspopup="true" aria-expanded="false" aria-controls="menu-oper"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg><span>Operación</span><svg class="caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
       </div>
     </nav>
@@ -392,6 +392,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <button type="button" role="menuitem" onclick="cerrarMenus();abrirLibrosCierre()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Libros de cierre</span></button>
     <button type="button" role="menuitem" onclick="cerrarMenus();abrirResenas()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Reseñas</span></button>
     <button type="button" role="menuitem" onclick="cerrarMenus();abrirConsultaBancos()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10m4 11V10m6 11V10m4 11V10M2 10l10-7 10 7z"/></svg><span>Calificar por banco</span></button>
+    <button type="button" role="menuitem" onclick="cerrarMenus();abrirPedidosKommo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span>Pedidos Kommo</span><span id="kq-badge-menu" class="kq-badge" style="display:none;margin-left:auto"></span></button>
     <a role="menuitem" class="menu-link" href="https://www.nosis.com/es" target="_blank" rel="noopener noreferrer" onclick="cerrarMenus()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span>Nosis</span></a>
   </div>
   <div id="menu-oper" class="menu-flot" role="menu">
@@ -3732,5 +3733,313 @@ async function verPrecioInfoAuto(codia, nombre) {
     </div>
   </div>
 </div>
+<!-- ═══ PEDIDOS KOMMO: autos + calificación por banco pedidos desde Kommo ═══ -->
+<style>
+.kq-badge{background:#C8102E;color:#fff;border-radius:999px;font-size:11px;font-weight:700;min-width:18px;height:18px;padding:0 5px;display:inline-flex;align-items:center;justify-content:center;line-height:1}
+#kq-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9998;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+#kq-box{width:min(980px,96vw);height:92vh;background:#F3F1EE;border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+#kq-head{background:#12142A;color:#fff;padding:8px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;border-bottom:3px solid #C8102E;flex-shrink:0}
+#kq-head .kq-title{font-size:14px;font-weight:600;flex:1;min-width:140px}
+.kq-hb{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:7px 12px;min-height:34px;cursor:pointer;font-size:12px}
+.kq-hb.on{background:#C8102E;border-color:#C8102E}
+#kq-list{flex:1;overflow:auto;padding:14px;display:flex;flex-direction:column;gap:12px}
+.kq-card{background:#fff;border:1px solid rgba(18,20,42,.1);border-radius:12px;padding:14px;box-shadow:0 1px 2px rgba(18,20,42,.05)}
+.kq-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.kq-name{font-size:15px;font-weight:600;color:#12142A}
+.kq-meta{font-size:12px;color:#56636D}
+.kq-chip{font-size:11px;font-weight:600;border-radius:999px;padding:3px 9px;background:#f1f1f4;color:#12142A}
+.kq-chip.warn{background:#fef3c7;color:#92400e}.kq-chip.ok{background:#dcfce7;color:#166534}.kq-chip.bad{background:#fee2e2;color:#991b1b}.kq-chip.blue{background:#dbeafe;color:#1e40af}
+.kq-cuil{font-family:ui-monospace,Menlo,monospace;font-size:15px;font-weight:600;letter-spacing:.5px}
+.kq-btn{border:1px solid rgba(18,20,42,.15);background:#fff;color:#12142A;border-radius:8px;padding:7px 12px;min-height:34px;font-size:12.5px;cursor:pointer}
+.kq-btn:hover{background:#f6f6f8}
+.kq-btn.pri{background:#C8102E;border-color:#C8102E;color:#fff}.kq-btn.pri:hover{background:#A00D24}
+.kq-btn.dark{background:#12142A;border-color:#12142A;color:#fff}
+.kq-btn:disabled{opacity:.55;cursor:default}
+.kq-banks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:12px}
+.kq-bank{border:1px solid rgba(18,20,42,.12);border-radius:10px;padding:8px 10px}
+.kq-bank .kq-bl{font-size:12px;font-weight:700;color:#12142A;margin-bottom:6px}
+.kq-seg{display:flex;gap:4px}
+.kq-seg button{flex:1;border:1px solid rgba(18,20,42,.15);background:#fff;border-radius:7px;padding:6px 4px;font-size:12px;cursor:pointer;min-height:32px}
+.kq-seg button.a{background:#16A34A;border-color:#16A34A;color:#fff}
+.kq-seg button.r{background:#C8102E;border-color:#C8102E;color:#fff}
+.kq-seg button.n{background:#e5e7eb}
+.kq-monto{margin-top:6px;width:100%;box-sizing:border-box;border:1px solid rgba(18,20,42,.15);border-radius:7px;padding:6px 8px;font-size:13px}
+.kq-obs{width:100%;box-sizing:border-box;border:1px solid rgba(18,20,42,.15);border-radius:8px;padding:8px;font-size:13px;margin-top:10px;min-height:44px;font-family:inherit;resize:vertical}
+.kq-autos{margin-top:8px;font-size:12.5px;color:#12142A;background:#f8f8fa;border-radius:8px;padding:8px 10px;white-space:pre-line}
+.kq-empty{text-align:center;color:#56636D;padding:60px 20px;font-size:14px}
+.kq-msg{font-size:12.5px;margin-top:8px}
+#kq-auto{background:#1C1F3A;color:#cfd3e6;font-size:12px;padding:7px 12px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;flex-shrink:0}
+#kq-auto b{color:#fff;font-weight:600}
+.kq-s{display:inline-flex;align-items:center;gap:5px}
+.kq-s i{width:8px;height:8px;border-radius:50%;background:#6b7280;display:inline-block}
+.kq-s.on i{background:#22c55e}.kq-s.off i{background:#ef4444}.kq-s.wait i{background:#f59e0b}
+.kq-autobox{margin-top:10px;background:#f4f6fb;border:1px solid #dfe4f0;border-radius:10px;padding:8px 10px;font-size:12.5px;color:#12142A}
+.kq-autobox .kq-ar{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.kq-autobox a{color:#1e40af}
+@media(max-width:600px){#kq-box{width:100vw;height:100dvh;border-radius:0}}
+</style>
+
+<div id="kq-overlay" role="dialog" aria-modal="true" aria-label="Pedidos de Kommo">
+  <div id="kq-box">
+    <div id="kq-head">
+      <div class="kq-title">Pedidos Kommo · autos y calificación</div>
+      <button type="button" class="kq-hb on" id="kq-f-abiertos" onclick="kqFiltro('abiertos')">Abiertos</button>
+      <button type="button" class="kq-hb" id="kq-f-resuelto" onclick="kqFiltro('resuelto')">Resueltos</button>
+      <button type="button" class="kq-hb" onclick="kqCargar()">↻</button>
+      <button type="button" class="kq-hb" onclick="cerrarPedidosKommo()">✕ Cerrar</button>
+    </div>
+    <div id="kq-auto">Consulta automática: cargando…</div>
+    <div id="kq-list"><div class="kq-empty">Cargando…</div></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var API = 'https://compara-conejo-production.up.railway.app';
+  var BANCOS_KQ = [
+    { key:'bancor', label:'Bancor' },
+    { key:'nacion', label:'Nación' },
+    { key:'galicia', label:'Galicia' },
+    { key:'decreditos', label:'decreditos' }
+  ];
+  var filtro = 'abiertos';
+  var kommoDominio = '';
+  var form = {};   // estado del formulario por pedido: form[id][banco] = {estado, monto}
+
+  function esc(t){ return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function fmtCuil(c){ c=String(c||''); return c.length===11 ? c.slice(0,2)+'-'+c.slice(2,10)+'-'+c.slice(10) : c; }
+  function hace(f){
+    if(!f) return '';
+    var m = Math.round((Date.now()-new Date(f).getTime())/60000);
+    if(m<1) return 'recién'; if(m<60) return 'hace '+m+' min';
+    var h=Math.round(m/60); if(h<24) return 'hace '+h+' h';
+    return 'hace '+Math.round(h/24)+' d';
+  }
+  function yo(){ try{ return (window.SESION && SESION.nombre) || (JSON.parse(localStorage.getItem('ruthina_sesion')||'{}').nombre) || ''; }catch(e){ return ''; } }
+
+  function badge(n){
+    ['kq-badge-herr','kq-badge-menu'].forEach(function(id){
+      var el=document.getElementById(id); if(!el) return;
+      if(n>0){ el.textContent=n; el.style.display='inline-flex'; } else el.style.display='none';
+    });
+  }
+  async function contar(){
+    try{ var r=await fetch(API+'/api/calificaciones/contador'); var d=await r.json(); badge(d.abiertos||0); }catch(e){}
+  }
+  contar(); setInterval(contar, 60000);
+
+  var NOMBRE_S = { conectado:'conectada', desconectado:'sin sesión', esperando_captcha:'falta captcha', esperando_token:'falta código', iniciando:'conectando', error:'error', no_configurado:'no configurado', extension:'solo extensión', desconocido:'?' };
+  async function pintarAuto(){
+    var el=document.getElementById('kq-auto'); if(!el) return;
+    try{
+      var r=await fetch(API+'/api/calificaciones/auto'); var d=await r.json();
+      if(!d.activa){ el.innerHTML='Consulta automática <b>apagada</b> (falta CONSULTA_BANCOS_CLAVE en Railway). Los pedidos se resuelven a mano.'; return; }
+      if(d.error && !d.ultimo_chequeo){ el.innerHTML='⚠ No se pudo conectar con Consulta Créditos: '+esc(d.error); return; }
+      var s=d.sesiones||{};
+      el.innerHTML='<b>🤖 Consulta automática</b>'+BANCOS_KQ.map(function(b){
+        var e=s[b.key]||'desconocido'; var cls=e==='conectado'?'on':(e==='esperando_captcha'||e==='esperando_token'||e==='iniciando')?'wait':(e==='no_configurado'||e==='extension')?'':'off';
+        return '<span class="kq-s '+cls+'"><i></i>'+b.label+': '+esc(NOMBRE_S[e]||e)+'</span>';
+      }).join('')+(d.consultando?'<span>· consultando '+esc(d.consultando)+'…</span>':'')+
+      (d.error?'<span style="color:#fca5a5">· '+esc(d.error)+'</span>':'')+
+      '<span style="margin-left:auto;opacity:.7">Abrí las sesiones en "Calificar por banco" y Ruthina consulta sola.</span>';
+    }catch(e){ el.textContent='Consulta automática: sin datos'; }
+  }
+  var timerKq=null;
+
+  window.abrirPedidosKommo = function(){
+    document.getElementById('kq-overlay').style.display='flex';
+    if(!kommoDominio){
+      fetch(API+'/api/kommo/estado').then(function(r){return r.json();}).then(function(d){ kommoDominio=(d.kommo_dominio||'').replace(/^https?:\/\//,'').replace(/\/.*$/,''); }).catch(function(){});
+    }
+    kqCargar(); pintarAuto();
+    clearInterval(timerKq);
+    timerKq=setInterval(function(){ pintarAuto(); if(filtro==='abiertos' && !hayEdicion()) kqCargar(true); }, 10000);
+  };
+  window.cerrarPedidosKommo = function(){ document.getElementById('kq-overlay').style.display='none'; clearInterval(timerKq); contar(); };
+  // no recargar la lista mientras un vendedor está cargando datos a mano
+  function hayEdicion(){
+    var a=document.activeElement; if(a && document.getElementById('kq-list').contains(a) && /INPUT|TEXTAREA/.test(a.tagName)) return true;
+    return Object.keys(form).some(function(id){ return form[id]._tocado; });
+  }
+  window.kqFiltro = function(f){
+    filtro=f;
+    document.getElementById('kq-f-abiertos').classList.toggle('on', f==='abiertos');
+    document.getElementById('kq-f-resuelto').classList.toggle('on', f==='resuelto');
+    kqCargar();
+  };
+
+  window.kqCargar = async function(silencioso){
+    var list=document.getElementById('kq-list');
+    if(!silencioso) list.innerHTML='<div class="kq-empty">Cargando…</div>';
+    try{
+      var r=await fetch(API+'/api/calificaciones?estado='+filtro);
+      var d=await r.json();
+      if(!Array.isArray(d)) throw new Error(d.error||'Respuesta inválida');
+      if(filtro==='abiertos') badge(d.length);
+      if(!d.length){ list.innerHTML='<div class="kq-empty">'+(filtro==='abiertos'?'No hay pedidos pendientes de Kommo 🎉':'Todavía no hay pedidos resueltos')+'</div>'; return; }
+      list.innerHTML='';
+      d.forEach(function(p){ list.appendChild(tarjeta(p)); });
+    }catch(e){ list.innerHTML='<div class="kq-empty">Error al cargar: '+esc(e.message)+'</div>'; }
+  };
+
+  function linkLead(p){
+    if(!p.lead_id) return '';
+    if(kommoDominio) return '<a class="kq-chip blue" style="text-decoration:none" target="_blank" rel="noopener" href="https://'+esc(kommoDominio)+'/leads/detail/'+esc(p.lead_id)+'">Lead #'+esc(p.lead_id)+' ↗</a>';
+    return '<span class="kq-chip blue">Lead #'+esc(p.lead_id)+'</span>';
+  }
+
+  function tarjeta(p){
+    var c=document.createElement('div'); c.className='kq-card'; c.id='kq-p-'+p.id;
+    var estadoChip = p.estado==='en_proceso' ? '<span class="kq-chip warn">Consultando'+(p.tomado_por?': '+esc(p.tomado_por):'')+'</span>'
+      : p.estado==='pendiente' ? '<span class="kq-chip">Pendiente</span>'
+      : p.resultado==='califica' ? '<span class="kq-chip ok">CALIFICA</span>' : '<span class="kq-chip bad">NO CALIFICA</span>';
+    var html =
+      '<div class="kq-row" style="justify-content:space-between">'+
+        '<div class="kq-row"><span class="kq-name">'+esc(p.nombre||'Sin nombre')+'</span>'+linkLead(p)+estadoChip+'</div>'+
+        '<span class="kq-meta">'+hace(p.created_at)+'</span>'+
+      '</div>'+
+      '<div class="kq-row" style="margin-top:8px">'+
+        '<span class="kq-meta">CUIL</span><span class="kq-cuil">'+esc(fmtCuil(p.cuil))+'</span>'+
+        '<button type="button" class="kq-btn" data-copy="'+esc(p.cuil)+'">Copiar</button>'+
+        (p.cuil_valido===false?'<span class="kq-chip warn">⚠ CUIL no válido, revisalo</span>':'')+
+        (String(p.cuil).length<11?'<span class="kq-chip warn">Es DNI, falta el CUIL</span>':'')+
+      '</div>'+
+      '<div class="kq-row" style="margin-top:6px">'+
+        '<span class="kq-meta">Busca</span><strong style="font-size:13.5px">'+esc([p.auto,p.anio].filter(Boolean).join(' '))+'</strong>'+
+        '<span class="kq-chip '+(p.autos_encontrados>0?'ok':'')+'">'+(p.autos_encontrados||0)+' en stock</span>'+
+        (p.telefono?'<span class="kq-meta">📞 '+esc(p.telefono)+'</span>':'')+
+        (p.vendedor?'<span class="kq-meta">👤 '+esc(p.vendedor)+'</span>':'')+
+      '</div>';
+
+    if(p.estado==='resuelto'){
+      var res=p.resultados||{};
+      html+='<div class="kq-banks">'+BANCOS_KQ.map(function(b){
+        var r=res[b.key]||{}; var t = r.estado==='aprobado' ? '✅ Aprobado'+(r.monto?' · $ '+Number(r.monto).toLocaleString('es-AR'):'') : r.estado==='rechazado' ? '❌ Rechazado' : '➖ No consultado';
+        return '<div class="kq-bank"><div class="kq-bl">'+b.label+'</div><div style="font-size:13px">'+t+'</div></div>';
+      }).join('')+'</div>';
+      if(p.observaciones) html+='<div class="kq-msg">📝 '+esc(p.observaciones)+'</div>';
+      if(p.resuelto_por==='Ruthina (automático)') html+='<div class="kq-msg">🤖 Resuelto automáticamente'+(p.auto_msg?' — '+esc(p.auto_msg):'')+'</div>';
+      html+='<div class="kq-msg kq-meta">Resuelto '+hace(p.resuelto_at)+(p.resuelto_por?' por '+esc(p.resuelto_por):'')+'</div>';
+      if(p.kommo_error) html+='<div class="kq-msg" style="color:#991b1b">⚠ No llegó a Kommo: '+esc(p.kommo_error)+' <button type="button" class="kq-btn" data-reenviar="'+p.id+'">Reintentar</button></div>';
+      c.innerHTML=html; enlazar(c,p); return c;
+    }
+
+    var ar=p.auto_resultados||{};
+    if(Object.keys(ar).length || p.auto_msg){
+      html+='<div class="kq-autobox"><b>🤖 Automático:</b> '+esc(p.auto_msg||'')+
+        '<div class="kq-ar">'+BANCOS_KQ.filter(function(b){return ar[b.key];}).map(function(b){
+          var r=ar[b.key]; var e=r.estado;
+          var cls=(e==='APROBADO'||e==='PREAPROBADO')?'ok':e==='DENEGADO'?'bad':'warn';
+          var t=e==='ERROR'?'error':e==='PREAPROBADO'?'pre-aprobado':e.toLowerCase();
+          return '<span class="kq-chip '+cls+'" title="'+esc(r.resumen||r.error||'')+'">'+b.label+': '+esc(t)+(r.monto?' $'+esc(r.monto):'')+'</span>';
+        }).join('')+'</div>'+
+        '<div style="margin-top:6px"><button type="button" class="kq-btn" data-reconsultar="'+p.id+'">↻ Consultar de nuevo</button></div></div>';
+    }
+    if(!form[p.id]){
+      form[p.id]={};
+      BANCOS_KQ.forEach(function(b){
+        var r=ar[b.key]; var est='no_consultado', monto='';
+        if(r && (r.estado==='APROBADO'||r.estado==='PREAPROBADO')){ est='aprobado'; monto=String(r.monto||'').split(',')[0].replace(/\D/g,''); }
+        else if(r && r.estado==='DENEGADO') est='rechazado';
+        form[p.id][b.key]={estado:est,monto:monto};
+      });
+    }
+    html+='<div class="kq-row" style="margin-top:10px">'+
+        '<button type="button" class="kq-btn dark" data-bancos="'+esc(p.cuil)+'">🏦 Abrir bancos (copia el CUIL)</button>'+
+        (p.estado==='pendiente'?'<button type="button" class="kq-btn" data-tomar="'+p.id+'">Lo consulto yo</button>':'<button type="button" class="kq-btn" data-soltar="'+p.id+'">Liberar</button>')+
+        '<button type="button" class="kq-btn" data-descartar="'+p.id+'" style="margin-left:auto">Descartar</button>'+
+      '</div>'+
+      '<div class="kq-banks">'+BANCOS_KQ.map(function(b){
+        var f=form[p.id][b.key];
+        return '<div class="kq-bank" data-bank="'+b.key+'"><div class="kq-bl">'+b.label+'</div>'+
+          '<div class="kq-seg">'+
+            '<button type="button" data-est="aprobado" class="'+(f.estado==='aprobado'?'a':'')+'">Aprobado</button>'+
+            '<button type="button" data-est="rechazado" class="'+(f.estado==='rechazado'?'r':'')+'">Rechazado</button>'+
+            '<button type="button" data-est="no_consultado" class="'+(f.estado==='no_consultado'?'n':'')+'" title="No consultado">—</button>'+
+          '</div>'+
+          '<input class="kq-monto" type="number" inputmode="numeric" placeholder="Monto aprobado $" value="'+esc(f.monto)+'" style="display:'+(f.estado==='aprobado'?'block':'none')+'">'+
+        '</div>';
+      }).join('')+'</div>'+
+      '<textarea class="kq-obs" placeholder="Observaciones (opcional): ej. Bancor pide garante, Nación hasta 48 cuotas…"></textarea>'+
+      '<div class="kq-row" style="margin-top:10px;justify-content:flex-end">'+
+        '<span class="kq-msg kq-out" style="margin:0 auto 0 0"></span>'+
+        '<button type="button" class="kq-btn pri" data-enviar="'+p.id+'">Enviar resultado a Kommo</button>'+
+      '</div>';
+    c.innerHTML=html; enlazar(c,p); return c;
+  }
+
+  function copiar(t){
+    try{ navigator.clipboard.writeText(t); }catch(e){
+      var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(_){} ta.remove();
+    }
+  }
+
+  async function patch(id, body){
+    var r=await fetch(API+'/api/calificaciones/'+id,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+    var d=await r.json(); if(!r.ok) throw new Error(d.error||'Error'); return d;
+  }
+
+  function enlazar(c,p){
+    c.querySelectorAll('[data-copy]').forEach(function(b){ b.onclick=function(){ copiar(b.getAttribute('data-copy')); b.textContent='✓ Copiado'; setTimeout(function(){b.textContent='Copiar';},1500); }; });
+    c.querySelectorAll('[data-bancos]').forEach(function(b){ b.onclick=function(){
+      copiar(b.getAttribute('data-bancos'));
+      if(p.estado==='pendiente') patch(p.id,{estado:'en_proceso',tomado_por:yo()}).then(function(){ p.estado='en_proceso'; p.tomado_por=yo(); }).catch(function(){});
+      if(typeof abrirConsultaBancos==='function') abrirConsultaBancos();
+    }; });
+    c.querySelectorAll('[data-tomar]').forEach(function(b){ b.onclick=async function(){ try{ await patch(p.id,{estado:'en_proceso',tomado_por:yo()}); kqCargar(); }catch(e){ alert(e.message); } }; });
+    c.querySelectorAll('[data-soltar]').forEach(function(b){ b.onclick=async function(){ try{ await patch(p.id,{estado:'pendiente',tomado_por:''}); kqCargar(); }catch(e){ alert(e.message); } }; });
+    c.querySelectorAll('[data-descartar]').forEach(function(b){ b.onclick=async function(){
+      if(!confirmarSuave(b)) return;
+      try{ await patch(p.id,{estado:'descartado'}); kqCargar(); }catch(e){ alert(e.message); }
+    }; });
+    c.querySelectorAll('[data-reconsultar]').forEach(function(b){ b.onclick=async function(){
+      b.disabled=true; b.textContent='Pidiendo…';
+      try{ await fetch(API+'/api/calificaciones/'+p.id+'/reconsultar',{method:'POST'}); delete form[p.id]; setTimeout(function(){ kqCargar(true); pintarAuto(); },1500); }
+      catch(e){ b.disabled=false; b.textContent='↻ Consultar de nuevo'; }
+    }; });
+    c.querySelectorAll('[data-reenviar]').forEach(function(b){ b.onclick=async function(){
+      b.disabled=true; b.textContent='Enviando…';
+      try{ var r=await fetch(API+'/api/calificaciones/'+p.id+'/reenviar',{method:'POST'}); var d=await r.json(); if(!r.ok) throw new Error(d.error); kqCargar(); }
+      catch(e){ b.disabled=false; b.textContent='Reintentar'; alert('No se pudo: '+e.message); }
+    }; });
+    c.querySelectorAll('[data-bank]').forEach(function(box){
+      var key=box.getAttribute('data-bank'); var inp=box.querySelector('.kq-monto');
+      box.querySelectorAll('[data-est]').forEach(function(btn){ btn.onclick=function(){
+        var est=btn.getAttribute('data-est'); form[p.id][key].estado=est; form[p.id]._tocado=true;
+        box.querySelectorAll('[data-est]').forEach(function(x){ x.className=''; });
+        btn.className = est==='aprobado'?'a':est==='rechazado'?'r':'n';
+        inp.style.display = est==='aprobado'?'block':'none';
+        if(est==='aprobado') inp.focus();
+      }; });
+      inp.oninput=function(){ form[p.id][key].monto=inp.value; form[p.id]._tocado=true; };
+    });
+    c.querySelectorAll('[data-enviar]').forEach(function(b){ b.onclick=async function(){
+      var out=c.querySelector('.kq-out');
+      var body={ observaciones:(c.querySelector('.kq-obs')||{}).value||'', vendedor:yo() };
+      var alguno=false;
+      BANCOS_KQ.forEach(function(bk){ body[bk.key]={estado:form[p.id][bk.key].estado,monto:form[p.id][bk.key].monto}; if(form[p.id][bk.key].estado!=='no_consultado') alguno=true; });
+      if(!alguno){ out.style.color='#991b1b'; out.textContent='Marcá el resultado de al menos un banco.'; return; }
+      b.disabled=true; b.textContent='Enviando…'; out.textContent='';
+      try{
+        var r=await fetch(API+'/api/calificaciones/'+p.id+'/resultado',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+        var d=await r.json(); if(!r.ok) throw new Error(d.error||'Error');
+        delete form[p.id];
+        out.style.color = d.kommo_enviado ? '#166534' : '#92400e';
+        out.textContent = (d.resultado==='califica'?'✅ Califica':'❌ No califica') + (d.kommo_enviado?' — enviado a Kommo':' — guardado en Ruthina, pero no llegó a Kommo: '+d.kommo_error);
+        setTimeout(kqCargar, d.kommo_enviado?1200:3500);
+      }catch(e){ out.style.color='#991b1b'; out.textContent='Error: '+e.message; b.disabled=false; b.textContent='Enviar resultado a Kommo'; }
+    }; });
+  }
+
+  // confirmación sin alert/confirm: primer clic pide confirmar, segundo ejecuta
+  function confirmarSuave(b){
+    if(b.getAttribute('data-ok')==='1') return true;
+    b.setAttribute('data-ok','1'); var t=b.textContent; b.textContent='¿Seguro? tocá de nuevo';
+    setTimeout(function(){ b.removeAttribute('data-ok'); b.textContent=t; },3000);
+    return false;
+  }
+})();
+</script>
+
 </body>
 </html>
