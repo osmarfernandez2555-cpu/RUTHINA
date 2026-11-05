@@ -1943,7 +1943,7 @@ async function matchCargarLista(){
       data.clientes.forEach(function(cl){
         var tags = [];
         if (cl.dni) tags.push('🪪 '+cl.dni);
-        if (['si','sí','true'].indexOf(String(cl.tiene_permuta||'').toLowerCase())!==-1) tags.push('🔄 Permuta');
+        if (['si','sí','true'].indexOf(String(cl.tiene_permuta||'').toLowerCase())!==-1) tags.push('🔄 Permuta'+(cl.auto_permuta?': '+cl.auto_permuta:''));
         if (['si','sí','true'].indexOf(String(cl.tiene_garantes||'').toLowerCase())!==-1) tags.push('👤 Garante');
         html2 += '<div>'+cl.nombre+(tags.length?' — '+tags.join(' · '):'')+'</div>';
       });
@@ -2420,11 +2420,14 @@ async function verMatchesCliente(idx, matchCount) {
   }
 
   var permutaAutoTitulo = [permMarca, permModelo, permVersion].filter(Boolean).join(' ');
+  // El bot y la carga masiva guardan todo el auto que entrega en un solo texto: auto_permuta
+  var permutaTexto = String(c.auto_permuta || '').trim();
+  if (!permutaAutoTitulo) permutaAutoTitulo = permutaTexto;
   var permutaHTML = '';
   if (tienePermuta) {
     permutaHTML = '<div style="margin-top:10px;padding-top:10px;border-top:1px solid rgba(245,166,35,0.3)">'
       + '<div style="font-size:11px;font-weight:800;letter-spacing:0.4px;color:#f5a623;margin-bottom:5px">🔄 PERMUTA: SÍ</div>'
-      + '<div style="font-size:14px;font-weight:700;color:#fff">' + (permutaAutoTitulo || 'Vehículo a permutar (sin detalle)') + '</div>'
+      + '<div style="font-size:14px;font-weight:700;color:#fff">' + (esc2(permutaAutoTitulo) || 'Vehículo a permutar (sin detalle)') + '</div>'
       + '<div style="display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:#ccc;margin-top:4px">'
       + (permAnio ? '<span>📅 ' + permAnio + '</span>' : '')
       + (permKm ? '<span>🛣️ ' + Number(String(permKm).replace(/\D/g,'')).toLocaleString('es-AR') + ' km</span>' : '')
@@ -3004,6 +3007,7 @@ function verificarSesion() {
 }
 verificarSesion();
 
+function esc2(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function tiempoDesdeCarga(fecha) {
   if (!fecha) return '';
   var d = new Date(fecha);
@@ -3235,7 +3239,7 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     + (c.telefono?'<div style="font-size:11px;margin-top:1px">&#128222; <a href="'+linkWA(c.telefono)+'" target="_blank" style="color:#25d366;text-decoration:none;font-weight:700" onclick="event.stopPropagation()">'+c.telefono+' ↗</a></div>':'')
     + '<div style="font-size:11px;color:'+(c.dni?txtSub:txtMuted)+';margin-top:1px">&#127991; DNI: '+(c.dni||'sin datos')+'</div>'
     + (c.presupuesto?'<div style="font-size:11px;color:'+txtMain+';font-weight:700;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
-    + '<div style="font-size:11px;color:'+txtMain+';margin-top:1px">&#128260; Permuta: '+(tienePermutaPrev?('Sí — '+([c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')||'sin detalle')):'No')+'</div>'
+    + '<div style="font-size:11px;color:'+txtMain+';margin-top:1px">&#128260; Permuta: '+(tienePermutaPrev?('Sí — '+esc2(([c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')||String(c.auto_permuta||'').trim())||'sin detalle')):'No')+'</div>'
     + '<div style="font-size:11px;color:'+txtMain+';margin-top:1px">&#128100; Garantes: '+(tieneGarantesPrev?('Sí — '+([c.nombre_garante,c.dni_garante].filter(Boolean).join(' DNI ')||'sin detalle')):'No')+'</div>'
     + (cargaClienteTxt?'<div style="font-size:11px;color:'+txtMuted+';margin-top:1px">&#128337; Cargado '+cargaClienteTxt+'</div>':'')
     + '</div>'
