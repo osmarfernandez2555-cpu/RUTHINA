@@ -1745,7 +1745,7 @@ async function kommoLogin(){
     var d=await r.json();
     if (!r.ok) { err.textContent=d.error||'No se pudo entrar'; document.getElementById('k-pass').value=''; return; }
     kommoGuardarTok(d.token); kommoMostrar(true);
-    if (d.configurado===false) kommoMsg('e','Todavía falta conectar Kommo: hay que cargar KOMMO_TOKEN en Railway (variables del servicio de Ruthina).');
+    if (d.configurado===false) kommoMsg('e','Todavía falta conectar Kommo: hay que cargar KOMMO_LECTURA_TOKEN en Railway (variables del servicio de Ruthina).');
   } catch(e) { err.textContent='No se pudo conectar con el servidor.'; }
 }
 function kommoEsc(t){ return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
