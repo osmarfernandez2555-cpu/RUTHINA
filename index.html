@@ -3930,7 +3930,8 @@ async function verPrecioInfoAuto(codia, nombre) {
     { key:'bancor', label:'Bancor' },
     { key:'nacion', label:'Nación' },
     { key:'galicia', label:'Galicia' },
-    { key:'decreditos', label:'decreditos' }
+    { key:'decreditos', label:'decreditos' },
+    { key:'santander', label:'Santander' }
   ];
   var filtro = 'abiertos';
   var kommoDominio = '';
@@ -3958,7 +3959,7 @@ async function verPrecioInfoAuto(codia, nombre) {
   }
   contar(); setInterval(contar, 60000);
 
-  var NOMBRE_S = { conectado:'conectada', desconectado:'sin sesión', esperando_captcha:'falta captcha', esperando_token:'falta código', iniciando:'conectando', error:'error', no_configurado:'no configurado', extension:'solo extensión', desconocido:'?' };
+  var NOMBRE_S = { conectado:'conectada', desconectado:'sin sesión', esperando_captcha:'falta captcha', esperando_token:'falta código', iniciando:'conectando', error:'error', no_configurado:'no configurado', extension:'solo extensión', robot:'robot conectado', robot_apagado:'robot apagado', desconocido:'?' };
   async function pintarAuto(){
     var el=document.getElementById('kq-auto'); if(!el) return;
     try{
@@ -3967,11 +3968,13 @@ async function verPrecioInfoAuto(codia, nombre) {
       if(d.error && !d.ultimo_chequeo){ el.innerHTML='⚠ No se pudo conectar con Consulta Créditos: '+esc(d.error); return; }
       var s=d.sesiones||{};
       el.innerHTML='<b>🤖 Consulta automática</b>'+BANCOS_KQ.map(function(b){
-        var e=s[b.key]||'desconocido'; var cls=e==='conectado'?'on':(e==='esperando_captcha'||e==='esperando_token'||e==='iniciando')?'wait':(e==='no_configurado'||e==='extension')?'':'off';
+        var e=s[b.key]||'desconocido'; var cls=(e==='conectado'||e==='robot')?'on':(e==='esperando_captcha'||e==='esperando_token'||e==='iniciando')?'wait':(e==='no_configurado'||e==='extension')?'':'off';
         return '<span class="kq-s '+cls+'"><i></i>'+b.label+': '+esc(NOMBRE_S[e]||e)+'</span>';
       }).join('')+(d.consultando?'<span>· consultando '+esc(d.consultando)+'…</span>':'')+
       (d.error?'<span style="color:#fca5a5">· '+esc(d.error)+'</span>':'')+
-      '<span style="margin-left:auto;opacity:.7">Abrí las sesiones en "Calificar por banco" y Ruthina consulta sola.</span>';
+      (d.robot&&d.robot.configurado&&!d.robot.conectado?'<span style="color:#fca5a5">· la PC robot está apagada: Galicia, Santander y decreditos esperan</span>':'')+
+      (d.robot&&d.robot.enCola?'<span>· '+d.robot.enCola+' en la fila del robot</span>':'')+
+      '<span style="margin-left:auto;opacity:.7">'+(d.robot&&d.robot.configurado?'Bancor y Nación: con las sesiones de "Calificar por banco". Galicia, Santander y decreditos: la PC robot.':'Abrí las sesiones en "Calificar por banco" y Ruthina consulta sola.')+'</span>';
     }catch(e){ el.textContent='Consulta automática: sin datos'; }
   }
   var timerKq=null;
@@ -4060,7 +4063,7 @@ async function verPrecioInfoAuto(codia, nombre) {
         '<div class="kq-ar">'+BANCOS_KQ.filter(function(b){return ar[b.key];}).map(function(b){
           var r=ar[b.key]; var e=r.estado;
           var cls=(e==='APROBADO'||e==='PREAPROBADO')?'ok':e==='DENEGADO'?'bad':'warn';
-          var t=e==='ERROR'?'error':e==='PREAPROBADO'?'pre-aprobado':e.toLowerCase();
+          var t=e==='ERROR'?'error':e==='PREAPROBADO'?'pre-aprobado':e==='EN_ROBOT'?'en el robot…':e.toLowerCase();
           return '<span class="kq-chip '+cls+'" title="'+esc(r.resumen||r.error||'')+'">'+b.label+': '+esc(t)+(r.monto?' $'+esc(r.monto):'')+'</span>';
         }).join('')+'</div>'+
         '<div style="margin-top:6px"><button type="button" class="kq-btn" data-reconsultar="'+p.id+'">↻ Consultar de nuevo</button></div></div>';
