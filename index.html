@@ -1537,38 +1537,56 @@ function genPDF(){
     var transferencia=_transfManualPDF>0?Math.round(_transfManualPDF):Math.round(precioBase*porcTransf);
     var valorTotalOpPDF=precioBase+transferencia;
     var fmt=function(n){return n?'$ '+Math.round(n).toLocaleString('es-AR'):'-';};
-    doc.setFillColor(15,52,96);doc.rect(0,0,W,56,'F');
-    doc.setFillColor(30,100,200);doc.rect(0,52,W,4,'F');
+    doc.setFillColor(15,52,96);doc.rect(0,0,W,44,'F');
+    doc.setFillColor(30,100,200);doc.rect(0,40,W,4,'F');
     doc.setFont('helvetica','bold');doc.setFontSize(20);doc.setTextColor(255,255,255);
-    doc.text('TUTU AUTOMOTORES',M+5,22);
+    doc.text('TUTU AUTOMOTORES',M+5,18);
     doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(160,200,255);
-    doc.text('Presupuesto Oficial de Venta',M+5,32);
+    doc.text('Presupuesto Oficial de Venta',M+5,26);
     doc.setFontSize(8);doc.setTextColor(120,170,230);
-    doc.text(E.ciudad+' — '+E.web,M+5,40);
+    doc.text(E.ciudad+' — '+E.web,M+5,33);
     var presNum='PRES-'+Date.now().toString().slice(-6);
     doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(160,200,255);
-    doc.text('N° '+presNum,W-M,16,{align:'right'});doc.text(String(d.fecha),W-M,25,{align:'right'});doc.text('Vigencia: '+String(d.vigencia),W-M,34,{align:'right'});
-    y=70;doc.setFillColor(240,246,255);doc.rect(0,y-6,W,14,'F');
+    doc.text('N° '+presNum,W-M,14,{align:'right'});doc.text(String(d.fecha),W-M,22,{align:'right'});doc.text('Vigencia: '+String(d.vigencia),W-M,30,{align:'right'});
+    y=56;doc.setFillColor(240,246,255);doc.rect(0,y-6,W,14,'F');
     doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(15,52,96);doc.text('PRESUPUESTO DE VENTA',M,y+2);
     if(d.vendedor) doc.text('Asesor: '+String(d.vendedor),W-M,y+2,{align:'right'});
-    y+=18;
-    doc.setFillColor(248,252,255);doc.setDrawColor(200,220,245);doc.roundedRect(M,y,W-M*2,22,2,2,'FD');
+    y+=16;
+    var _cliExtra=[gv('bf')?'Tel: '+gv('bf'):'',gv('bd')?'DNI: '+gv('bd'):''].filter(Boolean).join('     ·     ');
+    doc.setFillColor(248,252,255);doc.setDrawColor(200,220,245);doc.roundedRect(M,y,W-M*2,_cliExtra?26:20,2,2,'FD');
     doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(20,20,20);doc.text(d.cliente||'Cliente',M+5,y+8);
-    y+=32;
-    doc.setFillColor(248,252,255);doc.setDrawColor(200,220,245);doc.roundedRect(M,y,W-M*2,d.notas?32:22,2,2,'FD');
+    if(_cliExtra){ doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(80,80,80);doc.text(_cliExtra,M+5,y+17); }
+    y+=(_cliExtra?26:20)+6;
+    // vehículo: modelo, año, color, km, patente y observaciones
+    var _vehDet=[d.color?'Color: '+d.color:'',d.km?'Km: '+String(d.km).replace(/\B(?=(\d{3})+(?!\d))/g,'.'):'',d.patente?'Patente: '+String(d.patente).toUpperCase():''].filter(Boolean).join('     ·     ');
+    doc.setFont('helvetica','normal');doc.setFontSize(10);
+    var _notasLin=d.notas?doc.splitTextToSize(String(d.notas),W-M*2-10):[];
+    var _vehH=16+(_vehDet?8:0)+(_notasLin.length?(_notasLin.length*5+3):0)+2;
+    doc.setFillColor(248,252,255);doc.setDrawColor(200,220,245);doc.roundedRect(M,y,W-M*2,_vehH,2,2,'FD');
     doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(15,52,96);
     doc.text((d.modelo||'Vehiculo')+(d.anio?' '+d.anio:''),M+5,y+10);
-    y+=d.notas?42:32;
+    var _vy=y+10;
+    if(_vehDet){ _vy+=8; doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(70,70,70);doc.text(_vehDet,M+5,_vy); }
+    if(_notasLin.length){ _vy+=7; doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(100,100,100);doc.text(_notasLin,M+5,_vy); }
+    y+=_vehH+8;
     var rows=[];
     if(d.precioLista) rows.push({l:'Precio de lista',v:fmt(d.precioLista),c:[60,60,60]});
     if(!usaLista&&d.precioContado&&d.precioContado!==d.precioLista) rows.push({l:'Precio contado',v:fmt(d.precioContado),c:[30,122,74],b:true});
-    if(d.tienePermuta&&d.permuValor){ rows.push({l:'Tasacion: '+(d.permuModelo||''),v:fmt(d.permuValor),c:[180,100,0]}); rows.push({l:'  Neto permuta',v:'- '+fmt(aportePermuta),c:[30,150,80],b:true}); }
+    if(d.tienePermuta&&d.permuValor){
+      var _pDet=[gv('bpy'),gv('bpk')?String(gv('bpk')).replace(/\B(?=(\d{3})+(?!\d))/g,'.')+' km':''].filter(Boolean).join(' · ');
+      rows.push({l:'Permuta: '+(d.permuModelo||'')+(_pDet?' ('+_pDet+')':''),v:fmt(d.permuValor),c:[180,100,0]});
+      if(d.permuPos>0) rows.push({l:'  (-) Posicion de venta',v:'- '+fmt(d.permuPos),c:[180,60,60]});
+      if(d.permuPer>0) rows.push({l:'  (-) Peritaje',v:'- '+fmt(d.permuPer),c:[180,60,60]});
+      rows.push({l:'  Neto permuta',v:'- '+fmt(aportePermuta),c:[30,150,80],b:true});
+    }
     // Crédito prendario
     if(d.tieneCredito&&montoFin){
       var _credLabel=d.banco?d.banco:'Crédito banco';
       var _gpdf=_bnaMonto_pdf>0?0:0; // gastos prendario calculados aparte
       var _gastosPDF=montoFin-aporteCredPDF;
       rows.push({l:_credLabel+' (solicitado)',v:fmt(montoFin),c:[26,79,171]});
+      var _planTxt=[(d.cuotas||'')+' cuotas',d.tna>0?'TNA '+d.tna+'%'+(((document.getElementById('btt')||{}).value==='uva')?' sobre UVA':' fija'):''].filter(Boolean).join(' · ');
+      if(_planTxt) rows.push({l:'  Plan',v:_planTxt,c:[100,140,200]});
       if(_gastosPDF>0) rows.push({l:'  (-) Gastos',v:'- '+fmt(_gastosPDF),c:[180,60,60]});
       rows.push({l:'  Neto crédito',v:'- '+fmt(aporteCredPDF),c:[26,79,171],b:true});
       // Cuota prendario
@@ -1619,7 +1637,7 @@ function genPDF(){
       var lbl=String(r.l||''),val=String(r.v||''); if(!lbl) return;
       if(y>245){ doc.addPage(); y=20; }
       if(r.big){ doc.setFillColor(15,52,96);doc.rect(M,y-5,W-M*2,11,'F');doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(255,255,255);doc.text(lbl,M+5,y+3);if(val&&val!=='-'){doc.setTextColor(255,180,180);doc.text(val,W-M-5,y+3,{align:'right'});}y+=12; }
-      else{ doc.setFont('helvetica',r.b?'bold':'normal');doc.setFontSize(11);doc.setTextColor(r.c[0],r.c[1],r.c[2]);doc.text(lbl,M+3,y);if(val&&val!=='-') doc.text(val,W-M-3,y,{align:'right'});doc.setDrawColor(230,228,224);doc.line(M,y+2,W-M,y+2);y+=7.5; }
+      else{ doc.setFont('helvetica',r.b?'bold':'normal');doc.setFontSize(11);doc.setTextColor(r.c[0],r.c[1],r.c[2]);doc.text(lbl,M+3,y);if(val&&val!=='-') doc.text(val,W-M-3,y,{align:'right'});doc.setDrawColor(230,228,224);doc.line(M,y+2,W-M,y+2);y+=7; }
     });
     y=Math.max(y+8,235);
     if(y>250){ doc.addPage(); y=30; }
@@ -3930,8 +3948,7 @@ async function verPrecioInfoAuto(codia, nombre) {
     { key:'bancor', label:'Bancor' },
     { key:'nacion', label:'Nación' },
     { key:'galicia', label:'Galicia' },
-    { key:'decreditos', label:'decreditos' },
-    { key:'santander', label:'Santander' }
+    { key:'decreditos', label:'decreditos' }
   ];
   var filtro = 'abiertos';
   var kommoDominio = '';
@@ -3959,7 +3976,7 @@ async function verPrecioInfoAuto(codia, nombre) {
   }
   contar(); setInterval(contar, 60000);
 
-  var NOMBRE_S = { conectado:'conectada', desconectado:'sin sesión', esperando_captcha:'falta captcha', esperando_token:'falta código', iniciando:'conectando', error:'error', no_configurado:'no configurado', extension:'solo extensión', robot:'robot conectado', robot_apagado:'robot apagado', desconocido:'?' };
+  var NOMBRE_S = { conectado:'conectada', desconectado:'sin sesión', esperando_captcha:'falta captcha', esperando_token:'falta código', iniciando:'conectando', error:'error', no_configurado:'no configurado', extension:'solo extensión', desconocido:'?' };
   async function pintarAuto(){
     var el=document.getElementById('kq-auto'); if(!el) return;
     try{
@@ -3968,13 +3985,11 @@ async function verPrecioInfoAuto(codia, nombre) {
       if(d.error && !d.ultimo_chequeo){ el.innerHTML='⚠ No se pudo conectar con Consulta Créditos: '+esc(d.error); return; }
       var s=d.sesiones||{};
       el.innerHTML='<b>🤖 Consulta automática</b>'+BANCOS_KQ.map(function(b){
-        var e=s[b.key]||'desconocido'; var cls=(e==='conectado'||e==='robot')?'on':(e==='esperando_captcha'||e==='esperando_token'||e==='iniciando')?'wait':(e==='no_configurado'||e==='extension')?'':'off';
+        var e=s[b.key]||'desconocido'; var cls=e==='conectado'?'on':(e==='esperando_captcha'||e==='esperando_token'||e==='iniciando')?'wait':(e==='no_configurado'||e==='extension')?'':'off';
         return '<span class="kq-s '+cls+'"><i></i>'+b.label+': '+esc(NOMBRE_S[e]||e)+'</span>';
       }).join('')+(d.consultando?'<span>· consultando '+esc(d.consultando)+'…</span>':'')+
       (d.error?'<span style="color:#fca5a5">· '+esc(d.error)+'</span>':'')+
-      (d.robot&&d.robot.configurado&&!d.robot.conectado?'<span style="color:#fca5a5">· la PC robot está apagada: Galicia, Santander y decreditos esperan</span>':'')+
-      (d.robot&&d.robot.enCola?'<span>· '+d.robot.enCola+' en la fila del robot</span>':'')+
-      '<span style="margin-left:auto;opacity:.7">'+(d.robot&&d.robot.configurado?'Bancor y Nación: con las sesiones de "Calificar por banco". Galicia, Santander y decreditos: la PC robot.':'Abrí las sesiones en "Calificar por banco" y Ruthina consulta sola.')+'</span>';
+      '<span style="margin-left:auto;opacity:.7">Abrí las sesiones en "Calificar por banco" y Ruthina consulta sola.</span>';
     }catch(e){ el.textContent='Consulta automática: sin datos'; }
   }
   var timerKq=null;
@@ -4063,7 +4078,7 @@ async function verPrecioInfoAuto(codia, nombre) {
         '<div class="kq-ar">'+BANCOS_KQ.filter(function(b){return ar[b.key];}).map(function(b){
           var r=ar[b.key]; var e=r.estado;
           var cls=(e==='APROBADO'||e==='PREAPROBADO')?'ok':e==='DENEGADO'?'bad':'warn';
-          var t=e==='ERROR'?'error':e==='PREAPROBADO'?'pre-aprobado':e==='EN_ROBOT'?'en el robot…':e.toLowerCase();
+          var t=e==='ERROR'?'error':e==='PREAPROBADO'?'pre-aprobado':e.toLowerCase();
           return '<span class="kq-chip '+cls+'" title="'+esc(r.resumen||r.error||'')+'">'+b.label+': '+esc(t)+(r.monto?' $'+esc(r.monto):'')+'</span>';
         }).join('')+'</div>'+
         '<div style="margin-top:6px"><button type="button" class="kq-btn" data-reconsultar="'+p.id+'">↻ Consultar de nuevo</button></div></div>';
