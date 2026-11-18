@@ -3055,6 +3055,12 @@ function verificarSesion() {
 verificarSesion();
 
 function esc2(t){ return String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function fechaHoraCarga(fecha) {
+  if (!fecha) return '';
+  var d = new Date(fecha);
+  if (isNaN(d.getTime())) return '';
+  return d.toLocaleDateString('es-AR', {day:'2-digit',month:'2-digit',year:'numeric'}) + ' ' + d.toLocaleTimeString('es-AR', {hour:'2-digit',minute:'2-digit'});
+}
 function tiempoDesdeCarga(fecha) {
   if (!fecha) return '';
   var d = new Date(fecha);
@@ -3288,7 +3294,7 @@ function crearTarjetaCliente(c, idx, matchCount, cal) {
     + (c.presupuesto?'<div style="font-size:11px;color:'+txtMain+';font-weight:700;margin-top:1px">&#128176; '+c.presupuesto+'</div>':'')
     + '<div style="font-size:11px;color:'+txtMain+';margin-top:1px">&#128260; Permuta: '+(tienePermutaPrev?('Sí — '+esc2(([c.permuta_marca,c.permuta_modelo].filter(Boolean).join(' ')||String(c.auto_permuta||'').trim())||'sin detalle')):'No')+'</div>'
     + '<div style="font-size:11px;color:'+txtMain+';margin-top:1px">&#128100; Garantes: '+(tieneGarantesPrev?('Sí — '+([c.nombre_garante,c.dni_garante].filter(Boolean).join(' DNI ')||'sin detalle')):'No')+'</div>'
-    + (cargaClienteTxt?'<div style="font-size:11px;color:'+txtMuted+';margin-top:1px">&#128337; Cargado '+cargaClienteTxt+'</div>':'')
+    + (c.created_at&&fechaHoraCarga(c.created_at)?'<div style="font-size:12px;font-weight:700;color:'+txtMain+';margin-top:3px">&#128197; Cargado el '+fechaHoraCarga(c.created_at)+' <span style="font-weight:400;color:'+txtMuted+'">('+String(tiempoDesdeCarga(c.created_at)).split(' · ')[0]+')</span></div>':'')
     + '</div>'
     + '<div style="display:flex;gap:6px;align-items:center">'
     + '<div style="background:'+calBg+';color:'+calColor+';border-radius:12px;padding:2px 8px;font-size:11px;font-weight:700">'+calLabel+'</div>'
@@ -3671,6 +3677,7 @@ async function cargarClientesVendedor(vendedor, cal) {
         + '<div><div style="font-size:14px;font-weight:700;color:#fff">' + (c.nombre||'-') + '</div>'
         + '<div style="font-size:12px;color:#aaa">' + (c.modelo||'') + (c.anio?' '+c.anio:'') + '</div>'
         + (c.telefono?'<div style="font-size:11px"><a href="'+linkWA(c.telefono)+'" target="_blank" style="color:#25d366;text-decoration:none;font-weight:600">📞 '+c.telefono+' ↗</a></div>':'')
+        + (c.created_at&&fechaHoraCarga(c.created_at)?'<div style="font-size:11px;color:#bbb;margin-top:2px">&#128197; Cargado el '+fechaHoraCarga(c.created_at)+'</div>':'')
         + '</div>'
         + '<div style="background:'+calBg+';color:'+calColor+';border-radius:12px;padding:3px 10px;font-size:11px;font-weight:700">'+calLabel+'</div>'
         + '</div>';
