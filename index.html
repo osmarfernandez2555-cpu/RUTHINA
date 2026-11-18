@@ -892,7 +892,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
         <div style="background:#E8F5E3;border:1px solid #4ade80;border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:#166534">&#x2705; <strong>0km:</strong> M&#xE1;ximo $8.000.000 &#x2014; Cuotas: 24 o 36 &#x2014; Tasa 0% &#x2014; Gasto: 14.54% sobre el monto</div>
         <div class="fgr">
           <div class="fg"><label>Monto solicitado (ARS)</label><input id="psa-monto-0" type="number" placeholder="8000000" oninput="upP()"></div>
-          <div class="fg"><label>Cuotas</label><select id="psa-cuotas-0" onchange="upP()"><option value="24">24 cuotas</option><option value="36">36 cuotas</option></select></div>
+          <div class="fg"><label>Cuotas</label><select id="psa-cuotas-0" onchange="upP()"><option value="18">18 cuotas</option><option value="24" selected>24 cuotas</option><option value="36">36 cuotas</option></select></div>
           <div class="fg"><label>Gasto % (editable)</label><input id="psa-gasto-0" type="number" value="14.54" step="0.01" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
           <div class="fg" style="grid-column:1/-1"><label style="color:#60a5fa">Cuota manual (opcional)</label><input id="psa0-cuota-manual" type="number" placeholder="Dej&#xE1; vac&#xED;o para calcular autom&#xE1;tico" oninput="upP()" style="color:#60a5fa;font-weight:600;border-color:#60a5fa55"></div>
         </div>
@@ -908,7 +908,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
         <div class="fgr">
           <div class="fg"><label>Monto solicitado (ARS)</label><input id="psa-monto-p" type="number" placeholder="10000000" oninput="upP()"></div>
           <div class="fg"><label>TNA % (editable)</label><input id="psa-tna-p" type="number" placeholder="47.9" step="0.1" oninput="upP()" style="color:#C8102E;font-weight:600"></div>
-          <div class="fg"><label>Cuotas</label><select id="psa-cuotas-p" onchange="upP()"><option value="12">12 cuotas</option><option value="24">24 cuotas</option><option value="36">36 cuotas</option></select></div>
+          <div class="fg"><label>Cuotas</label><select id="psa-cuotas-p" onchange="upP()"><option value="12">12 cuotas</option><option value="18">18 cuotas</option><option value="24">24 cuotas</option><option value="36">36 cuotas</option></select></div>
         </div>
         <div class="fg" style="margin-top:4px"><label style="color:#60a5fa">Cuota manual (opcional)</label><input id="psap-cuota-manual" type="number" placeholder="Dej&#xE1; vac&#xED;o para calcular autom&#xE1;tico" oninput="upP()" style="color:#60a5fa;font-weight:600;border-color:#60a5fa55"></div>
         <div style="font-size:11px;color:#666;margin-bottom:8px;font-weight:600">Gastos (editables):</div>
@@ -1500,6 +1500,25 @@ function upP(){
   }
 }
 
+// Datos del crédito PSA (0km o patentado) para el PDF — mismos cálculos que el presupuestador en pantalla
+function psaDatosPDF(){
+  if(!gc('cpsa')) return null;
+  var tipo=psaTipo, monto, n, gastos, pct, cuota, manual, plan;
+  if(tipo==='0km'){
+    monto=gn('psa-monto-0'); n=parseInt(gv('psa-cuotas-0'))||24; pct=gn('psa-gasto-0')||14.54;
+    gastos=Math.round(monto*pct/100); manual=gn('psa0-cuota-manual');
+    cuota=manual>0?manual:(n>0?Math.round(monto/n):0); plan=n+' cuotas · tasa 0%';
+  } else {
+    monto=gn('psa-monto-p'); var tna=gn('psa-tna-p')||47.9; n=parseInt(gv('psa-cuotas-p'))||24;
+    var q=gn('psa-q')||10, iva=gn('psa-iva')||4, gest=gn('psa-gest')||5; pct=q+iva+gest;
+    gastos=Math.round(monto*pct/100); manual=gn('psap-cuota-manual');
+    var tm=Math.pow(1+tna/100,1/12)-1;
+    cuota=manual>0?manual:Math.round(tm>0?monto*tm/(1-Math.pow(1+tm,-n)):monto/n); plan=n+' cuotas · TNA '+tna+'%';
+  }
+  if(!(monto>0)) return null;
+  return {tipo:tipo,monto:monto,gastos:gastos,pct:pct,neto:Math.max(0,monto-gastos),cuota:cuota,n:n,manual:manual>0,plan:plan};
+}
+
 function genPDF(){
   var btn=document.getElementById('bgen');
   if(!gv('bm')&&!gn('bpl')){ snkShow('Ingresa modelo y precio'); return; }
@@ -1530,7 +1549,8 @@ function genPDF(){
     var _bna2Monto_pdf=gc('cbna2')?gn('bna2-monto'):0;
     var _bna2Gastos_pdf=_bna2Monto_pdf>0?(Math.round(_bna2Monto_pdf*_bna2GP_pdf/100)+_bna2GF_pdf):0;
     var _aporteBNA2_pdf=_bna2Monto_pdf>0?Math.max(0,_bna2Monto_pdf-_bna2Gastos_pdf):0;
-    var totalAportesPDF=aporteCredPDF+(d.anticipo||0)+(d.adelanto||0)+aportePermuta+_aporteBNA_pdf+_aporteBNA2_pdf;
+    var _psaPDF=psaDatosPDF();
+    var totalAportesPDF=aporteCredPDF+(d.anticipo||0)+(d.adelanto||0)+aportePermuta+_aporteBNA_pdf+_aporteBNA2_pdf+(_psaPDF?_psaPDF.neto:0);
     var precioBase=usaLista?d.precioLista:(d.precioContado||d.precioLista);
     var porcTransf=precioBase>20000000?0.05:0.06;
     var _transfManualPDF=gc('ctransfmanual')?gn('transfmanual-monto'):0;
@@ -1597,6 +1617,14 @@ function genPDF(){
       if(_cuotaManual<=0&&_uvaPDF){ rows.push({l:'  Cuota inicial UVA',v:'$ '+Math.round(_uvaPDF.cuotaARS).toLocaleString('es-AR')+' × '+_cuotasN+' (ajusta por inflación)',c:[100,140,200]}); rows.push({l:'  UVA de referencia',v:'$ '+_uvaPDF.valorUVA.toLocaleString('es-AR')+' · '+Math.round(_uvaPDF.montoUVA).toLocaleString('es-AR')+' UVA',c:[100,140,200]}); }
       else if(_cuotaManual>0){ rows.push({l:'  Cuota est.',v:'$ '+Math.round(_cuotaManual).toLocaleString('es-AR')+' × '+_cuotasN+' (manual)',c:[100,140,200]}); }
       else if(_tasaAnual>0&&montoFin>0){ var _tasaMens=_tasaAnual/12/100; var _cuotaCalc=montoFin*(_tasaMens*Math.pow(1+_tasaMens,_cuotasN))/(Math.pow(1+_tasaMens,_cuotasN)-1); rows.push({l:'  Cuota est.',v:'$ '+Math.round(_cuotaCalc).toLocaleString('es-AR')+' × '+_cuotasN,c:[100,140,200]}); }
+    }
+    // PSA (0km o patentado)
+    if(_psaPDF){
+      rows.push({l:'PSA '+(_psaPDF.tipo==='0km'?'0km':'Patentado')+' (solicitado)',v:fmt(_psaPDF.monto),c:[200,16,46]});
+      rows.push({l:'  Plan',v:_psaPDF.plan,c:[200,110,120]});
+      if(_psaPDF.gastos>0) rows.push({l:'  (-) Gastos ('+_psaPDF.pct+'%)',v:'- '+fmt(_psaPDF.gastos),c:[180,60,60]});
+      rows.push({l:'  Neto PSA',v:'- '+fmt(_psaPDF.neto),c:[200,16,46],b:true});
+      if(_psaPDF.cuota>0) rows.push({l:'  Cuota est.',v:'$ '+Math.round(_psaPDF.cuota).toLocaleString('es-AR')+' × '+_psaPDF.n+(_psaPDF.manual?' (manual)':''),c:[200,110,120]});
     }
     // BNA crédito personal
     if(_bnaMonto_pdf>0){
