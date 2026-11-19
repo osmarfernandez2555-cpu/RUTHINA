@@ -3953,6 +3953,10 @@ async function verPrecioInfoAuto(codia, nombre) {
 .kq-msg{font-size:12.5px;margin-top:8px}
 #kq-auto{background:#1C1F3A;color:#cfd3e6;font-size:12px;padding:7px 12px;display:flex;flex-wrap:wrap;gap:6px 12px;align-items:center;flex-shrink:0}
 #kq-auto b{color:#fff;font-weight:600}
+#kq-ext{background:#171a33;color:#cfd3e6;font-size:12px;padding:7px 12px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;border-bottom:1px solid #2a2e52}
+#kq-ext.caida{background:#7f1d1d;color:#fff}
+.kq-orig{font-size:11px;font-weight:700;border-radius:6px;padding:3px 8px}
+.kq-orig.k{background:#ede9fe;color:#5b21b6}.kq-orig.r{background:#dbeafe;color:#1d4ed8}
 .kq-s{display:inline-flex;align-items:center;gap:5px}
 .kq-s i{width:8px;height:8px;border-radius:50%;background:#6b7280;display:inline-block}
 .kq-s.on i{background:#22c55e}.kq-s.off i{background:#ef4444}.kq-s.wait i{background:#f59e0b}
@@ -3966,12 +3970,17 @@ async function verPrecioInfoAuto(codia, nombre) {
   <div id="kq-box">
     <div id="kq-head">
       <div class="kq-title">Pedidos Kommo · autos y calificación</div>
+      <button type="button" class="kq-hb on" id="kq-o-todos" onclick="kqOrigen('todos')">Todos</button>
+      <button type="button" class="kq-hb" id="kq-o-kommo" onclick="kqOrigen('kommo')">🟣 Kommo</button>
+      <button type="button" class="kq-hb" id="kq-o-ruthina" onclick="kqOrigen('ruthina')">🔵 Ruthina</button>
+      <span style="width:1px;height:22px;background:rgba(255,255,255,.25)"></span>
       <button type="button" class="kq-hb on" id="kq-f-abiertos" onclick="kqFiltro('abiertos')">Abiertos</button>
       <button type="button" class="kq-hb" id="kq-f-resuelto" onclick="kqFiltro('resuelto')">Resueltos</button>
       <button type="button" class="kq-hb" onclick="kqCargar()">↻</button>
       <button type="button" class="kq-hb" onclick="cerrarPedidosKommo()">✕ Cerrar</button>
     </div>
     <div id="kq-auto">Consulta automática: cargando…</div>
+    <div id="kq-ext">Extensiones: cargando…</div>
     <div id="kq-list"><div class="kq-empty">Cargando…</div></div>
   </div>
 </div>
@@ -3986,6 +3995,9 @@ async function verPrecioInfoAuto(codia, nombre) {
     { key:'decreditos', label:'decreditos' }
   ];
   var filtro = 'abiertos';
+  var origenF = 'todos';
+  function origenDe(p){ return p.origen==='ruthina-auto' ? 'ruthina' : 'kommo'; }
+  function origenChip(p){ return origenDe(p)==='ruthina' ? '<span class="kq-orig r">🔵 Consulta Ruthina</span>' : '<span class="kq-orig k">🟣 Consulta Kommo'+(p.origen==='bot'?' (bot)':'')+'</span>'; }
   var kommoDominio = '';
   var form = {};   // estado del formulario por pedido: form[id][banco] = {estado, monto}
 
@@ -4016,6 +4028,7 @@ async function verPrecioInfoAuto(codia, nombre) {
     var el=document.getElementById('kq-auto'); if(!el) return;
     try{
       var r=await fetch(API+'/api/calificaciones/auto'); var d=await r.json();
+      pintarExt(d.extensiones||[]);
       if(!d.activa){ el.innerHTML='Consulta automática <b>apagada</b> (falta CONSULTA_BANCOS_CLAVE en Railway). Los pedidos se resuelven a mano.'; return; }
       if(d.error && !d.ultimo_chequeo){ el.innerHTML='⚠ No se pudo conectar con Consulta Créditos: '+esc(d.error); return; }
       var s=d.sesiones||{};
@@ -4025,7 +4038,20 @@ async function verPrecioInfoAuto(codia, nombre) {
       }).join('')+(d.consultando?'<span>· consultando '+esc(d.consultando)+'…</span>':'')+
       (d.error?'<span style="color:#fca5a5">· '+esc(d.error)+'</span>':'')+
       '<span style="margin-left:auto;opacity:.7">Abrí las sesiones en "Calificar por banco" y Ruthina consulta sola.</span>';
-    }catch(e){ el.textContent='Consulta automática: sin datos'; }
+    }catch(e){ el.textContent='Consulta automática: sin datos'; var ex=document.getElementById('kq-ext'); if(ex) ex.textContent='🖥️ PC robot (extensiones): sin datos'; }
+  }
+  function segTxt(s){ if(s<60) return s+' s'; var m=Math.round(s/60); if(m<60) return m+' min'; var h=Math.round(m/60); return h<24 ? h+' h' : Math.round(h/24)+' d'; }
+  function pintarExt(lista){
+    var el=document.getElementById('kq-ext'); if(!el) return;
+    if(!lista.length){ el.className=''; el.innerHTML='<b>🖥️ PC robot (extensiones)</b><span class="kq-s"><i></i>sin datos: la extensión todavía no avisa que está conectada</span>'; return; }
+    var algunaCaida=lista.some(function(x){return !x.conectada;});
+    el.className=algunaCaida?'caida':'';
+    el.innerHTML='<b>🖥️ PC robot (extensiones)</b>'+lista.map(function(x){
+      var bancos=(x.bancos||[]).map(function(k){ var b=BANCOS_KQ.filter(function(y){return y.key===k;})[0]; return b?b.label:k; }).join(', ');
+      return x.conectada
+        ? '<span class="kq-s on"><i></i>'+esc(x.pc)+': <b>conectada</b> · hace '+segTxt(x.segundos)+(bancos?' · '+esc(bancos):'')+'</span>'
+        : '<span class="kq-s off"><i></i>'+esc(x.pc)+': <b>SIN SEÑAL hace '+segTxt(x.segundos)+'</b> — revisá la PC (Chrome abierto, extensión activa, internet)</span>';
+    }).join('');
   }
   var timerKq=null;
 
@@ -4044,6 +4070,11 @@ async function verPrecioInfoAuto(codia, nombre) {
     var a=document.activeElement; if(a && document.getElementById('kq-list').contains(a) && /INPUT|TEXTAREA/.test(a.tagName)) return true;
     return Object.keys(form).some(function(id){ return form[id]._tocado; });
   }
+  window.kqOrigen = function(o){
+    origenF=o;
+    ['todos','kommo','ruthina'].forEach(function(x){ var b=document.getElementById('kq-o-'+x); if(b) b.classList.toggle('on', x===o); });
+    kqCargar();
+  };
   window.kqFiltro = function(f){
     filtro=f;
     document.getElementById('kq-f-abiertos').classList.toggle('on', f==='abiertos');
@@ -4059,7 +4090,12 @@ async function verPrecioInfoAuto(codia, nombre) {
       var d=await r.json();
       if(!Array.isArray(d)) throw new Error(d.error||'Respuesta inválida');
       if(filtro==='abiertos') badge(d.length);
-      if(!d.length){ list.innerHTML='<div class="kq-empty">'+(filtro==='abiertos'?'No hay pedidos pendientes de Kommo 🎉':'Todavía no hay pedidos resueltos')+'</div>'; return; }
+      var nk=d.filter(function(p){return origenDe(p)==='kommo';}).length, nr=d.length-nk;
+      var bt=document.getElementById('kq-o-todos'); if(bt) bt.textContent='Todos ('+d.length+')';
+      var bk=document.getElementById('kq-o-kommo'); if(bk) bk.textContent='🟣 Kommo ('+nk+')';
+      var br=document.getElementById('kq-o-ruthina'); if(br) br.textContent='🔵 Ruthina ('+nr+')';
+      if(origenF!=='todos') d=d.filter(function(p){ return origenDe(p)===origenF; });
+      if(!d.length){ list.innerHTML='<div class="kq-empty">'+(filtro==='abiertos'?'No hay pedidos pendientes'+(origenF==='todos'?' 🎉':' de ese origen'):'Todavía no hay pedidos resueltos'+(origenF==='todos'?'':' de ese origen'))+'</div>'; return; }
       list.innerHTML='';
       d.forEach(function(p){ list.appendChild(tarjeta(p)); });
     }catch(e){ list.innerHTML='<div class="kq-empty">Error al cargar: '+esc(e.message)+'</div>'; }
@@ -4078,7 +4114,7 @@ async function verPrecioInfoAuto(codia, nombre) {
       : p.resultado==='califica' ? '<span class="kq-chip ok">CALIFICA</span>' : '<span class="kq-chip bad">NO CALIFICA</span>';
     var html =
       '<div class="kq-row" style="justify-content:space-between">'+
-        '<div class="kq-row"><span class="kq-name">'+esc(p.nombre||'Sin nombre')+'</span>'+linkLead(p)+estadoChip+'</div>'+
+        '<div class="kq-row"><span class="kq-name">'+esc(p.nombre||'Sin nombre')+'</span>'+origenChip(p)+linkLead(p)+estadoChip+'</div>'+
         '<span class="kq-meta">'+hace(p.created_at)+'</span>'+
       '</div>'+
       '<div class="kq-row" style="margin-top:8px">'+
@@ -4103,6 +4139,7 @@ async function verPrecioInfoAuto(codia, nombre) {
       if(p.observaciones) html+='<div class="kq-msg">📝 '+esc(p.observaciones)+'</div>';
       if(p.resuelto_por==='Ruthina (automático)') html+='<div class="kq-msg">🤖 Resuelto automáticamente'+(p.auto_msg?' — '+esc(p.auto_msg):'')+'</div>';
       html+='<div class="kq-msg kq-meta">Resuelto '+hace(p.resuelto_at)+(p.resuelto_por?' por '+esc(p.resuelto_por):'')+'</div>';
+      html+='<div class="kq-row" style="margin-top:10px"><button type="button" class="kq-btn dark" data-reconsultar="'+p.id+'">↻ Volver a consultar</button><span class="kq-meta">Reabre el pedido y consulta de nuevo en los bancos (5 min máx.)</span></div>';
       if(p.kommo_error) html+='<div class="kq-msg" style="color:#991b1b">⚠ No llegó a Kommo: '+esc(p.kommo_error)+' <button type="button" class="kq-btn" data-reenviar="'+p.id+'">Reintentar</button></div>';
       c.innerHTML=html; enlazar(c,p); return c;
     }
@@ -4116,7 +4153,7 @@ async function verPrecioInfoAuto(codia, nombre) {
           var t=e==='ERROR'?'error':e==='PREAPROBADO'?'pre-aprobado':e.toLowerCase();
           return '<span class="kq-chip '+cls+'" title="'+esc(r.resumen||r.error||'')+'">'+b.label+': '+esc(t)+(r.monto?' $'+esc(r.monto):'')+'</span>';
         }).join('')+'</div>'+
-        '<div style="margin-top:6px"><button type="button" class="kq-btn" data-reconsultar="'+p.id+'">↻ Consultar de nuevo</button></div></div>';
+        '</div>';
     }
     if(!form[p.id]){
       form[p.id]={};
@@ -4128,6 +4165,7 @@ async function verPrecioInfoAuto(codia, nombre) {
       });
     }
     html+='<div class="kq-row" style="margin-top:10px">'+
+        '<button type="button" class="kq-btn pri" data-reconsultar="'+p.id+'">↻ Volver a consultar</button>'+
         '<button type="button" class="kq-btn dark" data-bancos="'+esc(p.cuil)+'">🏦 Abrir bancos (copia el CUIL)</button>'+
         (p.estado==='pendiente'?'<button type="button" class="kq-btn" data-tomar="'+p.id+'">Lo consulto yo</button>':'<button type="button" class="kq-btn" data-soltar="'+p.id+'">Liberar</button>')+
         '<button type="button" class="kq-btn" data-descartar="'+p.id+'" style="margin-left:auto">Descartar</button>'+
@@ -4176,9 +4214,13 @@ async function verPrecioInfoAuto(codia, nombre) {
       try{ await patch(p.id,{estado:'descartado'}); kqCargar(); }catch(e){ alert(e.message); }
     }; });
     c.querySelectorAll('[data-reconsultar]').forEach(function(b){ b.onclick=async function(){
+      if(p.estado==='resuelto' && p.lead_id && !confirm('Esto vuelve a consultar los bancos y, al terminar, vuelve a mandar el resultado a Kommo. ¿Seguro?')) return;
       b.disabled=true; b.textContent='Pidiendo…';
-      try{ await fetch(API+'/api/calificaciones/'+p.id+'/reconsultar',{method:'POST'}); delete form[p.id]; setTimeout(function(){ kqCargar(true); pintarAuto(); },1500); }
-      catch(e){ b.disabled=false; b.textContent='↻ Consultar de nuevo'; }
+      try{
+        var rr=await fetch(API+'/api/calificaciones/'+p.id+'/reconsultar',{method:'POST'}); var dd=await rr.json().catch(function(){return {};}); if(!rr.ok) throw new Error(dd.error||'Error');
+        delete form[p.id];
+        if(filtro!=='abiertos') kqFiltro('abiertos'); else setTimeout(function(){ kqCargar(true); pintarAuto(); },1200);
+      }catch(e){ b.disabled=false; b.textContent='↻ Volver a consultar'; alert('No se pudo: '+e.message); }
     }; });
     c.querySelectorAll('[data-reenviar]').forEach(function(b){ b.onclick=async function(){
       b.disabled=true; b.textContent='Enviando…';
