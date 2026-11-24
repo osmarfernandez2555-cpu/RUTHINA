@@ -423,7 +423,7 @@ input:checked+.tsl::before{transform:translateX(18px)}
     <button type="button" role="menuitem" onclick="cerrarMenus();abrirLibrosCierre()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg><span>Libros de cierre</span></button>
     <button type="button" role="menuitem" onclick="cerrarMenus();abrirResenas()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span>Reseñas</span></button>
     <button type="button" role="menuitem" onclick="cerrarMenus();abrirConsultaBancos()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18M5 21V10m4 11V10m6 11V10m4 11V10M2 10l10-7 10 7z"/></svg><span>Calificar por banco</span></button>
-    <button type="button" role="menuitem" onclick="cerrarMenus();abrirPedidosKommo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span>Pedidos Kommo</span><span id="kq-badge-menu" class="kq-badge" style="display:none;margin-left:auto"></span></button>
+    <button type="button" role="menuitem" onclick="cerrarMenus();abrirPedidosKommo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span>Pedidos Bancos</span><span id="kq-badge-menu" class="kq-badge" style="display:none;margin-left:auto"></span></button>
     <a role="menuitem" class="menu-link" href="https://www.nosis.com/es" target="_blank" rel="noopener noreferrer" onclick="cerrarMenus()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span>Nosis</span></a>
   </div>
   <div id="menu-oper" class="menu-flot" role="menu">
@@ -4026,7 +4026,7 @@ async function verPrecioInfoAuto(codia, nombre) {
 #kq-ext{background:#171a33;color:#cfd3e6;font-size:12px;padding:7px 12px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;border-bottom:1px solid #2a2e52}
 #kq-ext.caida{background:#7f1d1d;color:#fff}
 .kq-orig{font-size:11px;font-weight:700;border-radius:6px;padding:3px 8px}
-.kq-orig.k{background:#ede9fe;color:#5b21b6}.kq-orig.r{background:#dbeafe;color:#1d4ed8}
+.kq-orig.t{background:#dcfce7;color:#166534}.kq-orig.k{background:#ede9fe;color:#5b21b6}.kq-orig.r{background:#dbeafe;color:#1d4ed8}
 .kq-s{display:inline-flex;align-items:center;gap:5px}
 .kq-s i{width:8px;height:8px;border-radius:50%;background:#6b7280;display:inline-block}
 .kq-s.on i{background:#22c55e}.kq-s.off i{background:#ef4444}.kq-s.wait i{background:#f59e0b}
@@ -4036,13 +4036,14 @@ async function verPrecioInfoAuto(codia, nombre) {
 @media(max-width:600px){#kq-box{width:100vw;height:100dvh;border-radius:0}}
 </style>
 
-<div id="kq-overlay" role="dialog" aria-modal="true" aria-label="Pedidos de Kommo">
+<div id="kq-overlay" role="dialog" aria-modal="true" aria-label="Pedidos Bancos">
   <div id="kq-box">
     <div id="kq-head">
-      <div class="kq-title">Pedidos Kommo · autos y calificación</div>
+      <div class="kq-title">Pedidos Bancos · autos y calificación</div>
       <button type="button" class="kq-hb on" id="kq-o-todos" onclick="kqOrigen('todos')">Todos</button>
       <button type="button" class="kq-hb" id="kq-o-kommo" onclick="kqOrigen('kommo')">🟣 Kommo</button>
       <button type="button" class="kq-hb" id="kq-o-ruthina" onclick="kqOrigen('ruthina')">🔵 Ruthina</button>
+      <button type="button" class="kq-hb" id="kq-o-tutuplus" onclick="kqOrigen('tutuplus')">🟢 Tutu+</button>
       <span style="width:1px;height:22px;background:rgba(255,255,255,.25)"></span>
       <button type="button" class="kq-hb on" id="kq-f-abiertos" onclick="kqFiltro('abiertos')">Abiertos</button>
       <button type="button" class="kq-hb" id="kq-f-resuelto" onclick="kqFiltro('resuelto')">Resueltos</button>
@@ -4066,8 +4067,8 @@ async function verPrecioInfoAuto(codia, nombre) {
   ];
   var filtro = 'abiertos';
   var origenF = 'todos';
-  function origenDe(p){ return p.origen==='ruthina-auto' ? 'ruthina' : 'kommo'; }
-  function origenChip(p){ return (p.rol==='garante' ? '<span class="kq-orig r">👥 Garante</span>' : '') + (origenDe(p)==='ruthina' ? '<span class="kq-orig r">🔵 Consulta Ruthina</span>' : '<span class="kq-orig k">🟣 Consulta Kommo'+(p.origen==='bot'?' (bot)':'')+'</span>'); }
+  function origenDe(p){ return p.origen==='tutu-plus' ? 'tutuplus' : p.origen==='ruthina-auto' ? 'ruthina' : 'kommo'; }
+  function origenChip(p){ return (p.rol==='garante' ? '<span class="kq-orig r">👥 Garante</span>' : '') + (origenDe(p)==='tutuplus' ? '<span class="kq-orig t">🟢 Consulta Tutu+ (Express)</span>' : origenDe(p)==='ruthina' ? '<span class="kq-orig r">🔵 Consulta Ruthina</span>' : '<span class="kq-orig k">🟣 Consulta Kommo'+(p.origen==='bot'?' (bot)':'')+'</span>'); }
   var kommoDominio = '';
   var form = {};   // estado del formulario por pedido: form[id][banco] = {estado, monto}
 
@@ -4150,7 +4151,7 @@ async function verPrecioInfoAuto(codia, nombre) {
   }
   window.kqOrigen = function(o){
     origenF=o;
-    ['todos','kommo','ruthina'].forEach(function(x){ var b=document.getElementById('kq-o-'+x); if(b) b.classList.toggle('on', x===o); });
+    ['todos','kommo','ruthina','tutuplus'].forEach(function(x){ var b=document.getElementById('kq-o-'+x); if(b) b.classList.toggle('on', x===o); });
     kqCargar();
   };
   window.kqFiltro = function(f){
@@ -4168,10 +4169,11 @@ async function verPrecioInfoAuto(codia, nombre) {
       var d=await r.json();
       if(!Array.isArray(d)) throw new Error(d.error||'Respuesta inválida');
       if(filtro==='abiertos') badge(d.length);
-      var nk=d.filter(function(p){return origenDe(p)==='kommo';}).length, nr=d.length-nk;
+      var nk=d.filter(function(p){return origenDe(p)==='kommo';}).length, nt=d.filter(function(p){return origenDe(p)==='tutuplus';}).length, nr=d.length-nk-nt;
       var bt=document.getElementById('kq-o-todos'); if(bt) bt.textContent='Todos ('+d.length+')';
       var bk=document.getElementById('kq-o-kommo'); if(bk) bk.textContent='🟣 Kommo ('+nk+')';
       var br=document.getElementById('kq-o-ruthina'); if(br) br.textContent='🔵 Ruthina ('+nr+')';
+      var btp=document.getElementById('kq-o-tutuplus'); if(btp) btp.textContent='🟢 Tutu+ ('+nt+')';
       if(origenF!=='todos') d=d.filter(function(p){ return origenDe(p)===origenF; });
       if(!d.length){ list.innerHTML='<div class="kq-empty">'+(filtro==='abiertos'?'No hay pedidos pendientes'+(origenF==='todos'?' 🎉':' de ese origen'):'Todavía no hay pedidos resueltos'+(origenF==='todos'?'':' de ese origen'))+'</div>'; return; }
       list.innerHTML='';
