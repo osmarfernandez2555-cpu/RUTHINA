@@ -4008,11 +4008,14 @@ async function verPrecioInfoAuto(codia, nombre) {
 .kq-btn.pri{background:#C8102E;border-color:#C8102E;color:#fff}.kq-btn.pri:hover{background:#A00D24}
 .kq-btn.dark{background:#12142A;border-color:#12142A;color:#fff}
 .kq-btn:disabled{opacity:.55;cursor:default}
-.kq-banks{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px;margin-top:12px}
+.kq-banks{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;margin-top:12px}
+@media(max-width:760px){.kq-banks{grid-template-columns:repeat(auto-fit,minmax(130px,1fr))}}
 .kq-bank{border:1px solid rgba(18,20,42,.12);border-radius:10px;padding:8px 10px}
 .kq-bank .kq-bl{font-size:12px;font-weight:700;color:#12142A;margin-bottom:6px}
-.kq-seg{display:flex;gap:4px}
-.kq-seg button{flex:1;border:1px solid rgba(18,20,42,.15);background:#fff;border-radius:7px;padding:6px 4px;font-size:12px;cursor:pointer;min-height:32px}
+.kq-bank{min-width:0}
+.kq-seg{display:flex;gap:3px;min-width:0}
+.kq-seg button{flex:1 1 auto;min-width:0;border:1px solid rgba(18,20,42,.15);background:#fff;border-radius:7px;padding:6px 3px;font-size:11px;cursor:pointer;min-height:32px;overflow:hidden;text-overflow:clip;white-space:nowrap}
+.kq-seg button[data-est=no_consultado]{flex:0 0 26px}
 .kq-seg button.a{background:#16A34A;border-color:#16A34A;color:#fff}
 .kq-seg button.r{background:#C8102E;border-color:#C8102E;color:#fff}
 .kq-seg button.n{background:#e5e7eb}
@@ -4063,7 +4066,8 @@ async function verPrecioInfoAuto(codia, nombre) {
     { key:'bancor', label:'Bancor' },
     { key:'nacion', label:'Nación' },
     { key:'galicia', label:'Galicia' },
-    { key:'decreditos', label:'decreditos' }
+    { key:'decreditos', label:'decreditos' },
+    { key:'santander', label:'Santander' }
   ];
   var filtro = 'abiertos';
   var origenF = 'todos';
