@@ -4050,8 +4050,7 @@ async function verPrecioInfoAuto(codia, nombre) {
     { key:'bancor', label:'Bancor' },
     { key:'nacion', label:'Nación' },
     { key:'galicia', label:'Galicia' },
-    { key:'decreditos', label:'decreditos' },
-    { key:'santander', label:'Santander' }
+    { key:'decreditos', label:'decreditos' }
   ];
   var filtro = 'abiertos';
   var origenF = 'todos';
@@ -4082,35 +4081,43 @@ async function verPrecioInfoAuto(codia, nombre) {
   }
   contar(); setInterval(contar, 60000);
 
-  var NOMBRE_S = { conectado:'conectada', desconectado:'sin sesión', esperando_captcha:'falta captcha', esperando_token:'falta código', iniciando:'conectando', error:'error', no_configurado:'no configurado', extension:'solo extensión (falta CONSULTA_ROBOT_CLAVE)', robot:'por la PC robot', robot_apagado:'PC robot apagada', desconocido:'?' };
+  var NOMBRE_S = { conectado:'conectada', desconectado:'sin sesión', esperando_captcha:'falta captcha', esperando_token:'falta código', iniciando:'conectando', error:'error', no_configurado:'no configurado', extension:'solo extensión', robot:'por el robot', robot_apagado:'robot APAGADO', desconocido:'?' };
   async function pintarAuto(){
     var el=document.getElementById('kq-auto'); if(!el) return;
     try{
       var r=await fetch(API+'/api/calificaciones/auto'); var d=await r.json();
-      pintarExt(d.extensiones||[]);
+      pintarExt(d.extensiones||[], d.robot||null);
       if(!d.activa){ el.innerHTML='Consulta automática <b>apagada</b> (falta CONSULTA_BANCOS_CLAVE en Railway). Los pedidos se resuelven a mano.'; return; }
       if(d.error && !d.ultimo_chequeo){ el.innerHTML='⚠ No se pudo conectar con Consulta Créditos: '+esc(d.error); return; }
       var s=d.sesiones||{};
       el.innerHTML='<b>🤖 Consulta automática</b>'+BANCOS_KQ.map(function(b){
-        var e=s[b.key]||'desconocido'; var cls=(e==='conectado'||e==='robot')?'on':(e==='esperando_captcha'||e==='esperando_token'||e==='iniciando')?'wait':(e==='no_configurado'||e==='extension')?'':'off';
+        var e=s[b.key]||'desconocido'; var cls=e==='conectado'?'on':(e==='esperando_captcha'||e==='esperando_token'||e==='iniciando')?'wait':(e==='no_configurado'||e==='extension')?'':(e==='robot')?'on':'off';
         return '<span class="kq-s '+cls+'"><i></i>'+b.label+': '+esc(NOMBRE_S[e]||e)+'</span>';
       }).join('')+(d.consultando?'<span>· consultando '+esc(d.consultando)+'…</span>':'')+
       (d.error?'<span style="color:#fca5a5">· '+esc(d.error)+'</span>':'')+
-      '<span style="margin-left:auto;opacity:.7">'+(d.robot&&d.robot.configurado?'Bancor y Nación: sesión del servidor. Galicia, decreditos y Santander: la PC robot ('+(d.robot.conectado?'conectada':'APAGADA: abrí la pestaña ?robot=1')+(d.robot.enCola?' · '+d.robot.enCola+' en la fila':'')+').':'Abrí las sesiones en "Calificar por banco" y Ruthina consulta sola.')+'</span>';
+      '<span style="margin-left:auto;opacity:.7">Abrí las sesiones en "Calificar por banco" y Ruthina consulta sola.</span>';
     }catch(e){ el.textContent='Consulta automática: sin datos'; var ex=document.getElementById('kq-ext'); if(ex) ex.textContent='🖥️ PC robot (extensiones): sin datos'; }
   }
   function segTxt(s){ if(s<60) return s+' s'; var m=Math.round(s/60); if(m<60) return m+' min'; var h=Math.round(m/60); return h<24 ? h+' h' : Math.round(h/24)+' d'; }
-  function pintarExt(lista){
+  function pintarExt(lista, robot){
     var el=document.getElementById('kq-ext'); if(!el) return;
-    if(!lista.length){ el.className=''; el.innerHTML='<b>🖥️ PC robot (extensiones)</b><span class="kq-s"><i></i>sin datos: la extensión todavía no avisa que está conectada</span>'; return; }
-    var algunaCaida=lista.some(function(x){return !x.conectada;});
-    el.className=algunaCaida?'caida':'';
-    el.innerHTML='<b>🖥️ PC robot (extensiones)</b>'+lista.map(function(x){
+    var partes='', caida=false;
+    // 1) El robot de Consulta Créditos (la página abierta con ?robot=1 en la PC de la oficina)
+    if(robot && robot.configurado){
+      if(robot.conectado){ partes+='<span class="kq-s on"><i></i>Robot: <b>conectado</b>'+(robot.enCola?' · '+robot.enCola+' en cola':'')+'</span>'; }
+      else { caida=true; partes+='<span class="kq-s off"><i></i>Robot: <b>APAGADO</b> — en la PC de la oficina abrí Chrome con la app de Consulta Créditos terminada en <b>?robot=1</b> y dejala abierta</span>'; }
+    } else if(robot){
+      partes+='<span class="kq-s"><i></i>Robot: no configurado (falta CONSULTA_ROBOT_CLAVE en Railway)</span>';
+    }
+    // 2) Aviso de la extensión (cada 30 s)
+    (lista||[]).forEach(function(x){
       var bancos=(x.bancos||[]).map(function(k){ var b=BANCOS_KQ.filter(function(y){return y.key===k;})[0]; return b?b.label:k; }).join(', ');
-      return x.conectada
-        ? '<span class="kq-s on"><i></i>'+esc(x.pc)+': <b>conectada</b> · hace '+segTxt(x.segundos)+(bancos?' · '+esc(bancos):'')+'</span>'
-        : '<span class="kq-s off"><i></i>'+esc(x.pc)+': <b>SIN SEÑAL hace '+segTxt(x.segundos)+'</b> — revisá la PC (Chrome abierto, extensión activa, internet)</span>';
-    }).join('');
+      if(x.conectada) partes+='<span class="kq-s on"><i></i>Extensión '+esc(x.pc)+': <b>viva</b> · hace '+segTxt(x.segundos)+(bancos?' · '+esc(bancos):'')+'</span>';
+      else { caida=true; partes+='<span class="kq-s off"><i></i>Extensión '+esc(x.pc)+': <b>SIN SEÑAL hace '+segTxt(x.segundos)+'</b> — revisá la PC (Chrome abierto, extensión activa, internet)</span>'; }
+    });
+    if(!partes) partes='<span class="kq-s"><i></i>sin datos del robot ni de la extensión</span>';
+    el.className=caida?'caida':'';
+    el.innerHTML='<b>🖥️ PC robot</b>'+partes;
   }
   var timerKq=null;
 
