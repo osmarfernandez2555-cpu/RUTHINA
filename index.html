@@ -4029,7 +4029,7 @@ async function verPrecioInfoAuto(codia, nombre) {
 #kq-ext{background:#171a33;color:#cfd3e6;font-size:12px;padding:7px 12px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;border-bottom:1px solid #2a2e52}
 #kq-ext.caida{background:#7f1d1d;color:#fff}
 .kq-orig{font-size:11px;font-weight:700;border-radius:6px;padding:3px 8px}
-.kq-orig.t{background:#dcfce7;color:#166534}.kq-orig.k{background:#ede9fe;color:#5b21b6}.kq-orig.r{background:#dbeafe;color:#1d4ed8}
+.kq-orig.t{background:#dcfce7;color:#166534}.kq-orig.k{background:#ede9fe;color:#5b21b6}.kq-orig.r{background:#dbeafe;color:#1d4ed8}.kq-orig.a{background:#ffedd5;color:#9a3412}
 .kq-s{display:inline-flex;align-items:center;gap:5px}
 .kq-s i{width:8px;height:8px;border-radius:50%;background:#6b7280;display:inline-block}
 .kq-s.on i{background:#22c55e}.kq-s.off i{background:#ef4444}.kq-s.wait i{background:#f59e0b}
@@ -4047,6 +4047,7 @@ async function verPrecioInfoAuto(codia, nombre) {
       <button type="button" class="kq-hb" id="kq-o-kommo" onclick="kqOrigen('kommo')">🟣 Kommo</button>
       <button type="button" class="kq-hb" id="kq-o-ruthina" onclick="kqOrigen('ruthina')">🔵 Ruthina</button>
       <button type="button" class="kq-hb" id="kq-o-tutuplus" onclick="kqOrigen('tutuplus')">🟢 Tutu+</button>
+      <button type="button" class="kq-hb" id="kq-o-ara" onclick="kqOrigen('ara')">🟠 ARA</button>
       <span style="width:1px;height:22px;background:rgba(255,255,255,.25)"></span>
       <button type="button" class="kq-hb on" id="kq-f-abiertos" onclick="kqFiltro('abiertos')">Abiertos</button>
       <button type="button" class="kq-hb" id="kq-f-resuelto" onclick="kqFiltro('resuelto')">Resueltos</button>
@@ -4071,8 +4072,8 @@ async function verPrecioInfoAuto(codia, nombre) {
   ];
   var filtro = 'abiertos';
   var origenF = 'todos';
-  function origenDe(p){ return p.origen==='tutu-plus' ? 'tutuplus' : p.origen==='ruthina-auto' ? 'ruthina' : 'kommo'; }
-  function origenChip(p){ return (p.rol==='garante' ? '<span class="kq-orig r">👥 Garante</span>' : '') + (origenDe(p)==='tutuplus' ? '<span class="kq-orig t">🟢 Consulta Tutu+ (Express)</span>' : origenDe(p)==='ruthina' ? '<span class="kq-orig r">🔵 Consulta Ruthina</span>' : '<span class="kq-orig k">🟣 Consulta Kommo'+(p.origen==='bot'?' (bot)':'')+'</span>'); }
+  function origenDe(p){ return p.origen==='tutu-plus' ? 'tutuplus' : p.origen==='ruthina-auto' ? 'ruthina' : p.origen==='ara' ? 'ara' : 'kommo'; }
+  function origenChip(p){ return (p.rol==='garante' ? '<span class="kq-orig r">👥 Garante</span>' : '') + (origenDe(p)==='ara' ? '<span class="kq-orig a">🟠 Consulta ARA (WhatsApp)</span>' : origenDe(p)==='tutuplus' ? '<span class="kq-orig t">🟢 Consulta Tutu+ (Express)</span>' : origenDe(p)==='ruthina' ? '<span class="kq-orig r">🔵 Consulta Ruthina</span>' : '<span class="kq-orig k">🟣 Consulta Kommo'+(p.origen==='bot'?' (bot)':'')+'</span>'); }
   var kommoDominio = '';
   var form = {};   // estado del formulario por pedido: form[id][banco] = {estado, monto}
 
@@ -4155,7 +4156,7 @@ async function verPrecioInfoAuto(codia, nombre) {
   }
   window.kqOrigen = function(o){
     origenF=o;
-    ['todos','kommo','ruthina','tutuplus'].forEach(function(x){ var b=document.getElementById('kq-o-'+x); if(b) b.classList.toggle('on', x===o); });
+    ['todos','kommo','ruthina','tutuplus','ara'].forEach(function(x){ var b=document.getElementById('kq-o-'+x); if(b) b.classList.toggle('on', x===o); });
     kqCargar();
   };
   window.kqFiltro = function(f){
@@ -4173,11 +4174,12 @@ async function verPrecioInfoAuto(codia, nombre) {
       var d=await r.json();
       if(!Array.isArray(d)) throw new Error(d.error||'Respuesta inválida');
       if(filtro==='abiertos') badge(d.length);
-      var nk=d.filter(function(p){return origenDe(p)==='kommo';}).length, nt=d.filter(function(p){return origenDe(p)==='tutuplus';}).length, nr=d.length-nk-nt;
+      var nk=d.filter(function(p){return origenDe(p)==='kommo';}).length, nt=d.filter(function(p){return origenDe(p)==='tutuplus';}).length, na=d.filter(function(p){return origenDe(p)==='ara';}).length, nr=d.length-nk-nt-na;
       var bt=document.getElementById('kq-o-todos'); if(bt) bt.textContent='Todos ('+d.length+')';
       var bk=document.getElementById('kq-o-kommo'); if(bk) bk.textContent='🟣 Kommo ('+nk+')';
       var br=document.getElementById('kq-o-ruthina'); if(br) br.textContent='🔵 Ruthina ('+nr+')';
       var btp=document.getElementById('kq-o-tutuplus'); if(btp) btp.textContent='🟢 Tutu+ ('+nt+')';
+      var ba=document.getElementById('kq-o-ara'); if(ba) ba.textContent='🟠 ARA ('+na+')';
       if(origenF!=='todos') d=d.filter(function(p){ return origenDe(p)===origenF; });
       if(!d.length){ list.innerHTML='<div class="kq-empty">'+(filtro==='abiertos'?'No hay pedidos pendientes'+(origenF==='todos'?' 🎉':' de ese origen'):'Todavía no hay pedidos resueltos'+(origenF==='todos'?'':' de ese origen'))+'</div>'; return; }
       list.innerHTML='';
