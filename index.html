@@ -4029,7 +4029,15 @@ async function verPrecioInfoAuto(codia, nombre) {
 #kq-ext{background:#171a33;color:#cfd3e6;font-size:12px;padding:7px 12px;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;border-bottom:1px solid #2a2e52}
 #kq-ext.caida{background:#7f1d1d;color:#fff}
 .kq-orig{font-size:11px;font-weight:700;border-radius:6px;padding:3px 8px}
-.kq-orig.t{background:#dcfce7;color:#166534}.kq-orig.k{background:#ede9fe;color:#5b21b6}.kq-orig.r{background:#dbeafe;color:#1d4ed8}.kq-orig.a{background:#ffedd5;color:#9a3412}
+.kq-orig.t{background:#dcfce7;color:#166534}.kq-orig.k{background:#ede9fe;color:#5b21b6}.kq-orig.r{background:#dbeafe;color:#1d4ed8}.kq-orig.a{background:#ffedd5;color:#9a3412}.kq-orig.p{background:#e0e7ff;color:#1e3a8a}
+#kq-promo{display:none;background:#fff;border-bottom:1px solid rgba(18,20,42,.1);padding:10px 14px;flex-shrink:0}
+#kq-promo .kq-pstats{display:flex;flex-wrap:wrap;gap:8px}
+#kq-promo .kq-pst{border:1px solid rgba(18,20,42,.12);background:#fff;border-radius:10px;padding:8px 12px;min-width:110px;cursor:pointer;text-align:left;font:inherit;color:#12142A}
+#kq-promo .kq-pst b{display:block;font-size:20px;line-height:1.1}
+#kq-promo .kq-pst span{font-size:11.5px;color:#56636D}
+#kq-promo .kq-pst.on{border-color:#1e3a8a;box-shadow:0 0 0 2px #1e3a8a inset}
+#kq-promo .kq-pst.ok b{color:#166534}#kq-promo .kq-pst.bad b{color:#991b1b}#kq-promo .kq-pst.warn b{color:#92400e}
+#kq-promo .kq-pautos{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;font-size:12px;color:#56636D}
 .kq-s{display:inline-flex;align-items:center;gap:5px}
 .kq-s i{width:8px;height:8px;border-radius:50%;background:#6b7280;display:inline-block}
 .kq-s.on i{background:#22c55e}.kq-s.off i{background:#ef4444}.kq-s.wait i{background:#f59e0b}
@@ -4048,6 +4056,7 @@ async function verPrecioInfoAuto(codia, nombre) {
       <button type="button" class="kq-hb" id="kq-o-ruthina" onclick="kqOrigen('ruthina')">🔵 Ruthina</button>
       <button type="button" class="kq-hb" id="kq-o-tutuplus" onclick="kqOrigen('tutuplus')">🟢 Tutu+</button>
       <button type="button" class="kq-hb" id="kq-o-ara" onclick="kqOrigen('ara')">🟠 ARA</button>
+      <button type="button" class="kq-hb" id="kq-o-promo" onclick="kqOrigen('promo')">🔷 Promos 0km</button>
       <span style="width:1px;height:22px;background:rgba(255,255,255,.25)"></span>
       <button type="button" class="kq-hb on" id="kq-f-abiertos" onclick="kqFiltro('abiertos')">Abiertos</button>
       <button type="button" class="kq-hb" id="kq-f-resuelto" onclick="kqFiltro('resuelto')">Resueltos</button>
@@ -4056,6 +4065,7 @@ async function verPrecioInfoAuto(codia, nombre) {
     </div>
     <div id="kq-auto">Consulta automática: cargando…</div>
     <div id="kq-ext">Extensiones: cargando…</div>
+    <div id="kq-promo" aria-live="polite"></div>
     <div id="kq-list"><div class="kq-empty">Cargando…</div></div>
   </div>
 </div>
@@ -4072,8 +4082,9 @@ async function verPrecioInfoAuto(codia, nombre) {
   ];
   var filtro = 'abiertos';
   var origenF = 'todos';
-  function origenDe(p){ return p.origen==='tutu-plus' ? 'tutuplus' : p.origen==='ruthina-auto' ? 'ruthina' : p.origen==='ara' ? 'ara' : 'kommo'; }
-  function origenChip(p){ return (p.rol==='garante' ? '<span class="kq-orig r">👥 Garante</span>' : '') + (origenDe(p)==='ara' ? '<span class="kq-orig a">🟠 Consulta ARA (WhatsApp)</span>' : origenDe(p)==='tutuplus' ? '<span class="kq-orig t">🟢 Consulta Tutu+ (Express)</span>' : origenDe(p)==='ruthina' ? '<span class="kq-orig r">🔵 Consulta Ruthina</span>' : '<span class="kq-orig k">🟣 Consulta Kommo'+(p.origen==='bot'?' (bot)':'')+'</span>'); }
+  function origenDe(p){ return p.origen==='promo-100' ? 'promo' : p.origen==='tutu-plus' ? 'tutuplus' : p.origen==='ruthina-auto' ? 'ruthina' : p.origen==='ara' ? 'ara' : 'kommo'; }
+  var promoF = 'todos';   // pestaña Promos 0km: todos | aprobado | rechazado | pendiente | revision
+  function origenChip(p){ return (p.rol==='garante' ? '<span class="kq-orig r">👥 Garante</span>' : '') + (origenDe(p)==='promo' ? '<span class="kq-orig p">🔷 Promo 0km 100% financiado (landing)</span>' : origenDe(p)==='ara' ? '<span class="kq-orig a">🟠 Consulta ARA (WhatsApp)</span>' : origenDe(p)==='tutuplus' ? '<span class="kq-orig t">🟢 Consulta Tutu+ (Express)</span>' : origenDe(p)==='ruthina' ? '<span class="kq-orig r">🔵 Consulta Ruthina</span>' : '<span class="kq-orig k">🟣 Consulta Kommo'+(p.origen==='bot'?' (bot)':'')+'</span>'); }
   var kommoDominio = '';
   var form = {};   // estado del formulario por pedido: form[id][banco] = {estado, monto}
 
@@ -4146,7 +4157,7 @@ async function verPrecioInfoAuto(codia, nombre) {
     }
     kqCargar(); pintarAuto();
     clearInterval(timerKq);
-    timerKq=setInterval(function(){ pintarAuto(); if(filtro==='abiertos' && !hayEdicion()) kqCargar(true); }, 10000);
+    timerKq=setInterval(function(){ pintarAuto(); if((filtro==='abiertos' || origenF==='promo') && !hayEdicion()) kqCargar(true); }, 10000);
   };
   window.cerrarPedidosKommo = function(){ document.getElementById('kq-overlay').style.display='none'; clearInterval(timerKq); contar(); };
   // no recargar la lista mientras un vendedor está cargando datos a mano
@@ -4156,25 +4167,76 @@ async function verPrecioInfoAuto(codia, nombre) {
   }
   window.kqOrigen = function(o){
     origenF=o;
-    ['todos','kommo','ruthina','tutuplus','ara'].forEach(function(x){ var b=document.getElementById('kq-o-'+x); if(b) b.classList.toggle('on', x===o); });
+    ['todos','kommo','ruthina','tutuplus','ara','promo'].forEach(function(x){ var b=document.getElementById('kq-o-'+x); if(b) b.classList.toggle('on', x===o); });
     kqCargar();
   };
+  window.kqPromoF = function(f){ promoF=f; kqCargar(); };
   window.kqFiltro = function(f){
     filtro=f;
+    if(origenF==='promo'){ origenF='todos'; kqOrigen('todos'); }
     document.getElementById('kq-f-abiertos').classList.toggle('on', f==='abiertos');
     document.getElementById('kq-f-resuelto').classList.toggle('on', f==='resuelto');
     kqCargar();
   };
 
+  // ── Pestaña Promos 0km: volumen, aprobados y rechazados de la landing promos-0km ──
+  async function kqCargarPromo(silencioso){
+    var list=document.getElementById('kq-list'), box=document.getElementById('kq-promo');
+    if(!silencioso) list.innerHTML='<div class="kq-empty">Cargando…</div>';
+    var clave=''; try{ clave=localStorage.getItem('promo100_panel_key')||''; }catch(e){}
+    var r=await fetch(API+'/api/promo100/resumen',{headers:{'x-panel-key':clave}});
+    if(r.status===401){
+      if(silencioso) return;   // la clave se pide solo al entrar a la pestaña, no en cada actualización
+      var nueva=window.prompt('Clave del panel de Promos 0km (PROMO100_PANEL_KEY):','');
+      if(!nueva) throw new Error('Falta la clave del panel');
+      try{ localStorage.setItem('promo100_panel_key',nueva.trim()); }catch(e){}
+      r=await fetch(API+'/api/promo100/resumen',{headers:{'x-panel-key':nueva.trim()}});
+      if(r.status===401){ try{ localStorage.removeItem('promo100_panel_key'); }catch(e){} throw new Error('Clave incorrecta'); }
+    }
+    var d=await r.json();
+    if(!r.ok || !d.totales) throw new Error(d.error||'Respuesta inválida');
+    var t=d.totales;
+    var bp=document.getElementById('kq-o-promo'); if(bp) bp.textContent='🔷 Promos 0km ('+t.total+')';
+    var pst=function(k,cls,n,txt){ return '<button type="button" class="kq-pst '+cls+(promoF===k?' on':'')+'" onclick="kqPromoF(\''+k+'\')"><b>'+n+'</b><span>'+txt+'</span></button>'; };
+    var tasa = (t.aprobados+t.rechazados) ? Math.round(t.aprobados*100/(t.aprobados+t.rechazados)) : 0;
+    box.innerHTML='<div class="kq-pstats">'+
+        pst('todos','',t.total,'Consultas totales')+
+        pst('aprobado','ok',t.aprobados,'✅ Califican ('+tasa+'%)')+
+        pst('rechazado','bad',t.rechazados,'❌ No califican')+
+        pst('pendiente','warn',t.pendientes,'⏳ Consultando')+
+        pst('revision','',t.revision,'➖ Sin respuesta del banco')+
+      '</div>'+
+      '<div class="kq-pautos"><b style="color:#12142A">Por auto:</b>'+Object.keys(d.por_auto||{}).map(function(a){ var x=d.por_auto[a]; return '<span class="kq-chip">'+esc(a)+': '+x.total+' consultas · '+x.aprobados+' califican</span>'; }).join('')+
+      '<span style="margin-left:auto">Solo Bancor y Nación</span></div>';
+    box.style.display='block';
+    var ps=(d.pedidos||[]).filter(function(p){ return promoF==='todos' || p.estado_promo===promoF; });
+    if(!ps.length){ list.innerHTML='<div class="kq-empty">'+(t.total?'No hay consultas en este filtro':'Todavía no hay consultas desde la landing de promos 0km')+'</div>'; return; }
+    list.innerHTML='';
+    ps.forEach(function(p){
+      if(p.promo_auto && !p.auto) p.auto=p.promo_auto;
+      if(p.promo_tel && !p.telefono) p.telefono=p.promo_tel;
+      list.appendChild(tarjeta(p));
+    });
+  }
+
   window.kqCargar = async function(silencioso){
     var list=document.getElementById('kq-list');
+    var pbox=document.getElementById('kq-promo');
+    var fa=document.getElementById('kq-f-abiertos'), fr=document.getElementById('kq-f-resuelto');
+    if(fa) fa.classList.toggle('on', origenF!=='promo' && filtro==='abiertos');
+    if(fr) fr.classList.toggle('on', origenF!=='promo' && filtro==='resuelto');
+    if(origenF==='promo'){
+      try{ await kqCargarPromo(silencioso); }catch(e){ list.innerHTML='<div class="kq-empty">Error al cargar: '+esc(e.message)+'</div>'; }
+      return;
+    }
+    if(pbox) pbox.style.display='none';
     if(!silencioso) list.innerHTML='<div class="kq-empty">Cargando…</div>';
     try{
       var r=await fetch(API+'/api/calificaciones?estado='+filtro);
       var d=await r.json();
       if(!Array.isArray(d)) throw new Error(d.error||'Respuesta inválida');
       if(filtro==='abiertos') badge(d.length);
-      var nk=d.filter(function(p){return origenDe(p)==='kommo';}).length, nt=d.filter(function(p){return origenDe(p)==='tutuplus';}).length, na=d.filter(function(p){return origenDe(p)==='ara';}).length, nr=d.length-nk-nt-na;
+      var nk=d.filter(function(p){return origenDe(p)==='kommo';}).length, nt=d.filter(function(p){return origenDe(p)==='tutuplus';}).length, na=d.filter(function(p){return origenDe(p)==='ara';}).length, np=d.filter(function(p){return origenDe(p)==='promo';}).length, nr=d.length-nk-nt-na-np;
       var bt=document.getElementById('kq-o-todos'); if(bt) bt.textContent='Todos ('+d.length+')';
       var bk=document.getElementById('kq-o-kommo'); if(bk) bk.textContent='🟣 Kommo ('+nk+')';
       var br=document.getElementById('kq-o-ruthina'); if(br) br.textContent='🔵 Ruthina ('+nr+')';
