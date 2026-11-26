@@ -4201,13 +4201,13 @@ async function verPrecioInfoAuto(codia, nombre) {
     var tasa = (t.aprobados+t.rechazados) ? Math.round(t.aprobados*100/(t.aprobados+t.rechazados)) : 0;
     box.innerHTML='<div class="kq-pstats">'+
         pst('todos','',t.total,'Consultas totales')+
-        pst('aprobado','ok',t.aprobados,'✅ Califican ('+tasa+'%)')+
-        pst('rechazado','bad',t.rechazados,'❌ No califican')+
+        pst('aprobado','ok',t.aprobados,'✅ Entran a la promo ('+tasa+'%)')+
+        pst('rechazado','bad',t.rechazados,'❌ No entran')+
         pst('pendiente','warn',t.pendientes,'⏳ Consultando')+
-        pst('revision','',t.revision,'➖ Sin respuesta del banco')+
+        pst('revision','',t.revision,'➖ Revisar (sin respuesta o sin monto)')+
       '</div>'+
       '<div class="kq-pautos"><b style="color:#12142A">Por auto:</b>'+Object.keys(d.por_auto||{}).map(function(a){ var x=d.por_auto[a]; return '<span class="kq-chip">'+esc(a)+': '+x.total+' consultas · '+x.aprobados+' califican</span>'; }).join('')+
-      '<span style="margin-left:auto">Solo Bancor y Nación</span></div>';
+      '<span style="margin-left:auto">Solo Bancor y Nación · entra si aprueban más de $ '+Number((d.pedidos[0]&&d.pedidos[0].monto_minimo)||6000000).toLocaleString('es-AR')+'</span></div>';
     box.style.display='block';
     var ps=(d.pedidos||[]).filter(function(p){ return promoF==='todos' || p.estado_promo===promoF; });
     if(!ps.length){ list.innerHTML='<div class="kq-empty">'+(t.total?'No hay consultas en este filtro':'Todavía no hay consultas desde la landing de promos 0km')+'</div>'; return; }
@@ -4215,7 +4215,13 @@ async function verPrecioInfoAuto(codia, nombre) {
     ps.forEach(function(p){
       if(p.promo_auto && !p.auto) p.auto=p.promo_auto;
       if(p.promo_tel && !p.telefono) p.telefono=p.promo_tel;
-      list.appendChild(tarjeta(p));
+      var card=tarjeta(p);
+      var fila=card.querySelector('.kq-row .kq-row');
+      var etiqueta = p.estado_promo==='aprobado' ? '<span class="kq-chip ok">🔷 Entra a la promo</span>'
+        : p.estado_promo==='rechazado' ? '<span class="kq-chip bad">🔷 No entra a la promo'+(p.resultado==='califica'?' (aprobó menos del mínimo)':'')+'</span>'
+        : p.estado_promo==='revision' ? '<span class="kq-chip warn">🔷 Revisar a mano</span>' : '';
+      if(fila && etiqueta) fila.insertAdjacentHTML('beforeend', etiqueta);
+      list.appendChild(card);
     });
   }
 
